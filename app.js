@@ -2,7 +2,25 @@
 
 (function() {
     'use strict';
-    
+
+    // ==========================================
+    // ASSUMPTIONS
+    // Adjust these values as we get more data
+    // ==========================================
+    const DEFAULT_FREE_TO_PAID_CONVERSION_RATE = 0.30; // 30% of trials convert to paid
+    const DEFAULT_CURRENCY = 'EUR';                     // All prices assumed in EUR
+    const UNKNOWN_PRODUCT_EXPECTED_VALUE = 1;           // Fallback for unknown product IDs
+
+    // Default plan info for unknown direct product links
+    const DEFAULT_PLAN_INFO = {
+        tier: 'OneTake AI',
+        recurrence: 'yearly',
+        trial: null,
+        product: null, // Will be set from URL
+        firstExpectedPayment: 120,
+        freeToPaidConversionRate: DEFAULT_FREE_TO_PAID_CONVERSION_RATE
+    };
+
     // Application state
     const state = {
         currentLanguage: 'en',
@@ -81,11 +99,11 @@
             state.hasTrial = !!state.planInfo.trial;
             console.log('Using plan preset:', planKey, state.planInfo);
         } else if (productId) {
-            // Direct product ID provided
+            // Direct product ID provided without a matching preset
             state.productId = productId;
             state.planKey = null;
-            state.planInfo = null;
-            state.hasTrial = true; // Assume trial when using direct product
+            state.planInfo = { ...DEFAULT_PLAN_INFO, product: productId };
+            state.hasTrial = false;
             console.log('Using direct product ID:', productId);
         } else {
             // Use default (occasional-monthly-trial)
@@ -132,12 +150,11 @@
         const trialSpan = planInfoElement.querySelector('.plan-trial');
         
         if (tierSpan) tierSpan.textContent = state.planInfo.tier;
-        if (recurrenceSpan) {
-            const recurrence = state.planInfo.recurrence === 'monthly' ? 'Monthly' : 'Yearly';
-            recurrenceSpan.textContent = recurrence;
+        if (recurrenceSpan && state.planInfo.recurrence) {
+            recurrenceSpan.textContent = state.planInfo.recurrence.charAt(0).toUpperCase() + state.planInfo.recurrence.slice(1);
         }
         if (trialSpan && state.planInfo.trial) {
-            trialSpan.textContent = ` • ${state.planInfo.trial} trial`;
+            trialSpan.textContent = ` • ${state.planInfo.trial}-day trial`;
         } else if (trialSpan) {
             trialSpan.textContent = '';
         }
@@ -168,30 +185,48 @@
         }
     }
     
-    // Track purchase in AnyTrack and UserList
+    // Calculate expected value for a trial signup
+    // Returns conversionRate * firstExpectedPayment, or the fallback value for unknown products
+    function getExpectedTrialValue() {
+        if (state.planInfo) {
+            const rate = state.planInfo.freeToPaidConversionRate || DEFAULT_FREE_TO_PAID_CONVERSION_RATE;
+            const payment = state.planInfo.firstExpectedPayment || UNKNOWN_PRODUCT_EXPECTED_VALUE;
+            return parseFloat((rate * payment).toFixed(2));
+        }
+        return UNKNOWN_PRODUCT_EXPECTED_VALUE;
+    }
+
+    // Track purchase in AnyTrack, CrazyEgg, Plausible, and UserList
     function trackPurchase(paddleData) {
+        const isTrial = state.hasTrial;
+        const expectedValue = isTrial ? getExpectedTrialValue() : null;
+        const actualValue = paddleData.data?.totals?.total || 0;
+
         const purchaseData = {
-            value: paddleData.data?.totals?.total || 0,
+            value: isTrial ? expectedValue : actualValue,
             taxPrice: paddleData.data?.totals?.tax || 0,
-            currency: paddleData.data?.currency_code || 'USD',
+            currency: paddleData.data?.currency_code || DEFAULT_CURRENCY,
             transactionId: paddleData.data?.transaction_id || '',
             email: state.formData.email,
             firstName: state.formData.firstName,
             items: paddleData.data?.items || []
         };
-        
-        // AnyTrack Purchase event
+
+        if (isTrial) {
+            console.log('Trial purchase detected. Expected value:', expectedValue, DEFAULT_CURRENCY);
+        }
+
+        // AnyTrack Purchase event (value = expectedValue for trials)
         if (typeof AnyTrack !== 'undefined') {
             AnyTrack('trigger', 'Purchase', purchaseData);
-            console.log('AnyTrack Purchase event fired');
+            console.log('AnyTrack Purchase event fired with value:', purchaseData.value);
         }
-        
-        // CrazyEgg Purchase conversion
+
+        // CrazyEgg Purchase conversion (worth = expectedValue for trials)
         if (typeof CE2 !== 'undefined') {
-            // For trials (value = 0), set worth to 1; otherwise use actual value
-            const worth = purchaseData.value > 0 ? purchaseData.value.toString() : '1';
-            const currency = purchaseData.currency || 'EUR';
-            
+            const worth = isTrial ? expectedValue.toString() : (actualValue > 0 ? actualValue.toString() : UNKNOWN_PRODUCT_EXPECTED_VALUE.toString());
+            const currency = purchaseData.currency || DEFAULT_CURRENCY;
+
             (window.CE_API || (window.CE_API=[])).push(function(){
                 CE2.converted("f2ff5947-c667-49a1-85fd-210cdf91be10", {
                     worth: worth,
@@ -200,9 +235,32 @@
             });
             console.log('CrazyEgg Purchase conversion fired with worth:', worth, 'currency:', currency);
         }
-        
-        // UserList Purchase event
-        trackUserListEvent('Purchase', purchaseData);
+
+        // Plausible Purchase event (expectedValue as property for trials)
+        if (typeof plausible !== 'undefined') {
+            const plausibleProps = {
+                value: purchaseData.value,
+                currency: purchaseData.currency,
+                plan: state.planKey || 'unknown'
+            };
+            if (isTrial) {
+                plausibleProps.expectedValue = expectedValue;
+                plausibleProps.isTrial = true;
+            }
+            plausible('Purchase', { props: plausibleProps });
+            console.log('Plausible Purchase event fired with props:', plausibleProps);
+        }
+
+        // UserList Purchase event (trial dates and expectedValue for trials)
+        const userListProps = { ...purchaseData };
+        if (isTrial) {
+            userListProps.expectedValue = expectedValue;
+            const now = new Date();
+            userListProps.trial_started_on = now.toISOString();
+            const trialDays = state.planInfo ? state.planInfo.trial : 7;
+            userListProps.trial_expires_on = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000).toISOString();
+        }
+        trackUserListEvent('Purchase', userListProps);
     }
     
     // Render use cases in custom dropdown with checkboxes
