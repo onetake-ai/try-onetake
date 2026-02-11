@@ -15,7 +15,7 @@
     const DEFAULT_PLAN_INFO = {
         tier: 'Occasional',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: null, // Will be set from URL
         firstExpectedPayment: 120,
         freeToPaidConversionRate: DEFAULT_FREE_TO_PAID_CONVERSION_RATE
@@ -156,7 +156,7 @@
             recurrenceSpan.textContent = recurrenceMap[state.planInfo.recurrence] || state.planInfo.recurrence;
         }
         if (trialSpan && state.planInfo.trial) {
-            trialSpan.textContent = ` • ${state.planInfo.trial} trial`;
+            trialSpan.textContent = ` • ${state.planInfo.trial}-day trial`;
         } else if (trialSpan) {
             trialSpan.textContent = '';
         }
@@ -253,11 +253,14 @@
             console.log('Plausible Purchase event fired with props:', plausibleProps);
         }
 
-        // UserList Purchase event (expectedValue as property for trials)
+        // UserList Purchase event (trial dates and expectedValue for trials)
         const userListProps = { ...purchaseData };
         if (isTrial) {
             userListProps.expectedValue = expectedValue;
-            userListProps.isTrial = true;
+            const now = new Date();
+            userListProps.trial_started_on = now.toISOString();
+            const trialDays = state.planInfo ? state.planInfo.trial : 7;
+            userListProps.trial_expires_on = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000).toISOString();
         }
         trackUserListEvent('Purchase', userListProps);
     }

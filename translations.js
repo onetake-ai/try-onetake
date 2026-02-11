@@ -343,7 +343,7 @@ const planPresets = {
     'occasional-monthly-trial': {
         tier: 'Occasional',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcmen6n7ymcdk5y59vhv33h',
         firstExpectedPayment: 20,
         freeToPaidConversionRate: 0.30
@@ -351,7 +351,7 @@ const planPresets = {
     'occasional-yearly-trial': {
         tier: 'Occasional',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcmycesa10x0ze6rnednsv1',
         firstExpectedPayment: 120,
         freeToPaidConversionRate: 0.30
@@ -359,7 +359,7 @@ const planPresets = {
     'pro-monthly-trial': {
         tier: 'Pro',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcn3krbb00njdh57tsfcy48',
         firstExpectedPayment: 39,
         freeToPaidConversionRate: 0.30
@@ -367,7 +367,7 @@ const planPresets = {
     'pro-yearly-trial': {
         tier: 'Pro',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcn6ee3g00jak58r3ykrk81',
         firstExpectedPayment: 390,
         freeToPaidConversionRate: 0.30
@@ -375,7 +375,7 @@ const planPresets = {
     'premium-studio-monthly-trial': {
         tier: 'Premium Studio',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcna0bwaeasxvq312t101b1',
         firstExpectedPayment: 49,
         freeToPaidConversionRate: 0.30
@@ -383,7 +383,7 @@ const planPresets = {
     'premium-studio-yearly-trial': {
         tier: 'Premium Studio',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kbcnd7tk4g6m024hsw1nt353',
         firstExpectedPayment: 490,
         freeToPaidConversionRate: 0.30
@@ -447,7 +447,7 @@ const planPresets = {
     'occasional-monthly-trial-29': {
         tier: 'Occasional',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9hh0jw4x7cczqcya6a9bk3',
         firstExpectedPayment: 29,
         freeToPaidConversionRate: 0.30
@@ -455,7 +455,7 @@ const planPresets = {
     'occasional-yearly-trial-19': {
         tier: 'Occasional',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9hndv6ss6k0cn7q6vpe1fs',
         firstExpectedPayment: 228,
         freeToPaidConversionRate: 0.30
@@ -463,7 +463,7 @@ const planPresets = {
     'pro-monthly-trial-59': {
         tier: 'Pro',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9htkgngnmyaw14pe0y5m3v',
         firstExpectedPayment: 59,
         freeToPaidConversionRate: 0.30
@@ -471,7 +471,7 @@ const planPresets = {
     'pro-yearly-trial-39': {
         tier: 'Pro',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9hzt8kcc2tazx6p267ngjy',
         firstExpectedPayment: 468,
         freeToPaidConversionRate: 0.30
@@ -479,7 +479,7 @@ const planPresets = {
     'premium-studio-monthly-trial-149': {
         tier: 'Premium Studio',
         recurrence: 'monthly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9j3s2pak4atr4mqrwztx6t',
         firstExpectedPayment: 149,
         freeToPaidConversionRate: 0.30
@@ -487,7 +487,7 @@ const planPresets = {
     'premium-studio-yearly-trial-99': {
         tier: 'Premium Studio',
         recurrence: 'yearly',
-        trial: '7 days',
+        trial: 7,
         product: 'pri_01kc9j7ectb2h3qe4x55q9whj3',
         firstExpectedPayment: 1188,
         freeToPaidConversionRate: 0.30
