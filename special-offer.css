@@ -1,0 +1,194 @@
+/* Import base styles */
+@import url('styles.css');
+
+/* Override for two-column layout */
+.special-offer-layout {
+    background: white;
+}
+
+.two-column-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Left Panel - Dark Background */
+.left-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #241826 0%, #3a2a40 100%);
+    color: var(--alabaster);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    overflow-y: auto;
+}
+
+.left-panel-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.main-headline {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--golden-grass);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.sub-headline {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(248, 247, 247, 0.9);
+    margin-bottom: var(--spacing-xl);
+}
+
+.benefits-list {
+    list-style: none;
+    margin-bottom: var(--spacing-xl);
+    padding: 0;
+}
+
+.benefits-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+}
+
+.benefits-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--golden-grass);
+    font-weight: var(--font-weight-bold);
+    font-size: 1.25rem;
+}
+
+.faq-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.faq-item {
+    margin-bottom: var(--spacing-lg);
+}
+
+.faq-question {
+    font-size: 1.0625rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--golden-grass);
+    margin-bottom: var(--spacing-xs);
+}
+
+.faq-answer {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(248, 247, 247, 0.8);
+}
+
+.testimonial-widget {
+    margin-top: var(--spacing-xl);
+}
+
+/* Right Panel - Form */
+.right-panel {
+    flex: 1;
+    background: var(--alabaster);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    overflow-y: auto;
+}
+
+.right-panel-content {
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+/* Override form-card for special-offer - remove border and shadow */
+.special-offer-layout .form-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.special-offer-layout .form-card:hover {
+    box-shadow: none;
+}
+
+/* Johnson Box */
+.johnson-box {
+    background: rgba(227, 174, 40, 0.08);
+    border: 2px solid var(--golden-grass);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.johnson-content {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+}
+
+.johnson-checkbox {
+    margin-top: 0.25rem;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--golden-grass);
+    cursor: default;
+    flex-shrink: 0;
+}
+
+.johnson-text {
+    flex: 1;
+}
+
+.johnson-headline {
+    font-size: 1.0625rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--bleached-cedar);
+    margin-bottom: 0.25rem;
+}
+
+.johnson-subheadline {
+    font-size: 0.9375rem;
+    color: rgba(36, 24, 38, 0.7);
+    line-height: 1.5;
+}
+
+/* Mobile - Show left panel at bottom */
+@media (max-width: 900px) {
+    .two-column-container {
+        flex-direction: column;
+    }
+    
+    .left-panel {
+        /* Show panel but move it to bottom using order */
+        order: 2;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .right-panel {
+        /* Keep form at top */
+        order: 1;
+        min-height: auto;
+        padding-bottom: var(--spacing-lg);
+    }
+    
+    .main-headline {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .right-panel {
+        padding: var(--spacing-md);
+    }
+    
+    .left-panel {
+        padding: var(--spacing-md);
+    }
+    
+    .main-headline {
+        font-size: 1.75rem;
+    }
+}
