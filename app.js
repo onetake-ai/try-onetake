@@ -11,11 +11,11 @@
     const DEFAULT_CURRENCY = 'EUR';                     // All prices assumed in EUR
     const UNKNOWN_PRODUCT_EXPECTED_VALUE = 1;           // Fallback for unknown product IDs
 
-    // Default plan info for unknown direct product links (defaults to Occasional Yearly)
+    // Default plan info for unknown direct product links
     const DEFAULT_PLAN_INFO = {
-        tier: 'Occasional',
+        tier: 'OneTake AI',
         recurrence: 'yearly',
-        trial: 7,
+        trial: null,
         product: null, // Will be set from URL
         firstExpectedPayment: 120,
         freeToPaidConversionRate: DEFAULT_FREE_TO_PAID_CONVERSION_RATE
@@ -100,12 +100,11 @@
             console.log('Using plan preset:', planKey, state.planInfo);
         } else if (productId) {
             // Direct product ID provided without a matching preset
-            // Default plan info to Occasional Yearly behavior
             state.productId = productId;
             state.planKey = null;
             state.planInfo = { ...DEFAULT_PLAN_INFO, product: productId };
-            state.hasTrial = true;
-            console.log('Using direct product ID (defaulting to Occasional Yearly plan info):', productId);
+            state.hasTrial = false;
+            console.log('Using direct product ID:', productId);
         } else {
             // Use default (occasional-monthly-trial)
             state.productId = 'pri_01kbcmen6n7ymcdk5y59vhv33h';
@@ -151,9 +150,8 @@
         const trialSpan = planInfoElement.querySelector('.plan-trial');
         
         if (tierSpan) tierSpan.textContent = state.planInfo.tier;
-        if (recurrenceSpan) {
-            const recurrenceMap = { monthly: 'Monthly', yearly: 'Yearly', quarterly: 'Quarterly' };
-            recurrenceSpan.textContent = recurrenceMap[state.planInfo.recurrence] || state.planInfo.recurrence;
+        if (recurrenceSpan && state.planInfo.recurrence) {
+            recurrenceSpan.textContent = state.planInfo.recurrence.charAt(0).toUpperCase() + state.planInfo.recurrence.slice(1);
         }
         if (trialSpan && state.planInfo.trial) {
             trialSpan.textContent = ` • ${state.planInfo.trial}-day trial`;
