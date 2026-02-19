@@ -236,19 +236,17 @@
             console.log('CrazyEgg Purchase conversion fired with worth:', worth, 'currency:', currency);
         }
 
-        // Plausible Purchase event (expectedValue as property for trials)
+        // Plausible Purchase event (using revenue option for proper revenue attribution)
         if (typeof plausible !== 'undefined') {
-            const plausibleProps = {
-                value: purchaseData.value,
-                currency: purchaseData.currency,
-                plan: state.planKey || 'unknown'
+            const plausibleOptions = {
+                revenue: { amount: purchaseData.value, currency: purchaseData.currency },
+                props: { plan: state.planKey || 'unknown' }
             };
             if (isTrial) {
-                plausibleProps.expectedValue = expectedValue;
-                plausibleProps.isTrial = true;
+                plausibleOptions.props.expectedValue = expectedValue;
             }
-            plausible('Purchase', { props: plausibleProps });
-            console.log('Plausible Purchase event fired with props:', plausibleProps);
+            plausible('Purchase', plausibleOptions);
+            console.log('Plausible Purchase event fired with options:', plausibleOptions);
         }
 
         // UserList Purchase event (trial dates and expectedValue for trials)
