@@ -216,6 +216,20 @@
                 maybeShowDownsell();
             }
         }
+
+        if (data.name === 'checkout.customer.updated') {
+            if (typeof AnyTrack !== 'undefined') {
+                AnyTrack('trigger', 'InitiateCheckout', {});
+                console.log('AnyTrack InitiateCheckout event fired');
+            }
+        }
+
+        if (data.name === 'checkout.payment.selected') {
+            if (typeof AnyTrack !== 'undefined') {
+                AnyTrack('trigger', 'AddPaymentInfo', {});
+                console.log('AnyTrack AddPaymentInfo event fired');
+            }
+        }
     }
     
     // Calculate expected value for a trial signup
