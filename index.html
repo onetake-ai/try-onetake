@@ -238,6 +238,29 @@
         v1.1
     </footer>
 
+    <!--
+        DOWNSELL MODAL
+        Always present in the DOM. JS adds .is-open when checkout closes without a completed purchase.
+        The split-test tool controls visibility by adding/removing the class "downsell-enabled" on <body>.
+        Control group  → body has no "downsell-enabled" class  → modal never shows, even when .is-open is set.
+        Treatment group → body.downsell-enabled → modal shows when .is-open is added by JS.
+    -->
+    <div class="downsell-overlay" id="downsellModal" role="dialog" aria-modal="true" aria-labelledby="downsellTitle">
+        <div class="downsell-card">
+            <button class="downsell-close" id="downsellClose" aria-label="Close">&times;</button>
+            <p class="downsell-eyebrow" data-i18n="downsell.eyebrow">Wait — before you go!</p>
+            <h2 class="downsell-title" id="downsellTitle"></h2>
+            <p class="downsell-body" id="downsellBody"></p>
+            <div class="downsell-offer-box">
+                <p class="downsell-plan-label" data-i18n="downsell.planLabel">Your special offer:</p>
+                <p class="downsell-plan-name" id="downsellPlanName"></p>
+                <p class="downsell-plan-price" id="downsellPlanPrice"></p>
+            </div>
+            <button class="downsell-cta-btn" id="downsellAccept" data-i18n="downsell.cta">Yes, let's do it</button>
+            <button class="downsell-dismiss-btn" id="downsellDismiss" data-i18n="downsell.dismiss">No thanks, I'll pass</button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="translations.js"></script>
     <script src="app.js"></script>
