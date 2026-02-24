@@ -21,6 +21,29 @@
         freeToPaidConversionRate: DEFAULT_FREE_TO_PAID_CONVERSION_RATE
     };
 
+    // Downsell map: for each plan key, the plan key to offer as a downsell.
+    // Priority: yearly → monthly (same tier), then higher tier monthly → lower tier monthly.
+    // Plans already at the lowest option (occasional-monthly variants) are omitted → no downsell.
+    const DOWNSELL_MAP = {
+        'premium-studio-yearly-trial':      'premium-studio-monthly-trial',
+        'premium-studio-yearly-trial-99':   'premium-studio-monthly-trial',
+        'premium-studio-yearly':            'premium-studio-monthly',
+        'pro-yearly-trial':                 'pro-monthly-trial',
+        'pro-yearly-trial-39':              'pro-monthly-trial',
+        'pro-yearly':                       'pro-monthly',
+        'occasional-yearly-trial':          'occasional-monthly-trial',
+        'occasional-yearly-trial-19':       'occasional-monthly-trial',
+        'occasional-yearly':                'occasional-monthly',
+        'premium-studio-monthly-trial':     'pro-monthly-trial',
+        'premium-studio-monthly-trial-149': 'pro-monthly-trial',
+        'premium-studio-monthly':           'pro-monthly',
+        'premium-studio-quarterly':         'premium-studio-monthly',
+        'pro-monthly-trial':                'occasional-monthly-trial',
+        'pro-monthly-trial-59':             'occasional-monthly-trial',
+        'pro-monthly':                      'occasional-monthly'
+        // occasional-monthly variants → no downsell (omitted)
+    };
+
     // Application state
     const state = {
         currentLanguage: 'en',
@@ -34,7 +57,11 @@
         planKey: null, // Will be set if using a preset
         planInfo: null, // Will contain plan details if using a preset
         hasTrial: true, // Default has trial
-        isSubmitting: false
+        isSubmitting: false,
+        checkoutCompleted: false, // Set to true on checkout.completed; prevents downsell after purchase
+        downsellShown: false,     // Prevents showing the downsell more than once per session
+        downsellPlanKey: null,    // The plan key offered in the downsell
+        downsellPlanInfo: null    // The plan info offered in the downsell
     };
     
     // Make state accessible globally for special-offer.js
@@ -178,10 +205,16 @@
     // Handle Paddle events
     function handlePaddleEvent(data) {
         console.log('Paddle event:', data);
-        
+
         if (data.name === 'checkout.completed') {
-            // Track purchase event
+            state.checkoutCompleted = true;
             trackPurchase(data);
+        }
+
+        if (data.name === 'checkout.closed') {
+            if (!state.checkoutCompleted && !state.downsellShown) {
+                maybeShowDownsell();
+            }
         }
     }
     
@@ -508,6 +541,28 @@
             languageSelect.addEventListener('change', handleLanguageChange);
         }
         
+        // Downsell modal buttons
+        const downsellClose   = document.getElementById('downsellClose');
+        const downsellAccept  = document.getElementById('downsellAccept');
+        const downsellDismiss = document.getElementById('downsellDismiss');
+        const downsellModal   = document.getElementById('downsellModal');
+
+        if (downsellClose)   downsellClose.addEventListener('click', hideDownsellModal);
+        if (downsellAccept)  downsellAccept.addEventListener('click', acceptDownsell);
+        if (downsellDismiss) downsellDismiss.addEventListener('click', hideDownsellModal);
+
+        // Close on backdrop click
+        if (downsellModal) {
+            downsellModal.addEventListener('click', function(e) {
+                if (e.target === downsellModal) hideDownsellModal();
+            });
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') hideDownsellModal();
+        });
+
         // Real-time validation
         const firstNameInput = document.getElementById('firstName');
         const emailInput = document.getElementById('email');
@@ -884,6 +939,121 @@
         }
     }
     
+    // ==========================================
+    // DOWNSELL LOGIC
+    // ==========================================
+
+    // Reverse-lookup a plan key from a Paddle product ID.
+    // Used when the visitor arrived via a direct ?product= URL (no planKey in state).
+    function getPlanKeyByProductId(productId) {
+        return Object.keys(planPresets).find(key => planPresets[key].product === productId) || null;
+    }
+
+    // Determine whether to show a downsell and which plan to offer.
+    function maybeShowDownsell() {
+        const currentPlanKey = state.planKey || getPlanKeyByProductId(state.productId);
+        if (!currentPlanKey) return;
+
+        const downsellKey = DOWNSELL_MAP[currentPlanKey];
+        if (!downsellKey) return; // Already on the lowest option
+
+        const downsellPlan = planPresets[downsellKey];
+        if (!downsellPlan) return;
+
+        showDownsellModal(downsellKey, downsellPlan, currentPlanKey);
+    }
+
+    // Populate and open the downsell modal.
+    function showDownsellModal(downsellKey, downsellPlan, originalPlanKey) {
+        const modal = document.getElementById('downsellModal');
+        if (!modal) return;
+
+        // Determine downsell type: yearly/quarterly → monthly, or higher tier → lower tier
+        const originalPlan = planPresets[originalPlanKey] || state.planInfo;
+        const isRecurrenceDownsell = originalPlan &&
+            (originalPlan.recurrence === 'yearly' || originalPlan.recurrence === 'quarterly') &&
+            downsellPlan.recurrence === 'monthly';
+
+        // Set dynamic title and body based on type
+        const titleEl = document.getElementById('downsellTitle');
+        const bodyEl  = document.getElementById('downsellBody');
+        if (titleEl) titleEl.textContent = getTranslation(isRecurrenceDownsell ? 'downsell.title.yearly' : 'downsell.title.tier');
+        if (bodyEl)  bodyEl.textContent  = getTranslation(isRecurrenceDownsell ? 'downsell.body.yearly'  : 'downsell.body.tier');
+
+        // Set plan name
+        const planNameEl = document.getElementById('downsellPlanName');
+        if (planNameEl) {
+            const recurrenceLabel = downsellPlan.recurrence.charAt(0).toUpperCase() + downsellPlan.recurrence.slice(1);
+            planNameEl.textContent = downsellPlan.tier + ' \u2014 ' + recurrenceLabel;
+        }
+
+        // Set price (e.g. "€39/mo · after 7-day free trial")
+        const planPriceEl = document.getElementById('downsellPlanPrice');
+        if (planPriceEl) {
+            const recurrenceMap = {
+                monthly:   getTranslation('downsell.perMonth'),
+                yearly:    getTranslation('downsell.perYear'),
+                quarterly: getTranslation('downsell.perQuarter')
+            };
+            const perPeriod = recurrenceMap[downsellPlan.recurrence] || '';
+            const trialSuffix = downsellPlan.trial
+                ? ' \u00b7 ' + getTranslation('downsell.trialNote')
+                : '';
+            planPriceEl.textContent = '\u20ac' + downsellPlan.firstExpectedPayment + perPeriod + trialSuffix;
+        }
+
+        // Translate static data-i18n elements inside the modal
+        modal.querySelectorAll('[data-i18n]').forEach(function(el) {
+            const t = getTranslation(el.getAttribute('data-i18n'));
+            if (t) el.textContent = t;
+        });
+
+        // Store downsell plan in state so acceptDownsell() can use it
+        state.downsellPlanKey  = downsellKey;
+        state.downsellPlanInfo = downsellPlan;
+        state.downsellShown    = true;
+
+        modal.classList.add('is-open');
+
+        // Analytics
+        if (typeof plausible !== 'undefined') {
+            plausible('DownsellShown', { props: { downsell_plan: downsellKey, original_plan: originalPlanKey } });
+        }
+        if (typeof AnyTrack !== 'undefined') {
+            AnyTrack('trigger', 'DownsellShown', { downsell_plan: downsellKey, original_plan: originalPlanKey });
+        }
+        console.log('Downsell shown:', downsellKey);
+    }
+
+    // Close the downsell modal without accepting.
+    function hideDownsellModal() {
+        const modal = document.getElementById('downsellModal');
+        if (modal) modal.classList.remove('is-open');
+    }
+
+    // User accepted the downsell — switch to the new plan and reopen checkout.
+    function acceptDownsell() {
+        hideDownsellModal();
+
+        // Switch active plan to the downsell plan
+        state.productId = state.downsellPlanInfo.product;
+        state.planKey   = state.downsellPlanKey;
+        state.planInfo  = state.downsellPlanInfo;
+        state.hasTrial  = !!state.downsellPlanInfo.trial;
+        state.checkoutCompleted = false; // Reset so a close on this new checkout is handled cleanly
+
+        // Analytics
+        if (typeof plausible !== 'undefined') {
+            plausible('DownsellAccepted', { props: { downsell_plan: state.downsellPlanKey } });
+        }
+        if (typeof AnyTrack !== 'undefined') {
+            AnyTrack('trigger', 'DownsellAccepted', { downsell_plan: state.downsellPlanKey });
+        }
+        console.log('Downsell accepted:', state.downsellPlanKey);
+
+        openPaddleCheckout();
+    }
+
     // Sleep utility
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));

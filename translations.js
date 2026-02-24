@@ -38,7 +38,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Coaching call replays',
         'useCase.business_content_translations': 'Translation of business content',
         'useCase.music_videos': 'Music videos',
-        'useCase.other': 'Other'
+        'useCase.other': 'Other',
+        // Downsell modal
+        'downsell.eyebrow': 'Wait — before you go!',
+        'downsell.title.yearly': 'How about paying month by month?',
+        'downsell.title.tier': 'How about starting with a lighter plan?',
+        'downsell.body.yearly': 'No annual commitment. Same full access, billed monthly. Cancel any time, no questions asked.',
+        'downsell.body.tier': 'Get started at a lower price — all the essentials you need. You can always upgrade later.',
+        'downsell.planLabel': 'Your special offer:',
+        'downsell.trialNote': 'after 7-day free trial',
+        'downsell.perMonth': '/mo',
+        'downsell.perYear': '/yr',
+        'downsell.perQuarter': '/quarter',
+        'downsell.cta': "Yes, let's do it",
+        'downsell.dismiss': "No thanks, I'll pass"
     },
     fr: {
         headline: "Créons votre compte avec 7 jours d'essai gratuit !",
@@ -77,7 +90,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Rediffusions d\'appels de coaching',
         'useCase.business_content_translations': 'Traduction de contenu professionnel',
         'useCase.music_videos': 'Clips musicaux',
-        'useCase.other': 'Autre'
+        'useCase.other': 'Autre',
+        // Downsell modal
+        'downsell.eyebrow': 'Attendez — avant de partir !',
+        'downsell.title.yearly': 'Et si vous payiez mois par mois ?',
+        'downsell.title.tier': 'Et si vous commenciez avec un plan plus léger ?',
+        'downsell.body.yearly': "Pas d'engagement annuel. Le même accès complet, facturé mensuellement. Annulez à tout moment, sans question.",
+        'downsell.body.tier': "Commencez à un prix réduit — tout l'essentiel dont vous avez besoin. Vous pouvez toujours évoluer plus tard.",
+        'downsell.planLabel': 'Votre offre spéciale :',
+        'downsell.trialNote': "après 7 jours d'essai gratuit",
+        'downsell.perMonth': '/mois',
+        'downsell.perYear': '/an',
+        'downsell.perQuarter': '/trimestre',
+        'downsell.cta': 'Oui, allons-y',
+        'downsell.dismiss': 'Non merci, je passe'
     },
     es: {
         headline: "¡Creemos tu cuenta con 7 días de prueba gratis!",
@@ -116,7 +142,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Repeticiones de llamadas de coaching',
         'useCase.business_content_translations': 'Traducción de contenido empresarial',
         'useCase.music_videos': 'Videos musicales',
-        'useCase.other': 'Otro'
+        'useCase.other': 'Otro',
+        // Downsell modal
+        'downsell.eyebrow': '¡Espera — antes de irte!',
+        'downsell.title.yearly': '¿Qué tal pagar mes a mes?',
+        'downsell.title.tier': '¿Qué tal empezar con un plan más ligero?',
+        'downsell.body.yearly': 'Sin compromiso anual. El mismo acceso completo, facturado mensualmente. Cancela cuando quieras, sin preguntas.',
+        'downsell.body.tier': 'Empieza a un precio menor — todo lo esencial que necesitas. Siempre puedes actualizar después.',
+        'downsell.planLabel': 'Tu oferta especial:',
+        'downsell.trialNote': 'después de 7 días de prueba gratis',
+        'downsell.perMonth': '/mes',
+        'downsell.perYear': '/año',
+        'downsell.perQuarter': '/trimestre',
+        'downsell.cta': 'Sí, lo tomo',
+        'downsell.dismiss': 'No gracias, paso'
     },
     'pt-br': {
         headline: "Vamos criar sua conta com 7 dias de teste grátis!",
@@ -155,7 +194,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Replays de chamadas de coaching',
         'useCase.business_content_translations': 'Tradução de conteúdo empresarial',
         'useCase.music_videos': 'Videoclipes',
-        'useCase.other': 'Outro'
+        'useCase.other': 'Outro',
+        // Downsell modal
+        'downsell.eyebrow': 'Espera — antes de sair!',
+        'downsell.title.yearly': 'Que tal pagar mês a mês?',
+        'downsell.title.tier': 'Que tal começar com um plano mais leve?',
+        'downsell.body.yearly': 'Sem compromisso anual. O mesmo acesso completo, cobrado mensalmente. Cancele quando quiser, sem perguntas.',
+        'downsell.body.tier': 'Comece por um preço menor — tudo o essencial que você precisa. Você sempre pode fazer upgrade depois.',
+        'downsell.planLabel': 'Sua oferta especial:',
+        'downsell.trialNote': 'após 7 dias de teste grátis',
+        'downsell.perMonth': '/mês',
+        'downsell.perYear': '/ano',
+        'downsell.perQuarter': '/trimestre',
+        'downsell.cta': 'Sim, vamos lá',
+        'downsell.dismiss': 'Não obrigado, passo'
     },
     it: {
         headline: "Creiamo il tuo account con 7 giorni di prova gratuita!",
@@ -194,7 +246,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Replay di chiamate di coaching',
         'useCase.business_content_translations': 'Traduzione di contenuti aziendali',
         'useCase.music_videos': 'Video musicali',
-        'useCase.other': 'Altro'
+        'useCase.other': 'Altro',
+        // Downsell modal
+        'downsell.eyebrow': 'Aspetta — prima di andare!',
+        'downsell.title.yearly': 'Che ne dici di pagare mese per mese?',
+        'downsell.title.tier': 'Che ne dici di iniziare con un piano più leggero?',
+        'downsell.body.yearly': "Nessun impegno annuale. Lo stesso accesso completo, fatturato mensilmente. Annulla quando vuoi, senza domande.",
+        'downsell.body.tier': "Inizia a un prezzo inferiore — tutto l'essenziale di cui hai bisogno. Puoi sempre fare upgrade in seguito.",
+        'downsell.planLabel': 'La tua offerta speciale:',
+        'downsell.trialNote': 'dopo 7 giorni di prova gratuita',
+        'downsell.perMonth': '/mese',
+        'downsell.perYear': '/anno',
+        'downsell.perQuarter': '/trimestre',
+        'downsell.cta': 'Sì, lo faccio',
+        'downsell.dismiss': 'No grazie, passo'
     },
     ja: {
         headline: "7日間の無料トライアルでアカウントを作成しましょう！",
@@ -233,7 +298,20 @@ const translations = {
         'useCase.coaching_call_replays': 'コーチングコールのリプレイ',
         'useCase.business_content_translations': 'ビジネスコンテンツの翻訳',
         'useCase.music_videos': 'ミュージックビデオ',
-        'useCase.other': 'その他'
+        'useCase.other': 'その他',
+        // Downsell modal
+        'downsell.eyebrow': 'ちょっと待って！',
+        'downsell.title.yearly': '月払いに切り替えませんか？',
+        'downsell.title.tier': 'より手軽なプランから始めませんか？',
+        'downsell.body.yearly': '年間契約なし。同じフルアクセスを月払いで。いつでもキャンセル可能、理由も不要です。',
+        'downsell.body.tier': 'より低い価格でスタート — 必要なエッセンシャル機能が揃っています。後でいつでもアップグレードできます。',
+        'downsell.planLabel': 'スペシャルオファー：',
+        'downsell.trialNote': '7日間の無料トライアル後',
+        'downsell.perMonth': '/月',
+        'downsell.perYear': '/年',
+        'downsell.perQuarter': '/四半期',
+        'downsell.cta': 'はい、始めます',
+        'downsell.dismiss': 'いいえ、結構です'
     },
     ru: {
         headline: "Давай создадим твой аккаунт с 7-дневной бесплатной пробной версией!",
@@ -272,7 +350,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Записи коучинговых звонков',
         'useCase.business_content_translations': 'Перевод бизнес-контента',
         'useCase.music_videos': 'Музыкальные видео',
-        'useCase.other': 'Другое'
+        'useCase.other': 'Другое',
+        // Downsell modal
+        'downsell.eyebrow': 'Подождите — перед тем как уйти!',
+        'downsell.title.yearly': 'Как насчёт помесячной оплаты?',
+        'downsell.title.tier': 'Как насчёт более лёгкого тарифа для начала?',
+        'downsell.body.yearly': 'Без годового обязательства. Тот же полный доступ с ежемесячной оплатой. Отмените в любое время без вопросов.',
+        'downsell.body.tier': 'Начните по более низкой цене — всё необходимое для старта. Вы всегда можете перейти на более высокий тариф позже.',
+        'downsell.planLabel': 'Ваше специальное предложение:',
+        'downsell.trialNote': 'после 7 дней бесплатного пробного периода',
+        'downsell.perMonth': '/мес',
+        'downsell.perYear': '/год',
+        'downsell.perQuarter': '/квартал',
+        'downsell.cta': 'Да, поехали',
+        'downsell.dismiss': 'Нет спасибо, откажусь'
     },
     de: {
         headline: "Lass uns dein Konto mit 7 Tagen kostenloser Testversion erstellen!",
@@ -311,7 +402,20 @@ const translations = {
         'useCase.coaching_call_replays': 'Coaching-Call-Wiederholungen',
         'useCase.business_content_translations': 'Übersetzung von Geschäftsinhalten',
         'useCase.music_videos': 'Musikvideos',
-        'useCase.other': 'Andere'
+        'useCase.other': 'Andere',
+        // Downsell modal
+        'downsell.eyebrow': 'Warte — bevor du gehst!',
+        'downsell.title.yearly': 'Wie wäre es mit monatlicher Zahlung?',
+        'downsell.title.tier': 'Wie wäre es mit einem günstigeren Einstiegsplan?',
+        'downsell.body.yearly': 'Kein Jahresengagement. Derselbe Vollzugriff, monatlich abgerechnet. Jederzeit kündbar, keine Fragen gestellt.',
+        'downsell.body.tier': 'Starte zu einem niedrigeren Preis — alles Wesentliche, was du brauchst. Du kannst jederzeit upgraden.',
+        'downsell.planLabel': 'Dein Sonderangebot:',
+        'downsell.trialNote': 'nach 7-tägiger kostenloser Testversion',
+        'downsell.perMonth': '/Monat',
+        'downsell.perYear': '/Jahr',
+        'downsell.perQuarter': '/Quartal',
+        'downsell.cta': 'Ja, das mache ich',
+        'downsell.dismiss': 'Nein danke, ich verzichte'
     }
 };
 
