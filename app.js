@@ -4,6 +4,12 @@
     'use strict';
 
     // ==========================================
+    // ENVIRONMENT
+    // ==========================================
+    const isSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+    const activePlanPresets = isSandbox ? sandboxPlanPresets : planPresets;
+
+    // ==========================================
     // ASSUMPTIONS
     // Adjust these values as we get more data
     // ==========================================
@@ -66,6 +72,7 @@
     
     // Make state accessible globally for special-offer.js
     window.oneTakeState = state;
+    window.oneTakeIsSandbox = isSandbox;
     
     // Initialize application
     function init() {
@@ -81,7 +88,7 @@
         displayPlanInfo();
         setupEmailFieldListener(); // Add listener to show hidden fields
         attachEventListeners();
-        console.log('OneTake Express Signup initialized');
+        console.log('OneTake Express Signup initialized' + (isSandbox ? ' [SANDBOX MODE]' : ''));
     }
     
     // Detect browser language
@@ -118,10 +125,10 @@
         const planKey = urlParams.get('plan');
         const productId = urlParams.get('product');
         
-        if (planKey && planPresets[planKey]) {
+        if (planKey && activePlanPresets[planKey]) {
             // Plan preset found
             state.planKey = planKey;
-            state.planInfo = planPresets[planKey];
+            state.planInfo = activePlanPresets[planKey];
             state.productId = state.planInfo.product;
             state.hasTrial = !!state.planInfo.trial;
             console.log('Using plan preset:', planKey, state.planInfo);
@@ -134,9 +141,10 @@
             console.log('Using direct product ID:', productId);
         } else {
             // Use default (occasional-monthly-trial)
-            state.productId = 'pri_01kbcmen6n7ymcdk5y59vhv33h';
-            state.planKey = null;
-            state.planInfo = null;
+            const defaultPreset = activePlanPresets['occasional-monthly-trial'];
+            state.productId = defaultPreset ? defaultPreset.product : 'pri_01kbcmen6n7ymcdk5y59vhv33h';
+            state.planKey = 'occasional-monthly-trial';
+            state.planInfo = defaultPreset || null;
             state.hasTrial = true;
             console.log('Using default product ID:', state.productId);
         }
@@ -192,11 +200,14 @@
     // Initialize Paddle
     function initializePaddle() {
         if (typeof Paddle !== 'undefined') {
+            const paddleToken = isSandbox
+                ? 'test_a0712686526dbce8894bee10086'
+                : 'live_bb0b00885e63d509a759b2e2b29';
             Paddle.Initialize({
-                token: 'live_bb0b00885e63d509a759b2e2b29',
+                token: paddleToken,
                 eventCallback: handlePaddleEvent
             });
-            console.log('Paddle initialized');
+            console.log('Paddle initialized' + (isSandbox ? ' (sandbox)' : ''));
         } else {
             console.error('Paddle SDK not loaded');
         }
@@ -283,8 +294,8 @@
             console.log('CrazyEgg Purchase conversion fired with worth:', worth, 'currency:', currency);
         }
 
-        // Plausible Purchase event (using revenue option for proper revenue attribution)
-        if (typeof plausible !== 'undefined') {
+        // Plausible Purchase event (using revenue option for proper revenue attribution; skipped in sandbox)
+        if (!isSandbox && typeof plausible !== 'undefined') {
             const plausibleOptions = {
                 revenue: { amount: purchaseData.value, currency: purchaseData.currency },
                 props: { plan: state.planKey || 'unknown' }
@@ -792,8 +803,8 @@
             return;
         }
         
-        // Fire Plausible event
-        if (typeof plausible !== 'undefined') {
+        // Fire Plausible event (skip in sandbox)
+        if (!isSandbox && typeof plausible !== 'undefined') {
             plausible('formSubmit', {
                 props: {
                     use_cases: useCases.join(','),
@@ -821,8 +832,12 @@
         }
     }
     
-    // Track UserList event with embedded user information
+    // Track UserList event with embedded user information (skipped in sandbox)
     async function trackUserListEvent(eventName, additionalProperties = {}) {
+        if (isSandbox) {
+            console.log('Sandbox: skipping UserList event:', eventName);
+            return;
+        }
         const payload = {
             name: eventName,
             user: {
@@ -960,7 +975,7 @@
     // Reverse-lookup a plan key from a Paddle product ID.
     // Used when the visitor arrived via a direct ?product= URL (no planKey in state).
     function getPlanKeyByProductId(productId) {
-        return Object.keys(planPresets).find(key => planPresets[key].product === productId) || null;
+        return Object.keys(activePlanPresets).find(key => activePlanPresets[key].product === productId) || null;
     }
 
     // Determine whether to show a downsell and which plan to offer.
@@ -971,7 +986,7 @@
         const downsellKey = DOWNSELL_MAP[currentPlanKey];
         if (!downsellKey) return; // Already on the lowest option
 
-        const downsellPlan = planPresets[downsellKey];
+        const downsellPlan = activePlanPresets[downsellKey];
         if (!downsellPlan) return;
 
         showDownsellModal(downsellKey, downsellPlan, currentPlanKey);
@@ -983,7 +998,7 @@
         if (!modal) return;
 
         // Determine downsell type: yearly/quarterly → monthly, or higher tier → lower tier
-        const originalPlan = planPresets[originalPlanKey] || state.planInfo;
+        const originalPlan = activePlanPresets[originalPlanKey] || state.planInfo;
         const isRecurrenceDownsell = originalPlan &&
             (originalPlan.recurrence === 'yearly' || originalPlan.recurrence === 'quarterly') &&
             downsellPlan.recurrence === 'monthly';
@@ -1029,8 +1044,8 @@
 
         modal.classList.add('is-open');
 
-        // Analytics
-        if (typeof plausible !== 'undefined') {
+        // Analytics (skipped in sandbox)
+        if (!isSandbox && typeof plausible !== 'undefined') {
             plausible('DownsellShown', { props: { downsell_plan: downsellKey, original_plan: originalPlanKey } });
         }
         if (typeof AnyTrack !== 'undefined') {
@@ -1056,8 +1071,8 @@
         state.hasTrial  = !!state.downsellPlanInfo.trial;
         state.checkoutCompleted = false; // Reset so a close on this new checkout is handled cleanly
 
-        // Analytics
-        if (typeof plausible !== 'undefined') {
+        // Analytics (skipped in sandbox)
+        if (!isSandbox && typeof plausible !== 'undefined') {
             plausible('DownsellAccepted', { props: { downsell_plan: state.downsellPlanKey } });
         }
         if (typeof AnyTrack !== 'undefined') {
