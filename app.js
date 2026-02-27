@@ -210,8 +210,12 @@
             if (isSandbox) {
                 paddleConfig.environment = 'sandbox';
             }
-            Paddle.Initialize(paddleConfig);
-            console.log('Paddle initialized' + (isSandbox ? ' (sandbox)' : ''));
+            try {
+                Paddle.Initialize(paddleConfig);
+                console.log('Paddle initialized' + (isSandbox ? ' (sandbox)' : ''));
+            } catch (error) {
+                console.error('Paddle initialization failed:', error);
+            }
         } else {
             console.error('Paddle SDK not loaded');
         }
