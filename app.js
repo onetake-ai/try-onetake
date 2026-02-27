@@ -203,10 +203,14 @@
             const paddleToken = isSandbox
                 ? 'test_a0712686526dbce8894bee10086'
                 : 'live_bb0b00885e63d509a759b2e2b29';
-            Paddle.Initialize({
+            const paddleConfig = {
                 token: paddleToken,
                 eventCallback: handlePaddleEvent
-            });
+            };
+            if (isSandbox) {
+                paddleConfig.environment = 'sandbox';
+            }
+            Paddle.Initialize(paddleConfig);
             console.log('Paddle initialized' + (isSandbox ? ' (sandbox)' : ''));
         } else {
             console.error('Paddle SDK not loaded');
