@@ -163,21 +163,22 @@ const planPresets = {
     }
 };
 
+
 const sandboxPlanPresets = {
-    'occasional-monthly-trial': {
-        tier: 'Occasional',
+    'pro-monthly-trial': {
+        tier: 'Pro',
         recurrence: 'monthly',
         trial: 7,
-        product: 'pri_01k9x3z4gwqftdn048nda1xsvc',
-        firstExpectedPayment: 20,
+        product: 'pri_01k9x46me2g88hbqea343kfvay',
+        firstExpectedPayment: 39,
         freeToPaidConversionRate: 0.30
     },
-    'occasional-yearly-trial': {
-        tier: 'Occasional',
+    'pro-yearly-trial': {
+        tier: 'Pro',
         recurrence: 'yearly',
         trial: 7,
-        product: 'pri_01k9x41k6dgwzcshb1pax69nr0',
-        firstExpectedPayment: 120,
+        product: 'pri_01k9x49z3hne4s88gxm58qm5et',
+        firstExpectedPayment: 390,
         freeToPaidConversionRate: 0.30
     }
 };
