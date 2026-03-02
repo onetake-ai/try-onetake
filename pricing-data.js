@@ -169,7 +169,7 @@ const sandboxPlanPresets = {
         tier: 'Pro',
         recurrence: 'monthly',
         trial: 7,
-        product: 'pri_01k9x46me2g88hbqea343kfvay',
+        product: 'pri_01k7mz7enrk4t5fgcs6gnssyq7',
         firstExpectedPayment: 39,
         freeToPaidConversionRate: 0.30
     },
@@ -177,7 +177,7 @@ const sandboxPlanPresets = {
         tier: 'Pro',
         recurrence: 'yearly',
         trial: 7,
-        product: 'pri_01k9x49z3hne4s88gxm58qm5et',
+        product: 'pri_01k7mz9cvwea4ghz0p2t7ygmcz',
         firstExpectedPayment: 390,
         freeToPaidConversionRate: 0.30
     }
