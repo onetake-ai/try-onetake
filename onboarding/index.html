@@ -6,203 +6,7 @@
   <title>(1) OneTake AI account opened for you!</title>
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
-  <style>
-    :root {
-      --golden-grass: #E3AE28;
-      --bleached-cedar: #241826;
-      --alabaster: #F8F7F7;
-      --cold-turkey: #D1B0B3;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      color: var(--bleached-cedar);
-      background: var(--alabaster);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── HEADER ── */
-    header {
-      background: #fff;
-      border-bottom: 1px solid rgba(36, 24, 38, 0.08);
-      padding: 0.875rem 2rem;
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .logo img {
-      display: block;
-      height: 38px;
-      width: auto;
-    }
-
-    .logo:hover img {
-      opacity: 0.85;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: var(--bleached-cedar);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      white-space: nowrap;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: var(--golden-grass);
-    }
-
-    /* Dropdown */
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-toggle {
-      background: none;
-      border: 1px solid rgba(36, 24, 38, 0.2);
-      border-radius: 6px;
-      padding: 0.375rem 0.75rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--bleached-cedar);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      transition: border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-
-    .dropdown-toggle:hover {
-      border-color: var(--golden-grass);
-      background: rgba(227, 174, 40, 0.06);
-    }
-
-    .dropdown-toggle svg {
-      flex-shrink: 0;
-      transition: transform 0.2s;
-    }
-
-    .dropdown:hover .dropdown-toggle svg,
-    .dropdown.open .dropdown-toggle svg {
-      transform: rotate(180deg);
-    }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      background: #fff;
-      border: 1px solid rgba(36, 24, 38, 0.1);
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(36, 24, 38, 0.12);
-      min-width: 240px;
-      z-index: 100;
-      overflow: hidden;
-    }
-
-    .dropdown:hover .dropdown-menu,
-    .dropdown.open .dropdown-menu {
-      display: block;
-    }
-
-    .dropdown-menu a {
-      display: block;
-      padding: 0.625rem 1rem;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--bleached-cedar);
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-
-    .dropdown-menu a:hover {
-      background: rgba(227, 174, 40, 0.08);
-      color: var(--golden-grass);
-    }
-
-    /* ── MAIN ── */
-    main {
-      flex: 1;
-      max-width: 900px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: #fff;
-      border-top: 1px solid rgba(36, 24, 38, 0.08);
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      color: rgba(0, 0, 0, 0.7);
-      line-height: 1.7;
-    }
-
-    footer .footer-inner {
-      max-width: 780px;
-      margin: 0 auto;
-    }
-
-    footer p {
-      margin-bottom: 0.75rem;
-    }
-
-    footer p:last-child {
-      margin-bottom: 0;
-    }
-
-    footer a {
-      color: inherit;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    footer a:hover {
-      color: var(--golden-grass);
-    }
-
-    @media (max-width: 640px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-      }
-
-      nav {
-        gap: 0.75rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -216,47 +20,94 @@
       <nav>
         <div class="dropdown">
           <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            📅 Calendar: our live calls
+            <span data-i18n="nav.calendar">📅 Calendar: our live calls</span>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
           <div class="dropdown-menu">
-            <a href="https://www.onetake.ai/live-sessions-calendar" target="_blank">English live calls and demos</a>
-            <a href="https://nuro.video/nuro-dates-sessions-live" target="_blank">EN FRANCAIS: Démos et RDV en live</a>
+            <a href="https://www.onetake.ai/live-sessions-calendar" target="_blank" data-i18n="nav.calendarEn">English live calls and demos</a>
+            <a href="https://nuro.video/nuro-dates-sessions-live" target="_blank" data-i18n="nav.calendarFr">EN FRANCAIS: Démos et RDV en live</a>
           </div>
         </div>
 
-        <a href="https://yes.onetake.ai/demo-and-replays" target="_blank">Full demo of OneTake</a>
-        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ and Help</a>
-        <a href="https://app.onetake.ai/" target="_blank">Log in</a>
+        <a href="https://yes.onetake.ai/demo-and-replays" target="_blank" data-i18n="nav.fullDemo">Full demo of OneTake</a>
+        <a href="https://docs.onetake.ai/en/" target="_blank" data-i18n="nav.faqHelp">FAQ and Help</a>
+        <a href="https://app.onetake.ai/" target="_blank" data-i18n="nav.login">Log in</a>
       </nav>
     </div>
   </header>
 
   <!-- MAIN: Tally onboarding form -->
   <main>
-    <iframe data-tally-src="https://onfire.onetake.ai/onboarding?transparentBackground=1&dynamicHeight=1&formEventsForwarding=1&embed=1" loading="lazy" width="100%" height="505" frameborder="0" marginheight="0" marginwidth="0" title="Welcome to OneTake!"></iframe>
+    <iframe data-tally-src="https://onfire.onetake.ai/onboarding?transparentBackground=1&dynamicHeight=1&formEventsForwarding=1&embed=1" loading="lazy" width="100%" height="505" frameborder="0" marginheight="0" marginwidth="0" data-i18n-title="onboarding.iframeTitle" title="Welcome to OneTake!"></iframe>
     <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
   </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
-      <p><a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service and Refund Policy</a> · <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a></p>
+      <p>
+        <a href="https://www.onetake.ai/terms-of-service" target="_blank" data-i18n="onboarding.footer.terms">Terms of Service and Refund Policy</a>
+        ·
+        <a href="https://www.onetake.ai/privacy-policy" target="_blank" data-i18n="onboarding.footer.privacyPolicy">Privacy Policy</a>
+      </p>
       <p></p>
-      <p><strong>What is OneTake?</strong></p>
-      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
-      <p>Useful links: <a href="https://www.onetake.ai/blog" target="_parent">OneTake's Blog</a> · <a href="https://welove.onetake.ai/" target="_parent">Wall of Love (reviews)</a> · <a href="https://docs.onetake.ai/en/" target="_parent">FAQ &amp; Docs</a></p>
+      <p><strong data-i18n="onboarding.footer.whatIsTitle">What is OneTake?</strong></p>
+      <p data-i18n-html="onboarding.footer.whatIsBody"><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+      <p>
+        <span data-i18n="onboarding.footer.usefulLinks">Useful links:</span>
+        <a href="https://www.onetake.ai/blog" target="_parent" data-i18n="onboarding.footer.blog">OneTake's Blog</a>
+        ·
+        <a href="https://welove.onetake.ai/" target="_parent" data-i18n="onboarding.footer.wallOfLove">Wall of Love (reviews)</a>
+        ·
+        <a href="https://docs.onetake.ai/en/" target="_parent" data-i18n="onboarding.footer.faqDocs">FAQ &amp; Docs</a>
+      </p>
       <p></p>
-      <p><strong>Who came up with the idea?</strong></p>
-      <p>Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement. The Free Entrepreneurs Movement is an organization that has supported over 20,000 entrepreneur clients and 300,000 entrepreneur supporters in 41 countries since it was founded in 2010. Our mission is to encourage entrepreneurship in France, the French overseas departments and territories, Belgium, Switzerland, Canada and other French-speaking countries. To this end, we have produced the documentary film "Profession: Entrepreneur Libre", and we provide entrepreneurs with support programs, books and resources for starting up and developing their business. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to come up with a software tool that would be both incredibly powerful and utterly easy to use: OneTake</strong>.</p>
+      <p><strong data-i18n="onboarding.footer.whoTitle">Who came up with the idea?</strong></p>
+      <p data-i18n-html="onboarding.footer.whoBody">Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement. The Free Entrepreneurs Movement is an organization that has supported over 20,000 entrepreneur clients and 300,000 entrepreneur supporters in 41 countries since it was founded in 2010. Our mission is to encourage entrepreneurship in France, the French overseas departments and territories, Belgium, Switzerland, Canada and other French-speaking countries. To this end, we have produced the documentary film "Profession: Entrepreneur Libre", and we provide entrepreneurs with support programs, books and resources for starting up and developing their business. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to come up with a software tool that would be both incredibly powerful and utterly easy to use: OneTake</strong>.</p>
       <p></p>
-      <p>By signing up on this website, you'll receive tips and resources for starting up and developing your business, such as our documentary movie "Profession: Entrepreneur Libre" (in French only) and much more, via the "OneTake AI" newsletter. You can unsubscribe at any time; our newsletter complies with the European General Data Protection Regulation (RGPD).</p>
+      <p data-i18n="onboarding.footer.newsletter">By signing up on this website, you'll receive tips and resources for starting up and developing your business, such as our documentary movie "Profession: Entrepreneur Libre" (in French only) and much more, via the "OneTake AI" newsletter. You can unsubscribe at any time; our newsletter complies with the European General Data Protection Regulation (RGPD).</p>
       <p></p>
-      <p>To contact Sébastien and his team, <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a></p>
+      <p>
+        <span data-i18n="onboarding.footer.contactText">To contact Sébastien and his team,</span>
+        <a href="https://www.onetake.ai/contact" target="_blank" data-i18n="onboarding.footer.contactLink">simply click here</a>
+      </p>
     </div>
   </footer>
+
+  <script src="../translations.js"></script>
+  <script>
+    (function () {
+      var langMap = { fr: 'fr', es: 'es', pt: 'pt-br', it: 'it', ja: 'ja', ru: 'ru', de: 'de' };
+      var browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      var langCode = browserLang.startsWith('pt') ? 'pt-br' : (langMap[browserLang.split('-')[0]] || 'en');
+      var t = (typeof translations !== 'undefined' && translations[langCode]) ? translations[langCode] : null;
+
+      if (!t) return;
+
+      document.documentElement.lang = langCode;
+
+      if (t['onboarding.title']) {
+        document.title = t['onboarding.title'];
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-html');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-title');
+        if (t[key] !== undefined) el.title = t[key];
+      });
+    })();
+  </script>
 
 </body>
 </html>
