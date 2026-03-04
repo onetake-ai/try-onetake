@@ -912,8 +912,18 @@
         if (state.planKey) {
             successParams.set('plan', state.planKey);
         }
-        
-        const successUrl = `https://yes.onetake.ai/onboarding?${successParams.toString()}`;
+
+        // Add useCases as comma-separated string
+        if (state.formData.useCases && state.formData.useCases.length > 0) {
+            successParams.set('useCases', state.formData.useCases.join(','));
+        }
+
+        // Add estimatedVolume
+        if (state.formData.estimatedVolume) {
+            successParams.set('estimatedVolume', state.formData.estimatedVolume);
+        }
+
+        const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
         
         const settings = {
             displayMode: 'overlay',
