@@ -160,6 +160,25 @@ const planPresets = {
         product: 'pri_01kc9j7ectb2h3qe4x55q9whj3',
         firstExpectedPayment: 1188,
         freeToPaidConversionRate: 0.30
+    },
+
+    // OTO (One-Time Offer) prices — discounted, no trial, shown on the post-survey upsell page.
+    // Replace product IDs below once the corresponding Paddle prices are created.
+    'premium-studio-monthly-oto': {
+        tier: 'Premium Studio',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'REPLACE_WITH_PADDLE_PRICE_ID',
+        firstExpectedPayment: 99,
+        freeToPaidConversionRate: 0.30
+    },
+    'premium-studio-quarterly-oto': {
+        tier: 'Premium Studio',
+        recurrence: 'quarterly',
+        trial: null,
+        product: 'REPLACE_WITH_PADDLE_PRICE_ID',
+        firstExpectedPayment: 249,
+        freeToPaidConversionRate: 0.30
     }
 };
 
