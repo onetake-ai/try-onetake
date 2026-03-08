@@ -505,6 +505,24 @@ main.oto-main {
   color: rgba(36, 24, 38, 0.7);
 }
 
+.bonus-list {
+  margin: 0.4rem 0 0.4rem 1rem;
+  padding: 0;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgba(36, 24, 38, 0.7);
+}
+
+.bonus-list li {
+  margin-bottom: 0.2rem;
+}
+
+.bonus-shipping {
+  font-size: 12px;
+  margin-top: 0.5rem;
+  color: rgba(36, 24, 38, 0.6);
+}
+
 /* ── PRICE REVEAL ── */
 .price-reveal {
   background: var(--white);
