@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Access your OneTake AI account</title>
+  <link rel="preconnect" href="https://fonts.bunny.net" />
+  <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER — same as onboarding -->
+  <header>
+    <div class="header-inner">
+      <a href="https://app.onetake.ai/auth/login" class="logo">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/2914/64abd8ed2e343_logo-ot.svg" alt="OneTake AI" width="140" height="38" />
+      </a>
+
+      <nav>
+        <div class="dropdown">
+          <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            <span>📅 Calendar: our live calls</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="https://www.onetake.ai/live-sessions-calendar" target="_blank">English live calls and demos</a>
+            <a href="https://nuro.video/nuro-dates-sessions-live" target="_blank">EN FRANÇAIS: Démos et RDV en live</a>
+          </div>
+        </div>
+
+        <a href="https://yes.onetake.ai/demo-and-replays" target="_blank">Full demo of OneTake</a>
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ and Help</a>
+        <a href="https://app.onetake.ai/" target="_blank">Log in</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="login-card">
+      <div class="login-checkmark" aria-hidden="true">✓</div>
+
+      <h1 class="login-title">Perfect! Your account is created!</h1>
+
+      <p class="login-subtitle">So how do you get access to your OneTake account?</p>
+
+      <p class="login-body">
+        To get immediate access to your OneTake AI account and use our AI to edit your first
+        video (or audio) instantly, go to <strong>app.onetake.ai</strong> and enter the email address
+        <strong id="login-email-display"></strong>
+        you just used for your purchase.
+      </p>
+
+      <p class="login-body">
+        You will receive a login code (via email) within seconds.
+      </p>
+
+      <a href="https://app.onetake.ai/" class="btn-login">
+        Click here to access your OneTake account →
+      </a>
+
+      <p class="login-support">
+        Need help? <a href="https://www.onetake.ai/contact" target="_blank">Contact our support team</a>.
+      </p>
+    </div>
+  </main>
+
+  <!-- FOOTER — same as onboarding -->
+  <footer>
+    <div class="footer-inner">
+      <p>
+        <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service and Refund Policy</a>
+        ·
+        <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>
+      </p>
+      <p></p>
+      <p><strong>What is OneTake?</strong></p>
+      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+      <p>
+        Useful links:
+        <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a>
+        ·
+        <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a>
+        ·
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a>
+      </p>
+      <p></p>
+      <p>
+        <span>To contact Sébastien and his team,</span>
+        <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // Display the email from the URL param inline in the instructions
+      var email = new URLSearchParams(window.location.search).get('email') || '';
+      var emailEl = document.getElementById('login-email-display');
+      if (emailEl && email) {
+        emailEl.textContent = email;
+      } else if (emailEl) {
+        // No email in URL — hide the inline display so the sentence still reads naturally
+        emailEl.parentNode.innerHTML = emailEl.parentNode.innerHTML
+          .replace(' <strong id="login-email-display"></strong>', '');
+      }
+    }());
+  </script>
+
+</body>
+</html>

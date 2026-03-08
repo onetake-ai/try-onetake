@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One-Time Offer — OneTake AI Premium Studio</title>
+  <link rel="preconnect" href="https://fonts.bunny.net" />
+  <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       LOADER OVERLAY
+       Shown while the Anthropic proxy is queried.
+       Hidden after 2 s max or when the API responds.
+  ═══════════════════════════════════════════ -->
+  <div id="loader-overlay">
+    <div class="loader-spinner"></div>
+    <p class="loader-text">Personalizing your offer…</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER — same as onboarding/index.html
+  ═══════════════════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <a href="https://app.onetake.ai/auth/login" class="logo">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/2914/64abd8ed2e343_logo-ot.svg" alt="OneTake AI" width="140" height="38" />
+      </a>
+
+      <nav>
+        <div class="dropdown">
+          <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            <span>📅 Calendar: our live calls</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="https://www.onetake.ai/live-sessions-calendar" target="_blank">English live calls and demos</a>
+            <a href="https://nuro.video/nuro-dates-sessions-live" target="_blank">EN FRANÇAIS: Démos et RDV en live</a>
+          </div>
+        </div>
+
+        <a href="https://yes.onetake.ai/demo-and-replays" target="_blank">Full demo of OneTake</a>
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ and Help</a>
+        <a href="https://app.onetake.ai/" target="_blank">Log in</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════ -->
+  <main class="oto-main">
+
+    <!-- ── ATTENTION BLOCK ── -->
+    <section class="oto-attention">
+      <p class="oto-pre-headline">WAIT! Your Account Setup Isn't Complete</p>
+      <p class="oto-sub-headline">Customize your subscription now</p>
+      <h1 class="oto-headline" id="oto-headline">
+        You're one upgrade away from turning every video into a business growth machine
+      </h1>
+    </section>
+
+    <!-- ── VIDEO ──
+         Replace ONETAKE_VIDEO_URL_PLACEHOLDER with your OneTake player embed URL.
+    ── -->
+    <section class="oto-video">
+      <div class="video-wrapper">
+        <iframe
+          src="ONETAKE_VIDEO_URL_PLACEHOLDER"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          title="Special message from Sébastien — your OneTake offer"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- ── INTRO PARAGRAPH ── -->
+    <section class="oto-intro">
+      <p id="oto-intro-paragraph">
+        Most creators leave 90% of OneTake's power unused — not because they don't need it, but because they never got the chance to start with it. Today, for this page only, you can unlock every Premium Studio feature at 33%+ off the regular price, plus four exclusive bonuses worth more than the subscription itself.
+      </p>
+      <p class="oto-urgency">⚡ This offer is available on this page only — it disappears when you leave.</p>
+    </section>
+
+    <!-- ── CTA #1 ── -->
+    <section class="oto-cta-section" id="cta-top">
+      <div class="cta-card">
+        <p class="cta-label">Yes! I want to upgrade to Premium Studio and claim all 4 bonuses</p>
+        <div class="cta-buttons">
+          <button class="btn-cta-quarterly" onclick="openCheckout('quarterly')">
+            <span class="btn-main-text">Best Value: $249 for 3 months</span>
+            <span class="btn-sub-text">That's just $83/month — save $48 vs. monthly</span>
+          </button>
+          <button class="btn-cta-monthly" onclick="openCheckout('monthly')">
+            <span class="btn-main-text">Or pay monthly at $99/month</span>
+            <span class="btn-sub-text">Cancel anytime · No commitment</span>
+          </button>
+        </div>
+        <a href="#" class="decline-link" onclick="decline(event)">
+          No thanks, I'll keep my current plan. I'll miss all the bonuses and will never see this offer again.
+        </a>
+      </div>
+    </section>
+
+    <!-- ── ALREADY ON PREMIUM STUDIO (conditional, shown via JS) ── -->
+    <section id="already-studio-note" class="already-studio-note" hidden>
+      <p><strong>You're already on the Premium Studio trial — great start!</strong></p>
+      <p>
+        By upgrading right now, you lock in the 33% discounted price for as long as you stay subscribed.
+        And you'll instantly receive all four bonuses below — including the professional wireless microphone,
+        the $20 Amazon gift card, the business training course, and the OneTake swag box.
+        Don't leave this page without them.
+      </p>
+    </section>
+
+    <!-- ── WHAT YOU UNLOCK ── -->
+    <section class="feature-comparison">
+      <h2 class="section-heading">What you unlock with <span>Premium Studio</span></h2>
+
+      <table class="feature-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="col-current">Occasional</th>
+            <th class="col-current">Pro</th>
+            <th class="col-premium">Premium Studio ✦</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monthly editing hours</td>
+            <td class="col-current-val">1 h</td>
+            <td class="col-current-val">3 h</td>
+            <td class="col-premium-val">10 h</td>
+          </tr>
+          <tr>
+            <td>Max video duration</td>
+            <td class="col-current-val">60 min</td>
+            <td class="col-current-val">120 min</td>
+            <td class="col-premium-val">Unlimited</td>
+          </tr>
+          <tr>
+            <td>Viral Shorts / Reels</td>
+            <td class="col-current-val">1 per video</td>
+            <td class="col-current-val">Unlimited</td>
+            <td class="col-premium-val">Unlimited</td>
+          </tr>
+          <tr>
+            <td>Hyper-realistic gaze correction</td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-current-val">Standard</td>
+            <td class="col-premium-val">Hyper-realistic ✦</td>
+          </tr>
+          <tr>
+            <td>Background removal &amp; replacement</td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-current-val">Standard</td>
+            <td class="col-premium-val">Hyper-realistic ✦</td>
+          </tr>
+          <tr>
+            <td>Video translation + voice cloning</td>
+            <td class="col-current-val">Subtitles only</td>
+            <td class="col-current-val">Subtitles only</td>
+            <td class="col-premium-val">20+ languages ✦</td>
+          </tr>
+          <tr>
+            <td>Additional team members</td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-premium-val"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td id="oto-benefit-1">Priority support + live sessions</td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-premium-val"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td id="oto-benefit-2">Whitelabel hosting (custom domain)</td>
+            <td class="col-current-val"><span class="cross">✕</span></td>
+            <td class="col-current-val"><span class="check">✓</span></td>
+            <td class="col-premium-val"><span class="check">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── BONUS STACK ── -->
+    <section class="bonus-section">
+      <h2 class="section-heading">4 Exclusive Bonuses — <span>Included Today Only</span></h2>
+
+      <div class="bonus-grid">
+
+        <!-- Bonus 1: Training course -->
+        <div class="bonus-card">
+          <img
+            class="bonus-card-image"
+            src="https://d1yei2z3i6k35z.cloudfront.net/2914/65aa783c5dfd8_graphic.png"
+            alt="10x Your Business Income Training Course"
+            loading="lazy"
+          />
+          <div class="bonus-card-body">
+            <p class="bonus-badge">Bonus #1 — Included!</p>
+            <p class="bonus-title">Training: "10x Your Business Income in a Few Evenings and Weekends"</p>
+            <p class="bonus-desc">
+              Discover exactly how any entrepreneur can multiply their current sales by 10 — whether you're
+              starting from scratch or already generating revenue. This course covers organic traffic, paid
+              advertising, list building, and converting leads into repeat customers using video. <strong>Normally not available to the public.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Bonus 2: Wireless microphone -->
+        <div class="bonus-card">
+          <img
+            class="bonus-card-image"
+            src="https://d1yei2z3i6k35z.cloudfront.net/2914/65afe0f5a4d12_signal-2024-01-23-152952-removebg-preview.png"
+            alt="Professional Wireless Lapel Microphone"
+            loading="lazy"
+          />
+          <div class="bonus-card-body">
+            <p class="bonus-badge">Bonus #2 — Included!</p>
+            <p class="bonus-title">A Professional Wireless Lapel Microphone — For Perfect Sound on Every Video</p>
+            <p class="bonus-desc">
+              Poor sound is the #1 reason people stop watching a video. This AI-enhanced wireless kit includes
+              2 transmitters (perfect for interviews) and 1 receiver compatible with Windows, macOS, Android,
+              iPhone, and iPad. <strong>Limited quantity available.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Bonus 3: Amazon gift card -->
+        <div class="bonus-card">
+          <img
+            class="bonus-card-image"
+            src="https://d1yei2z3i6k35z.cloudfront.net/2914/66e16a76b3784_2024-09-amazon-bonuses-for-OneTake.webp"
+            alt="$20 Amazon Gift Card"
+            loading="lazy"
+          />
+          <div class="bonus-card-body">
+            <p class="bonus-badge">Bonus #3 — Included!</p>
+            <p class="bonus-title">A $20 Amazon Gift Card — Just for Sharing Your Experience</p>
+            <p class="bonus-desc">
+              Once you've used OneTake AI and it delivers, simply leave a 5-star review on Capterra and we'll
+              send you a $20 Amazon gift card — our thank-you for helping other creators find us.
+              <strong>Limited availability.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Bonus 4: Swag box -->
+        <div class="bonus-card">
+          <img
+            class="bonus-card-image"
+            src="https://d1yei2z3i6k35z.cloudfront.net/2914/6841e427d7a0f_BlackRedMenswearHoodieSocialMediaPost.png"
+            alt="OneTake AI Swag Box"
+            loading="lazy"
+          />
+          <div class="bonus-card-body">
+            <p class="bonus-badge">Bonus #4 — Included!</p>
+            <p class="bonus-title">OneTake AI Swag Box — For Creators Who Like a Little Extra Flair</p>
+            <p class="bonus-desc">
+              A limited-edition box of creator gear — useful items, limited-run OneTake merch, and a few
+              surprises you didn't know you needed. Everything selected to keep you motivated and proud to
+              be building. <strong>Limited quantity — ships after you create your 10th project.</strong>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── PRICE REVEAL ── -->
+    <section class="price-reveal">
+      <p class="price-reveal-label">Your exclusive one-time offer</p>
+      <p class="price-regular">Regular price: $149/month</p>
+
+      <p class="price-oto">
+        <sup>$</sup>99<span class="period">/month</span>
+      </p>
+      <p style="font-size:13px; color: #27ae60; font-weight:600; margin-top:0.25rem;">Save 33% every month, forever</p>
+
+      <p class="price-divider">— or save even more —</p>
+
+      <p class="price-secondary">
+        $249 for 3 months
+        <span class="saving">That's $83/month — save $48 vs. monthly billing</span>
+      </p>
+
+      <div class="bonus-value-line">
+        <strong>Bonus value included:</strong> Professional wireless mic + Amazon gift card + swag box + business training course
+        <br />— all shipped to you. This bundle has never been offered at this price before.
+      </div>
+    </section>
+
+    <!-- ── GUARANTEE ── -->
+    <section class="guarantee-section">
+      <img
+        class="guarantee-badge"
+        src="https://d1yei2z3i6k35z.cloudfront.net/2914/5d9f01d6b6aef_satisfaction-guarantie-2109235_1920-SD.png"
+        alt="Satisfaction Guarantee"
+        loading="lazy"
+      />
+      <div class="guarantee-text">
+        <h3>No risk. No lock-in.</h3>
+        <p>
+          Your subscription renews monthly (or quarterly) — but you're never locked in. If you decide
+          OneTake isn't right for you, you can cancel at any time. Your videos and content remain yours
+          to download and host elsewhere. For as long as you're subscribed, you'll enjoy VIP access:
+          live sessions with Sébastien and his team multiple times a month, plus direct support on every page.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── CTA #2 ── -->
+    <section class="oto-cta-section" id="cta-bottom">
+      <div class="cta-card">
+        <p class="cta-label">Claim your Premium Studio upgrade + all 4 bonuses now</p>
+        <div class="cta-buttons">
+          <button class="btn-cta-quarterly" onclick="openCheckout('quarterly')">
+            <span class="btn-main-text">Best Value: $249 for 3 months</span>
+            <span class="btn-sub-text">That's just $83/month — save $48 vs. monthly</span>
+          </button>
+          <button class="btn-cta-monthly" onclick="openCheckout('monthly')">
+            <span class="btn-main-text">Or pay monthly at $99/month</span>
+            <span class="btn-sub-text">Cancel anytime · No commitment</span>
+          </button>
+        </div>
+        <a href="#" class="decline-link" onclick="decline(event)">
+          No thanks, I'll keep my current plan. I'll miss all the bonuses and will never see this offer again.
+        </a>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+      <h2 class="section-heading">Questions?</h2>
+
+      <div class="faq-item open">
+        <button class="faq-question" aria-expanded="true">
+          Is the wireless microphone really included?
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes. Once you upgrade, you'll receive the microphone at no extra cost.
+          We'll ask for your shipping address after you complete your 10th video project inside OneTake —
+          that way we know you're up and running and ready to use it.
+        </div>
+      </div>
+
+      <div class="faq-item open">
+        <button class="faq-question" aria-expanded="true">
+          Can I get this offer later, after I leave this page?
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          No. This exact bundle — 33%+ discount plus all four bonuses — is only available right now,
+          on this page. Once you navigate away, it's gone. Publicly, we only ever offer a 20% discount
+          at most, and we've never included physical bonuses like the microphone and swag box.
+        </div>
+      </div>
+
+      <div class="faq-item open">
+        <button class="faq-question" aria-expanded="true">
+          I'm already on the Premium Studio trial. Does this offer apply to me?
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes — and it's actually more valuable for you. By upgrading now, you lock in the discounted
+          price permanently for as long as you're subscribed. You also receive all four bonuses
+          immediately. Your trial period is effectively converted into a paid plan at this special rate.
+        </div>
+      </div>
+
+      <div class="faq-item open">
+        <button class="faq-question" aria-expanded="true">
+          What's the difference between the monthly and quarterly options?
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Both give you the exact same Premium Studio features and all four bonuses.
+          The quarterly option simply bills you every 3 months at $249 instead of $99/month —
+          saving you $48 over that period. If you're confident you'll use OneTake (and after setting
+          up your account, we think you will be), the quarterly option is the better deal.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER — same as onboarding/index.html
+  ═══════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <p>
+        <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service and Refund Policy</a>
+        ·
+        <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>
+      </p>
+      <p></p>
+      <p><strong>What is OneTake?</strong></p>
+      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+      <p>
+        Useful links:
+        <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a>
+        ·
+        <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a>
+        ·
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a>
+      </p>
+      <p></p>
+      <p><strong>Who came up with the idea?</strong></p>
+      <p>Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement — an organization supporting over 20,000 entrepreneur clients and 300,000 supporters in 41 countries since 2010. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to create a tool that would be both incredibly powerful and utterly easy to use: OneTake.</strong></p>
+      <p></p>
+      <p>
+        <span>To contact Sébastien and his team,</span>
+        <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════ -->
+
+  <!-- Paddle Billing -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
+  <!-- Pricing data (for OTO product IDs) -->
+  <script src="../pricing-data.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ─────────────────────────────────────────────
+      // CONFIG
+      // Fill in the BunnyCDN Anthropic proxy URL once it's created.
+      // ─────────────────────────────────────────────
+      var ANTHROPIC_PROXY_URL = 'REPLACE_WITH_BUNNYCDN_PROXY_URL';
+      var LOADER_MAX_MS = 2000;
+
+      // ─────────────────────────────────────────────
+      // PARSE URL PARAMETERS
+      // ─────────────────────────────────────────────
+      var urlParams = new URLSearchParams(window.location.search);
+      var otoParams = {
+        email:             urlParams.get('email')             || '',
+        language:          urlParams.get('language')          || 'en',
+        plan:              urlParams.get('plan')              || '',
+        useCases:          urlParams.get('useCases')          || '',
+        estimatedVolume:   urlParams.get('estimatedVolume')   || '',
+        website:           urlParams.get('website')           || '',
+        nameAndDescription: urlParams.get('nameAndDescription') || '',
+        avatar:            urlParams.get('avatar')            || '',
+        bigPromise:        urlParams.get('bigPromise')        || '',
+        mainProblem:       urlParams.get('mainProblem')       || ''
+      };
+
+      var isSandbox = urlParams.get('environment') === 'sandbox';
+
+      // ─────────────────────────────────────────────
+      // HELPER — build the post-OTO redirect URL
+      // ─────────────────────────────────────────────
+      function buildRedirectUrl() {
+        var params = new URLSearchParams({ email: otoParams.email });
+        return 'https://try.onetake.ai/onboarding/log-in/?' + params.toString();
+      }
+
+      // ─────────────────────────────────────────────
+      // LOADER
+      // ─────────────────────────────────────────────
+      var loaderEl = document.getElementById('loader-overlay');
+
+      function hideLoader() {
+        if (loaderEl) {
+          loaderEl.style.opacity = '0';
+          loaderEl.style.transition = 'opacity 0.3s ease';
+          setTimeout(function () { loaderEl.style.display = 'none'; }, 300);
+        }
+      }
+
+      // Safety net: always hide loader after LOADER_MAX_MS
+      var loaderFallback = setTimeout(hideLoader, LOADER_MAX_MS);
+
+      // ─────────────────────────────────────────────
+      // CONDITIONAL SECTIONS
+      // ─────────────────────────────────────────────
+      if (otoParams.plan.toLowerCase().indexOf('studio') !== -1) {
+        var studioNote = document.getElementById('already-studio-note');
+        if (studioNote) studioNote.hidden = false;
+      }
+
+      // ─────────────────────────────────────────────
+      // PADDLE INITIALIZATION
+      // ─────────────────────────────────────────────
+      function initializePaddle() {
+        if (typeof Paddle === 'undefined') {
+          console.error('OTO: Paddle.js not loaded');
+          return;
+        }
+        try {
+          if (isSandbox) {
+            Paddle.Environment.set('sandbox');
+          }
+          Paddle.Initialize({
+            token: isSandbox
+              ? 'test_a0712686526dbce8894bee10086'
+              : 'live_bb0b00885e63d509a759b2e2b29',
+            eventCallback: function (event) {
+              if (event && event.name === 'checkout.completed') {
+                window.location.href = buildRedirectUrl();
+              }
+            }
+          });
+        } catch (err) {
+          console.error('OTO: Paddle init error', err);
+        }
+      }
+
+      // ─────────────────────────────────────────────
+      // OPEN PADDLE CHECKOUT
+      // ─────────────────────────────────────────────
+      function openCheckout(recurrence) {
+        if (typeof Paddle === 'undefined') {
+          console.error('OTO: Paddle not available');
+          return;
+        }
+
+        var planKey = recurrence === 'quarterly'
+          ? 'premium-studio-quarterly-oto'
+          : 'premium-studio-monthly-oto';
+
+        var preset = (typeof planPresets !== 'undefined') ? planPresets[planKey] : null;
+        var productId = preset ? preset.product : null;
+
+        if (!productId || productId === 'REPLACE_WITH_PADDLE_PRICE_ID') {
+          console.warn('OTO: Paddle product ID not yet configured for', planKey,
+            '— update pricing-data.js after creating the price in Paddle.');
+          return;
+        }
+
+        var checkoutConfig = {
+          settings: {
+            displayMode: 'overlay',
+            theme: 'light',
+            locale: otoParams.language || 'en',
+            successUrl: buildRedirectUrl()
+          },
+          items: [{ priceId: productId, quantity: 1 }]
+        };
+
+        if (otoParams.email) {
+          checkoutConfig.customer = { email: otoParams.email };
+        }
+
+        Paddle.Checkout.open(checkoutConfig);
+      }
+
+      // ─────────────────────────────────────────────
+      // DECLINE
+      // ─────────────────────────────────────────────
+      function decline(event) {
+        if (event) event.preventDefault();
+        window.location.href = buildRedirectUrl();
+      }
+
+      // ─────────────────────────────────────────────
+      // INJECT PERSONALIZED COPY
+      // ─────────────────────────────────────────────
+      function injectPersonalizedCopy(data) {
+        if (data.headline) {
+          var el = document.getElementById('oto-headline');
+          if (el) el.textContent = data.headline;
+        }
+        if (data.introParagraph) {
+          var el2 = document.getElementById('oto-intro-paragraph');
+          if (el2) el2.textContent = data.introParagraph;
+        }
+        if (data.benefit1) {
+          var el3 = document.getElementById('oto-benefit-1');
+          if (el3) el3.textContent = data.benefit1;
+        }
+        if (data.benefit2) {
+          var el4 = document.getElementById('oto-benefit-2');
+          if (el4) el4.textContent = data.benefit2;
+        }
+      }
+
+      // ─────────────────────────────────────────────
+      // PERSONALIZE VIA ANTHROPIC PROXY
+      // Called on load; hides loader when done (or on timeout/error).
+      // ─────────────────────────────────────────────
+      function personalizeContent() {
+        if (ANTHROPIC_PROXY_URL === 'REPLACE_WITH_BUNNYCDN_PROXY_URL') {
+          // Proxy not yet configured — show default copy immediately
+          clearTimeout(loaderFallback);
+          hideLoader();
+          return;
+        }
+
+        var controller = new AbortController();
+        var apiTimeout = setTimeout(function () { controller.abort(); }, LOADER_MAX_MS);
+
+        fetch(ANTHROPIC_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan:              otoParams.plan,
+            useCases:          otoParams.useCases,
+            estimatedVolume:   otoParams.estimatedVolume,
+            website:           otoParams.website,
+            nameAndDescription: otoParams.nameAndDescription,
+            avatar:            otoParams.avatar,
+            bigPromise:        otoParams.bigPromise,
+            mainProblem:       otoParams.mainProblem
+          }),
+          signal: controller.signal
+        })
+        .then(function (response) {
+          clearTimeout(apiTimeout);
+          if (!response.ok) throw new Error('Proxy responded with ' + response.status);
+          return response.json();
+        })
+        .then(function (data) {
+          if (data && data.isPersonalized) {
+            injectPersonalizedCopy(data);
+          }
+        })
+        .catch(function (err) {
+          // Timeout (AbortError) or any network/parse error — show default copy
+          if (err.name !== 'AbortError') {
+            console.error('OTO personalization error:', err);
+          }
+        })
+        .finally(function () {
+          clearTimeout(loaderFallback);
+          hideLoader();
+        });
+      }
+
+      // ─────────────────────────────────────────────
+      // FAQ ACCORDION
+      // ─────────────────────────────────────────────
+      function initFaq() {
+        document.querySelectorAll('.faq-question').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var item = btn.closest('.faq-item');
+            var isOpen = item.classList.contains('open');
+            item.classList.toggle('open', !isOpen);
+            btn.setAttribute('aria-expanded', String(!isOpen));
+          });
+        });
+      }
+
+      // ─────────────────────────────────────────────
+      // EXPOSE GLOBALS FOR onclick ATTRIBUTES
+      // ─────────────────────────────────────────────
+      window.openCheckout = openCheckout;
+      window.decline = decline;
+
+      // ─────────────────────────────────────────────
+      // INIT
+      // ─────────────────────────────────────────────
+      document.addEventListener('DOMContentLoaded', function () {
+        initializePaddle();
+        initFaq();
+        personalizeContent();
+      });
+
+    }());
+  </script>
+
+</body>
+</html>
