@@ -884,6 +884,33 @@
         }
     }
     
+    // Build custom data for Paddle checkout (sandbox only).
+    // Includes all data that would normally be sent to UserList,
+    // so the app can forward it via Paddle webhooks.
+    function buildCheckoutCustomData() {
+        const data = {
+            plan: state.planKey || '',
+            has_trial: String(!!state.hasTrial),
+            estimated_volume: state.formData.estimatedVolume || ''
+        };
+
+        if (state.formData.useCases.length > 0) {
+            data.use_cases = state.formData.useCases.join(',');
+        }
+
+        if (state.planInfo) {
+            data.first_expected_payment = String(state.planInfo.firstExpectedPayment || '');
+            data.free_to_paid_conversion_rate = String(state.planInfo.freeToPaidConversionRate || '');
+        }
+
+        if (state.hasTrial) {
+            data.expected_value = String(getExpectedTrialValue());
+            data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
+        }
+
+        return data;
+    }
+
     // Open Paddle checkout
     function openPaddleCheckout() {
         if (typeof Paddle === 'undefined') {
@@ -934,8 +961,21 @@
         
         // Get Rewardful referral if available
         const referral = window.Rewardful && window.Rewardful.referral;
-        const customData = referral ? { rewardful: { referral: referral } } : null;
-        
+
+        // Build custom data
+        let customData = null;
+        if (isSandbox) {
+            // Sandbox: include all UserList data so the app can forward it via webhooks
+            customData = buildCheckoutCustomData();
+            if (referral) {
+                customData.rewardful_referral = referral;
+            }
+            console.log('Sandbox customData for Paddle:', customData);
+        } else {
+            // Production: only Rewardful data
+            customData = referral ? { rewardful: { referral: referral } } : null;
+        }
+
         console.log('Opening Paddle checkout with:', { items, customer, settings, customData });
         
         try {
