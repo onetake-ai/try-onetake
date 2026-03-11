@@ -67,7 +67,8 @@
         checkoutCompleted: false, // Set to true on checkout.completed; prevents downsell after purchase
         downsellShown: false,     // Prevents showing the downsell more than once per session
         downsellPlanKey: null,    // The plan key offered in the downsell
-        downsellPlanInfo: null    // The plan info offered in the downsell
+        downsellPlanInfo: null,   // The plan info offered in the downsell
+        trackingParams: {}        // UTM/ad tracking params from URL (populated by tracking-params.js)
     };
     
     // Make state accessible globally for special-offer.js
@@ -148,8 +149,13 @@
             state.hasTrial = true;
             console.log('Using default product ID:', state.productId);
         }
+
+        // Extract tracking params (UTM + optional ad params) via tracking module
+        state.trackingParams = window.oneTakeTracking
+            ? window.oneTakeTracking.parseTrackingParams(urlParams)
+            : {};
     }
-    
+
     // Update headline based on trial status
     function updateHeadline() {
         const titleElement = document.querySelector('.form-title');
@@ -908,6 +914,11 @@
             data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
         }
 
+        // Include tracking params (UTM + optional ad params) via tracking module
+        if (window.oneTakeTracking) {
+            window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
+        }
+
         return data;
     }
 
@@ -948,6 +959,11 @@
         // Add estimatedVolume
         if (state.formData.estimatedVolume) {
             successParams.set('estimatedVolume', state.formData.estimatedVolume);
+        }
+
+        // Forward tracking params to onboarding page (gated by FORWARD_TO_SUCCESS_URL in tracking module)
+        if (window.oneTakeTracking) {
+            window.oneTakeTracking.addTrackingToSuccessUrl(successParams, state.trackingParams);
         }
 
         const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
