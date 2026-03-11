@@ -17,11 +17,6 @@
     const DEFAULT_CURRENCY = 'EUR';                     // All prices assumed in EUR
     const UNKNOWN_PRODUCT_EXPECTED_VALUE = 1;           // Fallback for unknown product IDs
 
-    // UTM parameters to capture from URL and pass to Paddle custom data
-    const UTM_PARAMS = [
-        'utm_source', 'utm_medium', 'utm_campaign', 'utm_id', 'utm_content', 'utm_term'
-    ];
-
     // Default plan info for unknown direct product links
     const DEFAULT_PLAN_INFO = {
         tier: 'OneTake AI',
@@ -73,7 +68,7 @@
         downsellShown: false,     // Prevents showing the downsell more than once per session
         downsellPlanKey: null,    // The plan key offered in the downsell
         downsellPlanInfo: null,   // The plan info offered in the downsell
-        utmParams: {}             // UTM tracking params from URL (for Paddle custom data)
+        trackingParams: {}        // UTM/ad tracking params from URL (populated by tracking-params.js)
     };
     
     // Make state accessible globally for special-offer.js
@@ -155,19 +150,10 @@
             console.log('Using default product ID:', state.productId);
         }
 
-        // Extract UTM params from URL (reuses urlParams instance above)
-        state.utmParams = {};
-        UTM_PARAMS.forEach(function(key) {
-            var values = urlParams.getAll(key);
-            if (values.length === 1) {
-                state.utmParams[key] = values[0];
-            } else if (values.length > 1) {
-                state.utmParams[key] = values;
-            }
-        });
-        if (Object.keys(state.utmParams).length > 0) {
-            console.log('UTM params captured:', state.utmParams);
-        }
+        // Extract tracking params (UTM + optional ad params) via tracking module
+        state.trackingParams = window.OneTakeTracking
+            ? window.OneTakeTracking.parseTrackingParams(urlParams)
+            : {};
     }
 
     // Update headline based on trial status
@@ -928,13 +914,10 @@
             data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
         }
 
-        // Include UTM params — string if single value, JSON array string if multiple
-        UTM_PARAMS.forEach(function(key) {
-            if (state.utmParams[key] !== undefined) {
-                var val = state.utmParams[key];
-                data[key] = Array.isArray(val) ? JSON.stringify(val) : val;
-            }
-        });
+        // Include tracking params (UTM + optional ad params) via tracking module
+        if (window.OneTakeTracking) {
+            window.OneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
+        }
 
         return data;
     }
@@ -978,17 +961,10 @@
             successParams.set('estimatedVolume', state.formData.estimatedVolume);
         }
 
-        // Forward UTM params to onboarding page
-        UTM_PARAMS.forEach(function(key) {
-            if (state.utmParams[key] !== undefined) {
-                var val = state.utmParams[key];
-                if (Array.isArray(val)) {
-                    val.forEach(function(v) { successParams.append(key, v); });
-                } else {
-                    successParams.set(key, val);
-                }
-            }
-        });
+        // Forward tracking params to onboarding page
+        if (window.OneTakeTracking) {
+            window.OneTakeTracking.addTrackingToURLParams(successParams, state.trackingParams);
+        }
 
         const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
         
