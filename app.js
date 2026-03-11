@@ -151,8 +151,8 @@
         }
 
         // Extract tracking params (UTM + optional ad params) via tracking module
-        state.trackingParams = window.OneTakeTracking
-            ? window.OneTakeTracking.parseTrackingParams(urlParams)
+        state.trackingParams = window.oneTakeTracking
+            ? window.oneTakeTracking.parseTrackingParams(urlParams)
             : {};
     }
 
@@ -915,8 +915,8 @@
         }
 
         // Include tracking params (UTM + optional ad params) via tracking module
-        if (window.OneTakeTracking) {
-            window.OneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
+        if (window.oneTakeTracking) {
+            window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
         }
 
         return data;
@@ -961,9 +961,9 @@
             successParams.set('estimatedVolume', state.formData.estimatedVolume);
         }
 
-        // Forward tracking params to onboarding page
-        if (window.OneTakeTracking) {
-            window.OneTakeTracking.addTrackingToURLParams(successParams, state.trackingParams);
+        // Forward tracking params to onboarding page (gated by FORWARD_TO_SUCCESS_URL in tracking module)
+        if (window.oneTakeTracking) {
+            window.oneTakeTracking.addTrackingToSuccessUrl(successParams, state.trackingParams);
         }
 
         const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
