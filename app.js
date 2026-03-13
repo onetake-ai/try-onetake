@@ -897,7 +897,9 @@
         const data = {
             plan: state.planKey || '',
             has_trial: String(!!state.hasTrial),
-            estimated_volume: state.formData.estimatedVolume || ''
+            estimated_volume: state.formData.estimatedVolume || '',
+            first_name: state.formData.firstName || '',
+            language: getTwoLetterLanguageCode()
         };
 
         if (state.formData.useCases.length > 0) {
@@ -917,6 +919,11 @@
         // Include tracking params (UTM + optional ad params) via tracking module
         if (window.oneTakeTracking) {
             window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
+        }
+
+        // Include cohort assignment via cohort module
+        if (window.oneTakeCohort) {
+            data.cohort = String(window.oneTakeCohort.assignCohort());
         }
 
         return data;
@@ -975,22 +982,19 @@
             successUrl: successUrl
         };
         
-        // Get Rewardful referral if available
-        const referral = window.Rewardful && window.Rewardful.referral;
+        // Rewardful affiliate tracking (deprecated — kept for future affiliate integration)
+        // const referral = window.Rewardful && window.Rewardful.referral;
 
         // Build custom data
         let customData = null;
         if (isSandbox) {
             // Sandbox: include all UserList data so the app can forward it via webhooks
             customData = buildCheckoutCustomData();
-            if (referral) {
-                customData.rewardful_referral = referral;
-            }
+            // Uncomment below for future affiliate integration:
+            // if (referral) { customData.affiliate_referral = referral; }
             console.log('Sandbox customData for Paddle:', customData);
-        } else {
-            // Production: only Rewardful data
-            customData = referral ? { rewardful: { referral: referral } } : null;
         }
+        // Production: no custom data sent (previously sent Rewardful referral)
 
         console.log('Opening Paddle checkout with:', { items, customer, settings, customData });
         
@@ -1001,7 +1005,7 @@
                 customer: customer
             };
             
-            // Add custom data (including Rewardful) if available
+            // Add custom data if available
             if (customData) {
                 checkoutConfig.customData = customData;
             }
