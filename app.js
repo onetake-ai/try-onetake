@@ -907,8 +907,13 @@
         }
 
         if (state.planInfo) {
+            data.plan_name = state.planInfo.tier || '';
+            data.plan_interval = state.planInfo.recurrence || '';
             data.first_expected_payment = String(state.planInfo.firstExpectedPayment || '');
             data.free_to_paid_conversion_rate = String(state.planInfo.freeToPaidConversionRate || '');
+        }
+        if (state.productId) {
+            data.plan_id = state.productId;
         }
 
         if (state.hasTrial) {
