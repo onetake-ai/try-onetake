@@ -321,14 +321,12 @@
         }
 
         // UserList Purchase event (trial dates and expectedValue for trials)
-        // Trial dates are passed as additionalProperties so they appear as event
-        // properties AND will be merged into user properties by trackUserListEvent.
         const userListProps = { ...purchaseData };
         if (isTrial) {
             userListProps.expectedValue = expectedValue;
             const now = new Date();
-            const trialDays = state.planInfo ? state.planInfo.trial : 7;
             userListProps.trial_started_on = now.toISOString();
+            const trialDays = state.planInfo ? state.planInfo.trial : 7;
             userListProps.trial_expires_on = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000).toISOString();
         }
         trackUserListEvent('Purchase', userListProps);
@@ -853,48 +851,16 @@
             console.log('Sandbox: skipping UserList event:', eventName);
             return;
         }
-
-        // Build user properties — always include plan details, UTM, and cohort
-        const userProps = {
-            first_name: state.formData.firstName,
-            language: getTwoLetterLanguageCode(),
-            use_cases: state.formData.useCases.length > 0 ? state.formData.useCases : undefined,
-            estimated_volume: state.formData.estimatedVolume || undefined
-        };
-
-        // Plan details
-        if (state.planKey) userProps.plan = state.planKey;
-        if (state.planInfo) {
-            userProps.plan_name = state.planInfo.tier;
-            userProps.plan_interval = state.planInfo.recurrence;
-        }
-        if (state.productId) userProps.plan_id = state.productId;
-
-        // UTM / tracking params
-        if (state.trackingParams) {
-            Object.entries(state.trackingParams).forEach(([key, val]) => {
-                if (val !== undefined && val !== '') userProps[key] = val;
-            });
-        }
-
-        // Cohort
-        if (window.oneTakeCohort) {
-            userProps.cohort = String(window.oneTakeCohort.assignCohort());
-        }
-
-        // Promote trial dates from event properties to user properties
-        if (additionalProperties.trial_started_on) {
-            userProps.trial_started_on = additionalProperties.trial_started_on;
-        }
-        if (additionalProperties.trial_expires_on) {
-            userProps.trial_expires_on = additionalProperties.trial_expires_on;
-        }
-
         const payload = {
             name: eventName,
             user: {
                 email: state.formData.email,
-                properties: userProps
+                properties: {
+                    first_name: state.formData.firstName,
+                    language: getTwoLetterLanguageCode(),
+                    use_cases: state.formData.useCases.length > 0 ? state.formData.useCases : undefined,
+                    estimated_volume: state.formData.estimatedVolume || undefined
+                }
             },
             properties: {
                 ...additionalProperties,
