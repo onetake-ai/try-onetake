@@ -20,10 +20,10 @@
     ];
 
     // Set to true to also capture ad-platform params (ad_id, adset_id, etc.)
-    const INCLUDE_AD_PARAMS = false;
+    const INCLUDE_AD_PARAMS = true;
 
     // Set to true to forward tracking params to the success/onboarding URL
-    const FORWARD_TO_SUCCESS_URL = false;
+    const FORWARD_TO_SUCCESS_URL = true;
 
     // ==========================================
     // HELPERS
@@ -65,9 +65,10 @@
     // ==========================================
 
     // Merge tracking params into a Paddle custom-data object.
+    // Only UTM params are included — ad-platform params are not needed in Paddle custom data.
     // Paddle custom data values must be strings, so arrays are JSON-encoded.
     function addTrackingToCustomData(customData, trackingParams) {
-        const keys = getActiveParamKeys();
+        const keys = UTM_PARAMS;
 
         keys.forEach(function(key) {
             if (trackingParams[key] !== undefined) {
