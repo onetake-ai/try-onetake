@@ -845,54 +845,14 @@
         }
     }
     
-    // Track UserList event with embedded user information (skipped in sandbox)
+    // UserList events deprecated — all data now flows via Paddle checkout custom data & webhooks.
     async function trackUserListEvent(eventName, additionalProperties = {}) {
-        if (isSandbox) {
-            console.log('Sandbox: skipping UserList event:', eventName);
-            return;
-        }
-        const payload = {
-            name: eventName,
-            user: {
-                email: state.formData.email,
-                properties: {
-                    first_name: state.formData.firstName,
-                    language: getTwoLetterLanguageCode(),
-                    use_cases: state.formData.useCases.length > 0 ? state.formData.useCases : undefined,
-                    estimated_volume: state.formData.estimatedVolume || undefined
-                }
-            },
-            properties: {
-                ...additionalProperties,
-                plan: state.planKey || undefined,
-                use_cases: state.formData.useCases.length > 0 ? state.formData.useCases : undefined,
-                estimated_volume: state.formData.estimatedVolume || undefined
-            }
-        };
-        
-        try {
-            const response = await fetch('https://userlist-proxy-46gm3.bunny.run/track', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-            
-            if (!response.ok) {
-                throw new Error(`UserList API error: ${response.status}`);
-            }
-            
-            console.log(`UserList ${eventName} event tracked successfully`);
-        } catch (error) {
-            console.error('UserList tracking error:', error);
-            // Don't block the flow for UserList errors
-        }
+        console.log('Skipping UserList event (deprecated):', eventName);
     }
     
-    // Build custom data for Paddle checkout (sandbox only).
-    // Includes all data that would normally be sent to UserList,
-    // so the app can forward it via Paddle webhooks.
+    // Build custom data for Paddle checkout.
+    // Includes user, plan, tracking, and cohort data so the backend
+    // can forward it via Paddle webhooks.
     function buildCheckoutCustomData() {
         const data = {
             plan: state.planKey || '',
@@ -990,16 +950,11 @@
         // Rewardful affiliate tracking (deprecated — kept for future affiliate integration)
         // const referral = window.Rewardful && window.Rewardful.referral;
 
-        // Build custom data
-        let customData = null;
-        if (isSandbox) {
-            // Sandbox: include all UserList data so the app can forward it via webhooks
-            customData = buildCheckoutCustomData();
-            // Uncomment below for future affiliate integration:
-            // if (referral) { customData.affiliate_referral = referral; }
-            console.log('Sandbox customData for Paddle:', customData);
-        }
-        // Production: no custom data sent (previously sent Rewardful referral)
+        // Build custom data for Paddle webhooks (plan info, form data, UTM params, cohort)
+        const customData = buildCheckoutCustomData();
+        // Uncomment below for future affiliate integration:
+        // if (referral) { customData.affiliate_referral = referral; }
+        console.log('Custom data for Paddle:', customData);
 
         console.log('Opening Paddle checkout with:', { items, customer, settings, customData });
         
