@@ -267,7 +267,7 @@
         return UNKNOWN_PRODUCT_EXPECTED_VALUE;
     }
 
-    // Track purchase in AnyTrack, CrazyEgg, Plausible, and UserList
+    // Track purchase in AnyTrack, CrazyEgg, and Plausible
     function trackPurchase(paddleData) {
         const isTrial = state.hasTrial;
         const expectedValue = isTrial ? getExpectedTrialValue() : null;
@@ -320,16 +320,8 @@
             console.log('Plausible Purchase event fired with options:', plausibleOptions);
         }
 
-        // UserList Purchase event (trial dates and expectedValue for trials)
-        const userListProps = { ...purchaseData };
-        if (isTrial) {
-            userListProps.expectedValue = expectedValue;
-            const now = new Date();
-            userListProps.trial_started_on = now.toISOString();
-            const trialDays = state.planInfo ? state.planInfo.trial : 7;
-            userListProps.trial_expires_on = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000).toISOString();
-        }
-        trackUserListEvent('Purchase', userListProps);
+        // UserList deprecated — purchase data now flows via Paddle custom data & webhooks
+        trackUserListEvent('Purchase');
     }
     
     // Render use cases in custom dropdown with checkboxes
@@ -784,7 +776,7 @@
             // Track formSubmit event (only if not personal/music use cases)
             await trackFormSubmit();
             
-            // Track in UserList (this now creates the user AND tracks the event)
+            // UserList deprecated — form data now flows via Paddle custom data & webhooks
             await trackUserListEvent('formSubmit');
             
             // Wait a moment for tracking to complete
@@ -881,7 +873,7 @@
             data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
         }
 
-        // Include tracking params (UTM + optional ad params) via tracking module
+        // Include UTM tracking params via tracking module
         if (window.oneTakeTracking) {
             window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
         }
