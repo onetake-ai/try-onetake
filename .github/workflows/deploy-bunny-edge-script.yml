@@ -1,0 +1,36 @@
+# Deploys edge-scripts/oto-personalize.js to BunnyCDN Edge Scripting.
+#
+# Authentication: uses the GitHub App connection set up in the BunnyCDN
+# dashboard (Settings → Connected Repositories). No API key required.
+#
+# Required GitHub repository secret:
+#   BUNNY_SCRIPT_ID — the numeric ID of your Edge Script, found in the
+#                     BunnyCDN dashboard URL when you open the script:
+#                     e.g. dash.bunny.net/edge-script/12345  →  12345
+#
+# The `paths` filter ensures this workflow only fires when the proxy
+# script itself changes — not on every push to main.
+
+name: Deploy OTO Edge Script to BunnyCDN
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'edge-scripts/oto-personalize.js'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Upload script
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Script to Bunny Edge Scripting
+        uses: BunnyWay/actions/deploy-script@main
+        with:
+          script_id: ${{ secrets.BUNNY_SCRIPT_ID }}
+          file: "edge-scripts/oto-personalize.js"
+          # deploy_key intentionally omitted — authenticates via GitHub App
