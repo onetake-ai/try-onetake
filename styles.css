@@ -806,14 +806,11 @@ body {
 
 /* ================================================
    DOWNSELL MODAL
-   Hidden by default for everyone (control group).
-   Split-test tool adds body.downsell-enabled for
-   the treatment group, making the modal renderable.
-   JS then adds .is-open to show it.
+   Hidden by default; JS adds .is-open to show it.
    ================================================ */
 
 .downsell-overlay {
-    display: none; /* Control group: never visible */
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(36, 24, 38, 0.65);
@@ -825,8 +822,7 @@ body {
     padding: var(--spacing-md);
 }
 
-/* Treatment group: split-test tool adds "downsell-enabled" to <body> */
-body.downsell-enabled .downsell-overlay.is-open {
+.downsell-overlay.is-open {
     display: flex;
     animation: fadeIn 0.25s ease;
 }
