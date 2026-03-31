@@ -63,6 +63,7 @@
         planKey: null, // Will be set if using a preset
         planInfo: null, // Will contain plan details if using a preset
         hasTrial: true, // Default has trial
+        hasOneTimeCharge: false, // True for $1 trial plans
         isSubmitting: false,
         checkoutCompleted: false, // Set to true on checkout.completed; prevents downsell after purchase
         downsellShown: false,     // Prevents showing the downsell more than once per session
@@ -132,6 +133,7 @@
             state.planInfo = activePlanPresets[planKey];
             state.productId = state.planInfo.product;
             state.hasTrial = !!state.planInfo.trial;
+            state.hasOneTimeCharge = !!state.planInfo.oneTimeCharge;
             console.log('Using plan preset:', planKey, state.planInfo);
         } else if (productId) {
             // Direct product ID provided without a matching preset
@@ -139,6 +141,7 @@
             state.planKey = null;
             state.planInfo = { ...DEFAULT_PLAN_INFO, product: productId };
             state.hasTrial = false;
+            state.hasOneTimeCharge = false;
             console.log('Using direct product ID:', productId);
         } else {
             // Use default (occasional-monthly-trial)
@@ -147,6 +150,7 @@
             state.planKey = 'occasional-monthly-trial';
             state.planInfo = defaultPreset || null;
             state.hasTrial = true;
+            state.hasOneTimeCharge = false;
             console.log('Using default product ID:', state.productId);
         }
 
@@ -161,7 +165,7 @@
         const titleElement = document.querySelector('.form-title');
         if (!titleElement) return;
         
-        const headlineKey = state.hasTrial ? 'headline' : 'headlineNoTrial';
+        const headlineKey = state.hasOneTimeCharge ? 'headlineOneDollarTrial' : state.hasTrial ? 'headline' : 'headlineNoTrial';
         titleElement.textContent = getTranslation(headlineKey);
         titleElement.setAttribute('data-i18n', headlineKey);
     }
@@ -171,7 +175,7 @@
         const btnTextElement = document.querySelector('.btn-text');
         if (!btnTextElement) return;
         
-        const buttonKey = state.hasTrial ? 'button.submit' : 'button.submitNoTrial';
+        const buttonKey = state.hasOneTimeCharge ? 'button.submitOneDollarTrial' : state.hasTrial ? 'button.submit' : 'button.submitNoTrial';
         btnTextElement.textContent = getTranslation(buttonKey);
         btnTextElement.setAttribute('data-i18n', buttonKey);
     }
@@ -898,7 +902,11 @@
             priceId: state.productId,
             quantity: 1
         }];
-        
+
+        if (state.planInfo && state.planInfo.oneTimeCharge) {
+            items.push({ priceId: state.planInfo.oneTimeCharge, quantity: 1 });
+        }
+
         const customer = {
             email: state.formData.email
         };
