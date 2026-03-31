@@ -7,22 +7,23 @@
     function initSpecialOfferContent() {
         // Check if this is a trial offer - use global state
         const isTrial = window.oneTakeState ? window.oneTakeState.hasTrial : false;
-        
-        console.log('Special Offer: isTrial =', isTrial);
-        
+        const isOneDollarTrial = window.oneTakeState ? window.oneTakeState.hasOneTimeCharge : false;
+
+        console.log('Special Offer: isTrial =', isTrial, 'isOneDollarTrial =', isOneDollarTrial);
+
         // Show/hide sub-headline based on trial status
         toggleSubHeadline(isTrial);
-        
+
         // Populate benefits list
-        populateBenefits(isTrial);
-        
+        populateBenefits(isTrial, isOneDollarTrial);
+
         // Show/hide FAQ
         if (isTrial) {
-            populateFAQ();
+            populateFAQ(isOneDollarTrial);
         }
-        
+
         // Show/hide Johnson box
-        showJohnsonBox(isTrial);
+        showJohnsonBox(isTrial, isOneDollarTrial);
     }
     
     // Get translation helper
@@ -40,41 +41,51 @@
     }
     
     // Populate benefits based on trial status
-    function populateBenefits(isTrial) {
+    function populateBenefits(isTrial, isOneDollarTrial) {
         const benefitsList = document.getElementById('benefitsList');
         if (!benefitsList) {
             console.log('Benefits list element not found');
             return;
         }
-        
+
         const benefits = [];
-        
-        if (isTrial) {
+
+        if (isOneDollarTrial) {
+            benefits.push(getTranslation('benefit.trialOneDollar'));
+            benefits.push(getTranslation('benefit.features'));
+            benefits.push(getTranslation('benefit.payOneDollar'));
+            benefits.push(getTranslation('benefit.cancel'));
+        } else if (isTrial) {
             benefits.push(getTranslation('benefit.trial'));
-        }
-        
-        benefits.push(getTranslation('benefit.features'));
-        
-        if (isTrial) {
+            benefits.push(getTranslation('benefit.features'));
             benefits.push(getTranslation('benefit.payNothing'));
             benefits.push(getTranslation('benefit.cancel'));
+        } else {
+            benefits.push(getTranslation('benefit.features'));
         }
-        
+
         console.log('Populating benefits:', benefits);
-        benefitsList.innerHTML = benefits.map(benefit => 
+        benefitsList.innerHTML = benefits.map(benefit =>
             `<li>${benefit}</li>`
         ).join('');
     }
     
     // Populate FAQ section (only for trials)
-    function populateFAQ() {
+    function populateFAQ(isOneDollarTrial) {
         const faqSection = document.getElementById('faqSection');
         if (!faqSection) return;
-        
+
+        const creditCardQuestion = isOneDollarTrial
+            ? getTranslation('faq.creditCard.questionOneDollar')
+            : getTranslation('faq.creditCard.question');
+        const creditCardAnswer = isOneDollarTrial
+            ? getTranslation('faq.creditCard.answerOneDollar')
+            : getTranslation('faq.creditCard.answer');
+
         const faqs = [
             {
-                question: getTranslation('faq.creditCard.question'),
-                answer: getTranslation('faq.creditCard.answer')
+                question: creditCardQuestion,
+                answer: creditCardAnswer
             },
             {
                 question: getTranslation('faq.avoid.question'),
@@ -91,10 +102,17 @@
     }
     
     // Show/hide Johnson box
-    function showJohnsonBox(isTrial) {
+    function showJohnsonBox(isTrial, isOneDollarTrial) {
         const johnsonBox = document.getElementById('johnsonBox');
         if (johnsonBox && isTrial) {
             johnsonBox.style.display = 'block';
+            if (isOneDollarTrial) {
+                const headlineEl = johnsonBox.querySelector('.johnson-headline');
+                if (headlineEl) {
+                    headlineEl.textContent = getTranslation('johnson.headlineOneDollar');
+                    headlineEl.setAttribute('data-i18n', 'johnson.headlineOneDollar');
+                }
+            }
         }
     }
     

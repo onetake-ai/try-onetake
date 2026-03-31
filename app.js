@@ -46,7 +46,13 @@
         'premium-studio-quarterly':         'premium-studio-monthly',
         'pro-monthly-trial':                'occasional-monthly-trial',
         'pro-monthly-trial-59':             'occasional-monthly-trial',
-        'pro-monthly':                      'occasional-monthly'
+        'pro-monthly':                      'occasional-monthly',
+        // $1 trial plans — yearly → monthly within the $1 family, then tier ladder
+        'occasional-yearly-trial-1':        'occasional-monthly-trial-1',
+        'pro-yearly-trial-1':               'pro-monthly-trial-1',
+        'premium-studio-yearly-1-99':       'premium-studio-monthly-1-149',
+        'premium-studio-monthly-1-149':     'pro-monthly-trial-1',
+        'pro-monthly-trial-1':              'occasional-monthly-trial-1'
         // occasional-monthly variants → no downsell (omitted)
     };
 
@@ -63,11 +69,14 @@
         planKey: null, // Will be set if using a preset
         planInfo: null, // Will contain plan details if using a preset
         hasTrial: true, // Default has trial
+        hasOneTimeCharge: false, // True for $1 trial plans
         isSubmitting: false,
-        checkoutCompleted: false, // Set to true on checkout.completed; prevents downsell after purchase
-        downsellShown: false,     // Prevents showing the downsell more than once per session
-        downsellPlanKey: null,    // The plan key offered in the downsell
-        downsellPlanInfo: null,   // The plan info offered in the downsell
+        checkoutCompleted: false,  // Set to true on checkout.completed; prevents downsell after purchase
+        downsellShown: false,      // Prevents showing the downsell more than once per session
+        downsellAccepted: false,   // True if user clicked accept on the downsell modal
+        downsellPlanKey: null,     // The plan key offered in the downsell
+        downsellPlanInfo: null,    // The plan info offered in the downsell
+        originalPlanKey: null,     // Preserved plan key before any downsell switch
         trackingParams: {}        // UTM/ad tracking params from URL (populated by tracking-params.js)
     };
     
@@ -132,6 +141,7 @@
             state.planInfo = activePlanPresets[planKey];
             state.productId = state.planInfo.product;
             state.hasTrial = !!state.planInfo.trial;
+            state.hasOneTimeCharge = !!state.planInfo.oneTimeCharge;
             console.log('Using plan preset:', planKey, state.planInfo);
         } else if (productId) {
             // Direct product ID provided without a matching preset
@@ -139,6 +149,7 @@
             state.planKey = null;
             state.planInfo = { ...DEFAULT_PLAN_INFO, product: productId };
             state.hasTrial = false;
+            state.hasOneTimeCharge = false;
             console.log('Using direct product ID:', productId);
         } else {
             // Use default (occasional-monthly-trial)
@@ -147,6 +158,7 @@
             state.planKey = 'occasional-monthly-trial';
             state.planInfo = defaultPreset || null;
             state.hasTrial = true;
+            state.hasOneTimeCharge = false;
             console.log('Using default product ID:', state.productId);
         }
 
@@ -161,7 +173,7 @@
         const titleElement = document.querySelector('.form-title');
         if (!titleElement) return;
         
-        const headlineKey = state.hasTrial ? 'headline' : 'headlineNoTrial';
+        const headlineKey = state.hasOneTimeCharge ? 'headlineOneDollarTrial' : state.hasTrial ? 'headline' : 'headlineNoTrial';
         titleElement.textContent = getTranslation(headlineKey);
         titleElement.setAttribute('data-i18n', headlineKey);
     }
@@ -171,7 +183,7 @@
         const btnTextElement = document.querySelector('.btn-text');
         if (!btnTextElement) return;
         
-        const buttonKey = state.hasTrial ? 'button.submit' : 'button.submitNoTrial';
+        const buttonKey = state.hasOneTimeCharge ? 'button.submitOneDollarTrial' : state.hasTrial ? 'button.submit' : 'button.submitNoTrial';
         btnTextElement.textContent = getTranslation(buttonKey);
         btnTextElement.setAttribute('data-i18n', buttonKey);
     }
@@ -289,7 +301,11 @@
 
         // AnyTrack Purchase event (value = expectedValue for trials)
         if (typeof AnyTrack !== 'undefined') {
-            AnyTrack('trigger', 'Purchase', purchaseData);
+            AnyTrack('trigger', 'Purchase', {
+                ...purchaseData,
+                downsell_shown:    state.downsellShown,
+                downsell_accepted: state.downsellAccepted
+            });
             console.log('AnyTrack Purchase event fired with value:', purchaseData.value);
         }
 
@@ -311,7 +327,11 @@
         if (!isSandbox && typeof plausible !== 'undefined') {
             const plausibleOptions = {
                 revenue: { amount: purchaseData.value, currency: purchaseData.currency },
-                props: { plan: state.planKey || 'unknown' }
+                props: {
+                    plan:              state.planKey || 'unknown',
+                    downsell_shown:    String(state.downsellShown),
+                    downsell_accepted: String(state.downsellAccepted)
+                }
             };
             if (isTrial) {
                 plausibleOptions.props.expectedValue = expectedValue;
@@ -883,6 +903,11 @@
             data.cohort = String(window.oneTakeCohort.assignCohort());
         }
 
+        // Downsell attribution
+        data.downsell_shown    = String(state.downsellShown);
+        data.downsell_accepted = String(state.downsellAccepted);
+        data.original_plan     = state.originalPlanKey || '';
+
         return data;
     }
 
@@ -898,7 +923,11 @@
             priceId: state.productId,
             quantity: 1
         }];
-        
+
+        if (state.planInfo && state.planInfo.oneTimeCharge) {
+            items.push({ priceId: state.planInfo.oneTimeCharge, quantity: 1 });
+        }
+
         const customer = {
             email: state.formData.email
         };
@@ -1091,13 +1120,16 @@
 
     // User accepted the downsell — switch to the new plan and reopen checkout.
     function acceptDownsell() {
+        state.originalPlanKey  = state.planKey;  // preserve before switch
+        state.downsellAccepted = true;
         hideDownsellModal();
 
         // Switch active plan to the downsell plan
-        state.productId = state.downsellPlanInfo.product;
-        state.planKey   = state.downsellPlanKey;
-        state.planInfo  = state.downsellPlanInfo;
-        state.hasTrial  = !!state.downsellPlanInfo.trial;
+        state.productId        = state.downsellPlanInfo.product;
+        state.planKey          = state.downsellPlanKey;
+        state.planInfo         = state.downsellPlanInfo;
+        state.hasTrial         = !!state.downsellPlanInfo.trial;
+        state.hasOneTimeCharge = !!(state.downsellPlanInfo && state.downsellPlanInfo.oneTimeCharge);
         state.checkoutCompleted = false; // Reset so a close on this new checkout is handled cleanly
 
         // Analytics (skipped in sandbox)
