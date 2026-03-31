@@ -1083,9 +1083,10 @@
                 quarterly: getTranslation('downsell.perQuarter')
             };
             const perPeriod = recurrenceMap[downsellPlan.recurrence] || '';
-            const trialSuffix = downsellPlan.trial
-                ? ' \u00b7 ' + getTranslation('downsell.trialNote')
-                : '';
+            const trialNoteKey = downsellPlan.trial
+                ? (downsellPlan.oneTimeCharge ? 'downsell.trialNoteOneDollar' : 'downsell.trialNote')
+                : null;
+            const trialSuffix = trialNoteKey ? ' \u00b7 ' + getTranslation(trialNoteKey) : '';
             planPriceEl.textContent = '\u20ac' + downsellPlan.firstExpectedPayment + perPeriod + trialSuffix;
         }
 
