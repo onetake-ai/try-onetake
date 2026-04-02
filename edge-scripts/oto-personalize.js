@@ -12,6 +12,7 @@
  *   Receives survey data POSTed from the OTO page, asks Claude Haiku to score
  *   the quality of the answers and — if they're meaningful — rewrite four copy
  *   blocks personalised to that user's niche and goals.
+ *   Uses tool calling to guarantee structured JSON output with no parsing needed.
  *   Always returns JSON; falls back to { isPersonalized: false } on any error.
  */
 
@@ -23,13 +24,8 @@ import process from "node:process";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-
-// claude-haiku-4-5 is used (not Sonnet) because we need to respond within the
-// 2-second abort timeout set on the client side.
-const ANTHROPIC_MODEL = 'claude-haiku-4-5-20251001';
-
-// Keep max_tokens tight — we only need a small JSON object back.
-const MAX_TOKENS = 600;
+const ANTHROPIC_MODEL   = 'claude-haiku-4-5-20251001';
+const MAX_TOKENS        = 350; // tool use output is compact — no markdown overhead
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin':  '*',
@@ -39,121 +35,76 @@ const CORS_HEADERS = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SYSTEM PROMPT
-// Includes full OneTake feature set so Claude never invents capabilities,
-// plus the current default copy for each field so Claude knows what to improve.
+// SYSTEM PROMPT — kept short to reduce input tokens and improve latency
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SYSTEM_PROMPT = `\
-You are a direct-response copywriter for OneTake AI, an AI video editing SaaS platform.
+You are a direct-response copywriter for OneTake AI — an AI video editor that turns raw footage into polished content in one click. Designed for entrepreneurs, trainers, and coaches.
 
-## About OneTake AI
+Plans: Occasional ($20/mo, 1h editing/mo), Pro ($39/mo, 3h + whitelabel hosting + gaze correction + background removal), Premium Studio ($99/mo OTO price, 10h + unlimited duration + team members + hyper-realistic AI + voice cloning in 20+ languages).
 
-OneTake AI turns raw videos into professional, polished presentations in one click.
-It is designed for entrepreneurs, trainers, coaches, and content creators who want to publish
-professional video content without spending hours editing.
+Score the survey answers 1–5, then if quality ≥ 3, write personalised copy. Tone: warm, direct, mentor-like. Always English. Address the user as "you/your". Never invent features beyond those listed above.`;
 
-### Plan features
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL DEFINITION
+// Forces Claude to return structured data — no JSON parsing of free text needed.
+// ─────────────────────────────────────────────────────────────────────────────
 
-**Occasional ($20/mo):**
-- Edit 1 hour of content per month, videos up to 60 minutes
-- 1 viral Short/Reel generated per video
-- AI Instant Editing: removes mistakes, cleans audio, adds subtitles & transitions
-- OneTake learns from your content to help write scripts, find ideas, and more
-- Host/embed videos with OneTake Player (unlimited views), no watermark
-- All video styles & customisation for YouTube, TikTok, Instagram, and social media
-- Translate subtitles into a new language
-
-**Pro ($39/mo per team member):**
-- Everything in Occasional, plus:
-- Edit 3 hours of content per month, videos up to 120 minutes
-- Unlimited viral Shorts/Reels per video
-- Turn long videos into viral Shorts for IG Reels, TikTok, YouTube Shorts
-- Whitelabel hosting: custom domain and branding with OneTake Player (unlimited views)
-- Teleprompter with gaze correction: AI makes you look directly into the camera
-- Background removal & replacement (green screen or any background)
-
-**Premium Studio ($149/mo per team member — discounted to $99/mo on this offer):**
-- Everything in Pro, plus:
-- Edit 10 hours of content per month, no video duration limit
-- Unlimited viral Shorts/Reels per video
-- Add additional team members
-- 30 minutes of Premium AI editing per month
-- All Premium features use hyper-realistic models: gaze correction, background removal, translation
-- Video translation with voice cloning — hyper-realistic lip sync in 20+ languages
-
-## Your task
-
-You will receive survey answers a user provided when signing up for OneTake AI.
-
-### Step 1: Score the quality of the information on a scale of 1–5
-
-  1 = random/nonsense/test data (e.g. "asdf", "test", single characters, lorem ipsum)
-  2 = very vague — no recognisable business or use case
-  3 = some useful info — has a recognisable business type or niche
-  4 = good — specific niche, target audience, or goal stated
-  5 = excellent — specific niche, avatar, big promise, and main problem all provided
-
-### Step 2: Output
-
-Respond ONLY with valid JSON (no markdown, no prose, no code fences).
-
-The FIRST key must always be "qualityScore" (integer 1–5).
-
-If qualityScore < 3, respond with exactly:
-{"qualityScore":1,"isPersonalized":false}
-(use the actual score, not always 1)
-
-If qualityScore >= 3, include personalised rewrites of the four fields shown below.
-The CURRENT DEFAULT for each field is shown — you are replacing these with something
-more personal and specific to this user's niche, goals, and problems.
-
-{
-  "qualityScore": <integer 3–5>,
-  "isPersonalized": true,
-  "headline": "CURRENT DEFAULT: Don't Start OneTake at Half Power — Upgrade to Premium Studio Now and Claim 4 Exclusive Bonuses (Today Only) | YOUR REWRITE: max 18 words, direct-response headline addressing their specific niche or goal; keep the urgency and benefit-driven tone",
-  "introParagraph": "CURRENT DEFAULT: Most creators leave 90% of OneTake's power unused — not because they don't need it, but because they never got the chance to start with it. Today, for this page only, you can unlock every Premium Studio feature at 33%+ off the regular price, plus four exclusive bonuses worth more than the subscription itself. | YOUR REWRITE: 2–3 sentences that connect this specific user's stated problem to what Premium Studio unlocks for them; make it feel like it was written for them personally",
-  "benefit1": "CURRENT DEFAULT: Priority support + live sessions | YOUR REWRITE: max 12 words — same feature (priority email/chat/Zoom support + twice-monthly live Q&A sessions with Sébastien), reframed to resonate with their use case",
-  "benefit2": "CURRENT DEFAULT: Whitelabel hosting (custom domain) | YOUR REWRITE: max 12 words — same feature (host videos on their own domain, no OneTake branding), reframed to resonate with their use case"
-}
-
-Rules:
-- Output ONLY the JSON object — no explanation, no markdown, no backticks
-- Never invent OneTake features or capabilities beyond what is listed above
-- Write in English regardless of the input language
-- Address the user directly (use "you" / "your")
-- Tone: warm, direct, enthusiastic — like a mentor who genuinely wants this person to win
-- The headline and introParagraph must feel written specifically for this person, not generic
-`;
+const OTO_TOOL = {
+  name: 'personalize_oto',
+  description: 'Score the quality of the survey answers and, if sufficient, return personalised copy for the OTO page.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      qualityScore: {
+        type: 'integer',
+        description: '1=nonsense/test data, 2=very vague, 3=recognisable niche, 4=specific niche+audience, 5=niche+avatar+promise+problem all present'
+      },
+      isPersonalized: {
+        type: 'boolean',
+        description: 'true only when qualityScore >= 3 and personalised copy has been written'
+      },
+      headline: {
+        type: 'string',
+        description: 'Max 18 words. Direct-response headline for this user\'s specific niche/goal. Default to improve: "Don\'t Start OneTake at Half Power — Upgrade to Premium Studio Now and Claim 4 Exclusive Bonuses (Today Only)"'
+      },
+      introParagraph: {
+        type: 'string',
+        description: '2–3 sentences connecting this user\'s stated problem to what Premium Studio unlocks. Default to improve: "Most creators leave 90% of OneTake\'s power unused — not because they don\'t need it, but because they never got the chance to start with it. Today, for this page only, you can unlock every Premium Studio feature at 33%+ off the regular price, plus four exclusive bonuses worth more than the subscription itself."'
+      },
+      benefit1: {
+        type: 'string',
+        description: 'Max 12 words. Reframe "Priority support + live sessions" (priority email/chat support + twice-monthly live Q&A with Sébastien) to resonate with this user\'s use case.'
+      },
+      benefit2: {
+        type: 'string',
+        description: 'Max 12 words. Reframe "Whitelabel hosting (custom domain)" (host videos on own domain, no OneTake branding) to resonate with this user\'s use case.'
+      }
+    },
+    required: ['qualityScore', 'isPersonalized']
+  }
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Build the user-turn message Claude will see.
- */
 function buildUserMessage(body) {
   const lines = [
     'Survey answers from a new OneTake AI user:',
     '',
-    `Plan signed up for: ${body.plan              || 'not specified'}`,
-    `Use cases selected: ${body.useCases          || 'not specified'}`,
-    `Estimated video volume per month: ${body.estimatedVolume || 'not specified'}`,
-    `Their website: ${body.website                || 'not provided'}`,
-    `About themselves / their business: ${body.nameAndDescription || 'not provided'}`,
-    `Their ideal target audience / customer: ${body.avatar     || 'not provided'}`,
-    `Their big promise / transformation they deliver: ${body.bigPromise || 'not provided'}`,
-    `Main problem or bottleneck they want to solve: ${body.mainProblem  || 'not provided'}`,
-    '',
-    'Please score these answers and, if the quality is sufficient, personalise the OneTake AI OTO page copy for this user.',
+    `Plan signed up for: ${body.plan               || 'not specified'}`,
+    `Use cases: ${body.useCases                    || 'not specified'}`,
+    `Videos per month: ${body.estimatedVolume      || 'not specified'}`,
+    `Website: ${body.website                       || 'not provided'}`,
+    `About their business: ${body.nameAndDescription || 'not provided'}`,
+    `Target audience: ${body.avatar                || 'not provided'}`,
+    `Big promise / transformation: ${body.bigPromise || 'not provided'}`,
+    `Main problem to solve: ${body.mainProblem     || 'not provided'}`,
   ];
   return lines.join('\n');
 }
 
-/**
- * Always-safe fallback response — never throws.
- */
 function fallback(reason) {
   if (reason) console.error('[oto-personalize] fallback reason:', reason);
   return new Response(
@@ -164,9 +115,6 @@ function fallback(reason) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENTRY POINT
-// BunnyCDN Edge Scripts use BunnySDK.net.http.serve() as the entry point.
-// The handler receives the Request object directly.
-// Environment variables are accessed via process.env.
 // ─────────────────────────────────────────────────────────────────────────────
 
 BunnySDK.net.http.serve(async (request) => {
@@ -177,7 +125,6 @@ BunnySDK.net.http.serve(async (request) => {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
 
-  // ── Only accept POST ────────────────────────────────────────────────────────
   if (method !== 'POST') {
     return fallback('method not allowed: ' + method);
   }
@@ -196,7 +143,7 @@ BunnySDK.net.http.serve(async (request) => {
     return fallback('ANTHROPIC_API_KEY environment variable not set');
   }
 
-  // ── Call Anthropic ──────────────────────────────────────────────────────────
+  // ── Call Anthropic with tool use ────────────────────────────────────────────
   let anthropicResponse;
   try {
     anthropicResponse = await fetch(ANTHROPIC_API_URL, {
@@ -207,10 +154,12 @@ BunnySDK.net.http.serve(async (request) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model:      ANTHROPIC_MODEL,
-        max_tokens: MAX_TOKENS,
-        system:     SYSTEM_PROMPT,
-        messages:   [{ role: 'user', content: buildUserMessage(body) }],
+        model:       ANTHROPIC_MODEL,
+        max_tokens:  MAX_TOKENS,
+        system:      SYSTEM_PROMPT,
+        tools:       [OTO_TOOL],
+        tool_choice: { type: 'tool', name: 'personalize_oto' },
+        messages:    [{ role: 'user', content: buildUserMessage(body) }],
       }),
     });
   } catch (err) {
@@ -222,31 +171,25 @@ BunnySDK.net.http.serve(async (request) => {
     return fallback(`Anthropic API ${anthropicResponse.status}: ${errText}`);
   }
 
-  // ── Parse Anthropic response ────────────────────────────────────────────────
+  // ── Extract tool call input — already a parsed object, no JSON.parse needed ─
   let anthropicData;
   try {
     anthropicData = await anthropicResponse.json();
   } catch (err) {
-    return fallback('could not parse Anthropic response JSON: ' + err.message);
+    return fallback('could not parse Anthropic response: ' + err.message);
   }
 
-  const rawText = anthropicData?.content?.[0]?.text || '';
-
-  let parsed;
-  try {
-    parsed = JSON.parse(rawText);
-  } catch (err) {
-    return fallback('Claude returned non-JSON: ' + rawText.slice(0, 200));
+  const toolInput = anthropicData?.content?.[0]?.input;
+  if (!toolInput || typeof toolInput !== 'object') {
+    return fallback('unexpected Anthropic response shape: ' + JSON.stringify(anthropicData).slice(0, 200));
   }
 
-  // Sanity-check: ensure required fields are present when isPersonalized is true
-  if (parsed.isPersonalized) {
-    if (!parsed.headline || !parsed.introParagraph) {
-      parsed.isPersonalized = false;
-    }
+  // Sanity-check: if isPersonalized but missing required copy fields, downgrade
+  if (toolInput.isPersonalized && (!toolInput.headline || !toolInput.introParagraph)) {
+    toolInput.isPersonalized = false;
   }
 
-  return new Response(JSON.stringify(parsed), {
+  return new Response(JSON.stringify(toolInput), {
     status: 200,
     headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
