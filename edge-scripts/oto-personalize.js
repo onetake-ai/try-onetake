@@ -16,6 +16,7 @@
  */
 
 import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
+import process from "node:process";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
