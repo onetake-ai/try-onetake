@@ -222,7 +222,7 @@ const planPresets = {
         tier: 'Premium Studio',
         recurrence: 'monthly',
         trial: null,
-        product: 'REPLACE_WITH_PADDLE_PRICE_ID',
+        product: 'pri_01kkvvq8fr4zjq6axydfwtk2hy',
         firstExpectedPayment: 99,
         freeToPaidConversionRate: 0.30
     },
@@ -230,7 +230,7 @@ const planPresets = {
         tier: 'Premium Studio',
         recurrence: 'quarterly',
         trial: null,
-        product: 'REPLACE_WITH_PADDLE_PRICE_ID',
+        product: 'pri_01kkvvgev8t41hy9jnc8aphagy',
         firstExpectedPayment: 249,
         freeToPaidConversionRate: 0.30
     }

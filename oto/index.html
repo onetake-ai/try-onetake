@@ -7,6 +7,17 @@
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-J8zROrLHf_IuTzmzQ6Gdx.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+
+  <!-- AnyTrack Tracking Code -->
+  <script>!function(e,t,n,s,a){(a=t.createElement(n)).async=!0,a.src="https://assets.anytrack.io/01Nrajm7X3x6.js",(t=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,t),e[s]=e[s]||function(){(e[s].q=e[s].q||[]).push(arguments)}}(window,document,"script","AnyTrack");</script>
+  <!-- End AnyTrack Tracking Code -->
 </head>
 <body>
 
@@ -471,7 +482,7 @@
       // CONFIG
       // Fill in the BunnyCDN Anthropic proxy URL once it's created.
       // ─────────────────────────────────────────────
-      var ANTHROPIC_PROXY_URL = 'REPLACE_WITH_BUNNYCDN_PROXY_URL';
+      var ANTHROPIC_PROXY_URL = 'https://oto.fluffybunny.onetake.ai/';
       var LOADER_MAX_MS = 2000;
 
       // ─────────────────────────────────────────────
@@ -513,9 +524,6 @@
           setTimeout(function () { loaderEl.style.display = 'none'; }, 300);
         }
       }
-
-      // Safety net: always hide loader after LOADER_MAX_MS
-      var loaderFallback = setTimeout(hideLoader, LOADER_MAX_MS);
 
       // ─────────────────────────────────────────────
       // CONDITIONAL SECTIONS
@@ -628,10 +636,12 @@
       function personalizeContent() {
         if (ANTHROPIC_PROXY_URL === 'REPLACE_WITH_BUNNYCDN_PROXY_URL') {
           // Proxy not yet configured — show default copy immediately
-          clearTimeout(loaderFallback);
           hideLoader();
           return;
         }
+
+        // Safety net: hide loader after LOADER_MAX_MS from when fetch actually starts
+        var loaderFallback = setTimeout(hideLoader, LOADER_MAX_MS);
 
         var controller = new AbortController();
         var apiTimeout = setTimeout(function () { controller.abort(); }, LOADER_MAX_MS);

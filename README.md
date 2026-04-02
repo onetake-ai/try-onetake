@@ -132,6 +132,25 @@ Plans with `trial: null`:
 - Button: "Create account"
 - Special offer content hidden (except sub-headline on special-offer page)
 
+## Adding New Pages
+
+When creating any new HTML page in this project, **always include the following tracking scripts** in the `<head>`:
+
+```html
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-J8zROrLHf_IuTzmzQ6Gdx.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<!-- AnyTrack Tracking Code -->
+<script>!function(e,t,n,s,a){(a=t.createElement(n)).async=!0,a.src="https://assets.anytrack.io/01Nrajm7X3x6.js",(t=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,t),e[s]=e[s]||function(){(e[s].q=e[s].q||[]).push(arguments)}}(window,document,"script","AnyTrack");</script>
+<!-- End AnyTrack Tracking Code -->
+```
+
+Omitting these scripts means conversions and sessions on that page won't be tracked.
+
 ## Development Notes
 
 ### Brand Colors
