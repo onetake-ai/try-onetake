@@ -5,7 +5,7 @@
  *   1. Go to BunnyCDN Dashboard → Edge Scripts → Create Edge Script
  *   2. Paste this entire file into the editor
  *   3. Add environment variable: ANTHROPIC_API_KEY = <your Anthropic API key>
- *   4. Set the script URL path to: /oto-personalize
+ *   4. Deploy and note the script URL
  *   5. Update ANTHROPIC_PROXY_URL in oto/index.html to point to this script
  *
  * WHAT IT DOES:
@@ -15,6 +15,8 @@
  *   Always returns JSON; falls back to { isPersonalized: false } on any error.
  */
 
+import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
@@ -23,7 +25,7 @@ const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
 // claude-haiku-4-5 is used (not Sonnet) because we need to respond within the
 // 2-second abort timeout set on the client side.
-const ANTHROPIC_MODEL   = 'claude-haiku-4-5-20251001';
+const ANTHROPIC_MODEL = 'claude-haiku-4-5-20251001';
 
 // Keep max_tokens tight — we only need a small JSON object back.
 const MAX_TOKENS = 600;
@@ -134,12 +136,12 @@ function buildUserMessage(body) {
   const lines = [
     'Survey answers from a new OneTake AI user:',
     '',
-    `Plan signed up for: ${body.plan             || 'not specified'}`,
-    `Use cases selected: ${body.useCases         || 'not specified'}`,
+    `Plan signed up for: ${body.plan              || 'not specified'}`,
+    `Use cases selected: ${body.useCases          || 'not specified'}`,
     `Estimated video volume per month: ${body.estimatedVolume || 'not specified'}`,
-    `Their website: ${body.website               || 'not provided'}`,
+    `Their website: ${body.website                || 'not provided'}`,
     `About themselves / their business: ${body.nameAndDescription || 'not provided'}`,
-    `Their ideal target audience / customer: ${body.avatar    || 'not provided'}`,
+    `Their ideal target audience / customer: ${body.avatar     || 'not provided'}`,
     `Their big promise / transformation they deliver: ${body.bigPromise || 'not provided'}`,
     `Main problem or bottleneck they want to solve: ${body.mainProblem  || 'not provided'}`,
     '',
@@ -159,33 +161,15 @@ function fallback(reason) {
   );
 }
 
-/**
- * Retrieve the Anthropic API key from the environment.
- * BunnyCDN exposes env variables on `context.env`; adjust if your setup differs.
- */
-function getApiKey(context) {
-  // BunnyCDN Edge Scripts (primary pattern)
-  if (context && context.env && context.env.ANTHROPIC_API_KEY) {
-    return context.env.ANTHROPIC_API_KEY;
-  }
-  // Fallback — some BunnyCDN versions expose env via process.env or a global
-  if (typeof process !== 'undefined' && process.env && process.env.ANTHROPIC_API_KEY) {
-    return process.env.ANTHROPIC_API_KEY;
-  }
-  return null;
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // ENTRY POINT
-// BunnyCDN Edge Scripts use `async function onRequest(context)` as the entry.
-// context.request  — the incoming Request object
-// context.env      — environment variables set in the BunnyCDN dashboard
-// Return a Response object.
+// BunnyCDN Edge Scripts use BunnySDK.net.http.serve() as the entry point.
+// The handler receives the Request object directly.
+// Environment variables are accessed via process.env.
 // ─────────────────────────────────────────────────────────────────────────────
 
-async function onRequest(context) {
-  const request = context.request;
-  const method  = request.method.toUpperCase();
+BunnySDK.net.http.serve(async (request) => {
+  const method = request.method.toUpperCase();
 
   // ── CORS preflight ──────────────────────────────────────────────────────────
   if (method === 'OPTIONS') {
@@ -206,7 +190,7 @@ async function onRequest(context) {
   }
 
   // ── Retrieve API key ────────────────────────────────────────────────────────
-  const apiKey = getApiKey(context);
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return fallback('ANTHROPIC_API_KEY environment variable not set');
   }
@@ -265,4 +249,4 @@ async function onRequest(context) {
     status: 200,
     headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
-}
+});
