@@ -8,16 +8,8 @@
   <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-J8zROrLHf_IuTzmzQ6Gdx.js"></script>
-  <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    plausible.init()
-  </script>
-
-  <!-- AnyTrack Tracking Code -->
-  <script>!function(e,t,n,s,a){(a=t.createElement(n)).async=!0,a.src="https://assets.anytrack.io/01Nrajm7X3x6.js",(t=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,t),e[s]=e[s]||function(){(e[s].q=e[s].q||[]).push(arguments)}}(window,document,"script","AnyTrack");</script>
-  <!-- End AnyTrack Tracking Code -->
+  <!-- Tracking: Plausible, AnyTrack, Weglot -->
+  <script src="../tools.js"></script>
 </head>
 <body>
 
@@ -105,11 +97,11 @@
         <p class="cta-label">Yes! I want to upgrade to Premium Studio and claim all 4 bonuses</p>
         <div class="cta-buttons">
           <button class="btn-cta-quarterly" onclick="openCheckout('quarterly')">
-            <span class="btn-main-text">Best Value: $249 for 3 months</span>
-            <span class="btn-sub-text">That's just $83/month — save $48 vs. monthly</span>
+            <span class="btn-main-text">Best Value: <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy">$249</span> for 3 months</span>
+            <span class="btn-sub-text">That's just <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy" data-paddle-price-divisor="3">$83</span>/month — save $48 vs. monthly</span>
           </button>
           <button class="btn-cta-monthly" onclick="openCheckout('monthly')">
-            <span class="btn-main-text">Or pay monthly at $99/month</span>
+            <span class="btn-main-text">Or pay monthly at <span data-paddle-price-id="pri_01kkvvq8fr4zjq6axydfwtk2hy">$99</span>/month</span>
             <span class="btn-sub-text">Cancel anytime · No commitment</span>
           </button>
         </div>
@@ -308,18 +300,18 @@
     <!-- ── PRICE REVEAL ── -->
     <section class="price-reveal">
       <p class="price-reveal-label">Your exclusive one-time offer</p>
-      <p class="price-regular">Regular price: $149/month</p>
+      <p class="price-regular">Regular price: <span data-paddle-price-id="pri_01kc9j3s2pak4atr4mqrwztx6t">$149</span>/month</p>
 
       <p class="price-oto">
-        <sup>$</sup>99<span class="period">/month</span>
+        <span data-paddle-price-id="pri_01kkvvq8fr4zjq6axydfwtk2hy">$99</span><span class="period">/month</span>
       </p>
       <p style="font-size:13px; color: #27ae60; font-weight:600; margin-top:0.25rem;">Save 33% every month, forever</p>
 
       <p class="price-divider">— or save even more —</p>
 
       <p class="price-secondary">
-        $249 for 3 months
-        <span class="saving">That's $83/month — save $48 vs. monthly billing</span>
+        <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy">$249</span> for 3 months
+        <span class="saving">That's <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy" data-paddle-price-divisor="3">$83</span>/month — save $48 vs. monthly billing</span>
       </p>
 
       <div class="bonus-value-line">
@@ -353,11 +345,11 @@
         <p class="cta-label">Claim your Premium Studio upgrade + all 4 bonuses now</p>
         <div class="cta-buttons">
           <button class="btn-cta-quarterly" onclick="openCheckout('quarterly')">
-            <span class="btn-main-text">Best Value: $249 for 3 months</span>
-            <span class="btn-sub-text">That's just $83/month — save $48 vs. monthly</span>
+            <span class="btn-main-text">Best Value: <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy">$249</span> for 3 months</span>
+            <span class="btn-sub-text">That's just <span data-paddle-price-id="pri_01kkvvgev8t41hy9jnc8aphagy" data-paddle-price-divisor="3">$83</span>/month — save $48 vs. monthly</span>
           </button>
           <button class="btn-cta-monthly" onclick="openCheckout('monthly')">
-            <span class="btn-main-text">Or pay monthly at $99/month</span>
+            <span class="btn-main-text">Or pay monthly at <span data-paddle-price-id="pri_01kkvvq8fr4zjq6axydfwtk2hy">$99</span>/month</span>
             <span class="btn-sub-text">Cancel anytime · No commitment</span>
           </button>
         </div>
@@ -474,6 +466,9 @@
   <!-- Pricing data (for OTO product IDs) -->
   <script src="../pricing-data.js"></script>
 
+  <!-- Paddle price localizer (replaces marked prices with visitor's local currency) -->
+  <script src="../price-localizer.js"></script>
+
   <script>
     (function () {
       'use strict';
@@ -483,7 +478,7 @@
       // Fill in the BunnyCDN Anthropic proxy URL once it's created.
       // ─────────────────────────────────────────────
       var ANTHROPIC_PROXY_URL = 'https://oto.fluffybunny.onetake.ai/';
-      var LOADER_MAX_MS = 3500;
+      var LOADER_MAX_MS = 5000;
 
       // ─────────────────────────────────────────────
       // PARSE URL PARAMETERS
@@ -630,19 +625,28 @@
       }
 
       // ─────────────────────────────────────────────
-      // PERSONALIZE VIA ANTHROPIC PROXY
-      // Called on load; hides loader when done (or on timeout/error).
+      // PERSONALIZE VIA PROXY
+      // Uses localStorage cache when available.
+      // Forces a fresh API call only when refresh=true is in the URL.
       // ─────────────────────────────────────────────
+      var CACHE_KEY = 'oto_personalization';
+
       function personalizeContent() {
-        if (ANTHROPIC_PROXY_URL === 'REPLACE_WITH_BUNNYCDN_PROXY_URL') {
-          // Proxy not yet configured — show default copy immediately
-          hideLoader();
-          return;
+        var forceRefresh = urlParams.get('refresh') === 'true';
+
+        // Try cache first
+        if (!forceRefresh) {
+          var cached = null;
+          try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (e) {}
+          if (cached && cached.isPersonalized) {
+            injectPersonalizedCopy(cached);
+            hideLoader();
+            return;
+          }
         }
 
-        // Safety net: hide loader after LOADER_MAX_MS from when fetch actually starts
+        // No usable cache (or refresh=true) — call the proxy
         var loaderFallback = setTimeout(hideLoader, LOADER_MAX_MS);
-
         var controller = new AbortController();
         var apiTimeout = setTimeout(function () { controller.abort(); }, LOADER_MAX_MS);
 
@@ -650,14 +654,14 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            plan:              otoParams.plan,
-            useCases:          otoParams.useCases,
-            estimatedVolume:   otoParams.estimatedVolume,
-            website:           otoParams.website,
+            plan:               otoParams.plan,
+            useCases:           otoParams.useCases,
+            estimatedVolume:    otoParams.estimatedVolume,
+            website:            otoParams.website,
             nameAndDescription: otoParams.nameAndDescription,
-            avatar:            otoParams.avatar,
-            bigPromise:        otoParams.bigPromise,
-            mainProblem:       otoParams.mainProblem
+            avatar:             otoParams.avatar,
+            bigPromise:         otoParams.bigPromise,
+            mainProblem:        otoParams.mainProblem
           }),
           signal: controller.signal
         })
@@ -669,10 +673,10 @@
         .then(function (data) {
           if (data && data.isPersonalized) {
             injectPersonalizedCopy(data);
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
           }
         })
         .catch(function (err) {
-          // Timeout (AbortError) or any network/parse error — show default copy
           if (err.name !== 'AbortError') {
             console.error('OTO personalization error:', err);
           }
@@ -708,6 +712,7 @@
       // ─────────────────────────────────────────────
       document.addEventListener('DOMContentLoaded', function () {
         initializePaddle();
+        if (typeof window.localizePrices === 'function') window.localizePrices();
         initFaq();
         personalizeContent();
       });

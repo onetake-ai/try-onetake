@@ -4,15 +4,16 @@
  * DEPLOYMENT:
  *   1. Go to BunnyCDN Dashboard → Edge Scripts → Create Edge Script
  *   2. Paste this entire file into the editor
- *   3. Add environment variable: ANTHROPIC_API_KEY = <your Anthropic API key>
+ *   3. Add environment variables:
+ *        ANTHROPIC_API_KEY = <your Anthropic API key>
+ *        OPENAI_API_KEY    = <your OpenAI API key>
  *   4. Deploy and note the script URL
  *   5. Update ANTHROPIC_PROXY_URL in oto/index.html to point to this script
  *
  * WHAT IT DOES:
- *   Receives survey data POSTed from the OTO page, asks Claude Haiku to score
- *   the quality of the answers and — if they're meaningful — rewrite four copy
- *   blocks personalised to that user's niche and goals.
- *   Uses tool calling to guarantee structured JSON output with no parsing needed.
+ *   Fires Anthropic (claude-haiku) and OpenAI (gpt-4.1-nano) in parallel,
+ *   returns whichever answers first, logs the winner to console.
+ *   Uses tool calling on both APIs to guarantee structured JSON output.
  *   Always returns JSON; falls back to { isPersonalized: false } on any error.
  */
 
@@ -24,8 +25,10 @@ import process from "node:process";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+const OPENAI_API_URL    = 'https://api.openai.com/v1/chat/completions';
 const ANTHROPIC_MODEL   = 'claude-haiku-4-5-20251001';
-const MAX_TOKENS        = 350; // tool use output is compact — no markdown overhead
+const OPENAI_MODEL      = 'gpt-4.1-nano';
+const MAX_TOKENS        = 350;
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin':  '*',
@@ -35,7 +38,7 @@ const CORS_HEADERS = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SYSTEM PROMPT — kept short to reduce input tokens and improve latency
+// SYSTEM PROMPT — kept short to reduce input tokens and latency
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SYSTEM_PROMPT = `\
@@ -46,14 +49,13 @@ Plans: Occasional ($20/mo, 1h editing/mo), Pro ($39/mo, 3h + whitelabel hosting 
 Score the survey answers 1–5, then if quality ≥ 3, write personalised copy. Tone: warm, direct, mentor-like. Always English. Address the user as "you/your". Never invent features beyond those listed above.`;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TOOL DEFINITION
-// Forces Claude to return structured data — no JSON parsing of free text needed.
+// TOOL DEFINITION (shared schema, used by both APIs)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const OTO_TOOL = {
+const OTO_TOOL_SCHEMA = {
   name: 'personalize_oto',
   description: 'Score the quality of the survey answers and, if sufficient, return personalised copy for the OTO page.',
-  input_schema: {
+  parameters: {
     type: 'object',
     properties: {
       qualityScore: {
@@ -113,6 +115,68 @@ function fallback(reason) {
   );
 }
 
+function sanitize(result) {
+  // Downgrade isPersonalized if required copy fields are missing
+  if (result.isPersonalized && (!result.headline || !result.introParagraph)) {
+    result.isPersonalized = false;
+  }
+  return result;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// API CALLERS
+// Each returns a parsed result object or throws on any failure.
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function callAnthropic(apiKey, userMessage) {
+  const response = await fetch(ANTHROPIC_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type':      'application/json',
+      'x-api-key':         apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model:       ANTHROPIC_MODEL,
+      max_tokens:  MAX_TOKENS,
+      system:      SYSTEM_PROMPT,
+      tools:       [{ name: OTO_TOOL_SCHEMA.name, description: OTO_TOOL_SCHEMA.description, input_schema: OTO_TOOL_SCHEMA.parameters }],
+      tool_choice: { type: 'tool', name: OTO_TOOL_SCHEMA.name },
+      messages:    [{ role: 'user', content: userMessage }],
+    }),
+  });
+  if (!response.ok) throw new Error('Anthropic HTTP ' + response.status);
+  const data = await response.json();
+  const input = data?.content?.[0]?.input;
+  if (!input || typeof input !== 'object') throw new Error('unexpected Anthropic response shape');
+  return sanitize(input);
+}
+
+async function callOpenAI(apiKey, userMessage) {
+  const response = await fetch(OPENAI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer ' + apiKey,
+    },
+    body: JSON.stringify({
+      model:       OPENAI_MODEL,
+      max_tokens:  MAX_TOKENS,
+      tools:       [{ type: 'function', function: OTO_TOOL_SCHEMA }],
+      tool_choice: { type: 'function', function: { name: OTO_TOOL_SCHEMA.name } },
+      messages:    [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user',   content: userMessage },
+      ],
+    }),
+  });
+  if (!response.ok) throw new Error('OpenAI HTTP ' + response.status);
+  const data = await response.json();
+  const args = data?.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
+  if (!args) throw new Error('unexpected OpenAI response shape');
+  return sanitize(JSON.parse(args));
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ENTRY POINT
 // ─────────────────────────────────────────────────────────────────────────────
@@ -120,16 +184,13 @@ function fallback(reason) {
 BunnySDK.net.http.serve(async (request) => {
   const method = request.method.toUpperCase();
 
-  // ── CORS preflight ──────────────────────────────────────────────────────────
   if (method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
-
   if (method !== 'POST') {
     return fallback('method not allowed: ' + method);
   }
 
-  // ── Parse request body ──────────────────────────────────────────────────────
   let body;
   try {
     body = await request.json();
@@ -137,59 +198,38 @@ BunnySDK.net.http.serve(async (request) => {
     return fallback('invalid JSON body: ' + err.message);
   }
 
-  // ── Retrieve API key ────────────────────────────────────────────────────────
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return fallback('ANTHROPIC_API_KEY environment variable not set');
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+  const openaiKey    = process.env.OPENAI_API_KEY;
+
+  const userMessage = buildUserMessage(body);
+
+  const promises = [];
+  if (anthropicKey) {
+    promises.push(
+      callAnthropic(anthropicKey, userMessage)
+        .then(r => { console.log('[oto-personalize] winner: anthropic (score ' + r.qualityScore + ')'); return r; })
+    );
+  }
+  if (openaiKey) {
+    promises.push(
+      callOpenAI(openaiKey, userMessage)
+        .then(r => { console.log('[oto-personalize] winner: openai (score ' + r.qualityScore + ')'); return r; })
+    );
   }
 
-  // ── Call Anthropic with tool use ────────────────────────────────────────────
-  let anthropicResponse;
+  if (!promises.length) {
+    return fallback('no API keys configured');
+  }
+
+  let result;
   try {
-    anthropicResponse = await fetch(ANTHROPIC_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model:       ANTHROPIC_MODEL,
-        max_tokens:  MAX_TOKENS,
-        system:      SYSTEM_PROMPT,
-        tools:       [OTO_TOOL],
-        tool_choice: { type: 'tool', name: 'personalize_oto' },
-        messages:    [{ role: 'user', content: buildUserMessage(body) }],
-      }),
-    });
+    result = await Promise.any(promises);
   } catch (err) {
-    return fallback('fetch to Anthropic failed: ' + err.message);
+    // AggregateError — both APIs failed
+    return fallback('all API calls failed');
   }
 
-  if (!anthropicResponse.ok) {
-    const errText = await anthropicResponse.text().catch(() => '');
-    return fallback(`Anthropic API ${anthropicResponse.status}: ${errText}`);
-  }
-
-  // ── Extract tool call input — already a parsed object, no JSON.parse needed ─
-  let anthropicData;
-  try {
-    anthropicData = await anthropicResponse.json();
-  } catch (err) {
-    return fallback('could not parse Anthropic response: ' + err.message);
-  }
-
-  const toolInput = anthropicData?.content?.[0]?.input;
-  if (!toolInput || typeof toolInput !== 'object') {
-    return fallback('unexpected Anthropic response shape: ' + JSON.stringify(anthropicData).slice(0, 200));
-  }
-
-  // Sanity-check: if isPersonalized but missing required copy fields, downgrade
-  if (toolInput.isPersonalized && (!toolInput.headline || !toolInput.introParagraph)) {
-    toolInput.isPersonalized = false;
-  }
-
-  return new Response(JSON.stringify(toolInput), {
+  return new Response(JSON.stringify(result), {
     status: 200,
     headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
