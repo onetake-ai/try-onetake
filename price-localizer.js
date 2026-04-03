@@ -70,7 +70,20 @@ window.localizePrices = function () {
           // Intl failed — leave content unchanged
         }
       } else {
-        el.textContent = entry.formatted;
+        // Strip decimals for round prices (e.g. €20.00 → €20, but €19.99 stays)
+        if (entry.raw === Math.floor(entry.raw)) {
+          try {
+            el.textContent = new Intl.NumberFormat(navigator.language, {
+              style:    'currency',
+              currency: currencyCode,
+              maximumFractionDigits: 0
+            }).format(entry.raw);
+          } catch (e) {
+            el.textContent = entry.formatted;
+          }
+        } else {
+          el.textContent = entry.formatted;
+        }
       }
     });
   })
