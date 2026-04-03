@@ -105,9 +105,11 @@
             <span class="btn-sub-text">Cancel anytime · No commitment</span>
           </button>
         </div>
-        <a href="#" class="decline-link" onclick="decline(event)">
-          No thanks, I'll keep my current plan. I'll miss all the bonuses and will never see this offer again.
-        </a>
+        <p class="decline-or">or:</p>
+        <button class="btn-cta-decline" onclick="decline(event)">
+          <span>No thanks, I'll keep my current plan.</span>
+          <span>I'll miss all the bonuses and will never see this offer again.</span>
+        </button>
       </div>
     </section>
 
@@ -353,9 +355,11 @@
             <span class="btn-sub-text">Cancel anytime · No commitment</span>
           </button>
         </div>
-        <a href="#" class="decline-link" onclick="decline(event)">
-          No thanks, I'll keep my current plan. I'll miss all the bonuses and will never see this offer again.
-        </a>
+        <p class="decline-or">or:</p>
+        <button class="btn-cta-decline" onclick="decline(event)">
+          <span>No thanks, I'll keep my current plan.</span>
+          <span>I'll miss all the bonuses and will never see this offer again.</span>
+        </button>
       </div>
     </section>
 
@@ -372,8 +376,9 @@
         </button>
         <div class="faq-answer">
           Yes. Once you upgrade, you'll receive the microphone at no extra cost.
-          We'll ask for your shipping address after you complete your 10th video project inside OneTake —
+          We'll ask for your shipping address after you upload your first video inside OneTake —
           that way we know you're up and running and ready to use it.
+          The swag box ships after your 10th video.
         </div>
       </div>
 
@@ -654,6 +659,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            language:           otoParams.language,
             plan:               otoParams.plan,
             useCases:           otoParams.useCases,
             estimatedVolume:    otoParams.estimatedVolume,
