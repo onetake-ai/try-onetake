@@ -11,9 +11,9 @@
  *   5. Update ANTHROPIC_PROXY_URL in oto/index.html to point to this script
  *
  * WHAT IT DOES:
- *   Fires Anthropic (claude-haiku) and OpenAI (gpt-4.1-nano) in parallel,
- *   returns whichever answers first, logs the winner to console.
- *   Uses tool calling on both APIs to guarantee structured JSON output.
+ *   Calls OpenAI (gpt-4.1-nano) with tool calling to guarantee structured JSON.
+ *   Anthropic (claude-haiku) call is kept below but commented out — OpenAI
+ *   consistently won the race so the extra cost was not justified.
  *   Always returns JSON; falls back to { isPersonalized: false } on any error.
  */
 
@@ -46,7 +46,7 @@ You are a direct-response copywriter for OneTake AI — an AI video editor that 
 
 Plans: Occasional ($20/mo, 1h editing/mo), Pro ($39/mo, 3h + whitelabel hosting + gaze correction + background removal), Premium Studio ($99/mo OTO price, 10h + unlimited duration + team members + hyper-realistic AI + voice cloning in 20+ languages).
 
-Score the survey answers 1–5, then if quality ≥ 3, write personalised copy. Tone: warm, direct, mentor-like. Always English. Address the user as "you/your". Never invent features beyond those listed above.`;
+Score the survey answers 1–5, then if quality ≥ 3, write personalised copy. Tone: warm, direct, mentor-like. Respond in the user's language (see "Language" field in survey; default to English if absent or unrecognised). Address the user as "you/your". Never invent features beyond those listed above.`;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TOOL DEFINITION (shared schema, used by both APIs)
@@ -95,6 +95,7 @@ function buildUserMessage(body) {
   const lines = [
     'Survey answers from a new OneTake AI user:',
     '',
+    `Language: ${body.language                     || 'en'}`,
     `Plan signed up for: ${body.plan               || 'not specified'}`,
     `Use cases: ${body.useCases                    || 'not specified'}`,
     `Videos per month: ${body.estimatedVolume      || 'not specified'}`,
@@ -128,6 +129,9 @@ function sanitize(result) {
 // Each returns a parsed result object or throws on any failure.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Anthropic call kept for reference but not used — OpenAI consistently won the
+// race so the parallel call was pure extra cost.
+/*
 async function callAnthropic(apiKey, userMessage) {
   const response = await fetch(ANTHROPIC_API_URL, {
     method: 'POST',
@@ -151,6 +155,7 @@ async function callAnthropic(apiKey, userMessage) {
   if (!input || typeof input !== 'object') throw new Error('unexpected Anthropic response shape');
   return sanitize(input);
 }
+*/
 
 async function callOpenAI(apiKey, userMessage) {
   const response = await fetch(OPENAI_API_URL, {
@@ -198,35 +203,17 @@ BunnySDK.net.http.serve(async (request) => {
     return fallback('invalid JSON body: ' + err.message);
   }
 
-  const anthropicKey = process.env.ANTHROPIC_API_KEY;
-  const openaiKey    = process.env.OPENAI_API_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (!openaiKey) return fallback('OPENAI_API_KEY not configured');
 
   const userMessage = buildUserMessage(body);
 
-  const promises = [];
-  if (anthropicKey) {
-    promises.push(
-      callAnthropic(anthropicKey, userMessage)
-        .then(r => { console.log('[oto-personalize] winner: anthropic (score ' + r.qualityScore + ')'); return r; })
-    );
-  }
-  if (openaiKey) {
-    promises.push(
-      callOpenAI(openaiKey, userMessage)
-        .then(r => { console.log('[oto-personalize] winner: openai (score ' + r.qualityScore + ')'); return r; })
-    );
-  }
-
-  if (!promises.length) {
-    return fallback('no API keys configured');
-  }
-
   let result;
   try {
-    result = await Promise.any(promises);
+    result = await callOpenAI(openaiKey, userMessage);
+    console.log('[oto-personalize] openai score ' + result.qualityScore);
   } catch (err) {
-    // AggregateError — both APIs failed
-    return fallback('all API calls failed');
+    return fallback('OpenAI call failed: ' + err.message);
   }
 
   return new Response(JSON.stringify(result), {
