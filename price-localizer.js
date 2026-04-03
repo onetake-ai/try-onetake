@@ -10,9 +10,12 @@
  *   3. Mark price elements: <span data-paddle-price-id="pri_xxx">$99</span>
  *
  * The element's text content is replaced with the formatted localized price
- * (e.g. "$99.00" for USD visitors, "€85.00" for EUR visitors).
+ * (pre-tax / subtotal, e.g. "$99" for USD visitors, "€85" for EUR visitors).
  * Elements with data-paddle-price-divisor="N" divide the price by N (for
- * per-month calculations derived from a quarterly total).
+ * per-month calculations derived from a quarterly total) and round DOWN.
+ *
+ * All elements should also carry the CSS class "paddle-price" so that Weglot
+ * can be told to exclude them from translation.
  */
 
 window.localizePrices = function () {
@@ -38,12 +41,12 @@ window.localizePrices = function () {
     var lineItems = result.data.details.lineItems;
     var currencyCode = result.data.currencyCode;
 
-    // Build a map of priceId → formatted total
+    // Build a map of priceId → pre-tax subtotal (formatted + raw)
     var priceMap = {};
     lineItems.forEach(function (item) {
       priceMap[item.price.id] = {
-        formatted: item.formattedTotals.total,
-        raw:       parseFloat(item.totals.total) / 100   // Paddle returns minor units
+        formatted: item.formattedTotals.subtotal,
+        raw:       parseFloat(item.totals.subtotal) / 100   // Paddle returns minor units
       };
     });
 
@@ -55,8 +58,8 @@ window.localizePrices = function () {
       if (!entry) return;
 
       if (divisor !== 1) {
-        // Recalculate divided price and reformat with Intl
-        var divided = entry.raw / divisor;
+        // Divide and round DOWN, then reformat with Intl
+        var divided = Math.floor(entry.raw / divisor);
         try {
           el.textContent = new Intl.NumberFormat(navigator.language, {
             style:    'currency',
