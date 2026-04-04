@@ -77,7 +77,8 @@
         downsellPlanKey: null,     // The plan key offered in the downsell
         downsellPlanInfo: null,    // The plan info offered in the downsell
         originalPlanKey: null,     // Preserved plan key before any downsell switch
-        trackingParams: {}        // UTM/ad tracking params from URL (populated by tracking-params.js)
+        trackingParams: {},        // UTM/ad tracking params from URL (populated by tracking-params.js)
+        successParams: null        // Stored when checkout opens; used to inject customer_id on completion
     };
     
     // Make state accessible globally for special-offer.js
@@ -245,6 +246,11 @@
         if (data.name === 'checkout.completed') {
             state.checkoutCompleted = true;
             trackPurchase(data);
+            // Redirect manually so we can inject customer_id before navigating to onboarding
+            const customerId = data.data?.customer?.id || '';
+            const params = new URLSearchParams(state.successParams || {});
+            if (customerId) params.set('customer_id', customerId);
+            window.location.href = 'https://try.onetake.ai/onboarding/?' + params.toString();
         }
 
         if (data.name === 'checkout.closed') {
@@ -959,8 +965,10 @@
             window.oneTakeTracking.addTrackingToSuccessUrl(successParams, state.trackingParams);
         }
 
+        state.successParams = successParams;
+
         const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
-        
+
         const settings = {
             displayMode: 'overlay',
             theme: 'light',

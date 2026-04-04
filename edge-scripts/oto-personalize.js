@@ -24,6 +24,9 @@ import process from "node:process";
 // CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
 
+const PADDLE_LIVE_BASE    = 'https://api.paddle.com';
+const PADDLE_SANDBOX_BASE = 'https://sandbox-api.paddle.com';
+
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const OPENAI_API_URL    = 'https://api.openai.com/v1/chat/completions';
 const ANTHROPIC_MODEL   = 'claude-haiku-4-5-20251001';
@@ -183,6 +186,194 @@ async function callOpenAI(apiKey, userMessage) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// PADDLE HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function paddleBase(sandbox) {
+  return sandbox ? PADDLE_SANDBOX_BASE : PADDLE_LIVE_BASE;
+}
+
+async function paddleGet(path, apiKey, sandbox) {
+  const res = await fetch(paddleBase(sandbox) + path, {
+    headers: { 'Authorization': 'Bearer ' + apiKey },
+  });
+  if (!res.ok) throw new Error('Paddle GET ' + path + ' → ' + res.status);
+  return res.json();
+}
+
+async function paddlePatch(path, payload, apiKey, sandbox) {
+  const res = await fetch(paddleBase(sandbox) + path, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': 'Bearer ' + apiKey,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error('Paddle PATCH ' + path + ' → ' + res.status + ': ' + text);
+  }
+  return res.json();
+}
+
+function paddleJsonResponse(data) {
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ACTION: VERIFY
+// Confirms a Paddle customer matches the given email, then returns the most
+// recent active/trialing subscription started within the last 24 hours.
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function handleVerify(body, apiKey) {
+  const { customer_id, email, environment } = body;
+  const sandbox = environment === 'sandbox';
+
+  if (!customer_id || !email) {
+    return paddleJsonResponse({ valid: false, reason: 'missing customer_id or email' });
+  }
+
+  // 1. Verify customer exists and email matches
+  let customerData;
+  try {
+    customerData = await paddleGet(
+      '/customers?id=' + encodeURIComponent(customer_id),
+      apiKey, sandbox
+    );
+  } catch (err) {
+    return paddleJsonResponse({ valid: false, reason: 'customer lookup failed: ' + err.message });
+  }
+
+  const customer = customerData?.data?.[0];
+  if (!customer) {
+    return paddleJsonResponse({ valid: false, reason: 'customer not found' });
+  }
+  if (customer.email.toLowerCase() !== email.toLowerCase()) {
+    return paddleJsonResponse({ valid: false, reason: 'email mismatch' });
+  }
+
+  // 2. Find subscriptions that are active or trialing
+  let subsData;
+  try {
+    subsData = await paddleGet(
+      '/subscriptions?customer_id=' + encodeURIComponent(customer_id) + '&status=active,trialing',
+      apiKey, sandbox
+    );
+  } catch (err) {
+    return paddleJsonResponse({ valid: false, reason: 'subscription lookup failed: ' + err.message });
+  }
+
+  const subs = subsData?.data || [];
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const recentSub = subs.find(s => s.started_at && s.started_at >= cutoff);
+
+  if (!recentSub) {
+    return paddleJsonResponse({ valid: false, reason: 'no active subscription started in the last 24 hours' });
+  }
+
+  return paddleJsonResponse({ valid: true, subscription_id: recentSub.id, subscription: recentSub });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ACTION: UPGRADE
+// Re-validates the customer + subscription, then upgrades using prorated_immediately.
+// Best-effort: also fetches the most recent billed transaction for the amount charged.
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function handleUpgrade(body, apiKey) {
+  const { customer_id, email, subscription_id, new_price_id, environment } = body;
+  const sandbox = environment === 'sandbox';
+
+  if (!customer_id || !email || !subscription_id || !new_price_id) {
+    return paddleJsonResponse({ success: false, reason: 'missing required fields' });
+  }
+
+  // 1. Re-verify customer
+  let customerData;
+  try {
+    customerData = await paddleGet(
+      '/customers?id=' + encodeURIComponent(customer_id),
+      apiKey, sandbox
+    );
+  } catch (err) {
+    return paddleJsonResponse({ success: false, reason: 'customer lookup failed: ' + err.message });
+  }
+
+  const customer = customerData?.data?.[0];
+  if (!customer || customer.email.toLowerCase() !== email.toLowerCase()) {
+    return paddleJsonResponse({ success: false, reason: 'customer verification failed' });
+  }
+
+  // 2. Verify subscription belongs to customer and is active/trialing
+  let subData;
+  try {
+    subData = await paddleGet(
+      '/subscriptions/' + encodeURIComponent(subscription_id),
+      apiKey, sandbox
+    );
+  } catch (err) {
+    return paddleJsonResponse({ success: false, reason: 'subscription lookup failed: ' + err.message });
+  }
+
+  const sub = subData?.data;
+  if (!sub) {
+    return paddleJsonResponse({ success: false, reason: 'subscription not found' });
+  }
+  if (sub.customer_id !== customer_id) {
+    return paddleJsonResponse({ success: false, reason: 'subscription does not belong to this customer' });
+  }
+  if (!['active', 'trialing'].includes(sub.status)) {
+    return paddleJsonResponse({ success: false, reason: 'subscription is not active or trialing' });
+  }
+
+  // 3. Upgrade to new price with immediate proration
+  let upgraded;
+  try {
+    upgraded = await paddlePatch(
+      '/subscriptions/' + encodeURIComponent(subscription_id),
+      {
+        proration_billing_mode: 'prorated_immediately',
+        items: [{ price_id: new_price_id, quantity: 1 }],
+      },
+      apiKey, sandbox
+    );
+  } catch (err) {
+    return paddleJsonResponse({ success: false, reason: 'upgrade failed: ' + err.message });
+  }
+
+  // 4. Best-effort: get billed amount from the most recent transaction
+  let billedAmount = null;
+  let currencyCode = null;
+  try {
+    const txData = await paddleGet(
+      '/transactions?subscription_id=' + encodeURIComponent(subscription_id) + '&status=billed&per_page=5',
+      apiKey, sandbox
+    );
+    const txs = (txData?.data || []).sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+    if (txs.length > 0) {
+      billedAmount = txs[0].details?.totals?.grand_total ?? null;
+      currencyCode = txs[0].currency_code ?? null;
+    }
+  } catch (_) {
+    // best-effort only — not a failure
+  }
+
+  return paddleJsonResponse({
+    success: true,
+    subscription: upgraded?.data ?? null,
+    billed_amount: billedAmount,
+    currency_code: currencyCode,
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ENTRY POINT
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -202,6 +393,15 @@ BunnySDK.net.http.serve(async (request) => {
   } catch (err) {
     return fallback('invalid JSON body: ' + err.message);
   }
+
+  // ── Route to Paddle action handlers ────────────────────────────────────────
+  if (body.action === 'verify' || body.action === 'upgrade') {
+    const paddleKey = process.env.PADDLE_API_KEY;
+    if (!paddleKey) return fallback('PADDLE_API_KEY not configured');
+    if (body.action === 'verify')  return handleVerify(body, paddleKey);
+    if (body.action === 'upgrade') return handleUpgrade(body, paddleKey);
+  }
+  // ── Personalization (original behaviour, no action field) ──────────────────
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) return fallback('OPENAI_API_KEY not configured');
