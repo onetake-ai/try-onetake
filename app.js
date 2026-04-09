@@ -893,6 +893,14 @@
             data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
         }
 
+        // Include AnyTrack click ID for attribution
+        if (typeof AnyTrack !== 'undefined') {
+            const atclid = AnyTrack('atclid');
+            if (atclid) {
+                data.click_id = atclid;
+            }
+        }
+
         // Include UTM tracking params via tracking module
         if (window.oneTakeTracking) {
             window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
