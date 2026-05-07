@@ -798,7 +798,10 @@
             
             // UserList deprecated — form data now flows via Paddle custom data & webhooks
             await trackUserListEvent('formSubmit');
-            
+
+            // FirstPromoter referral tracking
+            if (window.fpr) window.fpr("referral", { email: state.formData.email });
+
             // Wait a moment for tracking to complete
             await sleep(500);
             
@@ -901,6 +904,12 @@
             }
         }
 
+        // Include FirstPromoter affiliate tracking ID
+        var fpMatch = document.cookie.match(/_fprom_track=([^;]+)/);
+        if (fpMatch) {
+            data.fp_tid = decodeURIComponent(fpMatch[1]);
+        }
+
         // Include UTM tracking params via tracking module
         if (window.oneTakeTracking) {
             window.oneTakeTracking.addTrackingToCustomData(data, state.trackingParams);
@@ -976,13 +985,8 @@
             successUrl: successUrl
         };
         
-        // Rewardful affiliate tracking (deprecated — kept for future affiliate integration)
-        // const referral = window.Rewardful && window.Rewardful.referral;
-
         // Build custom data for Paddle webhooks (plan info, form data, UTM params, cohort)
         const customData = buildCheckoutCustomData();
-        // Uncomment below for future affiliate integration:
-        // if (referral) { customData.affiliate_referral = referral; }
         console.log('Custom data for Paddle:', customData);
 
         console.log('Opening Paddle checkout with:', { items, customer, settings, customData });
