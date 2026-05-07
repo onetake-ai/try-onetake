@@ -1,7 +1,7 @@
 /**
  * tools.js — OneTake AI shared tracking loader
  *
- * Loads Plausible, AnyTrack, and Weglot on every page that includes this file.
+ * Loads Plausible, AnyTrack, Weglot, and FirstPromoter on every page that includes this file.
  * Include this script in the <head> of every HTML page in the project.
  * See README.md for details.
  */
@@ -30,3 +30,33 @@
   };
   document.head.appendChild(s);
 }());
+
+// ── FirstPromoter ──────────────────────────────────────────────────────────
+(function(w){w.fpr=w.fpr||function(){w.fpr.q=w.fpr.q||[];w.fpr.q[arguments[0]==='set'?'unshift':'push'](arguments);};})(window);
+fpr("init", {cid:"qmdronva"});
+fpr("click");
+
+(function(){
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://cdn.firstpromoter.com/fpr.js';
+  document.head.appendChild(s);
+}());
+
+function sendReferralToFirstPromoter() {
+  var urlString = decodeURI(window.location.href);
+  var url = new URL(urlString);
+  if (url.searchParams.has("wj_lead_email")) {
+    var emailFromUrl = url.searchParams.get("wj_lead_email");
+    if (emailFromUrl) {
+      if (window.fpr) window.fpr("referral", { email: emailFromUrl });
+    }
+  }
+}
+
+var stateDocumentCheck = setInterval(function(){
+  if (document.readyState === "complete") {
+    clearInterval(stateDocumentCheck);
+    sendReferralToFirstPromoter();
+  }
+}, 100);
