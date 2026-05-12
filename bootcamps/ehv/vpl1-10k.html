@@ -95,10 +95,12 @@
       <ol class="comment-questions-list">
         <li>
           Do you suffer from "expert paralysis"? You have the knowledge, you have the experience, but you can't seem to turn all that into a steady income?
-          How does this show up in your daily life? What is it costing you—in stress, in hours of work, in money? How many evenings and weekends have you spent tinkering at your screen instead of being with your family?
         </li>
         <li>
-          And what will happen to your business, your family, and your freedom if nothing changes in the next 12 months?
+          <strong>How does this show up in your daily life?</strong> What is it costing you—in stress, in hours of work, in money? How many evenings and weekends have you spent tinkering at your screen instead of being with your family?
+        </li>
+        <li>
+          And <strong>what will happen to your business, your family, and your freedom</strong> if nothing changes in the next 12 months?
         </li>
       </ol>
     </section>
@@ -132,18 +134,37 @@
           comments.load();
         });
 
-        // Redirect to the calculator after a comment is published
+        // Show bonus modal after a comment is published
         document.querySelector('hyvor-talk-comments').addEventListener('comment:published', function(e) {
           const email = e.detail?.user?.email || '';
           const base = 'https://contraband.onetake.ai/ehv/revenue-calc/';
-          window.location.href = email
-            ? base + '?email=' + encodeURIComponent(email)
-            : base;
+          const url = email ? base + '?email=' + encodeURIComponent(email) : base;
+          document.getElementById('bonus-modal-btn').href = url;
+          document.getElementById('bonus-modal').removeAttribute('hidden');
+          document.getElementById('bonus-modal').focus();
         });
       </script>
     </section>
 
   </main>
+
+  <!-- ═══════════════════════════════════════════
+       BONUS MODAL
+  ═══════════════════════════════════════════ -->
+  <div id="bonus-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-box">
+      <p class="modal-emoji" aria-hidden="true">🎉</p>
+      <h2 class="modal-title" id="modal-title">Thanks for your comment!</h2>
+      <p class="modal-body">
+        You've been granted access to today's bonus resource:
+        the <strong>Revenue-Oriented Content Calculator</strong>.
+        Answer a few quick questions and discover how much your expert business can realistically generate each month.
+      </p>
+      <a id="bonus-modal-btn" href="#" target="_blank" rel="noopener" class="modal-btn">
+        Open the Calculator →
+      </a>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════
        FOOTER
