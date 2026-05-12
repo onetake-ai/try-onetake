@@ -317,6 +317,73 @@ footer a:hover {
   color: var(--golden-grass);
 }
 
+/* ── BONUS MODAL ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(36, 24, 38, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(36, 24, 38, 0.25);
+}
+
+.modal-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bleached-cedar);
+  margin-bottom: 1rem;
+}
+
+.modal-body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(36, 24, 38, 0.75);
+  margin-bottom: 1.75rem;
+}
+
+.modal-body strong {
+  color: var(--bleached-cedar);
+}
+
+.modal-btn {
+  display: inline-block;
+  background: var(--golden-grass);
+  color: var(--bleached-cedar);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0.875rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.modal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(227, 174, 40, 0.35);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .episode-nav-inner {
