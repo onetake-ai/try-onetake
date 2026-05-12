@@ -236,6 +236,40 @@ main.bootcamp-main {
   50% { transform: translateY(5px); }
 }
 
+/* ── COMMENT QUESTIONS ── */
+.comment-questions {
+  background: var(--white);
+  border: 1px solid rgba(36, 24, 38, 0.1);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.comment-questions-intro {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bleached-cedar);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comment-questions-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.comment-questions-list li {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(36, 24, 38, 0.8);
+  margin-bottom: 0.875rem;
+}
+
+.comment-questions-list li:last-child {
+  margin-bottom: 0;
+}
+
 /* ── COMMENTS SECTION ── */
 .comments-section {
   margin-bottom: 3rem;
