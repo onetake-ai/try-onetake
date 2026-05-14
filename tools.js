@@ -75,14 +75,14 @@ var stateDocumentCheck = setInterval(function(){
 var USERLIST_PROXY_URL = 'https://YOUR_PROXY_HOSTNAME/track'; // TODO: replace with deployed Bunny edge script URL
 var REDIRECT_URL = 'https://try.onetake.ai/bootcamps/ehv/vpl1-10k/';
 
-function submitLead(email, prenom) {
+function submitLead(email, prenom, language) {
   document.querySelectorAll('[type="submit"]').forEach(function (btn) { btn.disabled = true; });
 
   fetch(USERLIST_PROXY_URL, {
     method: 'POST',
     keepalive: true,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: email, first_name: prenom })
+    body: JSON.stringify({ email: email, first_name: prenom, language: language, url: location.href })
   });
 
   if (window.plausible) window.plausible('Lead');
@@ -111,7 +111,9 @@ var bouncerConfig = {
     var email = emailInput.value;
     var prenomInput = form ? form.querySelector('[name="prenom"]') : null;
     var prenom = prenomInput ? prenomInput.value : '';
-    submitLead(email, prenom);
+    var langInput = form ? form.querySelector('[name="language"]') : null;
+    var language = langInput ? langInput.value : '';
+    submitLead(email, prenom, language);
   }
 };
 

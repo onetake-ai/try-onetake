@@ -10,13 +10,13 @@
  *   5. Update USERLIST_PROXY_URL in /tools.js to point to this script URL
  *
  * ENDPOINT: POST /track
- * BODY:     { "email": "...", "first_name": "..." }
+ * BODY:     { "email": "...", "first_name": "...", "language": "fr", "url": "https://..." }
  */
 
 import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
 import process from "node:process";
 
-const USERLIST_PUSH_URL = 'https://push.userlist.com';
+const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 
 const corsHeaders = () => ({
   'Access-Control-Allow-Origin':  '*',
@@ -46,14 +46,14 @@ BunnySDK.net.http.serve(async (req: Request) => {
     return err('Method not allowed', 405);
   }
 
-  let body: { email?: string; first_name?: string };
+  let body: { email?: string; first_name?: string; language?: string; url?: string };
   try {
     body = await req.json();
   } catch {
     return err('Invalid JSON body');
   }
 
-  const { email, first_name } = body;
+  const { email, first_name, language, url } = body;
   if (!email) {
     return err('email is required');
   }
@@ -63,36 +63,31 @@ BunnySDK.net.http.serve(async (req: Request) => {
     return err('Server misconfiguration', 500);
   }
 
-  const authHeader = `Basic ${btoa(`:${pushKey}`)}`;
+  const userProperties: Record<string, string> = { email };
+  if (first_name) userProperties.first_name = first_name;
+  if (language)   userProperties.language   = language;
+
+  const eventProperties: Record<string, string> = {};
+  if (url) eventProperties.url = url;
 
   try {
-    const [usersRes, eventsRes] = await Promise.all([
-      fetch(`${USERLIST_PUSH_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: authHeader },
-        body: JSON.stringify({
-          identifier: email,
-          email,
-          properties: { first_name: first_name ?? '', language: 'fr' },
-        }),
+    const res = await fetch(USERLIST_EVENTS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Push ${pushKey}`,
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'Lead',
+        user: { email, properties: userProperties },
+        properties: eventProperties,
       }),
-      fetch(`${USERLIST_PUSH_URL}/events`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: authHeader },
-        body: JSON.stringify({
-          name: 'Lead',
-          user: { identifier: email },
-        }),
-      }),
-    ]);
+    });
 
-    if (!usersRes.ok) {
-      const text = await usersRes.text();
-      return err(`Userlist /users error: ${text}`, 502);
-    }
-    if (!eventsRes.ok) {
-      const text = await eventsRes.text();
-      return err(`Userlist /events error: ${text}`, 502);
+    if (!res.ok) {
+      const text = await res.text();
+      return err(`Userlist error: ${text}`, 502);
     }
 
     return ok({ success: true });
