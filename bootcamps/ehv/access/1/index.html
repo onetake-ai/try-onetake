@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootcamp de l'Expert à Haute Valeur — Sébastien Night</title>
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=oswald:300,400,500,600,700|inter:300i,400,500,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   oklch(8% 0.005 260);
+      --dark:    oklch(12% 0.005 260);
+      --card:    oklch(16% 0.005 260);
+      --border:  oklch(24% 0.003 260);
+      --gold:    oklch(72% 0.13 85);
+      --gold-hi: oklch(80% 0.13 85);
+      --white:   oklch(96% 0.003 260);
+      --muted:   oklch(70% 0.005 260);
+      --dim:     oklch(72% 0.004 260);
+      --faint:   oklch(62% 0.004 260);
+      --red:     oklch(55% 0.18 24);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.5rem;
+      text-align: center;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-right {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 3rem;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem 3.5rem;
+    }
+
+    .pre-headline {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    h1 .gold { color: var(--gold); }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2rem;
+      text-wrap: pretty;
+    }
+    .hero-sub strong { color: var(--white); font-weight: 500; }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat { display: flex; flex-direction: column; gap: 0.2rem; }
+    .stat-n {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-l {
+      font-size: 0.68rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: oklch(97% 0.01 78);
+      border: 1px solid oklch(84% 0.015 78);
+      border-top: 3px solid var(--gold);
+      padding: 2.25rem 2rem;
+      position: sticky;
+      top: 1.5rem;
+    }
+    .form-card-pre {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: oklch(44% 0.005 260);
+      margin-bottom: 0.35rem;
+    }
+    .form-card-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.4rem;
+      line-height: 1.2;
+      color: oklch(12% 0.005 260);
+    }
+    .form-card-sub {
+      font-size: 0.8rem;
+      color: oklch(44% 0.005 260);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 0.85rem;
+    }
+    .form-field label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: oklch(42% 0.005 260);
+    }
+    .form-field input {
+      background: white;
+      border: 1px solid oklch(78% 0.008 260);
+      color: oklch(12% 0.005 260);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-field input::placeholder { color: oklch(65% 0.004 260); }
+    .form-field input:focus { border-color: var(--gold); }
+
+    .form-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+    .form-btn:hover { background: var(--gold-hi); }
+
+    .form-trust {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--faint);
+      margin-top: 0.85rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PAIN ── */
+    .pain {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2.5rem;
+    }
+    .pain-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .pain-list { list-style: none; display: flex; flex-direction: column; }
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pain-item:last-child { border-bottom: none; }
+    .pain-n {
+      font-family: 'Oswald', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      min-width: 3.5rem;
+      flex-shrink: 0;
+    }
+    .pain-body strong {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .pain-body span {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── DISCOVERS ── */
+    .discovers {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+    .discovers h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 2.5rem;
+    }
+    .discovers h2 span { color: var(--gold); }
+    .discovers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .discover-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--gold);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .discover-tag {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .discover-card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+    }
+    .discover-card p {
+      font-size: 0.845rem;
+      color: var(--muted);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+
+    /* ── PROOF ── */
+    .proof {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 4rem 2.5rem;
+    }
+    .proof-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .proof-bio h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .proof-bio p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      text-wrap: pretty;
+    }
+    .proof-bio strong { color: var(--white); }
+
+    .proof-media h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .media-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .media-badge {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .footer-inner p {
+      font-size: 0.78rem;
+      color: var(--faint);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+    .footer-inner a { color: var(--gold); text-decoration: none; }
+    .footer-inner a:hover { text-decoration: underline; }
+    .footer-inner strong { color: var(--dim); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-right { display: none; }
+      .hero {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 1.25rem;
+        gap: 1.25rem;
+      }
+      .hero-sub { display: none; }
+      .hero-stats { display: none; }
+      .form-card { position: static; }
+      h1 { font-size: 2.3rem; margin-bottom: 1.25rem; }
+      .pain { padding: 2.5rem 1.25rem; }
+      .discovers { padding: 2.5rem 1.25rem; }
+      .discovers-grid { grid-template-columns: 1fr; }
+      .proof { padding: 2.5rem 1.25rem; }
+      .proof-inner { grid-template-columns: 1fr; gap: 2rem; }
+      footer { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">Série de vidéos 100% gratuite &nbsp;·&nbsp; Accès immédiat</div>
+
+  <nav>
+    <a href="#" class="nav-logo">Sébastien <em>Night</em></a>
+    <span class="nav-right">Le Bootcamp de l'Expert à Haute Valeur</span>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <p class="pre-headline">Coachs, consultants, formateurs en ligne :</p>
+      <h1>
+        L'IA redistribue<br>
+        les cartes.<br>
+        <span class="gold">Saisis ta chance</span><br>
+        ou disparais.
+      </h1>
+      <p class="hero-sub">
+        En 2026, l'IA remet les compteurs à zéro. Les experts qui vendent de l'information générique se font remplacer. Mais ceux qui ont de l'expérience concrète et des résultats prouvés ont <strong>plus de place que jamais en haut du marché</strong> — à condition d'agir avant que la fenêtre se referme.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-n">300K</span>
+          <span class="stat-l">entrepreneurs accompagnés</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">41</span>
+          <span class="stat-l">pays depuis 2010</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">15 ans</span>
+          <span class="stat-l">d'accompagnement d'experts</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="form-card">
+        <p class="form-card-pre">Accès immédiat &amp; gratuit</p>
+        <h2 class="form-card-title">Rejoins le Bootcamp de l'Expert à Haute Valeur</h2>
+        <p class="form-card-sub">Reçois la première vidéo maintenant. Les suivantes arrivent par email.</p>
+        <form action="#" method="post">
+          <input type="hidden" name="language" value="fr">
+          <div class="form-field">
+            <label for="prenom-a">Ton prénom</label>
+            <input type="text" id="prenom-a" name="prenom" placeholder="Prénom" required>
+          </div>
+          <div class="form-field">
+            <label for="email-a">Ton email</label>
+            <input type="email" id="email-a" name="email" placeholder="ton@email.com" required>
+          </div>
+          <button type="submit" class="form-btn">Clique pour accès immédiat</button>
+          <p class="form-trust">100% gratuit &nbsp;·&nbsp; Sans carte bancaire &nbsp;·&nbsp; 0 spam</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="pain">
+    <div class="pain-inner">
+      <p class="section-label">Ce que tu vis probablement en ce moment</p>
+      <ul class="pain-list">
+        <li class="pain-item">
+          <span class="pain-n">01</span>
+          <div class="pain-body">
+            <strong>Tu postes sur les réseaux, tu crées, tu travailles. Rien ne convertit.</strong>
+            <span>Tu vois des personnes avec moins d'expérience que toi qui cartonnent en ligne. Tu ne comprends pas ce qu'elles font de différent — et ça te frustre profondément.</span>
+          </div>
+        </li>
+        <li class="pain-item">
+          <span class="pain-n">02</span>
+          <div class="pain-body">
+            <strong>Tu repars de zéro chaque premier du mois.</strong>
+            <span>Pas de revenus prévisibles. Pas de système. Juste l'angoisse silencieuse de devoir recommencer à chercher des clients — encore et encore.</span>
+          </div>
+        </li>
+        <li class="pain-item">
+          <span class="pain-n">03</span>
+          <div class="pain-body">
+            <strong>Tu as tout — sauf le système qui relie les pièces.</strong>
+            <span>Les formations que tu as achetées t'ont donné des morceaux épars. Des outils sans stratégie. Des astuces sans plan. Personne ne t'a jamais montré l'image complète.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="discovers">
+    <h2>Ce que tu vas <span>découvrir</span></h2>
+    <div class="discovers-grid">
+      <div class="discover-card">
+        <span class="discover-tag">Vidéo 01</span>
+        <h3>Pourquoi l'IA change tout pour les coachs et experts</h3>
+        <p>Les 3 leviers de l'Expert Augmenté par l'IA — et pourquoi celui qui ne les utilise pas sera invisible dans 18 mois.</p>
+      </div>
+      <div class="discover-card">
+        <span class="discover-tag">Vidéo 02</span>
+        <h3>Les 5 piliers d'un business d'expert rentable</h3>
+        <p>Identifie ton goulot d'étranglement exact — celui qui bloque tout le reste en ce moment — et comment le débloquer en priorité.</p>
+      </div>
+      <div class="discover-card">
+        <span class="discover-tag">Vidéo 03</span>
+        <h3>La feuille de route complète pour rentabiliser ton expertise</h3>
+        <p>Le parcours de l'Expert à Haute Valeur, pilier par pilier, avec les outils IA à chaque étape. Comment construire un système de vente qui tourne pendant que tu te consacres à tes clients.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="proof-inner">
+      <div class="proof-bio">
+        <h3>Qui est Sébastien Night</h3>
+        <p>
+          Fondateur du <strong>Mouvement des Entrepreneurs Libres</strong> et de <strong>OneTake AI</strong>. Depuis 2010, il a accompagné plus de <strong>300 000 entrepreneurs dans 41 pays</strong>. Il a co-animé des masterminds avec <strong>Jay Abraham</strong> — le mentor de Tony Robbins — à 25 000 et 35 000€ par an. Il a formé des dizaines de leaders qui dominent aujourd'hui le Web francophone.
+        </p>
+      </div>
+      <div class="proof-media">
+        <h3>Sébastien Night a été vu sur :</h3>
+        <div class="media-row">
+          <span class="media-badge">TF1</span>
+          <span class="media-badge">M6</span>
+          <span class="media-badge">France 2</span>
+          <span class="media-badge">France Culture</span>
+          <span class="media-badge">France Bleu</span>
+          <span class="media-badge">Europe 1</span>
+          <span class="media-badge">Paris-Match</span>
+          <span class="media-badge">Charlie Hebdo</span>
+          <span class="media-badge">Le Parisien</span>
+          <span class="media-badge">France Dimanche</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions générales d'utilisation et la Politique de remboursement</a>, ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <p>Vous avez un public composé d'entrepreneurs ? Vous pouvez <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">devenir partenaire d'affiliation de OneTake AI et percevoir des commissions récurrentes</a>.</p>
+      <p><strong>Qu'est-ce que OneTake ?</strong></p>
+      <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake.AI, le premier logiciel de montage vidéo tout-en-un basé sur l'intelligence artificielle</a>.</p>
+      <p>Liens utiles : <a href="https://www.onetake.ai/blog" target="_blank">Blog de OneTake</a> · <a href="https://welove.onetake.ai/" target="_blank">Mur de l'amour (avis)</a> · <a href="https://docs.onetake.ai/en/" target="_blank">FAQ et documentation</a></p>
+      <p><strong>Qui a eu cette idée ?</strong></p>
+      <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui accompagne depuis 2010 plus de 20 000 entrepreneurs et compte 300 000 sympathisants dans 41 pays. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et d'une simplicité d'utilisation absolue : OneTake.</strong></p>
+      <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    </div>
+  </footer>
+
+  <script src="/tools.js"></script>
+</body>
+</html>

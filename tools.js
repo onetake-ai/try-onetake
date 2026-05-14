@@ -1,10 +1,19 @@
 /**
  * tools.js — OneTake AI shared tracking loader
  *
- * Loads Plausible, AnyTrack, Weglot, and FirstPromoter on every page that includes this file.
- * Include this script in the <head> of every HTML page in the project.
- * See README.md for details.
+ * Loads CrazyEgg, Plausible, AnyTrack, Weglot, FirstPromoter, and useBouncer on every page
+ * that includes this file. Also exposes submitLead() for opt-in form handling.
+ * Include this script before </body> in every HTML page in the project.
  */
+
+// ── CrazyEgg ───────────────────────────────────────────────────────────────
+// TODO: remove the inline CrazyEgg snippet from /index.html once that file is redeployed
+(function () {
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = '//script.crazyegg.com/pages/scripts/0131/5613.js';
+  document.head.appendChild(s);
+}());
 
 // ── Plausible ──────────────────────────────────────────────────────────────
 (function () {
@@ -60,3 +69,57 @@ var stateDocumentCheck = setInterval(function(){
     sendReferralToFirstPromoter();
   }
 }, 100);
+
+// ── Lead submission ────────────────────────────────────────────────────────
+
+var USERLIST_PROXY_URL = 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track';
+var REDIRECT_URL = 'https://try.onetake.ai/bootcamps/ehv/vpl1-10k/';
+
+function submitLead(email, prenom, language) {
+  document.querySelectorAll('[type="submit"]').forEach(function (btn) { btn.disabled = true; });
+
+  fetch(USERLIST_PROXY_URL, {
+    method: 'POST',
+    keepalive: true,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, first_name: prenom, language: language, url: location.href })
+  });
+
+  if (window.plausible) window.plausible('Lead');
+  if (window.CE2) window.CE2.set('wr', 1);
+
+  // ── Anytrack ─────────────────────────────────────────────────────────────
+  // TODO: uncomment and add your Anytrack container script src below when ready
+  // (function () {
+  //   var s = document.createElement('script');
+  //   s.async = true;
+  //   s.src = 'https://assets.anytrack.io/YOUR_CONTAINER_ID.js';
+  //   document.head.appendChild(s);
+  // }());
+  if (window.anytrkTrack) window.anytrkTrack('Lead');
+
+  setTimeout(function () { location.href = REDIRECT_URL; }, 600);
+}
+
+// ── useBouncer ─────────────────────────────────────────────────────────────
+
+var bouncerConfig = {
+  apikey: 'gTVUH7N0EaSO4CYDoNf1bdedQriEqXCNadVoNNaZ',
+  feedbackOverlayMessage: 'Merci d\'entrer une adresse email valide.',
+  onSuccess: function (emailInput) {
+    var form = emailInput.form;
+    var email = emailInput.value;
+    var prenomInput = form ? form.querySelector('[name="prenom"]') : null;
+    var prenom = prenomInput ? prenomInput.value : '';
+    var langInput = form ? form.querySelector('[name="language"]') : null;
+    var language = langInput ? langInput.value : '';
+    submitLead(email, prenom, language);
+  }
+};
+
+(function () {
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://app.usebouncer.com/bouncer-script/bouncer-script-beta.js';
+  document.body.appendChild(s);
+}());
