@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootcamp de l'Expert à Haute Valeur — Sébastien Night</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    oklch(94% 0.022 78);
+      --sand-hi: oklch(97% 0.016 78);
+      --sand-lo: oklch(89% 0.025 76);
+      --ink:     oklch(18% 0.015 70);
+      --ink-mid: oklch(38% 0.012 70);
+      --ink-dim: oklch(56% 0.01 70);
+      --sage:    oklch(50% 0.09 155);
+      --sage-hi: oklch(58% 0.09 155);
+      --sage-dim:oklch(80% 0.05 155);
+      --border:  oklch(84% 0.022 76);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--sand);
+      color: var(--ink);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--sand-hi);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--sage);
+      color: white;
+      padding: 0.3rem 0.9rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ── FORM CARD (left col) ── */
+    .form-card {
+      background: var(--sand-hi);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--sage);
+      padding: 2.25rem 2rem;
+      position: sticky;
+      top: 1.5rem;
+    }
+    .form-card-pre {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.5rem;
+    }
+    .form-card-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+    .form-card-sub {
+      font-size: 0.8rem;
+      color: var(--ink-dim);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+    .form-field { margin-bottom: 0.85rem; }
+    .form-field label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 0.4rem;
+    }
+    .form-field input {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.92rem;
+      padding: 0.82rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-field input::placeholder { color: oklch(72% 0.01 70); }
+    .form-field input:focus { border-color: var(--sage); }
+
+    .form-btn {
+      width: 100%;
+      background: var(--sage);
+      color: white;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.95rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+    .form-btn:hover { background: var(--sage-hi); }
+    .form-trust {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--ink-dim);
+      margin-top: 0.85rem;
+      font-style: italic;
+    }
+
+    /* ── HERO COPY (right col) ── */
+    .hero-copy {}
+    .pre-headline {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .pre-headline::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 2px;
+      background: var(--sage);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      text-wrap: pretty;
+    }
+    h1 em { font-style: italic; color: var(--sage); }
+
+    .hero-intro {
+      font-size: 1.02rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      margin-bottom: 1.25rem;
+      text-wrap: pretty;
+    }
+    .hero-intro strong { color: var(--ink); font-weight: 600; }
+
+    .who-bar {
+      background: var(--sage-dim);
+      padding: 1.1rem 1.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .who-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--sage);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+    }
+    .who-bar p {
+      font-size: 0.85rem;
+      color: var(--ink-mid);
+      line-height: 1.55;
+      text-wrap: pretty;
+    }
+    .who-bar strong { color: var(--ink); }
+
+    /* ── PAIN ── */
+    .pain {
+      background: var(--sand-lo);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4.5rem 3rem;
+    }
+    .pain-inner { max-width: 1080px; margin: 0 auto; }
+    .pain-h {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 2.5rem;
+      max-width: 580px;
+      text-wrap: pretty;
+    }
+    .pain-h em { font-style: italic; color: var(--sage); }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .pain-card {
+      background: var(--sand-hi);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--sage);
+      padding: 1.75rem 1.5rem;
+    }
+    .pain-card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .pain-card p {
+      font-size: 0.845rem;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+
+    /* ── DISCOVER ── */
+    .discover {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+    }
+    .discover h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 2.75rem;
+      text-wrap: pretty;
+    }
+    .discover h2 em { font-style: italic; color: var(--sage); }
+    .discover-list { list-style: none; display: flex; flex-direction: column; }
+    .discover-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .discover-item:first-child { border-top: 1px solid var(--border); }
+    .discover-vid {
+      background: var(--sage);
+      color: white;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.75rem;
+      white-space: nowrap;
+      align-self: start;
+      margin-top: 0.15rem;
+    }
+    .discover-content strong {
+      display: block;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+      line-height: 1.35;
+    }
+    .discover-content p {
+      font-size: 0.875rem;
+      color: var(--ink-dim);
+      line-height: 1.7;
+      text-wrap: pretty;
+    }
+
+    /* ── PROOF ── */
+    .proof {
+      background: var(--ink);
+      color: white;
+      padding: 4.5rem 3rem;
+    }
+    .proof-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .proof-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sage-dim);
+      margin-bottom: 1.25rem;
+    }
+    .proof-numbers {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .proof-num-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .proof-big {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: oklch(90% 0.016 78);
+      line-height: 1;
+    }
+    .proof-desc { font-size: 0.82rem; color: oklch(60% 0.01 70); }
+    .proof-media-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sage-dim);
+      margin-bottom: 0.75rem;
+    }
+    .proof-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .proof-badge {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: oklch(72% 0.01 70);
+      border: 1px solid oklch(28% 0.01 70);
+      padding: 0.3rem 0.8rem;
+    }
+    .proof-bio-right {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: oklch(68% 0.008 70);
+      text-wrap: pretty;
+    }
+    .proof-bio-right strong { color: oklch(86% 0.014 78); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--sand-hi);
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .footer-inner p {
+      font-size: 0.78rem;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+    .footer-inner a { color: var(--sage); text-decoration: none; }
+    .footer-inner a:hover { text-decoration: underline; }
+    .footer-inner strong { color: var(--ink-mid); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero {
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 1.5rem 1.25rem;
+        gap: 0;
+      }
+      /* On mobile: hero copy (headline) first, then form below */
+      .hero-copy {
+        margin-bottom: 1.5rem;
+      }
+      .hero-intro { display: none; }
+      .who-bar { display: none; }
+      .form-card { position: static; }
+      h1 { font-size: 2rem; margin-bottom: 1.25rem; }
+      .pain { padding: 2.5rem 1.25rem; }
+      .pain-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .discover { padding: 2.5rem 1.25rem; }
+      .proof { padding: 2.5rem 1.25rem; }
+      .proof-inner { grid-template-columns: 1fr; gap: 2rem; }
+      footer { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-name">Sébastien Night</a>
+    <span class="nav-pill">Bootcamp Gratuit</span>
+  </nav>
+
+  <section class="hero">
+
+    <!-- Left col: FORM -->
+    <div class="form-col">
+      <div class="form-card">
+        <p class="form-card-pre">Accès immédiat &amp; gratuit</p>
+        <h2 class="form-card-title">Rejoins le Bootcamp de l'Expert à Haute Valeur</h2>
+        <p class="form-card-sub">Reçois la première vidéo maintenant. Les suivantes arrivent par email.</p>
+        <form action="#" method="post">
+          <div class="form-field">
+            <label for="prenom-c">Ton prénom</label>
+            <input type="text" id="prenom-c" name="prenom" placeholder="Prénom" required>
+          </div>
+          <div class="form-field">
+            <label for="email-c">Ton email</label>
+            <input type="email" id="email-c" name="email" placeholder="ton@email.com" required>
+          </div>
+          <button type="submit" class="form-btn">Clique pour accès immédiat</button>
+          <p class="form-trust">Gratuit · Sans carte bancaire · Désabonnement à tout moment</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right col: COPY -->
+    <div class="hero-copy">
+      <p class="pre-headline">Coachs, consultants, formateurs en ligne :</p>
+      <h1>
+        Tu as l'expertise.<br>
+        Tu as la passion.<br>
+        Il ne te manque<br>
+        <em>qu'une seule chose.</em>
+      </h1>
+      <p class="hero-intro">
+        Depuis 2010, j'ai accompagné plus de <strong>300 000 entrepreneurs dans 41 pays</strong>. Et ce que j'ai appris en les regardant réussir ou stagner, c'est que la différence ne tient jamais au talent. Elle tient au système.
+      </p>
+      <p class="hero-intro">
+        Dans ce Bootcamp gratuit, je te montre ce système. Pas en théorie — avec les outils, les étapes et l'IA à chaque pilier.
+      </p>
+      <div class="who-bar">
+        <div class="who-dot"></div>
+        <p>Ce bootcamp est pour les <strong>coachs, consultants, formateurs et thérapeutes</strong> qui ont de l'expérience à revendre, mais dont le business ne décolle pas encore.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="pain">
+    <div class="pain-inner">
+      <h2 class="pain-h">
+        Est-ce que tu reconnais<br>
+        <em>l'une de ces situations ?</em>
+      </h2>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <h3>Tu postes sur les réseaux, rien ne convertit</h3>
+          <p>Tu travailles dur mais les résultats ne suivent pas. Tu vois des personnes avec moins d'expérience que toi qui attirent des clients, et tu ne comprends pas ce qu'elles font de différent.</p>
+        </div>
+        <div class="pain-card">
+          <h3>Tu repars de zéro chaque premier du mois</h3>
+          <p>Pas de revenus prévisibles. Juste l'angoisse du premier du mois et la question qui revient : est-ce qu'il y aura assez de clients cette fois ?</p>
+        </div>
+        <div class="pain-card">
+          <h3>La technique te paralyse</h3>
+          <p>Tunnels de vente, séquences email, pages de capture. Tu sais que c'est nécessaire mais chaque nouvel outil est un mur. Tu passes tes soirées à bricoler au lieu d'avancer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="discover">
+    <h2>
+      Dans ce Bootcamp gratuit, tu vas enfin recevoir<br>
+      <em>le "déclic" pour débloquer ton business</em>
+    </h2>
+    <ul class="discover-list">
+      <li class="discover-item">
+        <span class="discover-vid">Vidéo 1</span>
+        <div class="discover-content">
+          <strong>Pourquoi l'IA change tout pour les coachs et experts — et comment en faire ton associé infatigable</strong>
+          <p>Les 3 leviers de l'Expert Augmenté par l'IA. Comment créer du contenu professionnel, déléguer ce qui te saoule, et te concentrer sur ce que tu fais le mieux : aider tes clients.</p>
+        </div>
+      </li>
+      <li class="discover-item">
+        <span class="discover-vid">Vidéo 2</span>
+        <div class="discover-content">
+          <strong>Les 5 piliers d'un business d'expert rentable — et lequel est ton goulot d'étranglement</strong>
+          <p>Il suffit qu'un seul pilier manque pour que tout le reste s'effondre. Tu vas identifier lequel te bloque en ce moment et comment le débloquer en priorité.</p>
+        </div>
+      </li>
+      <li class="discover-item">
+        <span class="discover-vid">Vidéo 3</span>
+        <div class="discover-content">
+          <strong>La feuille de route pour rentabiliser ton expertise — pilier par pilier, dans le bon ordre</strong>
+          <p>Pas une liste d'astuces. Un système complet. Comment construire un tunnel de vente automatisé qui convertit des inconnus en clients, et te libère de l'angoisse du premier du mois.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="proof">
+    <div class="proof-inner">
+      <div>
+        <p class="proof-label">Sébastien Night en chiffres</p>
+        <div class="proof-numbers">
+          <div class="proof-num-item">
+            <span class="proof-big">300 000</span>
+            <span class="proof-desc">entrepreneurs accompagnés dans 41 pays depuis 2010</span>
+          </div>
+          <div class="proof-num-item">
+            <span class="proof-big">25–35K€</span>
+            <span class="proof-desc">prix de ses masterminds co-animés avec Jay Abraham</span>
+          </div>
+          <div class="proof-num-item">
+            <span class="proof-big">1M$</span>
+            <span class="proof-desc">levés pour OneTake AI — disponible dans 115 langues</span>
+          </div>
+        </div>
+        <p class="proof-media-label">Sébastien Night a été vu sur :</p>
+        <div class="proof-badges">
+          <span class="proof-badge">TF1</span>
+          <span class="proof-badge">M6</span>
+          <span class="proof-badge">France 2</span>
+          <span class="proof-badge">France Culture</span>
+          <span class="proof-badge">France Bleu</span>
+          <span class="proof-badge">Europe 1</span>
+          <span class="proof-badge">Paris-Match</span>
+          <span class="proof-badge">Charlie Hebdo</span>
+          <span class="proof-badge">Le Parisien</span>
+          <span class="proof-badge">France Dimanche</span>
+        </div>
+      </div>
+      <div>
+        <p class="proof-bio-right">
+          Fondateur du <strong>Mouvement des Entrepreneurs Libres</strong> et de <strong>OneTake AI</strong>, Sébastien Night a co-animé des masterminds avec <strong>Jay Abraham</strong> — le mentor qui a formé Tony Robbins — à 25 000 et 35 000€ par an. Il a formé des dizaines de leaders qui dominent aujourd'hui le Web francophone, et construit un produit SaaS utilisé dans <strong>115 langues à travers le monde</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions générales d'utilisation et la Politique de remboursement</a>, ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <p>Vous avez un public composé d'entrepreneurs ? Vous pouvez <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">devenir partenaire d'affiliation de OneTake AI et percevoir des commissions récurrentes</a>.</p>
+      <p><strong>Qu'est-ce que OneTake ?</strong></p>
+      <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake.AI, le premier logiciel de montage vidéo tout-en-un basé sur l'intelligence artificielle</a>.</p>
+      <p>Liens utiles : <a href="https://www.onetake.ai/blog" target="_blank">Blog de OneTake</a> · <a href="https://welove.onetake.ai/" target="_blank">Mur de l'amour (avis)</a> · <a href="https://docs.onetake.ai/en/" target="_blank">FAQ et documentation</a></p>
+      <p><strong>Qui a eu cette idée ?</strong></p>
+      <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui accompagne depuis 2010 plus de 20 000 entrepreneurs et compte 300 000 sympathisants dans 41 pays. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et d'une simplicité d'utilisation absolue : OneTake.</strong></p>
+      <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    </div>
+  </footer>
+
+  <script src="/tools.js"></script>
+</body>
+</html>

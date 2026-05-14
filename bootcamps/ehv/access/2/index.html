@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootcamp de l'Expert à Haute Valeur — Sébastien Night</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   oklch(97% 0.012 80);
+      --paper:   oklch(93% 0.014 78);
+      --ink:     oklch(14% 0.01 260);
+      --ink-mid: oklch(36% 0.01 260);
+      --ink-dim: oklch(55% 0.008 260);
+      --red:     oklch(44% 0.17 24);
+      --red-hi:  oklch(52% 0.17 24);
+      --border:  oklch(85% 0.012 80);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-tag {
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--ink-dim);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .pre-headline {
+      font-family: 'Lora', serif;
+      font-size: 0.8rem;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--red);
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      text-wrap: pretty;
+    }
+    h1 em { font-style: italic; color: var(--red); }
+
+    .hero-sub {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--ink-mid);
+      text-wrap: pretty;
+    }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: oklch(97% 0.012 80);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--red);
+      padding: 2.25rem 2rem;
+      position: sticky;
+      top: 1.5rem;
+    }
+    .form-card-pre {
+      font-family: 'Lora', serif;
+      font-size: 0.72rem;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .form-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+    .form-card-sub {
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+    .field { margin-bottom: 0.9rem; }
+    .field label {
+      display: block;
+      font-family: 'Lora', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: oklch(42% 0.008 260);
+      margin-bottom: 0.4rem;
+    }
+    .field input {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .field input::placeholder { color: oklch(65% 0.005 260); }
+    .field input:focus { border-color: var(--red); }
+
+    .form-btn {
+      width: 100%;
+      background: var(--red);
+      color: var(--cream);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-style: italic;
+      padding: 1rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.4rem;
+      transition: background 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .form-btn:hover { background: var(--red-hi); }
+
+    .form-trust {
+      text-align: center;
+      font-family: 'Lora', serif;
+      font-size: 0.7rem;
+      font-style: italic;
+      color: var(--ink-dim);
+      margin-top: 0.85rem;
+    }
+
+    /* ── STORY BAND ── */
+    .story-band {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 3.5rem 3rem;
+    }
+    .story-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .story-label {
+      font-family: 'Lora', serif;
+      font-size: 0.68rem;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: oklch(70% 0.005 260);
+      margin-bottom: 1rem;
+    }
+    .story-pull {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.3;
+      color: oklch(92% 0.008 80);
+      text-wrap: pretty;
+    }
+    .story-pull em { font-style: normal; color: oklch(70% 0.12 24); }
+    .story-body {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: oklch(82% 0.006 260);
+      text-wrap: pretty;
+    }
+    .story-body + .story-body { margin-top: 1rem; }
+    .story-body strong { color: oklch(94% 0.005 260); font-weight: 600; }
+
+    /* ── LESSONS ── */
+    .lessons {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+    }
+    .lessons-intro {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 3rem;
+      max-width: 600px;
+      text-wrap: pretty;
+    }
+    .lessons-intro em { color: var(--red); font-style: normal; }
+
+    .lesson-list { list-style: none; display: flex; flex-direction: column; }
+    .lesson-item {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .lesson-item:first-child { border-top: 1px solid var(--border); }
+    .lesson-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--border);
+      line-height: 1;
+      padding-top: 0.1rem;
+    }
+    .lesson-text strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .lesson-text p {
+      font-size: 0.875rem;
+      color: var(--ink-dim);
+      line-height: 1.72;
+      text-wrap: pretty;
+    }
+
+    /* ── PROOF ── */
+    .proof {
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+      padding: 4rem 3rem;
+    }
+    .proof-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .proof-label {
+      font-family: 'Lora', serif;
+      font-size: 0.68rem;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .proof-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+    .proof-bio {
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      line-height: 1.78;
+      text-wrap: pretty;
+    }
+    .proof-bio strong { color: var(--ink); }
+
+    .proof-media-label {
+      font-family: 'Lora', serif;
+      font-size: 0.68rem;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 0.75rem;
+    }
+    .media-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .media-badge {
+      font-family: 'Lora', serif;
+      font-size: 0.72rem;
+      color: var(--ink-dim);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 2px solid var(--ink);
+      padding: 3rem;
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .footer-inner p {
+      font-family: 'Lora', serif;
+      font-size: 0.78rem;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+    .footer-inner a { color: var(--red); text-decoration: none; }
+    .footer-inner a:hover { text-decoration: underline; }
+    .footer-inner strong { color: var(--ink-mid); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-tag { display: none; }
+      .hero {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 1.25rem;
+        gap: 1.5rem;
+      }
+      .hero-sub { display: none; }
+      .form-card { position: static; }
+      h1 { font-size: 2.2rem; }
+      .story-band { padding: 2.5rem 1.25rem; }
+      .story-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .lessons { padding: 2.5rem 1.25rem; }
+      .proof { padding: 2.5rem 1.25rem; }
+      .proof-inner { grid-template-columns: 1fr; gap: 2rem; }
+      footer { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-name">Sébastien Night</a>
+    <span class="nav-tag">Le Bootcamp de l'Expert à Haute Valeur</span>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <p class="pre-headline">Coachs, consultants, formateurs en ligne :</p>
+      <h1>
+        Dimanche, tu as regardé<br>
+        ton planning.<br>
+        <em>Zéro RDV client<br>pour la semaine.</em>
+      </h1>
+      <p class="hero-sub">
+        Si cette scène te parle — tu as l'expérience pour aider énormément tes clients, mais tu es invisible — ce bootcamp est fait pour toi. Tu vas y découvrir comment <strong>enfin rentabiliser ton expertise</strong>.
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <div class="form-card">
+        <p class="form-card-pre">Accès immédiat &amp; gratuit</p>
+        <h2 class="form-card-title">Rejoins le Bootcamp de l'Expert à Haute Valeur</h2>
+        <p class="form-card-sub">Reçois la première vidéo maintenant. Les suivantes arrivent par email.</p>
+        <form action="#" method="post">
+          <div class="field">
+            <label for="prenom-b">Ton prénom</label>
+            <input type="text" id="prenom-b" name="prenom" placeholder="Prénom" required>
+          </div>
+          <div class="field">
+            <label for="email-b">Ton adresse email</label>
+            <input type="email" id="email-b" name="email" placeholder="ton@email.com" required>
+          </div>
+          <button type="submit" class="form-btn">Clique pour accès immédiat</button>
+          <p class="form-trust">Gratuit · Sans carte bancaire · Désabonnement en un clic</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="story-band">
+    <div class="story-inner">
+      <div>
+        <p class="story-label">Ce que tu vis vraiment</p>
+        <p class="story-pull">
+          "J'ai tout ce qu'il me faut — la vision, l'envie, le produit…<br>
+          <em>mais je n'arrive pas à décoller.</em>"
+        </p>
+      </div>
+      <div>
+        <p class="story-body">
+          Tu travailles du matin au soir. Tu postes sur les réseaux, tu crées, tu bricoules. Et à la fin de la journée, tu n'as pas avancé d'un centimètre sur ce qui compte vraiment. <strong>Ce n'est pas toi le problème. C'est ton système — ou plutôt, son absence.</strong>
+        </p>
+        <p class="story-body">
+          En 2026, l'IA redistribue les cartes. Les experts qui vendent de l'information générique se font remplacer. Mais ceux qui ont de l'expérience concrète ont <strong>plus de place que jamais en haut du marché</strong>. La fenêtre est ouverte maintenant.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section class="lessons">
+    <p class="lessons-intro">
+      Tu vas découvrir <em>trois leçons</em> que personne d'autre ne t'a encore montrées ensemble.
+    </p>
+    <ul class="lesson-list">
+      <li class="lesson-item">
+        <span class="lesson-num">I</span>
+        <div class="lesson-text">
+          <strong>Pourquoi l'IA change tout pour les coachs et experts — et comment en faire ton associé</strong>
+          <p>Pas un gadget de plus. Un véritable levier qui te permet de créer du contenu professionnel, d'automatiser ce qui te saoule, et de te concentrer sur ce que tu fais le mieux : aider tes clients.</p>
+        </div>
+      </li>
+      <li class="lesson-item">
+        <span class="lesson-num">II</span>
+        <div class="lesson-text">
+          <strong>Les 5 piliers d'un business d'expert rentable — et lequel est ton goulot d'étranglement</strong>
+          <p>Il suffit qu'un seul de ces piliers manque pour que tout le reste s'effondre. Tu vas identifier lequel te bloque en ce moment et comment le débloquer en priorité, sans perdre des mois à tâtonner.</p>
+        </div>
+      </li>
+      <li class="lesson-item">
+        <span class="lesson-num">III</span>
+        <div class="lesson-text">
+          <strong>La feuille de route pour rentabiliser ton expertise — pilier par pilier, dans le bon ordre</strong>
+          <p>Pas une liste d'astuces. Un système. Comment construire un tunnel de vente qui convertit des inconnus en clients, et te libère de l'angoisse du premier du mois.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="proof">
+    <div class="proof-inner">
+      <div>
+        <p class="proof-label">Le formateur des formateurs</p>
+        <h2 class="proof-name">Sébastien Night</h2>
+        <p class="proof-bio">
+          Fondateur du <strong>Mouvement des Entrepreneurs Libres</strong> et de <strong>OneTake AI</strong>. Depuis 2010, il a accompagné plus de <strong>300 000 entrepreneurs dans 41 pays</strong>. Il a co-animé des masterminds avec <strong>Jay Abraham</strong> — mentor de Tony Robbins — à 25 000 et 35 000€ par an. Il a formé des dizaines de leaders qui dominent aujourd'hui le Web francophone.
+        </p>
+      </div>
+      <div>
+        <p class="proof-media-label">Sébastien Night a été vu sur :</p>
+        <div class="media-row">
+          <span class="media-badge">TF1</span>
+          <span class="media-badge">M6</span>
+          <span class="media-badge">France 2</span>
+          <span class="media-badge">France Culture</span>
+          <span class="media-badge">France Bleu</span>
+          <span class="media-badge">Europe 1</span>
+          <span class="media-badge">Paris-Match</span>
+          <span class="media-badge">Charlie Hebdo</span>
+          <span class="media-badge">Le Parisien</span>
+          <span class="media-badge">France Dimanche</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions générales d'utilisation et la Politique de remboursement</a>, ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <p>Vous avez un public composé d'entrepreneurs ? Vous pouvez <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">devenir partenaire d'affiliation de OneTake AI et percevoir des commissions récurrentes</a>.</p>
+      <p><strong>Qu'est-ce que OneTake ?</strong></p>
+      <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake.AI, le premier logiciel de montage vidéo tout-en-un basé sur l'intelligence artificielle</a>.</p>
+      <p>Liens utiles : <a href="https://www.onetake.ai/blog" target="_blank">Blog de OneTake</a> · <a href="https://welove.onetake.ai/" target="_blank">Mur de l'amour (avis)</a> · <a href="https://docs.onetake.ai/en/" target="_blank">FAQ et documentation</a></p>
+      <p><strong>Qui a eu cette idée ?</strong></p>
+      <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui accompagne depuis 2010 plus de 20 000 entrepreneurs et compte 300 000 sympathisants dans 41 pays. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et d'une simplicité d'utilisation absolue : OneTake.</strong></p>
+      <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    </div>
+  </footer>
+
+  <script src="/tools.js"></script>
+</body>
+</html>
