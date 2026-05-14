@@ -92,7 +92,10 @@ function submitLead(email, prenom, language) {
   });
 
   if (window.plausible) { window.plausible('Lead'); console.log('[submitLead] Plausible Lead fired'); }
-  if (window.CE2) { window.CE2.set('wr', 1); console.log('[submitLead] CrazyEgg conversion set'); }
+  (window.CE_API || (window.CE_API = [])).push(function () {
+    CE2.converted('3488134f-e0dd-4728-9b3b-1464a7acc6b1');
+    console.log('[submitLead] CrazyEgg conversion fired');
+  });
 
   // ── Anytrack ─────────────────────────────────────────────────────────────
   // TODO: uncomment and add your Anytrack container script src below when ready
