@@ -103,8 +103,6 @@ function submitLead(email, prenom, language) {
 
 // ── useBouncer ─────────────────────────────────────────────────────────────
 
-var __bouncerLoaded = false;
-
 var bouncerConfig = {
   apikey: 'gTVUH7N0EaSO4CYDoNf1bdedQriEqXCNadVoNNaZ',
   feedbackOverlayMessage: 'Merci d\'entrer une adresse email valide.',
@@ -123,27 +121,5 @@ var bouncerConfig = {
   var s = document.createElement('script');
   s.async = true;
   s.src = 'https://app.usebouncer.com/bouncer-script/bouncer-script-beta.js';
-  s.onload = function () { __bouncerLoaded = true; };
   document.body.appendChild(s);
 }());
-
-// Attach submit listeners synchronously so they fire before useBouncer loads.
-// • If useBouncer loaded: e.preventDefault() blocks native POST; useBouncer's
-//   own listener validates the email and calls onSuccess → submitLead.
-// • If useBouncer failed to load (ad blocker, network): call submitLead directly.
-document.querySelectorAll('form').forEach(function (form) {
-  if (!form.querySelector('[name="email"]')) return;
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!__bouncerLoaded) {
-      var emailInput  = form.querySelector('[name="email"]');
-      var prenomInput = form.querySelector('[name="prenom"]');
-      var langInput   = form.querySelector('[name="language"]');
-      submitLead(
-        emailInput.value,
-        prenomInput ? prenomInput.value : '',
-        langInput   ? langInput.value   : ''
-      );
-    }
-  });
-});
