@@ -76,17 +76,26 @@ var USERLIST_PROXY_URL = 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.ru
 var REDIRECT_URL = 'https://try.onetake.ai/bootcamps/ehv/vpl1-10k/';
 
 function submitLead(email, prenom, language) {
+  console.log('[submitLead] called', { email: email, prenom: prenom, language: language });
   document.querySelectorAll('[type="submit"]').forEach(function (btn) { btn.disabled = true; });
 
+  console.log('[submitLead] posting to Userlist proxy');
   fetch(USERLIST_PROXY_URL, {
     method: 'POST',
     keepalive: true,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email, first_name: prenom, language: language, url: location.href })
+  }).then(function(res) {
+    console.log('[submitLead] proxy response', res.status);
+  }).catch(function(err) {
+    console.error('[submitLead] proxy error', err);
   });
 
-  if (window.plausible) window.plausible('Lead');
-  if (window.CE2) window.CE2.set('wr', 1);
+  if (window.plausible) { window.plausible('Lead'); console.log('[submitLead] Plausible Lead fired'); }
+  (window.CE_API || (window.CE_API = [])).push(function () {
+    CE2.converted('3488134f-e0dd-4728-9b3b-1464a7acc6b1');
+    console.log('[submitLead] CrazyEgg conversion fired');
+  });
 
   // ── Anytrack ─────────────────────────────────────────────────────────────
   // TODO: uncomment and add your Anytrack container script src below when ready
@@ -96,8 +105,9 @@ function submitLead(email, prenom, language) {
   //   s.src = 'https://assets.anytrack.io/YOUR_CONTAINER_ID.js';
   //   document.head.appendChild(s);
   // }());
-  if (window.anytrkTrack) window.anytrkTrack('Lead');
+  if (window.anytrkTrack) { window.anytrkTrack('Lead'); console.log('[submitLead] Anytrack Lead fired'); }
 
+  console.log('[submitLead] redirecting to', REDIRECT_URL, 'in 600ms');
   setTimeout(function () { location.href = REDIRECT_URL; }, 600);
 }
 
@@ -107,6 +117,7 @@ var bouncerConfig = {
   apikey: 'gTVUH7N0EaSO4CYDoNf1bdedQriEqXCNadVoNNaZ',
   feedbackOverlayMessage: 'Merci d\'entrer une adresse email valide.',
   onSuccess: function (emailInput) {
+    console.log('[bouncerConfig.onSuccess] email validated:', emailInput.value);
     var form = emailInput.form;
     var email = emailInput.value;
     var prenomInput = form ? form.querySelector('[name="prenom"]') : null;
