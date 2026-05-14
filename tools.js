@@ -72,7 +72,7 @@ var stateDocumentCheck = setInterval(function(){
 
 // ── Lead submission ────────────────────────────────────────────────────────
 
-var USERLIST_PROXY_URL = 'https://YOUR_PROXY_HOSTNAME/track'; // TODO: replace with deployed Bunny edge script URL
+var USERLIST_PROXY_URL = 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track';
 var REDIRECT_URL = 'https://try.onetake.ai/bootcamps/ehv/vpl1-10k/';
 
 function submitLead(email, prenom, language) {

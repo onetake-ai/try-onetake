@@ -35,5 +35,5 @@ jobs:
       - name: Publish the script to Bunny
         uses: "BunnyWay/actions/deploy-script@main"
         with:
-          script_id: YOUR_SCRIPT_ID
+          script_id: 74591
           file: "edge-scripts/userlist-proxy.ts"
