@@ -443,8 +443,10 @@
         <p class="form-card-pre">Accès immédiat &amp; gratuit</p>
         <h2 class="form-card-title">Rejoins le Bootcamp de l'Expert à Haute Valeur</h2>
         <p class="form-card-sub">Reçois la première vidéo maintenant. Les suivantes arrivent par email.</p>
-        <form action="javascript:void(0)">
+        <form action="https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track" method="POST">
           <input type="hidden" name="language" value="fr">
+          <input type="hidden" name="redirect" value="/bootcamps/ehv/vpl1-10k/">
+          <input type="hidden" name="url" value="">
           <div class="form-field">
             <label for="prenom-c">Ton prénom</label>
             <input type="text" id="prenom-c" name="prenom" placeholder="Prénom" required>
@@ -588,6 +590,15 @@
     </div>
   </footer>
 
+  <script>
+    document.querySelector('form').addEventListener('submit', function () {
+      var urlField = this.querySelector('[name="url"]');
+      if (urlField) urlField.value = location.href;
+      if (window.plausible) window.plausible('Lead');
+      (window.CE_API || (window.CE_API = [])).push(function () { CE2.converted('3488134f-e0dd-4728-9b3b-1464a7acc6b1'); });
+      if (window.anytrkTrack) window.anytrkTrack('Lead');
+    });
+  </script>
   <script src="/tools.js"></script>
 </body>
 </html>
