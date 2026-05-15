@@ -81,7 +81,7 @@ BunnySDK.net.http.serve(async (req: Request) => {
   const pushKey = process.env.USERLIST_PUSH_KEY;
   if (!pushKey) return redirectResponse();
 
-  const userProperties: Record<string, string> = { email };
+  const userProperties: Record<string, string> = {  };
   if (first_name) userProperties.first_name = first_name;
   if (language)   userProperties.language   = language;
 
