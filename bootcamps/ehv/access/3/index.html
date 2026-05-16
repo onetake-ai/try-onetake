@@ -609,7 +609,10 @@
       if (urlField) urlField.value = location.href;
       if (window.plausible) window.plausible('Lead');
       (window.CE_API || (window.CE_API = [])).push(function () { CE2.converted('3488134f-e0dd-4728-9b3b-1464a7acc6b1'); });
-      if (window.anytrkTrack) window.anytrkTrack('Lead');
+      if (window.AnyTrack) AnyTrack('trigger', 'Lead', {
+        email: this.querySelector('[name="email"]').value,
+        firstName: this.querySelector('[name="prenom"]').value
+      });
     });
   </script>
   <script src="/tools.js"></script>
