@@ -334,6 +334,7 @@ footer a:hover {
 }
 
 .modal-box {
+  position: relative;
   background: var(--white);
   border-radius: 20px;
   padding: 2.5rem 2rem;
@@ -341,6 +342,29 @@ footer a:hover {
   width: 100%;
   text-align: center;
   box-shadow: 0 20px 60px rgba(36, 24, 38, 0.25);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  color: rgba(36, 24, 38, 0.45);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-close:hover {
+  background: rgba(36, 24, 38, 0.07);
+  color: var(--bleached-cedar);
 }
 
 .modal-emoji {
