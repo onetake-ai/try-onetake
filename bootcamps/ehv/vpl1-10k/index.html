@@ -156,6 +156,10 @@
           document.getElementById('bonus-modal').removeAttribute('hidden');
           document.getElementById('bonus-modal').focus();
         });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') document.getElementById('bonus-modal').setAttribute('hidden', '');
+        });
       </script>
     </section>
 
