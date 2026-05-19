@@ -124,7 +124,7 @@
 
       <hyvor-talk-comments
         website-id="10804"
-        page-id="bootcamps/ehv/vpl2"
+        page-id="bootcamps/vpl2"
         loading="manual"
       ></hyvor-talk-comments>
 
@@ -150,7 +150,7 @@
         // Show bonus modal after a comment is published
         document.querySelector('hyvor-talk-comments').addEventListener('comment:published', function(e) {
           const email = e.detail?.user?.email || '';
-          const base = 'https://contraband.onetake.ai/ehv/diagnostic/';
+          const base = 'https://contraband.onetake.ai/ehv/vpl2-diagnostic/';
           const url = email ? base + '?email=' + encodeURIComponent(email) : base;
           document.getElementById('bonus-modal-btn').href = url;
           document.getElementById('bonus-modal').removeAttribute('hidden');
