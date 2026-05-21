@@ -242,6 +242,24 @@ const planPresets = {
         product: 'pri_01kc9j3qb4xtmmaftb4675ey82',
         firstExpectedPayment: 999,
         freeToPaidConversionRate: 1
+    },
+
+    // Scale plans — no trial, direct paid plans
+    'scale-yearly': {
+        tier: 'Scale',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01ks53hmdsf1e2zkpzb2q14tde',
+        firstExpectedPayment: 999,
+        freeToPaidConversionRate: 1
+    },
+    'scale-quarterly': {
+        tier: 'Scale',
+        recurrence: 'quarterly',
+        trial: null,
+        product: 'pri_01ks53pmbqb6aaj8kmyza3mf00',
+        firstExpectedPayment: 299,
+        freeToPaidConversionRate: 1
     }
 };
 
