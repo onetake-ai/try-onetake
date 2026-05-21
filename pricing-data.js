@@ -251,7 +251,7 @@ const planPresets = {
         trial: null,
         product: 'pri_01ks53hmdsf1e2zkpzb2q14tde',
         firstExpectedPayment: 999,
-        freeToPaidConversionRate: 0.30
+        freeToPaidConversionRate: 1
     },
     'scale-quarterly': {
         tier: 'Scale',
@@ -259,7 +259,7 @@ const planPresets = {
         trial: null,
         product: 'pri_01ks53pmbqb6aaj8kmyza3mf00',
         firstExpectedPayment: 299,
-        freeToPaidConversionRate: 0.30
+        freeToPaidConversionRate: 1
     }
 };
 
