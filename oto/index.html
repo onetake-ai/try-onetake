@@ -520,6 +520,10 @@
         if (studioNote) studioNote.hidden = false;
       }
 
+      if (otoParams.plan.toLowerCase().indexOf('scale') !== -1) {
+        window.location.replace(buildRedirectUrl());
+      }
+
       // ─────────────────────────────────────────────
       // PADDLE INITIALIZATION
       // ─────────────────────────────────────────────

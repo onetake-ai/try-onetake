@@ -52,8 +52,11 @@
         'pro-yearly-trial-1':               'pro-monthly-trial-1',
         'premium-studio-yearly-1-99':       'premium-studio-monthly-1-149',
         'premium-studio-monthly-1-149':     'pro-monthly-trial-1',
-        'pro-monthly-trial-1':              'occasional-monthly-trial-1'
+        'pro-monthly-trial-1':              'occasional-monthly-trial-1',
         // occasional-monthly variants → no downsell (omitted)
+        // Scale plans
+        'scale-yearly':                     'scale-quarterly',
+        'scale-quarterly':                  'pro-monthly'
     };
 
     // Application state
