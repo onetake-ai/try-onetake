@@ -56,7 +56,9 @@
         // occasional-monthly variants → no downsell (omitted)
         // Scale plans
         'scale-yearly':                     'scale-quarterly',
-        'scale-quarterly':                  'pro-monthly'
+        'scale-quarterly':                  'pro-monthly',
+        // Cercle plans
+        'cercle-semester':                  'cercle-monthly'
     };
 
     // Application state
