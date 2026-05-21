@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Le Cercle des Experts à Haute Valeur — Sébastien Night</title>
+
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link href="https://fonts.bunny.net/css?family=instrument-serif:400,400i&family=geist:300,400,500,600,700&family=geist-mono:400,500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg:        #FAF7F2;
+    --bg-warm:   #F2ECDF;
+    --bg-deep:   #1A1814;
+    --bg-card:   #FFFFFF;
+    --ink:       #1A1814;
+    --ink-soft:  #4A453E;
+    --ink-mute:  #8A8377;
+    --line:      #E5DFD2;
+    --line-deep: #2B2722;
+    --accent:    oklch(0.58 0.135 42);     /* terracotta */
+    --accent-2:  oklch(0.48 0.115 42);     /* terracotta dark */
+    --accent-tint: oklch(0.94 0.025 50);   /* terracotta tint */
+    --olive:     oklch(0.45 0.04 100);     /* secondary */
+    --gold:      oklch(0.72 0.10 80);
+    --plan-featured: oklch(0.26 0.09 42);  /* deep terracotta */
+
+    --serif: 'Instrument Serif', 'Times New Roman', serif;
+    --sans:  'Geist', system-ui, -apple-system, sans-serif;
+    --mono:  'Geist Mono', ui-monospace, monospace;
+
+    --max:   1180px;
+    --copy:  680px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+  .copy { max-width: var(--copy); margin-left: auto; margin-right: auto; }
+
+  /* ---------- Type ---------- */
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; margin: 0; color: var(--ink); }
+  h1 { font-size: clamp(48px, 7vw, 88px); }
+  h2 { font-size: clamp(36px, 5vw, 60px); }
+  h3 { font-size: clamp(26px, 3vw, 38px); }
+  h4 { font-size: clamp(20px, 2vw, 24px); font-family: var(--sans); font-weight: 600; letter-spacing: -0.005em; }
+  .italic { font-style: italic; }
+
+  p { margin: 0 0 1em; text-wrap: pretty; }
+  p.lead { font-size: 22px; line-height: 1.55; color: var(--ink-soft); }
+  .small { font-size: 14px; color: var(--ink-mute); }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px; height: 1px;
+    background: currentColor;
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 96px 0; position: relative; }
+  section.tight { padding: 64px 0; }
+  section.dark { background: var(--bg-deep); color: #EAE5DA; }
+  section.dark h1, section.dark h2, section.dark h3 { color: #FBF7EE; }
+  section.dark .eyebrow { color: var(--gold); }
+  section.dark p { color: #C8C2B4; }
+  section.warm { background: var(--bg-warm); }
+
+  .divider {
+    border-top: 1px solid var(--line);
+    width: 100%;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 32px;
+    background: var(--ink);
+    color: #FBF7EE;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease, color .2s ease;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .btn:hover { background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-1px); text-decoration: none; }
+  .btn .arrow { transition: transform .2s ease; }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-2); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .btn-ghost:hover { background: var(--ink); color: #FBF7EE; }
+  .btn-large { padding: 22px 40px; font-size: 18px; }
+  .btn-block { display: flex; width: 100%; }
+
+  /* ---------- Photo placeholders ---------- */
+  .photo {
+    position: relative;
+    background:
+      repeating-linear-gradient(135deg,
+        oklch(0.92 0.018 60) 0 14px,
+        oklch(0.88 0.022 60) 14px 28px);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .photo > .label {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(4px);
+    border-top: 1px solid var(--line);
+    width: 100%;
+    border-radius: 0;
+  }
+  .photo > .label strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .photo > .label span { color: var(--ink-mute); }
+
+  .photo.dark {
+    background:
+      repeating-linear-gradient(135deg,
+        oklch(0.28 0.02 60) 0 14px,
+        oklch(0.22 0.02 60) 14px 28px);
+    color: #E5DFD2;
+    border-color: var(--line-deep);
+  }
+  .photo.dark > .label {
+    background: rgba(20,18,14,0.85);
+    border-top-color: var(--line-deep);
+    color: #C8C2B4;
+  }
+  .photo.dark > .label strong { color: #FBF7EE; }
+
+  /* ---------- HERO ---------- */
+  .nav {
+    position: relative;
+    z-index: 5;
+    padding: 28px 0 0;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .brand .mark {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--ink);
+    color: #FBF7EE;
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 18px;
+    font-style: italic;
+  }
+  .nav .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+
+  .hero { padding: 56px 0 64px; }
+  .hero .eyebrow { margin-bottom: 28px; }
+  .hero h1 {
+    font-size: clamp(48px, 7.2vw, 96px);
+    letter-spacing: -0.022em;
+    line-height: 0.98;
+    margin-bottom: 28px;
+  }
+  .hero h1 .em {
+    font-style: italic;
+    color: var(--accent-2);
+  }
+  .hero .sub {
+    max-width: 720px;
+    font-size: clamp(19px, 1.6vw, 22px);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-bottom: 0;
+  }
+
+  .video-shell {
+    margin-top: 56px;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
+    box-shadow:
+      0 1px 0 rgba(26,24,20,0.06),
+      0 30px 60px -20px rgba(26,24,20,0.25),
+      0 0 0 1px var(--line);
+  }
+  .video-aspect {
+    position: relative;
+    padding-top: 56.25%;
+    width: 100%;
+  }
+  .video-aspect iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+
+  .hero-bullets {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .hero-bullet {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .hero-bullet .n {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-2);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 800px) {
+    .hero-bullets { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- Question stack ---------- */
+  .questions { background: var(--bg-warm); }
+  .questions .stack {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .questions h2 { margin-bottom: 48px; max-width: 800px; }
+  .q {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .q:last-of-type { border-bottom: 1px solid var(--line); }
+  .q .n {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-2);
+    padding-top: 6px;
+  }
+  .q p {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.3;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  /* ---------- Two-col image+text ---------- */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .split.reverse { direction: rtl; }
+  .split.reverse > * { direction: ltr; }
+  .split .photo { aspect-ratio: 4/5; }
+  .split h2 { margin-bottom: 28px; }
+  @media (max-width: 900px) {
+    .split { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ---------- Promise scene ---------- */
+  .morning {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .morning .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .morning .moment {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    gap: 24px;
+  }
+  .morning .moment:last-child { border-bottom: 1px solid var(--line); }
+  .morning .moment .t {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-2);
+    padding-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .morning .moment h4 { margin-bottom: 6px; font-family: var(--serif); font-size: 22px; font-weight: 400; }
+  .morning .moment p { margin: 0; font-size: 16px; color: var(--ink-soft); line-height: 1.55; }
+  .morning .photo { aspect-ratio: 4/5; position: sticky; top: 32px; }
+  @media (max-width: 900px) {
+    .morning { grid-template-columns: 1fr; gap: 48px; }
+    .morning .photo { position: static; }
+  }
+
+  /* ---------- Pillars ---------- */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .pillar {
+    padding: 32px 24px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    transition: background .2s ease;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+  .pillar:last-child { border-right: none; }
+  .pillar:hover { background: var(--accent-tint); }
+  .pillar .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 48px;
+    color: var(--accent-2);
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+  .pillar h4 { margin-bottom: 12px; font-size: 20px; }
+  .pillar p { font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin: 0; }
+  @media (max-width: 900px) {
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .pillar:nth-child(odd) { border-right: 1px solid var(--line); }
+    .pillar:nth-child(even) { border-right: none; }
+  }
+  @media (max-width: 520px) {
+    .pillars-grid { grid-template-columns: 1fr; }
+    .pillar { border-right: none; }
+  }
+
+  /* ---------- Sessions ---------- */
+  .sessions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 64px;
+  }
+  .session {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 20px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line-deep);
+  }
+  .session .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 28px;
+    color: var(--gold);
+    line-height: 1;
+    padding-top: 6px;
+  }
+  .session .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 4px 10px;
+    border: 1px solid rgba(186, 155, 99, 0.4);
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .session h4 { font-family: var(--serif); font-weight: 400; font-size: 22px; color: #FBF7EE; margin-bottom: 8px; line-height: 1.2; }
+  .session p { font-size: 15px; color: #B8B0A0; line-height: 1.55; margin: 0; }
+  @media (max-width: 800px) {
+    .sessions { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* ---------- How it works ---------- */
+  .how {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .how-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .how-card .ico {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent-tint);
+    color: var(--accent-2);
+    display: grid; place-items: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+  .how-card h4 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 12px; line-height: 1.2; }
+  .how-card p { font-size: 15px; color: var(--ink-soft); margin: 0; }
+  @media (max-width: 900px) { .how { grid-template-columns: 1fr; } }
+
+  /* ---------- Authority ---------- */
+  .authority-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .stat .n {
+    font-family: var(--serif);
+    font-size: clamp(56px, 6vw, 84px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--accent-2);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .stat .l {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  @media (max-width: 800px) { .authority-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* Testimonials */
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+  .quote {
+    border: 1px solid var(--line);
+    background: var(--bg-card);
+    padding: 32px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .quote blockquote {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.35;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .quote blockquote::before { content: "« "; color: var(--accent-2); }
+  .quote blockquote::after { content: " »"; color: var(--accent-2); }
+  .quote .who { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+  .quote .av {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(135deg, oklch(0.88 0.02 60) 0 8px, oklch(0.82 0.025 60) 8px 16px);
+    border: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+  .quote .who .name { font-weight: 500; font-size: 15px; }
+  .quote .who .role { font-size: 13px; color: var(--ink-mute); }
+  @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
+
+  /* ---------- For whom ---------- */
+  .yes-no {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .yn-card {
+    padding: 36px;
+    border-radius: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+  }
+  .yn-card.yes { border-color: var(--accent); border-left: 3px solid var(--accent); }
+  .yn-card.no { background: transparent; }
+  .yn-card h3 { font-size: 28px; margin-bottom: 20px; }
+  .yn-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+  .yn-card li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .yn-card li::before {
+    content: "";
+    margin-top: 9px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .yn-card.no li::before {
+    background: transparent;
+    border: 1px solid var(--ink-mute);
+    width: 7px; height: 7px;
+    margin-top: 10px;
+  }
+  @media (max-width: 800px) { .yes-no { grid-template-columns: 1fr; } }
+
+  /* ---------- Bonus stack ---------- */
+  .stack-table {
+    border-top: 1px solid var(--line);
+    margin-top: 56px;
+  }
+  .stack-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 240px 140px;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .stack-row .idx {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    padding-top: 6px;
+  }
+  .stack-row h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+  .stack-row .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 8px;
+  }
+  .stack-row p { font-size: 15px; color: var(--ink-soft); margin: 0; line-height: 1.55; }
+  .stack-row .what { font-size: 14px; color: var(--ink-soft); line-height: 1.5; padding-top: 6px; }
+  .stack-row .val {
+    text-align: right;
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--ink);
+    padding-top: 4px;
+    font-feature-settings: "tnum";
+  }
+  .stack-row .val .strike { color: var(--ink-mute); font-size: 16px; text-decoration: line-through; display: block; }
+  .stack-row.total {
+    background: var(--bg-warm);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin: 8px 0;
+    padding: 36px 24px;
+    align-items: center;
+  }
+  .stack-row.total h4 { font-size: 30px; }
+  .stack-row.total .val { font-size: 32px; }
+  @media (max-width: 900px) {
+    .stack-row { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+    .stack-row .what { padding-top: 8px; }
+    .stack-row .val { text-align: left; padding-top: 8px; }
+  }
+
+  /* ---------- Guarantee ---------- */
+  .guarantee {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 48px;
+  }
+  .seal {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, var(--accent-tint) 0%, transparent 70%),
+      var(--bg-warm);
+    border: 1px dashed var(--accent);
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .seal::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+  }
+  .seal .seal-inner {
+    text-align: center;
+    z-index: 1;
+  }
+  .seal .seal-inner .big {
+    font-family: var(--serif);
+    font-size: 64px;
+    line-height: 1;
+    color: var(--accent-2);
+  }
+  .seal .seal-inner .lbl {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent-2);
+    margin-top: 8px;
+  }
+  .guarantee h3 { margin-bottom: 16px; }
+  @media (max-width: 700px) {
+    .guarantee { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+    .seal { max-width: 200px; margin: 0 auto; }
+  }
+
+  /* ---------- Pricing ---------- */
+  .pricing-section { background: var(--bg-warm); }
+  .pricing-head { text-align: center; max-width: 760px; margin: 0 auto 64px; }
+  .pricing-head h2 { margin-bottom: 20px; }
+  .pricing {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 28px;
+    align-items: stretch;
+  }
+  .plan {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .plan.featured {
+    background: var(--plan-featured);
+    border-color: oklch(0.38 0.12 42);
+    color: #FBF7EE;
+  }
+  .plan.featured h3, .plan.featured h4 { color: #FBF7EE; }
+  .plan.featured p { color: oklch(0.88 0.03 50); }
+  .plan .ribbon {
+    position: absolute;
+    top: -14px; right: 32px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .plan .plan-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 16px;
+  }
+  .plan.featured .plan-name { color: var(--gold); }
+  .plan h3 { font-size: 36px; margin-bottom: 8px; }
+  .plan .tagline { font-size: 15px; color: var(--ink-soft); margin-bottom: 28px; }
+  .plan.featured .tagline { color: oklch(0.82 0.04 50); }
+  .plan .price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .plan .price .amount {
+    font-family: var(--serif);
+    font-size: 72px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .plan .price .cur { font-family: var(--serif); font-size: 32px; color: var(--ink-soft); }
+  .plan.featured .price .cur { color: oklch(0.78 0.04 50); }
+  .plan .price .per { font-size: 15px; color: var(--ink-mute); margin-left: 4px; }
+  .plan.featured .price .per { color: oklch(0.72 0.04 50); }
+  .plan .save {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    background: var(--accent-tint);
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    align-self: flex-start;
+  }
+  .plan.featured .save { background: rgba(186, 155, 99, 0.2); color: var(--gold); }
+  .plan ul.feats {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+  .plan.featured ul.feats { border-top-color: rgba(255,255,255,0.15); }
+  .plan ul.feats li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .plan.featured ul.feats li { color: oklch(0.92 0.02 50); }
+  .plan ul.feats li::before {
+    content: "✓";
+    color: var(--accent-2);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .plan.featured ul.feats li::before { color: var(--gold); }
+  .plan ul.feats li.bonus { color: var(--ink-soft); }
+  .plan.featured ul.feats li.bonus { color: oklch(0.85 0.04 60); }
+  .plan ul.feats li.bonus::before { content: "★"; }
+  .plan .cta-area { margin-top: auto; }
+  .plan .plan-foot {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-top: 16px;
+    text-align: center;
+  }
+  .plan.featured .plan-foot { color: oklch(0.62 0.04 50); }
+  @media (max-width: 900px) {
+    .pricing { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Urgency ---------- */
+  .urgency {
+    background: var(--bg-deep);
+    color: #FBF7EE;
+    padding: 80px 0;
+  }
+  .urgency h2 { color: #FBF7EE; margin-bottom: 24px; max-width: 800px; }
+  .urgency p { color: #C8C2B4; max-width: 720px; }
+  .urgency .reasons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .urgency .reason {
+    border: 1px solid var(--line-deep);
+    padding: 24px;
+    border-radius: 6px;
+  }
+  .urgency .reason .ico {
+    color: var(--gold);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .urgency .reason h4 { color: #FBF7EE; font-size: 18px; margin-bottom: 8px; }
+  .urgency .reason p { font-size: 14px; line-height: 1.55; margin: 0; color: #B8B0A0; }
+  @media (max-width: 800px) { .urgency .reasons { grid-template-columns: 1fr; } }
+
+  /* ---------- Final CTA ---------- */
+  .final {
+    text-align: center;
+    padding: 120px 0;
+  }
+  .final h2 {
+    font-size: clamp(40px, 6vw, 72px);
+    max-width: 900px;
+    margin: 0 auto 32px;
+    letter-spacing: -0.018em;
+  }
+  .final h2 .em { font-style: italic; color: var(--accent-2); }
+  .final .lead { max-width: 640px; margin: 0 auto 48px; color: var(--ink-soft); }
+  .final .ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- PS ---------- */
+  .ps {
+    background: var(--bg-warm);
+    padding: 80px 0;
+  }
+  .ps-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 48px;
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .ps-card .ps-tag {
+    display: block;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 16px;
+  }
+  .ps-card p { margin: 0 0 16px; font-style: italic; }
+  .ps-card p:last-child { margin: 0; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--bg-deep);
+    color: #8A8377;
+    padding: 48px 0;
+    font-size: 13px;
+  }
+  footer .row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer a { color: #C8C2B4; }
+
+  /* ---------- Small utilities ---------- */
+  .center { text-align: center; }
+  .mt-0 { margin-top: 0; }
+  .mt-2 { margin-top: 16px; }
+  .mt-4 { margin-top: 32px; }
+  .mt-6 { margin-top: 48px; }
+  .mt-8 { margin-top: 64px; }
+  .max-700 { max-width: 700px; }
+
+  /* sticky bottom CTA on mobile */
+  .mobile-cta {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--ink); color: #FBF7EE;
+    padding: 12px 16px;
+    z-index: 100;
+    border-top: 1px solid var(--line-deep);
+  }
+  @media (max-width: 720px) {
+    .mobile-cta { display: flex; gap: 8px; }
+    .mobile-cta a { flex: 1; padding: 14px; font-size: 14px; }
+    body { padding-bottom: 80px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="mark">S</div>
+      <span>Sébastien Night</span>
+    </div>
+    <div class="meta">Le Cercle des Experts à Haute Valeur</div>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" data-screen-label="01 Hero">
+  <div class="wrap">
+
+    <h1>
+      Construis le business d'expert<br />
+      qui te rapporte <span class="em">10 000 €/mois</span><br />
+      pendant que tu vis ta vie.
+    </h1>
+
+    <p class="sub">
+      Un accompagnement de 6 mois en petit comité avec Sébastien Night
+      pour transformer ton expertise en un système de vente qui tourne
+      24h/24 — même quand tu fermes ton ordi à 15h.
+    </p>
+
+    <div class="video-shell">
+      <div class="video-aspect">
+        <iframe
+          src="https://my.onetake.ai/b9502ad6/b7c1de90/"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+          allowfullscreen="true"
+          title="Le Cercle des Experts à Haute Valeur"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="hero-bullets">
+      <div class="hero-bullet"><span class="n">01</span>12 sessions live en petit comité, toutes les 2 semaines</div>
+      <div class="hero-bullet"><span class="n">02</span>Une Feuille de Route concrète après chaque session</div>
+      <div class="hero-bullet"><span class="n">03</span>OneTake Scale offert pendant les 6 mois du programme</div>
+      <div class="hero-bullet"><span class="n">04</span>Garantie inconditionnelle de 14 jours, sans justification</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== QUESTIONS ==================== -->
+<section class="questions tight" data-screen-label="02 Questions d'ouverture">
+  <div class="wrap">
+    <div class="stack">
+      <div class="eyebrow" style="margin-bottom: 24px;">Quatre questions, une décision</div>
+      <h2 class="mt-0">
+        Si tu réponds <span class="italic">oui</span> à au moins une de ces questions,<br/>
+        tu es au bon endroit.
+      </h2>
+
+      <div class="q">
+        <div class="n">Q.01</div>
+        <p>Est-ce que tu es prêt(e) à ouvrir ton ordinateur le matin, non pas avec la boule au ventre, mais avec l'excitation de voir combien de nouveaux clients se sont inscrits pendant la nuit&nbsp;?</p>
+      </div>
+      <div class="q">
+        <div class="n">Q.02</div>
+        <p>Es-tu déterminé(e) à devenir la personne de référence de ton marché — celle qu'on recommande sans même avoir besoin de demander&nbsp;?</p>
+      </div>
+      <div class="q">
+        <div class="n">Q.03</div>
+        <p>Veux-tu fermer ton ordi à 15h, aller chercher tes enfants, regarder un film le soir avec ton conjoint — en sachant que ton système de vente continue de travailler pendant que tu vis ta vie&nbsp;?</p>
+      </div>
+      <div class="q">
+        <div class="n">Q.04</div>
+        <p>Es-tu prêt(e) à ne plus jamais ressentir l'angoisse du 15 du mois, ni celle du 1<sup>er</sup> du mois quand ton chiffre d'affaires repart de zéro&nbsp;?</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROBLEM ==================== -->
+<section data-screen-label="03 Le vrai problème">
+  <div class="wrap">
+
+    <div class="split">
+      <div>
+        <div class="eyebrow">Ce n'est pas toi le problème</div>
+        <h2 class="mt-4">
+          Tu as la vision,<br/>
+          les outils, la volonté<br/>
+          — mais le système<br/>
+          n'a jamais été conçu<br/>
+          <span class="italic" style="color: var(--accent-2);">pour les experts.</span>
+        </h2>
+
+        <p class="lead mt-4">
+          L'algorithme, sur tous les réseaux, est conçu pour récompenser les
+          titres racoleurs et les promesses creuses. Pas l'expertise de fond.
+        </p>
+        <p>
+          C'est pour ça que des gens avec la moitié de ton expérience ont
+          dix fois ta visibilité. Tu as investi du temps, de l'argent, de l'énergie
+          dans des formations qui n'ont rien donné, comparé des outils,
+          galéré sur des logiciels pendant des semaines au lieu d'avancer.
+        </p>
+        <p>
+          Chaque formation t'a donné <em>un morceau du puzzle</em> sans jamais
+          assembler l'image. Tu travailles dur — mais sur les mauvaises choses,
+          dans le mauvais ordre, sans personne pour te dire quand tourner à droite
+          ou à gauche.
+        </p>
+      </div>
+
+      <div class="photo" style="aspect-ratio: 4/5;">
+        <div class="label">
+          <strong>📷 Suggestion photo</strong>
+          <span>Portrait éditorial d'un(e) expert(e) au bureau, lumière du soir, regard pensif vers l'écran — pas heureux, pas catastrophé. Évoque le "ça pourrait être moi". Stock&nbsp;: Stocksy, Unsplash+, Death to Stock.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== OPPORTUNITY / MORNING ==================== -->
+<section class="warm" data-screen-label="04 Le matin idéal">
+  <div class="wrap">
+
+    <div class="copy center" style="margin-bottom: 64px;">
+      <div class="eyebrow" style="justify-content: center;">L'opportunité</div>
+      <h2 class="mt-4">
+        Imagine un instant ton lundi matin,<br/>
+        <span class="italic">dans six mois.</span>
+      </h2>
+    </div>
+
+    <div class="morning">
+      <div class="photo">
+        <div class="label">
+          <strong>📷 Suggestion photo (héro de section)</strong>
+          <span>Mug de café fumant et carnet ouvert sur une table en bois clair près d'une fenêtre baignée de lumière dorée — laptop entrouvert en arrière-plan flou. Sérénité, début de journée. Vertical 4:5. Stock&nbsp;: Stocksy "morning routine", Unsplash "slow morning".</span>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="moment">
+          <div class="t">07:30</div>
+          <div>
+            <h4>Tu te réveilles à la lumière du jour</h4>
+            <p>Tu ne sautes pas sur ton téléphone. Tu prends le petit-déjeuner avec ta famille. Tu vas courir, ou faire ton yoga.</p>
+          </div>
+        </div>
+        <div class="moment">
+          <div class="t">09:00</div>
+          <div>
+            <h4>Trois actions claires sur ta Feuille de Route</h4>
+            <p>Tu filmes la vidéo de la semaine. Le sujet est déjà choisi. Tu parles 11 minutes, tu l'envoies dans OneTake. Le temps d'un café, elle est montée, sous-titrée, avec une musique parfaite.</p>
+          </div>
+        </div>
+        <div class="moment">
+          <div class="t">10:15</div>
+          <div>
+            <h4>Tu jettes un œil à ton CRM</h4>
+            <p>Un client a acheté ta formation à 1 000 € au milieu de la nuit, pendant que tu dormais. Tu es déjà à 8 400 € au 15 du mois. Tu sais que tu vas dépasser les 10 000.</p>
+          </div>
+        </div>
+        <div class="moment">
+          <div class="t">15:00</div>
+          <div>
+            <h4>Tu fermes l'ordi</h4>
+            <p>Le reste de la journée est à toi. Et le soir, quand tu t'endors, tu ne penses pas à ce que tu aurais dû faire — tu penses à ce que tu feras demain, et ça t'excite.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== AUTHORITY ==================== -->
+<section data-screen-label="05 Autorité Sébastien">
+  <div class="wrap">
+
+    <div class="split reverse">
+      <div>
+        <div class="eyebrow">Qui je suis</div>
+        <h2 class="mt-4">
+          15 ans à former<br/>
+          des experts<br/>
+          dans 41 pays.
+        </h2>
+
+        <p class="lead mt-4">
+          Je suis Sébastien Night, fondateur du Mouvement des Entrepreneurs Libres
+          et de la startup d'IA OneTake. Depuis 2010, j'ai accompagné plus de
+          300 000 entrepreneurs.
+        </p>
+        <p>
+          Les Olivier Roland, les Aurélien Amacker, les Max Piccinini, les
+          Maryse Lehoux, les Maxence Rigottier — la plupart des leaders du web
+          francophone sont d'anciens élèves, ou les élèves de mes élèves.
+          Aucun d'entre eux n'avait de notoriété quand ils ont commencé.
+        </p>
+        <p>
+          J'ai animé des masterminds à 25 000 et 35 000 €/an.
+          Aujourd'hui, je condense cette même expérience en six mois en ligne,
+          en petit comité, à un prix accessible.
+        </p>
+      </div>
+
+      <div class="photo">
+        <div class="label">
+          <strong>📷 Suggestion photo (portrait Sébastien)</strong>
+          <span>Portrait éditorial de Sébastien — fond neutre/intérieur chaleureux, regard caméra, sourire posé. Tenue smart-casual. Photo professionnelle existante à fournir, ou shooting éditorial style "founder portrait". Vertical 4:5.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="authority-grid mt-8" style="border-top: 1px solid var(--line); padding-top: 64px;">
+      <div class="stat">
+        <span class="n">300k+</span>
+        <span class="l">Entrepreneurs accompagnés depuis 2010</span>
+      </div>
+      <div class="stat">
+        <span class="n">41</span>
+        <span class="l">Pays touchés par les programmes</span>
+      </div>
+      <div class="stat">
+        <span class="n">15 ans</span>
+        <span class="l">D'expérience à former des leaders du web francophone</span>
+      </div>
+    </div>
+
+    <div class="quotes">
+      <div class="quote">
+        <blockquote>Yannick a doublé son chiffre d'affaires simplement en repackageant ses offres existantes avec la bonne stratégie.</blockquote>
+        <div class="who">
+          <div class="av"></div>
+          <div>
+            <div class="name">Yannick Alain</div>
+            <div class="role">Coach business</div>
+          </div>
+        </div>
+      </div>
+      <div class="quote">
+        <blockquote>Maryse est partie de zéro et a vite formé 30 000 personnes via Internet — sans devenir influenceuse.</blockquote>
+        <div class="who">
+          <div class="av"></div>
+          <div>
+            <div class="name">Maryse Lehoux</div>
+            <div class="role">Professeure de yoga</div>
+          </div>
+        </div>
+      </div>
+      <div class="quote">
+        <blockquote>Christine touche des milliers de personnes grâce à un message clair et un problème spécifique.</blockquote>
+        <div class="who">
+          <div class="av"></div>
+          <div>
+            <div class="name">Christine Cuisiniez</div>
+            <div class="role">Pharmacienne, conseil santé</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== 5 PILLARS ==================== -->
+<section class="warm" data-screen-label="06 Les 5 piliers">
+  <div class="wrap">
+    <div class="copy" style="max-width: 760px; margin-bottom: 48px;">
+      <div class="eyebrow">La méthode</div>
+      <h2 class="mt-4">Les 5 Piliers de l'Expert à Haute Valeur.</h2>
+      <p class="lead mt-4">
+        On n'attend pas qu'un pilier soit terminé pour commencer le suivant.
+        Dans un vrai business, tout est connecté&nbsp;: ton positionnement nourrit
+        ton offre, ton contenu nourrit ta liste email, ta liste email nourrit ta
+        Machine à Vendre.
+      </p>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="num">01</div>
+        <h4>Positionnement</h4>
+        <p>Tu te présentes en une phrase, sans te justifier. Tes clients viennent à toi parce que tu résous <em>leur</em> problème. Fin du syndrome de l'imposteur.</p>
+      </div>
+      <div class="pillar">
+        <div class="num">02</div>
+        <h4>Offre Irrésistible</h4>
+        <p>Une transformation claire, un nom qui vend, un prix assumé. Tes clients voient que ce qu'ils reçoivent vaut 4 à 8 fois ce qu'ils paient.</p>
+      </div>
+      <div class="pillar">
+        <div class="num">03</div>
+        <h4>Audience & Visibilité</h4>
+        <p>Deux vidéos pro par semaine en moins de 45 minutes au total. Une liste email qui t'appartient. Tu ne dépends plus des algorithmes.</p>
+      </div>
+      <div class="pillar">
+        <div class="num">04</div>
+        <h4>Machine à Vendre</h4>
+        <p>Un tunnel automatisé qui tourne 24h/24. Tu transformes des inconnus en clients pendant que tu dors, que tu nages, que tu vis.</p>
+      </div>
+      <div class="pillar">
+        <div class="num">05</div>
+        <h4>Notoriété</h4>
+        <p>Partenariats, publicités, leadership de marché. On te recommande sans même que tu le demandes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 12 SESSIONS ==================== -->
+<section class="dark" data-screen-label="07 Les 12 sessions">
+  <div class="wrap">
+    <div class="copy" style="max-width: 800px; margin-bottom: 56px;">
+      <div class="eyebrow">Le programme</div>
+      <h2 class="mt-4">12 sessions live, en petit comité.</h2>
+      <p class="lead mt-4" style="color: #C8C2B4;">
+        Une toutes les deux semaines, pendant six mois. 90 minutes en direct
+        avec moi sur Zoom — un atelier, pas un cours magistral. Tu arrives avec
+        la situation actuelle de ton business. Tu repars avec quelque chose
+        de construit.
+      </p>
+    </div>
+
+    <div class="sessions">
+
+      <div class="session">
+        <div class="num">00</div>
+        <div>
+          <span class="pill">Cérémonie d'engagement</span>
+          <h4>Session 0 — Tu prends une décision sur qui tu deviens</h4>
+          <p>Tu prépares ton espace, tu parles à ta famille, tu écris noir sur blanc ta vie dans un an. Tu repars avec ta Feuille de Route complète des 6 mois.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">01</div>
+        <div>
+          <span class="pill">Positionnement</span>
+          <h4>Ton Positionnement d'Expert à Haute Valeur</h4>
+          <p>Étude de Marché Express. Les mots exacts que tes clients utilisent pour décrire leur problème, analysés avec l'IA — sans tomber dans les résultats plats de "analyse ça pour moi".</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">02</div>
+        <div>
+          <span class="pill">Offre Irrésistible</span>
+          <h4>Construire ton Offre Irrésistible</h4>
+          <p>La transformation, la structure pour la livrer, le nom de marque, les bonus IA. Tu annonces ton tarif sans sueur au front.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">03</div>
+        <div>
+          <span class="pill">Audience & Visibilité</span>
+          <h4>Ta première vidéo, montée en direct</h4>
+          <p>Tu filmes, montes et publies pendant la session, avec OneTake. Et on construit ton calendrier de contenu à 90 jours, pour attirer des acheteurs — pas des spectateurs.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">04</div>
+        <div>
+          <span class="pill">Machine à Vendre</span>
+          <h4>L'IA comme vrai associé : Kit de Délégation</h4>
+          <p>Une bibliothèque de prompts et de skills prêts à l'emploi, organisée par type de tâche. Tu opères avec la productivité d'une équipe — sans embaucher.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">05</div>
+        <div>
+          <span class="pill">Notoriété</span>
+          <h4>Partenariats stratégiques</h4>
+          <p>Identifier tes partenaires idéaux, les approcher avec le bon message, structurer des collaborations qui amènent des clients. Obtenir en un mois ce que tu mettrais un an à construire seul.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">06</div>
+        <div>
+          <span class="pill">Audience & Visibilité</span>
+          <h4>Transformer les vues en abonnés email</h4>
+          <p>Cadeau / aimant à prospects, page d'inscription, séquence email. Aujourd'hui le PDF ne suffit plus&nbsp;: on crée un outil interactif (diagnostic, bilan, quiz) qui donne un résultat immédiat.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">07</div>
+        <div>
+          <span class="pill">Offre Irrésistible</span>
+          <h4>Créer un programme rentable à l'ère de l'IA</h4>
+          <p>Un cursus que tes clients suivent jusqu'au bout, des tarifs par paliers, et un contenu protégé pour qu'il ne soit pas pompé par une IA.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">08</div>
+        <div>
+          <span class="pill">Offre Irrésistible</span>
+          <h4>Des outils IA pour tes propres clients</h4>
+          <p>Diagnostics, bilans interactifs, assistants spécialisés que personne d'autre dans ta niche ne propose. La question "pourquoi acheter chez toi ?" disparaît définitivement.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">09</div>
+        <div>
+          <span class="pill">Machine à Vendre</span>
+          <h4>Le copywriting qui convertit</h4>
+          <p>Pages de vente, emails, posts. Tu parles de ton travail avec fierté, et les bonnes personnes achètent sans que tu aies besoin de les convaincre.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">10</div>
+        <div>
+          <span class="pill">Machine à Vendre</span>
+          <h4>Construire ta Machine à Vendre complète</h4>
+          <p>Tunnel automatisé du premier contact au paiement. Ce qui prenait des semaines se construit en heures grâce à l'IA — tu supervises, tu ne fais plus tout toi-même.</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">11</div>
+        <div>
+          <span class="pill">Notoriété</span>
+          <h4>Tes premières publicités vidéo</h4>
+          <p>Budget minimal, mais maximum de levier&nbsp;: parce que ta crédibilité, ton tunnel et ton offre sont déjà en place. Tu sors enfin de la "stratégie de l'espoir".</p>
+        </div>
+      </div>
+
+      <div class="session">
+        <div class="num">12</div>
+        <div>
+          <span class="pill">Notoriété</span>
+          <h4>Devenir le leader de ton marché</h4>
+          <p>Événements, tables rondes, masterminds, podcast spécial&nbsp;: tu passes de "personne ne me connaît" à "on me recommande sans que je le demande".</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section data-screen-label="08 Comment ça fonctionne">
+  <div class="wrap">
+
+    <div class="copy" style="max-width: 800px; margin-bottom: 64px;">
+      <div class="eyebrow">Comment ça se passe</div>
+      <h2 class="mt-4">Tu n'es jamais seul, et tu sais toujours quoi faire.</h2>
+    </div>
+
+    <div class="how">
+      <div class="how-card">
+        <div class="ico">L</div>
+        <h4>Sessions live, en direct.</h4>
+        <p>Toutes les deux semaines, 90 minutes sur Zoom. Un atelier, pas un cours. Je regarde ton tunnel, je lis ta page, je te dis quoi changer — et tu le fais en direct. Tous les replays sont accessibles dès le premier jour.</p>
+      </div>
+      <div class="how-card">
+        <div class="ico">F</div>
+        <h4>Une Feuille de Route concrète.</h4>
+        <p>Après chaque session&nbsp;: une liste d'actions, les outils à utiliser, les prompts IA prêts à l'emploi. Tu suis les étapes. Tu avances. Même quand tu doutes.</p>
+      </div>
+      <div class="how-card">
+        <div class="ico">G</div>
+        <h4>Un groupe Telegram privé.</h4>
+        <p>Pas un groupe Facebook de 5 000 personnes où personne ne répond. Une poignée d'experts triés sur le volet, engagés à réussir. Chaque vendredi, on partage sa victoire avec <span style="font-family: var(--mono); font-size: 13px;">#déjàvendredi</span>.</p>
+      </div>
+    </div>
+
+    <div class="mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px;">
+      <div class="photo" style="aspect-ratio: 16/10;">
+        <div class="label">
+          <strong>📷 Suggestion visuel</strong>
+          <span>Grille Zoom stylisée — 6 à 9 visages de coachs/expert(e)s, sourires authentiques, ambiance "petit comité" — pas une foule. À photographier ou composer à partir de portraits de membres réels.</span>
+        </div>
+      </div>
+      <div class="photo" style="aspect-ratio: 16/10;">
+        <div class="label">
+          <strong>📷 Suggestion visuel</strong>
+          <span>Capture d'écran mockup d'un fil Telegram avec messages "#déjàvendredi" — interface propre, fond clair, 3-4 messages visibles. À designer comme mockup, pas vraie capture.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== FOR WHOM ==================== -->
+<section class="warm" data-screen-label="09 Pour qui">
+  <div class="wrap">
+
+    <div class="copy" style="max-width: 800px; margin-bottom: 48px;">
+      <div class="eyebrow">Pour qui — et pour qui pas</div>
+      <h2 class="mt-4">La Règle Zéro Emmerdeur.</h2>
+      <p class="lead mt-4">
+        Je préfère être clair maintenant plutôt que te laisser t'inscrire si
+        ce n'est pas fait pour toi. Voici à qui s'adresse Le Cercle — et à qui
+        il ne s'adresse <em>pas</em>.
+      </p>
+    </div>
+
+    <div class="yes-no">
+      <div class="yn-card yes">
+        <h3>C'est pour toi si&nbsp;:</h3>
+        <ul>
+          <li>Tu es coach, consultant, formateur, formatrice ou thérapeute, avec au moins 5 ans d'expérience terrain.</li>
+          <li>Tu apportes des résultats concrets à de vrais clients, mais tu plafonnes parce que tu échanges ton temps contre de l'argent.</li>
+          <li>Tu as déjà un business qui tourne mais tu es épuisé(e), tout repose sur toi, et tu n'as pas de système automatisé.</li>
+          <li>Tu débutes ta présence en ligne mais tu as une vraie expertise à vendre.</li>
+          <li>Tu es prêt(e) à te montrer en vidéo (OneTake la rend facile, rapide et professionnelle).</li>
+        </ul>
+      </div>
+      <div class="yn-card no">
+        <h3>Ce n'est <em>pas</em> pour toi si&nbsp;:</h3>
+        <ul>
+          <li>Tu n'as aucune expertise à vendre, et tu cherches encore quoi faire de ta vie.</li>
+          <li>Tu espères régurgiter ce que ChatGPT te donne et le revendre comme une formation.</li>
+          <li>Tu cherches un bouton magique pour gagner de l'argent en dormant sans rien faire.</li>
+          <li>Tu sais déjà tout et tu n'es pas prêt(e) à remettre en question ta façon de faire.</li>
+          <li>Tu refuses catégoriquement d'assumer d'avoir des choses à dire devant une caméra.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== BONUS STACK ==================== -->
+<section data-screen-label="10 Ce que tu reçois">
+  <div class="wrap">
+
+    <div class="copy" style="max-width: 820px; margin-bottom: 8px;">
+      <div class="eyebrow">L'offre complète</div>
+      <h2 class="mt-4">Ce que tu reçois exactement.</h2>
+      <p class="lead mt-4">
+        Le programme principal + sept bonus que j'ai ajoutés pour que tu aies
+        <em>absolument tout</em> ce qu'il te faut pour réussir.
+      </p>
+    </div>
+
+    <div class="stack-table">
+
+      <div class="stack-row">
+        <div class="idx">01</div>
+        <div>
+          <span class="tag">Programme principal</span>
+          <h4>Le Cercle des Experts à Haute Valeur</h4>
+          <p class="what">12 sessions live en petit comité avec Sébastien Night. 90 min/session toutes les 2 semaines pendant 6 mois.</p>
+        </div>
+        <div class="what">Atelier en direct, replays inclus, questions-réponses personnalisées en pré-session.</div>
+        <div class="val">9 990 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">02</div>
+        <div>
+          <span class="tag">Bonus #1</span>
+          <h4>La Machine à Vendre</h4>
+          <p class="what">Ma formation complète sur les séquences de vente automatisées. 10 ans de mises à jour.</p>
+        </div>
+        <div class="what">Modèles, exemples et séquences prêtes à adapter. Construit ton système même en dehors des sessions.</div>
+        <div class="val">4 995 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">03</div>
+        <div>
+          <span class="tag">Bonus #2</span>
+          <h4>OneTake — niveau Scale (6 mois)</h4>
+          <p class="what">OneTake monte tes vidéos en un clic&nbsp;: sous-titres, musique, traductions, mise en avant des points clés.</p>
+        </div>
+        <div class="what">Compte activé immédiatement, ou upgrade automatique si tu es déjà client.</div>
+        <div class="val">1 794 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">04</div>
+        <div>
+          <span class="tag">Bonus #3</span>
+          <h4>La Feuille de Route de l'Expert</h4>
+          <p class="what">Une feuille de route par session avec les actions exactes, les outils, et les prompts IA prêts à l'emploi.</p>
+        </div>
+        <div class="what">Tu sais quoi faire dans quel ordre, même quand tu manques de temps.</div>
+        <div class="val">497 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">05</div>
+        <div>
+          <span class="tag">Bonus #4</span>
+          <h4>Le Kit de Délégation IA</h4>
+          <p class="what">Une bibliothèque de prompts et de skills IA organisés par tâche business&nbsp;: page de vente, contenu, emails, aimant à prospects.</p>
+        </div>
+        <div class="what">Tu divises par quatre le temps passé sur les tâches répétitives.</div>
+        <div class="val">497 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">06</div>
+        <div>
+          <span class="tag">Bonus #5</span>
+          <h4>La Boîte à Outils de l'Expert</h4>
+          <p class="what">La liste des outils que je recommande pour chaque pilier — une seule recommandation par catégorie.</p>
+        </div>
+        <div class="what">Tu ne compares plus 47 logiciels. Tu prends celui que je te dis, tu avances.</div>
+        <div class="val">297 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">07</div>
+        <div>
+          <span class="tag">Bonus #6</span>
+          <h4>L'Annuaire des Membres</h4>
+          <p class="what">Un répertoire où chaque membre liste son expertise, son offre, et les partenariats qu'il cherche.</p>
+        </div>
+        <div class="what">Tes premiers partenaires sont déjà autour de toi.</div>
+        <div class="val">297 €</div>
+      </div>
+
+      <div class="stack-row">
+        <div class="idx">08</div>
+        <div>
+          <span class="tag">Bonus #7 · Conditionnel</span>
+          <h4>Le Réseau des Leaders</h4>
+          <p class="what">Si un de tes partenaires de rêve fait partie de mon réseau et si tu as suivi toutes les Feuilles de Route, je t'aide <em>personnellement</em> à entrer en contact.</p>
+        </div>
+        <div class="what">J'ai eu des partenaires qui ont amené plus de 1 000 prospects en un seul email.</div>
+        <div class="val"><span class="italic" style="font-size: 22px;">Inestimable</span></div>
+      </div>
+
+      <div class="stack-row total">
+        <div class="idx" style="font-size: 14px; color: var(--ink);">∑</div>
+        <div>
+          <h4>Valeur totale de ce que tu reçois</h4>
+          <p style="margin-top:6px;">Sans compter Le Réseau des Leaders, qui à lui seul peut tout changer.</p>
+        </div>
+        <div></div>
+        <div class="val"><strong>18 367 €</strong></div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== GUARANTEE ==================== -->
+<section data-screen-label="11 Garantie">
+  <div class="wrap">
+    <div class="guarantee">
+      <div class="seal">
+        <div class="seal-inner">
+          <div class="big">14</div>
+          <div class="lbl">jours · sans condition</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Garantie en béton armé</div>
+        <h3 class="mt-2">Tu goûtes la soupe pendant 14 jours. Sans risque.</h3>
+        <p>
+          Pendant 14 jours, tu assistes à la session de bienvenue, tu reçois ta première
+          Feuille de Route, tu accèdes à tous les replays, tu rejoins le groupe Telegram,
+          tu actives ton compte OneTake.
+        </p>
+        <p>
+          Si, au bout de 14 jours, tu n'es pas convaincu(e) à 110% que c'est le programme
+          parfait pour toi, tu nous envoies un email et on te rembourse jusqu'au dernier centime.
+          <strong>Sans conditions. Sans justification.</strong> Et tu gardes les ressources
+          et outils que je t'ai donnés jusque-là.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRICING ==================== -->
+<section class="pricing-section" id="tarifs" data-screen-label="12 Tarifs">
+  <div class="wrap">
+
+    <div class="pricing-head">
+      <div class="eyebrow" style="justify-content: center;">L'investissement</div>
+      <h2 class="mt-4">
+        Valeur totale&nbsp;: <span style="text-decoration: line-through; color: var(--ink-mute);">18 367 €</span><br/>
+        Ton investissement&nbsp;: <span class="italic" style="color: var(--accent-2);">à partir de 995&nbsp;€/mois.</span>
+      </h2>
+      <p class="lead mt-4">
+        Engagement contractuel sur 6 mois — parce que les résultats se construisent
+        sur la durée. Deux options de paiement, à toi de choisir.
+      </p>
+    </div>
+
+    <div class="pricing">
+
+      <!-- MONTHLY PLAN -->
+      <div class="plan">
+        <div class="plan-name">Option 1 · Mensuel</div>
+        <h3>Paiement mensuel</h3>
+        <p class="tagline">Étale l'investissement sur les 6 mois du programme.</p>
+
+        <div class="price">
+          <span class="amount">995</span>
+          <span class="cur">€</span>
+          <span class="per">/mois × 6 mois</span>
+        </div>
+        <div class="save">Total : 5 970 €</div>
+
+        <ul class="feats">
+          <li>Le Cercle — 12 sessions live (valeur 9 990 €)</li>
+          <li>La Machine à Vendre — formation complète (4 995 €)</li>
+          <li>OneTake Scale pendant 6 mois (1 794 €)</li>
+          <li>La Feuille de Route de l'Expert (497 €)</li>
+          <li>Le Kit de Délégation IA (497 €)</li>
+          <li>La Boîte à Outils de l'Expert (297 €)</li>
+          <li>L'Annuaire des Membres (297 €)</li>
+          <li>Accès au Réseau des Leaders (conditionnel)</li>
+        </ul>
+
+        <div class="cta-area">
+          <a class="btn btn-ghost btn-block btn-large"
+             href="https://try.onetake.ai/?plan=cercle-monthly">
+            <span>Choisir le paiement mensuel</span>
+            <span class="arrow">→</span>
+          </a>
+          <div class="plan-foot">Engagement 6 mois · CB sécurisée · Garantie 14 jours</div>
+        </div>
+      </div>
+
+      <!-- SEMESTER PLAN -->
+      <div class="plan featured">
+        <div class="ribbon">Recommandé · Économie d'un mois</div>
+        <div class="plan-name">Option 2 · Semestre payé en une fois</div>
+        <h3>Paiement unique</h3>
+        <p class="tagline">Tu économises 975 € — et tu débloques deux bonus exclusifs.</p>
+
+        <div class="price">
+          <span class="amount">4 995</span>
+          <span class="cur">€</span>
+          <span class="per">une seule fois</span>
+        </div>
+        <div class="save">Tu économises l'équivalent d'un mois (975 €)</div>
+
+        <ul class="feats">
+          <li>Tout ce qui est inclus dans l'offre mensuelle</li>
+          <li class="bonus"><strong>Bonus exclusif #1&nbsp;:</strong> Un appel "SOS" privé avec Sébastien, à utiliser au moment critique de ton choix (interview TV, lancement, négociation clé).</li>
+          <li class="bonus"><strong>Bonus exclusif #2&nbsp;:</strong> Dîner VIP avec Sébastien pendant le week-end du Web2Connect à Paris (valeur 1 000 €).</li>
+        </ul>
+
+        <div class="cta-area">
+          <a class="btn btn-primary btn-block btn-large"
+             href="https://try.onetake.ai/?plan=cercle-semester">
+            <span>Choisir le paiement unique</span>
+            <span class="arrow">→</span>
+          </a>
+          <div class="plan-foot">Paiement sécurisé · Accès immédiat · Garantie 14 jours</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== URGENCY ==================== -->
+<section class="urgency" data-screen-label="13 Urgence">
+  <div class="wrap">
+    <div class="eyebrow">À lire avant de fermer cet onglet</div>
+    <h2 class="mt-4">Pourquoi maintenant, et pas dans six mois.</h2>
+    <p class="lead">
+      Les inscriptions ne resteront pas ouvertes longtemps, et le nombre de places
+      est limité pour cette cohorte. Trois raisons concrètes.
+    </p>
+
+    <div class="reasons">
+      <div class="reason">
+        <div class="ico">i.</div>
+        <h4>Petit comité, par choix</h4>
+        <p>Pour que chacun puisse se connaître et qu'on avance vraiment ensemble en direct.</p>
+      </div>
+      <div class="reason">
+        <div class="ico">ii.</div>
+        <h4>Première cohorte en 5 ans</h4>
+        <p>Mon business principal, c'est le logiciel. Je n'ai pas prévu de relancer un programme d'accompagnement après celui-ci.</p>
+      </div>
+      <div class="reason">
+        <div class="ico">iii.</div>
+        <h4>L'IA redistribue les cartes</h4>
+        <p>Le milieu de gamme se fait écraser. Si tu ne fais pas le choix de devenir un Expert à Haute Valeur, tu te retrouves en bas de l'échelle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FINAL CTA ==================== -->
+<section class="final" data-screen-label="14 Décision finale">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content: center;">Voici ce que tu dois faire maintenant</div>
+    <h2 class="mt-4">
+      C'est <span class="em">ton tour.</span><br/>
+      Je te retrouve dans le Cercle.
+    </h2>
+    <p class="lead">
+      Choisis ton option de paiement. Tu arrives sur une page sécurisée.
+      Ton compte OneTake est activé dans la journée. Et dans moins de 15 jours,
+      tu es en live avec moi pour ta première session.
+    </p>
+
+    <div class="ctas">
+      <a class="btn btn-primary btn-large"
+         href="https://try.onetake.ai/?plan=cercle-semester">
+        <span>Paiement unique — 4 995 €</span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="btn btn-ghost btn-large"
+         href="https://try.onetake.ai/?plan=cercle-monthly">
+        <span>Mensuel — 995 €/mois</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <p class="small mt-6">
+      Garantie 14 jours sans condition · Paiement sécurisé · Accès immédiat aux ressources
+    </p>
+  </div>
+</section>
+
+<!-- ==================== PS ==================== -->
+<section class="ps" data-screen-label="15 P.S.">
+  <div class="wrap">
+    <div class="ps-card">
+      <span class="ps-tag">P.S. — un dernier mot.</span>
+      <p>
+        Imagine ce que ça ferait si dans 6 mois, tu ouvres ton ordi et que tu vois
+        10 000 € de revenus nets encaissés ce mois-ci.
+      </p>
+      <p>
+        Si la prochaine fois que ton conjoint ou ta conjointe te demande
+        «&nbsp;alors, ça avance ton truc ?&nbsp;», tu pouvais sourire en répondant.
+        Parce que oui, ça avance.
+      </p>
+      <p>
+        Si tes enfants te voyaient, non plus stressé(e) et scotché(e) à ton écran,
+        mais serein(e), présent(e), fier(e) de ce que tu construis.
+      </p>
+      <p style="font-style: normal; color: var(--ink-soft); font-family: var(--sans); font-size: 17px; margin-top: 24px;">
+        Tu as une grande décision à prendre. Je ne peux pas la prendre à ta place.
+        Ce que je peux te dire&nbsp;: ce système a fonctionné pour moi, et pour des
+        milliers d'experts dans 41 pays depuis plus de 15 ans. Ils ont tous été là
+        où tu es maintenant. Ils ont tous pris la décision. — <em>Sébastien.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="wrap">
+    <div class="row" style="margin-bottom: 24px;">
+      <div>© 2026 OneTake AI · Mouvement des Entrepreneurs Libres</div>
+      <div>
+        <a href="https://www.onetake.ai/terms-of-service" target="_blank">CGV &amp; Politique de remboursement</a>
+        ·
+        <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>
+        ·
+        <a href="https://www.onetake.ai/contact" target="_blank">Contact</a>
+      </div>
+    </div>
+    <div style="border-top: 1px solid var(--line-deep); padding-top: 20px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px;">
+      <a href="https://www.onetake.ai/blog" target="_blank">Blog OneTake</a>
+      ·
+      <a href="https://welove.onetake.ai/" target="_blank">Avis clients</a>
+      ·
+      <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a>
+      ·
+      <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">Programme affilié</a>
+    </div>
+  </div>
+</footer>
+
+<!-- mobile sticky CTA -->
+<div class="mobile-cta">
+  <a class="btn btn-ghost" href="https://try.onetake.ai/?plan=cercle-monthly" style="color:#FBF7EE; border-color: #4A453E;">
+    Mensuel — 995&nbsp;€
+  </a>
+  <a class="btn btn-primary" href="https://try.onetake.ai/?plan=cercle-semester">
+    Unique — 4 995&nbsp;€
+  </a>
+</div>
+
+<script src="../../../tools.js"></script>
+</body>
+</html>
