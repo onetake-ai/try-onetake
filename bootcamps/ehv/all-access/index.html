@@ -250,13 +250,11 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--bleached-cedar);
-      padding: 1.15rem 0;
+      padding: 1.15rem 2rem 1.15rem 0;
       cursor: pointer;
       list-style: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
+      display: block;
+      position: relative;
     }
 
     .faq-item summary::-webkit-details-marker { display: none; }
@@ -266,8 +264,11 @@
       font-size: 1.4rem;
       font-weight: 300;
       color: var(--golden-grass);
-      flex-shrink: 0;
       line-height: 1;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .faq-item[open] summary::after { content: '−'; }
@@ -424,7 +425,7 @@
 
     <div class="episode-block">
       <p class="episode-num">Episode 4 of 4</p>
-      <h2>The High-Value Expert Circle</h2>
+      <h2>Join the High-Value Experts' Circle</h2>
       <p class="episode-promise">A 6-month small-group program to turn your expertise into a sales system that runs 24/7 — even when you close your laptop at 3pm.</p>
       <div class="episode-video">
         <div class="video-wrapper">
