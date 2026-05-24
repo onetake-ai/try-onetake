@@ -75,8 +75,9 @@
   gap: 4px;
   padding: 5px;
   border-radius: 999px;
-  background: rgba(28, 20, 13, 0.06);
-  border: 1px solid var(--ot-line);
+  background: var(--ot-card);
+  border: 1px solid var(--ot-line-strong);
+  box-shadow: var(--ot-shadow);
 }
 .ot-billing__btn {
   appearance: none;
@@ -140,6 +141,10 @@
   color: var(--ot-cream-2);
   border-color: var(--ot-ink);
   box-shadow: var(--ot-shadow-strong);
+}
+.ot-card--featured .ot-card__name,
+.ot-card--featured .ot-card__amount {
+  color: var(--ot-cream-2);
 }
 .ot-card--featured .ot-card__tagline,
 .ot-card--featured .ot-card__desc,
@@ -450,7 +455,7 @@
 .ot-compare-toggle {
   appearance: none;
   border: 1px solid var(--ot-line-strong);
-  background: transparent;
+  background: var(--ot-card);
   color: var(--ot-ink);
   font-weight: 600;
   font-size: 14px;
@@ -460,6 +465,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: var(--ot-shadow);
   transition: background .15s ease, border-color .15s ease;
 }
 .ot-compare-toggle:hover {
@@ -480,6 +486,13 @@
 }
 .ot-compare[hidden] { display: none; }
 
+.ot-compare__caption {
+  background: var(--ot-card);
+  border: 1px solid var(--ot-line);
+  border-bottom: 0;
+  border-radius: var(--ot-radius-lg) var(--ot-radius-lg) 0 0;
+  padding: 24px 20px 0;
+}
 .ot-compare__title {
   text-align: center;
   font-size: 26px;
@@ -497,8 +510,9 @@
 .ot-compare__scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: var(--ot-radius-lg);
+  border-radius: 0 0 var(--ot-radius-lg) var(--ot-radius-lg);
   border: 1px solid var(--ot-line);
+  border-top: 0;
   background: var(--ot-card);
 }
 .ot-compare__table {
@@ -617,6 +631,11 @@
 
 /* Mobile: collapse comparison table into stacked cards-with-tabs */
 @media (max-width: 720px) {
+  .ot-compare__caption {
+    border-bottom: 1px solid var(--ot-line);
+    border-radius: var(--ot-radius-lg);
+    margin-bottom: 20px;
+  }
   .ot-compare__scroll {
     border: 0;
     background: transparent;
@@ -870,8 +889,10 @@
 
     return ''
       + '<section class="ot-compare" id="ot-compare">'
-      +   '<h2 class="ot-compare__title">Compare every feature</h2>'
-      +   '<p class="ot-compare__sub">A full breakdown of what\u2019s included in each plan.</p>'
+      +   '<div class="ot-compare__caption">'
+      +     '<h2 class="ot-compare__title">Compare every feature</h2>'
+      +     '<p class="ot-compare__sub">A full breakdown of what\u2019s included in each plan.</p>'
+      +   '</div>'
       +   '<div class="ot-compare__scroll">'
       +     '<table class="ot-compare__table">'
       +       '<thead><tr><th>Feature</th>' + headCells + '</tr></thead>'
