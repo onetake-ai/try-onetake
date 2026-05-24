@@ -1,0 +1,299 @@
+{
+  "_comment": "Pricing-table feature data. status='live' shows normally; status='soon' adds a 'Soon!' pill; status='far' is hidden entirely (don't ship these rows). Comparison cell values: 'yes' | 'no' | string for free text, or an object { trial: '≤30 min video', after: '€0.50/min' } for try-once-then-priced features.",
+
+  "plans": [
+    {
+      "id": "launch",
+      "name": "Launch",
+      "tagline": "The Expert",
+      "description": "Package your expertise into professional video — without the editing headache.",
+      "presetMonthly": "launch-monthly",
+      "presetYearly": "launch-yearly",
+      "monthlyPriceId": "pri_launch_monthly_placeholder",
+      "yearlyPriceId": "pri_launch_yearly_placeholder",
+      "monthlyFallback": "€59",
+      "yearlyFallback": "€49",
+      "trialBadge": "3-day free trial",
+      "ctaLabel": "Start 3-day free trial",
+      "ctaLabelNoTrial": "Choose Launch — billed annually",
+      "featured": false,
+      "highlights": [
+        { "icon": "clock",   "label": "120 editing minutes / month",
+          "tip": "Plenty for a weekly course video or coaching recap. Minutes refill every month." },
+        { "icon": "video",   "label": "Videos up to 1 hour each",
+          "tip": "Long enough for a deep-dive masterclass or full coaching session — no need to chop your recording before uploading." },
+        { "icon": "spark",   "label": "Instant AI editing + agentic content generation",
+          "tip": "Drops in your B-roll, cuts ums and silences, adds captions and a music track, and can also write scripts, summaries, quizzes and lesson outlines from your recording." },
+        { "icon": "host",    "label": "Hosted video pages + embeddable player",
+          "tip": "Every video gets its own shareable page with a transcript, and a copy-paste embed for your course platform, blog, or sales page. No Vimeo/Wistia needed." },
+        { "icon": "youtube", "label": "Direct publish to YouTube",
+          "tip": "Send the finished video straight to your channel — title, description and chapters filled in for you." },
+        { "icon": "shorts",  "label": "1 viral Short generated per video",
+          "tip": "Auto-clipped highlight from your video that you can post to your feeds to drive new students in." },
+        { "icon": "lock",    "label": "Watermark-free Full HD exports",
+          "tip": "Crisp 1080p downloads you can use anywhere — no OneTake logo, no sneaky branding on your work." },
+        { "icon": "support", "label": "“The Real Time” live demos with the founder",
+          "tip": "Weekly group session with our team — bring questions, watch real workflows, learn the tricks before you need them." }
+      ]
+    },
+
+    {
+      "id": "grow",
+      "name": "Grow",
+      "tagline": "The Entrepreneur",
+      "description": "Your end-to-end content engine — from raw recording to every platform, automatically.",
+      "presetMonthly": "grow-monthly",
+      "presetYearly": "grow-yearly",
+      "monthlyPriceId": "pri_grow_monthly_placeholder",
+      "yearlyPriceId": "pri_grow_yearly_placeholder",
+      "monthlyFallback": "€99",
+      "yearlyFallback": "€83",
+      "trialBadge": null,
+      "ctaLabel": "Choose Grow",
+      "featured": true,
+      "featuredLabel": "Most popular",
+      "previousPlanName": "Launch",
+      "highlights": [
+        { "icon": "clock",   "label": "240 editing minutes / month",
+          "tip": "Enough for a weekly podcast plus a midweek short-form pillar — or a heavier course-launch cadence." },
+        { "icon": "video",   "label": "Videos up to 2 hours each",
+          "tip": "Full webinars, fireside chats and recorded interviews go in whole — we handle the long-form heavy lifting." },
+        { "icon": "shorts",  "label": "Unlimited Shorts generation & downloads",
+          "tip": "Regenerate Shorts as many times as you like and pick the one that hits — no per-video cap on attempts or downloads." },
+        { "icon": "social",  "label": "Publish + schedule to YouTube, IG, TikTok, FB, LinkedIn",
+          "tip": "Send each finished video to every channel — and queue it for the best posting time without leaving OneTake.",
+          "soon": true },
+        { "icon": "thumb",   "label": "AI thumbnails optimised for engagement",
+          "tip": "Pick from three click-tested thumbnail concepts per video — designed to make people stop scrolling.",
+          "soon": true },
+        { "icon": "host",    "label": "Whitelabel hosting on your own domain",
+          "tip": "Course videos live at videos.yourbrand.com — students never see OneTake. Builds trust and looks polished." },
+        { "icon": "podcast", "label": "Clean podcast audio exports",
+          "tip": "One click to a podcast-ready audio file with the same edits as your video — turn every recording into a Spotify episode." },
+        { "icon": "import",  "label": "Auto-import from your YouTube channel",
+          "tip": "Connect your channel once and we’ll auto-edit every new upload in the background. Set-and-forget content pipeline." },
+        { "icon": "support", "label": "Priority support + 1-on-1 Zoom with the team",
+          "tip": "Jump the queue, and book real face-time when something is on fire — not chatbot purgatory." }
+      ]
+    },
+
+    {
+      "id": "scale",
+      "name": "Scale",
+      "tagline": "The Business",
+      "description": "OneTake runs in the background — your team uploads, automations handle the rest.",
+      "presetMonthly": "scale-monthly",
+      "presetYearly": "scale-yearly",
+      "monthlyPriceId": "pri_scale_monthly_placeholder",
+      "yearlyPriceId": "pri_scale_yearly_placeholder",
+      "monthlyFallback": "€299",
+      "yearlyFallback": "€249",
+      "trialBadge": null,
+      "ctaLabel": "Choose Scale",
+      "featured": false,
+      "previousPlanName": "Grow",
+      "highlights": [
+        { "icon": "clock",  "label": "600 editing minutes / month",
+          "tip": "Team-scale capacity — enough for daily content output across multiple shows or brands." },
+        { "icon": "video",  "label": "Unlimited video length per upload",
+          "tip": "Drop in a full-day workshop or a 4-hour summit recording — no length cap, no splitting up the file." },
+        { "icon": "team",   "label": "Up to 3 seats (more as add-on)",
+          "tip": "Bring your VA, content manager and editor into one workspace — everyone sees the same library.",
+          "soon": true },
+        { "icon": "team",   "label": "Multi-user + sub-accounts",
+          "tip": "Give clients or team members their own login that uploads straight into your account — perfect for agencies and group coaching programs.",
+          "soon": true },
+        { "icon": "api",    "label": "API access for batch processing",
+          "tip": "Connect OneTake to your CRM, LMS or Zapier flows — drop a file in a folder, get a finished video back, automatically.",
+          "soon": true },
+        { "icon": "spark",  "label": "Everything in Grow, fully unlocked",
+          "tip": "All the editing, publishing, hosting and content tools from Grow — nothing is held back." },
+        { "icon": "support","label": "Priority support + 1-on-1 Zoom with the team",
+          "tip": "Same direct line as Grow — book time with the team whenever you need to unblock production." }
+      ]
+    }
+  ],
+
+  "comparisonGroups": [
+    {
+      "title": "Core editing",
+      "rows": [
+        { "label": "Instant AI editing",
+          "tip": "Removes background noise, awkward silences and verbal stumbles, adds captions, drops in B-roll, picks a music track, and applies a video style — automatically, in one pass.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Agentic editing + content generation",
+          "tip": "Chat with OneTake to refine the edit, and generate scripts, summaries, quizzes, lesson outlines and social captions from your recording.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Editing minutes per month",
+          "tip": "Total minutes of source video you can process each month. Resets monthly.",
+          "values": ["120 min", "240 min", "600 min"], "status": "live" },
+        { "label": "Max video length per upload",
+          "tip": "How long a single recording can be. Longer = full webinars, summits and workshops go through in one piece.",
+          "values": ["1 hour", "2 hours", "Unlimited"], "status": "live" },
+        { "label": "Teleprompter",
+          "tip": "Record directly in OneTake with your script scrolling on-screen — look natural while staying on-message.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Virtual cameraman",
+          "tip": "Automatically keeps you centred and framed as you move — like having a camera operator on every shoot.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Custom logo + colour palette",
+          "tip": "Your brand colours and logo applied to every video — no designer involved.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Premium + social-native video styles",
+          "tip": "Modern, influencer-style layouts and motion designed for short-form feeds — the kind of look that makes people stop scrolling.",
+          "values": ["no", "yes", "yes"], "status": "soon" }
+      ]
+    },
+
+    {
+      "title": "Exports",
+      "rows": [
+        { "label": "Full HD (1080p), watermark-free",
+          "tip": "Crisp 1080p downloads, ready for any platform — and no OneTake logo on your work.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Podcast audio export (clean, audio-only)",
+          "tip": "Same cuts and clean-up as the video, but as a podcast-ready audio file you can drop into Spotify or Apple Podcasts.",
+          "values": ["no", "yes", "yes"], "status": "live" }
+      ]
+    },
+
+    {
+      "title": "Shorts & repurposing",
+      "rows": [
+        { "label": "Shorts generation per video",
+          "tip": "Auto-clipped highlight reels from your video — perfect for Reels, TikTok and YouTube Shorts to drive new students.",
+          "values": ["1 attempt", "Unlimited", "Unlimited"], "status": "live" },
+        { "label": "Shorts downloads per video",
+          "tip": "How many of those Shorts you can actually save off as files to post anywhere.",
+          "values": ["1", "Unlimited", "Unlimited"], "status": "live" }
+      ]
+    },
+
+    {
+      "title": "Thumbnails",
+      "rows": [
+        { "label": "AI thumbnails optimised for engagement",
+          "tip": "Three click-tested concepts per video — designed to win the scroll, no designer needed.",
+          "values": ["Free trial on 10 projects", "Included (3 options/video)", "Included (3 regen max)"], "status": "soon" },
+        { "label": "Custom-prompt thumbnails",
+          "tip": "Describe the thumbnail you want and we generate it — your style, your hook.",
+          "values": ["no", "€50 / 10 videos pack", "€50 / 10 videos pack"], "status": "soon" }
+      ]
+    },
+
+    {
+      "title": "Branding & hosting",
+      "rows": [
+        { "label": "Whitelabel custom domain hosting",
+          "tip": "Course videos live on videos.yourbrand.com — students never see OneTake. Builds trust and looks polished.",
+          "values": ["€10/mo add-on", "yes", "yes"], "status": "live" },
+        { "label": "Shareable hosted video pages",
+          "tip": "Every video gets its own page with title, transcript and highlights — share a link, no upload needed elsewhere.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Embeddable player",
+          "tip": "Drop a copy-paste embed into your course platform, sales page or blog. Works in any LMS.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Auto language detection on player",
+          "tip": "If a viewer arrives speaking Spanish and you have a Spanish translation, they get it automatically.",
+          "values": ["yes", "yes", "yes"], "status": "live" }
+      ]
+    },
+
+    {
+      "title": "Publishing",
+      "rows": [
+        { "label": "Direct social publishing",
+          "tip": "Send your finished video straight to the platform with title, description and hashtags filled in.",
+          "values": ["YouTube only", "YouTube, IG, TikTok, FB, LinkedIn", "YouTube, IG, TikTok, FB, LinkedIn"], "status": "soon" },
+        { "label": "Scheduled posts per month",
+          "tip": "Queue up content to post at peak times automatically — set it on Sunday, ship all week.",
+          "values": ["no", "Unlimited", "Unlimited"], "status": "soon" }
+      ]
+    },
+
+    {
+      "title": "Automation & team",
+      "rows": [
+        { "label": "Seats / users",
+          "tip": "How many people share the workspace. Bring your VA, content manager or editor into one library.",
+          "values": ["1", "1", "Up to 3 (more as add-on)"], "status": "soon" },
+        { "label": "Auto-import — YouTube channel",
+          "tip": "Connect your channel once; we monitor it and auto-edit every new upload in the background.",
+          "values": ["no", "yes", "yes"], "status": "live" },
+        { "label": "Multi-user + sub-accounts",
+          "tip": "Give clients or team members their own login that uploads straight into your account — ideal for group coaching and agencies.",
+          "values": ["no", "no", "yes"], "status": "soon" },
+        { "label": "API access",
+          "tip": "Hook OneTake into your CRM, LMS or Zapier flows — drop a file in a folder, get a finished video back, no clicks.",
+          "values": ["no", "no", "yes"], "status": "soon" }
+      ]
+    },
+
+    {
+      "title": "Translation & dubbing",
+      "rows": [
+        { "label": "Subtitles-only translation",
+          "tip": "Translate the captions on your video into another language — great for reaching students who don’t speak your native language but understand by reading.",
+          "values": [
+            { "trial": "Try once on a video, 1 target language", "after": "€0.50/min after" },
+            { "trial": "Try once on a video, up to 3 languages", "after": "€0.50/min after" },
+            { "trial": "Try once on a video, up to 5 languages", "after": "€0.50/min after" }
+          ],
+          "status": "live" },
+        { "label": "Audio dubbing with translation",
+          "tip": "Your voice translated and spoken in another language — same energy, new market. Choose single-speaker or multi-speaker voice cloning.",
+          "values": [
+            { "trial": "Try once on a ≤30 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤45 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤60 min video", "after": "€0.50/min after" }
+          ],
+          "status": "live" },
+        { "label": "Lip sync + dubbing",
+          "tip": "Translated audio AND your lips re-synced to the new language — feels like you recorded it natively. Premium experience for premium offers.",
+          "values": [
+            { "trial": "Try once on a ≤10 min video", "after": "€3.50/min after" },
+            { "trial": "Try once on a ≤15 min video", "after": "€3.50/min after" },
+            { "trial": "Try once on a ≤30 min video", "after": "€3.50/min after" }
+          ],
+          "status": "live" }
+      ]
+    },
+
+    {
+      "title": "Premium editing",
+      "rows": [
+        { "label": "Gaze correction",
+          "tip": "Makes it look like you’re looking right into the camera — even when you were reading notes off-screen. Saves the take, every time.",
+          "values": [
+            { "trial": "Try once on a ≤30 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤45 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤60 min video", "after": "€0.50/min after" }
+          ],
+          "status": "live" },
+        { "label": "Background removal",
+          "tip": "Cleanly removes your room and replaces it with a backdrop — turn a messy desk shot into a polished, branded scene.",
+          "values": [
+            { "trial": "Try once on a ≤30 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤45 min video", "after": "€0.50/min after" },
+            { "trial": "Try once on a ≤60 min video", "after": "€0.50/min after" }
+          ],
+          "status": "live" }
+      ]
+    },
+
+    {
+      "title": "Support",
+      "rows": [
+        { "label": "Knowledge base + email + in-app chat",
+          "tip": "Self-serve help for the everyday stuff — answers in minutes, not days.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "“The Real Time” live demos with the founder",
+          "tip": "Recurring live session with our team — bring real questions and watch real workflows.",
+          "values": ["yes", "yes", "yes"], "status": "live" },
+        { "label": "Priority support + 1-on-1 Zoom with the team",
+          "tip": "Skip the queue and book real face-time when something is on fire.",
+          "values": ["no", "yes", "yes"], "status": "live" }
+      ]
+    }
+  ]
+}
