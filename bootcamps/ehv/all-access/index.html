@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
   <link rel="stylesheet" href="../../../oto/style.css" />
-  <link rel="stylesheet" href="../style.css" />
   <script src="../../../tools.js"></script>
 
   <!-- Gestion du temps de chargement des vidéos YouTube -->
@@ -69,9 +68,13 @@
       cursor: pointer;
     }
 
-    /* ── All-access page overrides ── */
-    main.bootcamp-main.all-access-main {
+    /* ── Page layout ── */
+    main.all-access-main {
+      flex: 1;
       max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
     }
 
     .all-access-h1 {
@@ -83,6 +86,7 @@
       margin-bottom: 3rem;
     }
 
+    /* ── Episode blocks ── */
     .episode-block {
       margin-bottom: 4rem;
       padding-bottom: 4rem;
@@ -102,60 +106,37 @@
       margin-bottom: 1.5rem;
     }
 
-    .episode-cta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      max-width: 760px;
-    }
-
-    .cta-primary {
+    /* ── CTA link ── */
+    .cta-link {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       background: var(--golden-grass);
       color: var(--bleached-cedar);
       font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
-      padding: 0.8rem 1.5rem;
+      padding: 0.9rem 1.75rem;
       border-radius: 10px;
       text-decoration: none;
       transition: transform 0.15s, box-shadow 0.15s;
     }
 
-    .cta-primary:hover {
+    .cta-link:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(227, 174, 40, 0.35);
       color: var(--bleached-cedar);
     }
 
-    .cta-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      color: var(--bleached-cedar);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      padding: 0.8rem 1.5rem;
-      border-radius: 10px;
-      border: 2px solid rgba(36, 24, 38, 0.3);
-      text-decoration: none;
-      transition: transform 0.15s, border-color 0.15s;
-    }
-
-    .cta-ghost:hover {
-      transform: translateY(-2px);
-      border-color: var(--bleached-cedar);
-      color: var(--bleached-cedar);
+    .section-cta {
+      margin-top: 2rem;
+      text-align: center;
     }
 
     /* ── FAQ ── */
     .faq-section {
       max-width: 760px;
-      margin-bottom: 4rem;
+      margin-bottom: 0;
     }
 
     .faq-section > h2,
@@ -195,9 +176,7 @@
       line-height: 1;
     }
 
-    .faq-item[open] summary::after {
-      content: '−';
-    }
+    .faq-item[open] summary::after { content: '−'; }
 
     .faq-answer {
       padding: 0 0 1.25rem;
@@ -211,7 +190,8 @@
 
     /* ── Testimonials ── */
     .testimonials-section {
-      margin-bottom: 4rem;
+      margin-top: 4rem;
+      margin-bottom: 0;
     }
 
     .testimonials-grid {
@@ -242,31 +222,17 @@
     }
 
     @media (max-width: 900px) {
-      .testimonials-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 560px) {
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .episode-cta {
-        flex-direction: column;
-      }
-
-      .cta-primary,
-      .cta-ghost {
-        text-align: center;
-        justify-content: center;
-      }
+      .testimonials-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <main class="bootcamp-main all-access-main">
+  <main class="all-access-main">
 
     <h1 class="all-access-h1">Accès pendant un temps limité : toutes les ressources du BootCamp de l'Expert à Haute Valeur</h1>
 
@@ -286,10 +252,7 @@
           ></iframe>
         </div>
       </div>
-      <div class="episode-cta">
-        <a href="https://try.onetake.ai/?plan=cercle-semester" class="cta-primary">Paiement unique — 4 995 € →</a>
-        <a href="https://try.onetake.ai/?plan=cercle-monthly" class="cta-ghost">Mensuel — 995 €/mois →</a>
-      </div>
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -308,10 +271,7 @@
           ></iframe>
         </div>
       </div>
-      <div class="episode-cta">
-        <a href="https://try.onetake.ai/?plan=cercle-semester" class="cta-primary">Paiement unique — 4 995 € →</a>
-        <a href="https://try.onetake.ai/?plan=cercle-monthly" class="cta-ghost">Mensuel — 995 €/mois →</a>
-      </div>
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -330,10 +290,7 @@
           ></iframe>
         </div>
       </div>
-      <div class="episode-cta">
-        <a href="https://try.onetake.ai/?plan=cercle-semester" class="cta-primary">Paiement unique — 4 995 € →</a>
-        <a href="https://try.onetake.ai/?plan=cercle-monthly" class="cta-ghost">Mensuel — 995 €/mois →</a>
-      </div>
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -352,10 +309,7 @@
           ></iframe>
         </div>
       </div>
-      <div class="episode-cta">
-        <a href="https://try.onetake.ai/?plan=cercle-semester" class="cta-primary">Paiement unique — 4 995 € →</a>
-        <a href="https://try.onetake.ai/?plan=cercle-monthly" class="cta-ghost">Mensuel — 995 €/mois →</a>
-      </div>
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
     </div>
 
     <!-- ═══════════════════════════════════════════
@@ -424,6 +378,10 @@
         </div>
       </details>
 
+      <div class="section-cta">
+        <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
+      </div>
+
     </section>
 
     <!-- ═══════════════════════════════════════════
@@ -434,201 +392,270 @@
       <div class="testimonials-grid">
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="ChwiwKQKrTU"></div>
+          <div class="youtube-player" data-id="ChwiwKQKrTU">
+            <a href="https://www.youtube.com/watch?v=ChwiwKQKrTU" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai généré 210 000 euros de ventes et j'ai échappé au cancer et au burn-out !&thinsp;»<em>— Jeanne Muvira, Coach en développement personnel</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="fpWEoh9621I"></div>
+          <div class="youtube-player" data-id="fpWEoh9621I">
+            <a href="https://www.youtube.com/watch?v=fpWEoh9621I" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai refusé un job salarié à 50K et j'ai fait un lancement orchestré à 500K !&thinsp;»<em>— Aurélien Amacker, Fondateur de systeme.io</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="9gaGUvelg3M"></div>
+          <div class="youtube-player" data-id="9gaGUvelg3M">
+            <a href="https://www.youtube.com/watch?v=9gaGUvelg3M" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Notre chiffre d'affaires a augmenté de 50% grâce à un seul lancement orchestré !&thinsp;»<em>— Catherine Booth, Dresseuse éthologique</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="2-AE9WWZ8lQ"></div>
+          <div class="youtube-player" data-id="2-AE9WWZ8lQ">
+            <a href="https://www.youtube.com/watch?v=2-AE9WWZ8lQ" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Avant je faisais 60K annuel, maintenant je fais 80K mensuel en automatique !&thinsp;»<em>— Léandro Lozahic, Formateur Pro</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="PkrnfkEUI-Q"></div>
+          <div class="youtube-player" data-id="PkrnfkEUI-Q">
+            <a href="https://www.youtube.com/watch?v=PkrnfkEUI-Q" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai augmenté mon chiffre d'affaires de 30% en un an et j'ai sauvé l'entreprise familiale !&thinsp;»<em>— Nathalie Simon, Gérante d'une entreprise de fabrication de perles</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="liSamVmxHtc"></div>
+          <div class="youtube-player" data-id="liSamVmxHtc">
+            <a href="https://www.youtube.com/watch?v=liSamVmxHtc" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Je suis libre de travailler où je veux, quand je veux. Je suis devenu leader de mon marché.&thinsp;»<em>— David Jay, Fondateur de la Révolution Vidéo</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="qGX8tvn3P5s"></div>
+          <div class="youtube-player" data-id="qGX8tvn3P5s">
+            <a href="https://www.youtube.com/watch?v=qGX8tvn3P5s" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;En 11 mois à peine, j'ai appris à voir grand et à n'avoir aucune limite !&thinsp;»<em>— Yvan Keyna, Spécialiste du marketing de réseau</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="7H-iSnqvcjs"></div>
+          <div class="youtube-player" data-id="7H-iSnqvcjs">
+            <a href="https://www.youtube.com/watch?v=7H-iSnqvcjs" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai généré 60 000 € en 9 mois ! Aujourd'hui je suis un papa heureux qui passe du temps avec sa fille.&thinsp;»<em>— Alexis Marigny, Coach Sportif</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="H3dAZIhsPzM"></div>
+          <div class="youtube-player" data-id="H3dAZIhsPzM">
+            <a href="https://www.youtube.com/watch?v=H3dAZIhsPzM" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai automatisé mes ventes grâce à seulement 4 emails et 5 vidéos !&thinsp;»<em>— Joël Bernard, Professeur de Golf</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="ipt1laQG0Og"></div>
+          <div class="youtube-player" data-id="ipt1laQG0Og">
+            <a href="https://www.youtube.com/watch?v=ipt1laQG0Og" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Partie de zéro, je forme aujourd'hui 30 000 personnes via Internet et je vis enfin la vie de mes rêves.&thinsp;»<em>— Maryse Lehoux, Professeur de Yoga</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="8pqwZTEYNEI"></div>
+          <div class="youtube-player" data-id="8pqwZTEYNEI">
+            <a href="https://www.youtube.com/watch?v=8pqwZTEYNEI" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai créé 4 pages seulement qui attirent des milliers de clients potentiels chaque mois !&thinsp;»<em>— Luc Geiger, Spécialiste en gestion du stress</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="ebCbQrU0M-o"></div>
+          <div class="youtube-player" data-id="ebCbQrU0M-o">
+            <a href="https://www.youtube.com/watch?v=ebCbQrU0M-o" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai réalisé ma première vente dès le 4ème prospect inscrit sur mon site !&thinsp;»<em>— Janique Villeneuve, Conseillère en Image et Personal Shopper</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="dWRfyD1x_Q0"></div>
+          <div class="youtube-player" data-id="dWRfyD1x_Q0">
+            <a href="https://www.youtube.com/watch?v=dWRfyD1x_Q0" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'aide aujourd'hui plus de 35 000 personnes, tout en profitant pleinement de ma liberté !&thinsp;»<em>— Gregory Mangano, Coach en Nutrition</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="FIEfF-VTWKI"></div>
-          <p class="testimonial-quote">«&thinsp;Je gagne de l'argent pour chaque prospect qui s'inscrit sur mon site, et je touche des milliers de personnes avec mes conseils !&thinsp;»<em>— Eric Béhanzin, Professeur de Chant &amp; Chef d'Entreprise</em></p>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="youtube-player" data-id="wzHh7i6doOE"></div>
+          <div class="youtube-player" data-id="wzHh7i6doOE">
+            <a href="https://www.youtube.com/watch?v=wzHh7i6doOE" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Internet m'a permis de toucher des milliers de personnes grâce à ma passion : je suis une Entrepreneur Libre !&thinsp;»<em>— Christine Cuisiniez, Pharmacienne</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="qedkSpADXAY"></div>
+          <div class="youtube-player" data-id="qedkSpADXAY">
+            <a href="https://www.youtube.com/watch?v=qedkSpADXAY" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Depuis que j'ai automatisé mon business, je fais au minimum 20 000 € par mois.&thinsp;»<em>— Maxence Rigottier, Expert en Paris Sportifs</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="Lri741F9ozA"></div>
+          <div class="youtube-player" data-id="Lri741F9ozA">
+            <a href="https://www.youtube.com/watch?v=Lri741F9ozA" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Je génère 300 000 € de ventes à l'année avec 1 seul jour de travail par semaine !&thinsp;»<em>— Julien Romain, Formateur</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="Ez6vGI6tBr0"></div>
+          <div class="youtube-player" data-id="Ez6vGI6tBr0">
+            <a href="https://www.youtube.com/watch?v=Ez6vGI6tBr0" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Je suis passé de 300 euros à 28 000 euros par mois, et je suis devenu un expert reconnu du web francophone !&thinsp;»<em>— Olivier Roland, Auteur et Blogueur Professionnel</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="IFrEu8JRjcg"></div>
+          <div class="youtube-player" data-id="IFrEu8JRjcg">
+            <a href="https://www.youtube.com/watch?v=IFrEu8JRjcg" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai pu mettre en place mon premier lancement qui a rencontré un énorme succès !&thinsp;»<em>— Gaëlle Le Reun, Coach en Développement Personnel</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="CoV9hEzwPkQ"></div>
+          <div class="youtube-player" data-id="CoV9hEzwPkQ">
+            <a href="https://www.youtube.com/watch?v=CoV9hEzwPkQ" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai gagné plusieurs milliers d'euros en quelques jours, en vendant des produits sur mon blog !&thinsp;»<em>— Charles, Blogueur</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="ZuMvskOqLds"></div>
+          <div class="youtube-player" data-id="ZuMvskOqLds">
+            <a href="https://www.youtube.com/watch?v=ZuMvskOqLds" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;En seulement 4 ans, je suis passée de 50 000 euros à 1 million d'euros de ventes sur le Web !&thinsp;»<em>— Nathalie Cariou, Coach en Intelligence Financière</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="mhkGwfu3VV8"></div>
+          <div class="youtube-player" data-id="mhkGwfu3VV8">
+            <a href="https://www.youtube.com/watch?v=mhkGwfu3VV8" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Les conseils de Sébastien m'ont permis de réaliser 210 000 euros de ventes en partant de zéro !&thinsp;»<em>— Alexandre Lahouel, Spécialiste en Alimentation vivante</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="RFwV0xWh-yM"></div>
+          <div class="youtube-player" data-id="RFwV0xWh-yM">
+            <a href="https://www.youtube.com/watch?v=RFwV0xWh-yM" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai réalisé l'équivalent d'un trimestre de ventes... en 15 jours !&thinsp;»<em>— Jean-Luc Desenfant, Expert en logiciels de CAO 3D</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="JP_in9niWic"></div>
+          <div class="youtube-player" data-id="JP_in9niWic">
+            <a href="https://www.youtube.com/watch?v=JP_in9niWic" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai réalisé 50 000 euros de CA grâce à des partenaires et je touche aujourd'hui 25 000 femmes via Internet !&thinsp;»<em>— Sophie Gueidon, Coach en Réussite Féminine</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="BXjQ2khMJds"></div>
+          <div class="youtube-player" data-id="BXjQ2khMJds">
+            <a href="https://www.youtube.com/watch?v=BXjQ2khMJds" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai fait 350 000 euros de ventes... Sans site internet, sans mailing list, et sans produit à vendre !&thinsp;»<em>— David Colom, Expert en Développement Personnel</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="-73WxGaptas"></div>
+          <div class="youtube-player" data-id="-73WxGaptas">
+            <a href="https://www.youtube.com/watch?v=-73WxGaptas" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;En parallèle de mon job salarié, je développe un site qui me rapporte 10 000 euros de revenus complémentaires !&thinsp;»<em>— Matthieu Deloison, Développeur de programmes informatiques</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="4N9j5vFJZXg"></div>
+          <div class="youtube-player" data-id="4N9j5vFJZXg">
+            <a href="https://www.youtube.com/watch?v=4N9j5vFJZXg" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;On a fait 48 000 euros de ventes en une semaine lors du premier lancement de Maxxivoice !&thinsp;»<em>— Lorenzo Pancino, Expert en Communication Orale</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="9UyNEpwewY8"></div>
+          <div class="youtube-player" data-id="9UyNEpwewY8">
+            <a href="https://www.youtube.com/watch?v=9UyNEpwewY8" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Le jour de l'ouverture des ventes, 2 personnes se sont déplacées jusque chez moi pour être sûres de s'inscrire dans les temps !&thinsp;»<em>— Romy Malbroukou, Psychologue</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="Dw81DhfGvec"></div>
+          <div class="youtube-player" data-id="Dw81DhfGvec">
+            <a href="https://www.youtube.com/watch?v=Dw81DhfGvec" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai multiplié ma clientèle par 3 en 1 an et ma liste de prospects par 9 !&thinsp;»<em>— Caroline Burel, Coach en Développement Personnel</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="Dy6fi2ii-TI"></div>
+          <div class="youtube-player" data-id="Dy6fi2ii-TI">
+            <a href="https://www.youtube.com/watch?v=Dy6fi2ii-TI" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Avec les stratégies de Sébastien, j'ai dépassé le million d'euros de chiffre d'affaires !&thinsp;»<em>— Yoann Romano, Entrepreneur</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="fO7qRpX1kOE"></div>
+          <div class="youtube-player" data-id="fO7qRpX1kOE">
+            <a href="https://www.youtube.com/watch?v=fO7qRpX1kOE" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;La méthode de Sébastien m'a permis de fonder ma société et de réaliser 45 000 euros de ventes pour notre nouveau produit !&thinsp;»<em>— Fabrice Mouchain, Consultant</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="EPUS_MciAec"></div>
+          <div class="youtube-player" data-id="EPUS_MciAec">
+            <a href="https://www.youtube.com/watch?v=EPUS_MciAec" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;La stratégie de Sébastien m'a permis de doubler mon chiffre d'affaires sur la vente de mes produits hors-ligne !&thinsp;»<em>— Yannick Alain, Formateur des professionnels de la Vente</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="bgG24rHnMAA"></div>
+          <div class="youtube-player" data-id="bgG24rHnMAA">
+            <a href="https://www.youtube.com/watch?v=bgG24rHnMAA" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai réalisé 23 000 euros de CA en un mois avec mon premier programme d'accompagnement sportif !&thinsp;»<em>— Cédric Esserméant, Consultant pour les Clubs de Sport</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="pPf0l_NtSsc"></div>
+          <div class="youtube-player" data-id="pPf0l_NtSsc">
+            <a href="https://www.youtube.com/watch?v=pPf0l_NtSsc" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Un simple conseil de Sébastien m'a rapporté 10 000 dollars de ventes supplémentaires. Apprenez de lui !&thinsp;»<em>— John Gallagher (USA), Fondateur de LearningHerbs.com</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="CjNAN24DJEU"></div>
+          <div class="youtube-player" data-id="CjNAN24DJEU">
+            <a href="https://www.youtube.com/watch?v=CjNAN24DJEU" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Je suis parvenu en première position dans Google avec mon site ACP Coaching, grâce aux conseils de Sébastien !&thinsp;»<em>— Vincent Guihard, Coach Sportif</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="iEozawSmlBE"></div>
+          <div class="youtube-player" data-id="iEozawSmlBE">
+            <a href="https://www.youtube.com/watch?v=iEozawSmlBE" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Sébastien m'a permis de toucher des médias de grande envergure en faisant l'objet de nombreuses émissions et articles de presse !&thinsp;»<em>— Jean Sommer, Coach Vocal</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="q_efwid3YOo"></div>
+          <div class="youtube-player" data-id="q_efwid3YOo">
+            <a href="https://www.youtube.com/watch?v=q_efwid3YOo" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;Le consulting de Sébastien m'a rapporté 10 fois ce que j'ai investi... en l'espace de 6 mois à peine !&thinsp;»<em>— David Jay, Fondateur de la Révolution Vidéo</em></p>
         </div>
 
         <div class="testimonial-item">
-          <div class="youtube-player" data-id="8w9RzvI-Zsc"></div>
-          <p class="testimonial-quote">«&thinsp;En rejoignant la formation de Sébastien, j'ai généré en 5 ans plus de 10 millions d'euros de chiffre d'affaires sur Internet !&thinsp;»<em>— Laurent Chenot, Fondateur de Business 3G</em></p>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="youtube-player" data-id="BhSh8QZvqVU"></div>
+          <div class="youtube-player" data-id="BhSh8QZvqVU">
+            <a href="https://www.youtube.com/watch?v=BhSh8QZvqVU" target="_blank" rel="noopener noreferrer"></a>
+          </div>
           <p class="testimonial-quote">«&thinsp;J'ai pu créer une relation unique avec mes prospects et clients, et toucher la cible que je souhaitais !&thinsp;»<em>— Nathalie Simon, Artisan d'Art</em></p>
         </div>
 
       </div>
+
+      <div class="section-cta">
+        <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="cta-link">Rejoindre Le Cercle des Experts à Haute Valeur →</a>
+      </div>
+
     </section>
 
   </main>
