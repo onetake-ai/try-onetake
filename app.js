@@ -54,9 +54,20 @@
         'premium-studio-monthly-1-149':     'pro-monthly-trial-1',
         'pro-monthly-trial-1':              'occasional-monthly-trial-1',
         // occasional-monthly variants → no downsell (omitted)
-        // Scale plans
-        'scale-yearly':                     'scale-quarterly',
-        'scale-quarterly':                  'pro-monthly',
+        // Scale offer plans
+        'scale-yearly-offer':               'scale-quarterly-offer',
+        'scale-quarterly-offer':            'grow-monthly',
+        // Scale regular plans
+        'scale-yearly':                     'scale-monthly',
+        'scale-monthly':                    'grow-monthly',
+        // Grow plans
+        'grow-yearly-offer':                'grow-monthly-offer',
+        'grow-yearly':                      'grow-monthly',
+        'grow-monthly-offer':               'launch-monthly-trial',
+        'grow-monthly':                     'launch-monthly-trial',
+        // Launch plans
+        'launch-yearly-trial':              'launch-monthly-trial',
+        // launch-monthly-trial → no downsell (omitted)
         // Cercle plans
         'cercle-semester':                  'cercle-monthly'
     };
@@ -70,7 +81,7 @@
             useCases: [],
             estimatedVolume: ''
         },
-        productId: 'pri_01kbcmen6n7ymcdk5y59vhv33h', // Default product (occasional-monthly-trial)
+        productId: 'pri_01ksfshd2k1145y5v96v8bk0se', // Default product (launch-monthly-trial)
         planKey: null, // Will be set if using a preset
         planInfo: null, // Will contain plan details if using a preset
         hasTrial: true, // Default has trial
@@ -157,10 +168,10 @@
             state.hasOneTimeCharge = false;
             console.log('Using direct product ID:', productId);
         } else {
-            // Use default (occasional-monthly-trial)
-            const defaultPreset = activePlanPresets['occasional-monthly-trial'];
-            state.productId = defaultPreset ? defaultPreset.product : 'pri_01kbcmen6n7ymcdk5y59vhv33h';
-            state.planKey = 'occasional-monthly-trial';
+            // Use default (launch-monthly-trial)
+            const defaultPreset = activePlanPresets['launch-monthly-trial'];
+            state.productId = defaultPreset ? defaultPreset.product : 'pri_01ksfshd2k1145y5v96v8bk0se';
+            state.planKey = 'launch-monthly-trial';
             state.planInfo = defaultPreset || null;
             state.hasTrial = true;
             state.hasOneTimeCharge = false;
