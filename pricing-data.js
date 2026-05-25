@@ -244,8 +244,8 @@ const planPresets = {
         freeToPaidConversionRate: 1
     },
 
-    // Scale plans — no trial, direct paid plans
-    'scale-yearly': {
+    // Scale offer plans (limited-time discounted, no trial)
+    'scale-yearly-offer': {
         tier: 'Scale',
         recurrence: 'yearly',
         trial: null,
@@ -253,7 +253,7 @@ const planPresets = {
         firstExpectedPayment: 999,
         freeToPaidConversionRate: 1
     },
-    'scale-quarterly': {
+    'scale-quarterly-offer': {
         tier: 'Scale',
         recurrence: 'quarterly',
         trial: null,
@@ -275,6 +275,76 @@ const planPresets = {
         trial: null,
         product: 'pri_01ks5316ncrk8gzk6g2h6ty6ss',
         firstExpectedPayment: 4995,
+        freeToPaidConversionRate: 1
+    },
+
+    // Launch plans — 3-day trial
+    'launch-monthly-trial': {
+        tier: 'Launch',
+        recurrence: 'monthly',
+        trial: 3,
+        product: 'pri_01ksfshd2k1145y5v96v8bk0se',
+        firstExpectedPayment: 59,
+        freeToPaidConversionRate: 0.30
+    },
+    'launch-yearly-trial': {
+        tier: 'Launch',
+        recurrence: 'yearly',
+        trial: 3,
+        product: 'pri_01ksfsk5dtkwb69mkbzhm9xhnt',
+        firstExpectedPayment: 590,
+        freeToPaidConversionRate: 0.30
+    },
+
+    // Grow plans — no trial
+    'grow-monthly': {
+        tier: 'Grow',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ksfs82by8h0v6cgq6jygzsfq',
+        firstExpectedPayment: 149,
+        freeToPaidConversionRate: 1
+    },
+    'grow-yearly': {
+        tier: 'Grow',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01ksfs9xvnr20b50syypz9pr2f',
+        firstExpectedPayment: 1490,
+        freeToPaidConversionRate: 1
+    },
+    'grow-monthly-offer': {
+        tier: 'Grow',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ksfs19c7zgc6cz4jjartxqsp',
+        firstExpectedPayment: 99,
+        freeToPaidConversionRate: 1
+    },
+    'grow-yearly-offer': {
+        tier: 'Grow',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01ksfs4mevg65tcd51s4bz9rnr',
+        firstExpectedPayment: 999,
+        freeToPaidConversionRate: 1
+    },
+
+    // Scale plans — no trial
+    'scale-monthly': {
+        tier: 'Scale',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ksfrb0axpe2xevfp5znm7v63',
+        firstExpectedPayment: 299,
+        freeToPaidConversionRate: 1
+    },
+    'scale-yearly': {
+        tier: 'Scale',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01ksfresjrwabasp4p2vbbm8x3',
+        firstExpectedPayment: 2990,
         freeToPaidConversionRate: 1
     }
 };
