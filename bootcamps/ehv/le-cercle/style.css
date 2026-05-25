@@ -13,7 +13,7 @@
   --accent-tint: oklch(0.94 0.025 50);   /* terracotta tint */
   --olive:     oklch(0.45 0.04 100);     /* secondary */
   --gold:      oklch(0.72 0.10 80);
-  --plan-featured: oklch(0.26 0.09 42);  /* deep terracotta */
+  --plan-featured: oklch(0.20 0.055 75); /* deep amber gold */
 
   --serif: 'Instrument Serif', 'Times New Roman', serif;
   --sans:  'Geist', system-ui, -apple-system, sans-serif;
@@ -508,9 +508,19 @@ section.warm { background: var(--bg-warm); }
   background: repeating-linear-gradient(135deg, oklch(0.88 0.02 60) 0 8px, oklch(0.82 0.025 60) 8px 16px);
   border: 1px solid var(--line);
   flex-shrink: 0;
+  object-fit: cover;
+  display: block;
 }
 .quote .who .name { font-weight: 500; font-size: 15px; }
 .quote .who .role { font-size: 13px; color: var(--ink-mute); }
+.quote .who .context {
+  font-size: 11px;
+  color: var(--accent-2);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
 @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
 
 /* ---------- For whom ---------- */
@@ -688,7 +698,7 @@ section.warm { background: var(--bg-warm); }
 }
 .plan.featured {
   background: var(--plan-featured);
-  border-color: oklch(0.38 0.12 42);
+  border-color: oklch(0.38 0.09 75);
   color: #FBF7EE;
 }
 .plan.featured h3, .plan.featured h4 { color: #FBF7EE; }
@@ -696,8 +706,8 @@ section.warm { background: var(--bg-warm); }
 .plan .ribbon {
   position: absolute;
   top: -14px; right: 32px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--gold);
+  color: var(--ink);
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -740,8 +750,8 @@ section.warm { background: var(--bg-warm); }
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: var(--accent);
-  background: var(--accent-tint);
+  color: oklch(0.45 0.09 75);
+  background: oklch(0.93 0.03 80);
   padding: 6px 12px;
   border-radius: 4px;
   margin-bottom: 24px;
@@ -766,6 +776,9 @@ section.warm { background: var(--bg-warm); }
   font-size: 15px;
   line-height: 1.5;
   color: var(--ink);
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .plan.featured ul.feats li { color: oklch(0.92 0.02 50); }
 .plan ul.feats li::before {
@@ -884,6 +897,64 @@ footer a { color: #C8C2B4; }
 .mt-6 { margin-top: 48px; }
 .mt-8 { margin-top: 64px; }
 .max-700 { max-width: 700px; }
+
+/* ---------- YouTube lazy-load player ---------- */
+.youtube-player {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #111;
+  border-radius: 6px;
+}
+.youtube-player iframe {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 100;
+}
+.youtube-player img {
+  position: absolute; inset: 0;
+  width: 100%; height: auto;
+  margin: auto; display: block;
+  cursor: pointer;
+  transition: .4s all;
+}
+.youtube-player img:hover { filter: brightness(75%); }
+.youtube-player .play {
+  height: 72px; width: 72px;
+  position: absolute;
+  left: 50%; top: 50%;
+  margin: -36px 0 0 -36px;
+  background: url("https://d1yei2z3i6k35z.cloudfront.net/2914/653dab020a9f3_yt-play-button.png") no-repeat center / contain;
+  cursor: pointer;
+}
+
+/* ---------- YouTube testimonials section ---------- */
+.yt-testimonials-section { background: var(--bg-warm); }
+.yt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.yt-item { display: flex; flex-direction: column; gap: 10px; }
+.yt-caption {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.45;
+}
+.yt-caption em {
+  display: block;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ink-mute);
+  font-size: 12px;
+  margin-top: 3px;
+}
+@media (max-width: 1100px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px)  { .yt-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .yt-grid { grid-template-columns: 1fr; } }
 
 /* sticky bottom CTA on mobile */
 .mobile-cta {
