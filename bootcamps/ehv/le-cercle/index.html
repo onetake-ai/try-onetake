@@ -712,8 +712,7 @@
         <p class="tagline">Étale l'investissement sur les 6 mois du programme.</p>
 
         <div class="price">
-          <span class="amount">995</span>
-          <span class="cur">€</span>
+          <span class="paddle-price" data-paddle-price-id="pri_01ks52ts0n6vqgkb1xvqn569hw">995 €</span>
           <span class="per">/mois × 6 mois</span>
         </div>
         <div class="save">Total : 5 970 €</div>
@@ -747,8 +746,7 @@
         <p class="tagline">Tu économises 975 € — et tu débloques deux bonus exclusifs.</p>
 
         <div class="price">
-          <span class="amount">4 995</span>
-          <span class="cur">€</span>
+          <span class="paddle-price" data-paddle-price-id="pri_01ks5316ncrk8gzk6g2h6ty6ss">4 995 €</span>
           <span class="per">une seule fois</span>
         </div>
         <div class="save">Tu économises l'équivalent d'un mois (975 €)</div>
@@ -821,12 +819,12 @@
     <div class="ctas">
       <a class="btn btn-primary btn-large"
          href="https://try.onetake.ai/?plan=cercle-semester">
-        <span>Paiement unique — 4 995 €</span>
+        <span>Paiement unique — <span class="paddle-price" data-paddle-price-id="pri_01ks5316ncrk8gzk6g2h6ty6ss">4 995 €</span></span>
         <span class="arrow">→</span>
       </a>
       <a class="btn btn-ghost btn-large"
          href="https://try.onetake.ai/?plan=cercle-monthly">
-        <span>Mensuel — 995 €/mois</span>
+        <span>Mensuel — <span class="paddle-price" data-paddle-price-id="pri_01ks52ts0n6vqgkb1xvqn569hw">995 €</span>/mois</span>
         <span class="arrow">→</span>
       </a>
     </div>
@@ -1098,12 +1096,12 @@
     <div class="ctas">
       <a class="btn btn-primary btn-large"
          href="https://try.onetake.ai/?plan=cercle-semester">
-        <span>Paiement unique — 4 995 €</span>
+        <span>Paiement unique — <span class="paddle-price" data-paddle-price-id="pri_01ks5316ncrk8gzk6g2h6ty6ss">4 995 €</span></span>
         <span class="arrow">→</span>
       </a>
       <a class="btn btn-ghost btn-large"
          href="https://try.onetake.ai/?plan=cercle-monthly">
-        <span>Mensuel — 995 €/mois</span>
+        <span>Mensuel — <span class="paddle-price" data-paddle-price-id="pri_01ks52ts0n6vqgkb1xvqn569hw">995 €</span>/mois</span>
         <span class="arrow">→</span>
       </a>
     </div>
@@ -1170,12 +1168,24 @@
 <!-- mobile sticky CTA -->
 <div class="mobile-cta">
   <a class="btn btn-ghost" href="https://try.onetake.ai/?plan=cercle-monthly" style="color:#FBF7EE; border-color: #4A453E;">
-    Mensuel — 995&nbsp;€
+    Mensuel — <span class="paddle-price" data-paddle-price-id="pri_01ks52ts0n6vqgkb1xvqn569hw">995&nbsp;€</span>
   </a>
   <a class="btn btn-primary" href="https://try.onetake.ai/?plan=cercle-semester">
-    Unique — 4 995&nbsp;€
+    Unique — <span class="paddle-price" data-paddle-price-id="pri_01ks5316ncrk8gzk6g2h6ty6ss">4 995&nbsp;€</span>
   </a>
 </div>
+
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="../../../price-localizer.js"></script>
+<script>
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof Paddle === 'undefined') return;
+      Paddle.Initialize({ token: 'live_bb0b00885e63d509a759b2e2b29' });
+      if (typeof window.localizePrices === 'function') window.localizePrices();
+    });
+  }());
+</script>
 
 <script src="../../../tools.js"></script>
 <script>
