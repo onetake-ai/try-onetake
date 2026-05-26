@@ -112,12 +112,11 @@
         const johnsonBox = document.getElementById('johnsonBox');
         if (johnsonBox && isTrial) {
             johnsonBox.style.display = 'block';
-            if (isOneDollarTrial) {
-                const headlineEl = johnsonBox.querySelector('.johnson-headline');
-                if (headlineEl) {
-                    headlineEl.textContent = getTranslation('johnson.headlineOneDollar', { days: getTrialDays() });
-                    headlineEl.setAttribute('data-i18n', 'johnson.headlineOneDollar');
-                }
+            const headlineEl = johnsonBox.querySelector('.johnson-headline');
+            if (headlineEl) {
+                const key = isOneDollarTrial ? 'johnson.headlineOneDollar' : 'johnson.headline';
+                headlineEl.textContent = getTranslation(key, { days: getTrialDays() });
+                headlineEl.setAttribute('data-i18n', key);
             }
         }
     }

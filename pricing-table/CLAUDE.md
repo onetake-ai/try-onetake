@@ -22,7 +22,6 @@ Place both files at `/pricing-table/` from the site root. The script resolves `p
 | `data-billing` | `monthly` / `yearly` | `monthly` |
 | `data-cta-base` | URL string | `https://try.onetake.ai/?plan=` |
 | `data-features-url` | URL string | `./pricing-features.json` |
-| `data-lang` | `en` / `fr` / `es` / `pt-br` / `it` / `ja` / `ru` / `de` | `en` |
 
 ## Prices and Paddle IDs
 
