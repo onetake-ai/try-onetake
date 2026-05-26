@@ -8,13 +8,15 @@
       "tagline": "The Expert",
       "description": "Package your expertise into professional video — without the editing headache.",
       "presetMonthly": "launch-monthly-trial",
-      "presetYearly": "launch-yearly-trial",
+      "presetYearly": "launch-yearly",
       "monthlyPriceId": "pri_01ksfshd2k1145y5v96v8bk0se",
-      "yearlyPriceId": "pri_01ksfsk5dtkwb69mkbzhm9xhnt",
+      "yearlyPriceId": "pri_01ksgq75z2c95a3ep20dp4evac",
       "monthlyFallback": "€59",
       "yearlyFallback": "€49",
-      "trialBadge": "3-day free trial",
-      "ctaLabel": "Start 3-day free trial",
+      "trialBadge": true,
+      "trialDays": 3,
+      "trialDaysYearly": null,
+      "ctaLabel": "Choose Launch",
       "ctaLabelNoTrial": "Choose Launch — billed annually",
       "featured": false,
       "highlights": [
@@ -107,8 +109,6 @@
         { "icon": "api",    "label": "API access for batch processing",
           "tip": "Connect OneTake to your CRM, LMS or Zapier flows — drop a file in a folder, get a finished video back, automatically.",
           "soon": true },
-        { "icon": "spark",  "label": "Everything in Grow, fully unlocked",
-          "tip": "All the editing, publishing, hosting and content tools from Grow — nothing is held back." },
         { "icon": "support","label": "Priority support + 1-on-1 Zoom with the team",
           "tip": "Same direct line as Grow — book time with the team whenever you need to unblock production." }
       ]

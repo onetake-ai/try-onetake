@@ -783,15 +783,18 @@
       ? 'Billed annually'
       : 'Billed monthly';
 
-    var ctaLabel = (cycle === 'yearly' && plan.ctaLabelYearly) || plan.ctaLabel;
-    if (cycle !== 'monthly' && plan.trialBadge && plan.ctaLabelNoTrial) {
-      // For yearly Launch, swap to the no-trial label
-      ctaLabel = plan.ctaLabelNoTrial;
+    var activeDays = (cycle !== 'monthly' && Object.prototype.hasOwnProperty.call(plan, 'trialDaysYearly'))
+      ? plan.trialDaysYearly
+      : plan.trialDays;
+
+    var ctaLabel = plan.ctaLabel;
+    if (plan.trialBadge && activeDays) {
+      ctaLabel = 'Start ' + activeDays + '-day free trial';
     }
 
     var badgeHtml = '';
-    if (plan.trialBadge && cycle === 'monthly') {
-      badgeHtml = '<span class="ot-card__badge ot-card__badge--trial">' + esc(plan.trialBadge) + '</span>';
+    if (plan.trialBadge && activeDays) {
+      badgeHtml = '<span class="ot-card__badge ot-card__badge--trial">' + activeDays + '-day free trial</span>';
     } else if (plan.featured && plan.featuredLabel) {
       badgeHtml = '<span class="ot-card__badge">' + esc(plan.featuredLabel) + '</span>';
     }

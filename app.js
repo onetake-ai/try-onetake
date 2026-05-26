@@ -168,12 +168,13 @@
             state.hasOneTimeCharge = false;
             console.log('Using direct product ID:', productId);
         } else {
-            // Use default (launch-monthly-trial)
-            const defaultPreset = activePlanPresets['launch-monthly-trial'];
-            state.productId = defaultPreset ? defaultPreset.product : 'pri_01ksfshd2k1145y5v96v8bk0se';
-            state.planKey = 'launch-monthly-trial';
+            // No ?plan= or unrecognised value — default to launch-yearly (no trial)
+            const defaultKey = 'launch-yearly';
+            const defaultPreset = activePlanPresets[defaultKey];
+            state.productId = defaultPreset ? defaultPreset.product : 'pri_01ksgq75z2c95a3ep20dp4evac';
+            state.planKey = defaultKey;
             state.planInfo = defaultPreset || null;
-            state.hasTrial = true;
+            state.hasTrial = false;
             state.hasOneTimeCharge = false;
             console.log('Using default product ID:', state.productId);
         }
@@ -190,7 +191,7 @@
         if (!titleElement) return;
         
         const headlineKey = state.hasOneTimeCharge ? 'headlineOneDollarTrial' : state.hasTrial ? 'headline' : 'headlineNoTrial';
-        titleElement.textContent = getTranslation(headlineKey);
+        titleElement.textContent = getTranslation(headlineKey, { days: (state.planInfo && state.planInfo.trial) || DEFAULT_TRIAL_DAYS });
         titleElement.setAttribute('data-i18n', headlineKey);
     }
     
@@ -559,10 +560,11 @@
         });
     }
     
-    // Get translation for a key
-    function getTranslation(key) {
+    // Get translation for a key, with optional {placeholder} substitution
+    function getTranslation(key, params) {
         const lang = state.currentLanguage;
-        return translations[lang]?.[key] || translations['en']?.[key] || key;
+        const raw = translations[lang]?.[key] || translations['en']?.[key] || key;
+        return applyTranslationParams(raw, params);
     }
     
     // Handle language change
@@ -909,7 +911,7 @@
 
         if (state.hasTrial) {
             data.expected_value = String(getExpectedTrialValue());
-            data.trial_days = String(state.planInfo ? state.planInfo.trial : 7);
+            data.trial_days = String(state.planInfo ? state.planInfo.trial : DEFAULT_TRIAL_DAYS);
         }
 
         // Include AnyTrack click ID for attribution
@@ -1112,7 +1114,7 @@
             };
             const perPeriod = recurrenceMap[downsellPlan.recurrence] || '';
             const trialSuffix = downsellPlan.trial
-                ? ' \u00b7 ' + getTranslation('downsell.trialNote')
+                ? ' \u00b7 ' + getTranslation('downsell.trialNote', { days: downsellPlan.trial })
                 : '';
             planPriceEl.textContent = '\u20ac' + downsellPlan.firstExpectedPayment + perPeriod + trialSuffix;
         }

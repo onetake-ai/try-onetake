@@ -34,13 +34,6 @@ Prices are rendered as:
 
 To update a price ID, find the plan in `pricing-features.json` and change `monthlyPriceId` or `yearlyPriceId`. The `presetMonthly` / `presetYearly` values must match the keys in `/pricing-data.js` — they're appended to the CTA URL as `?plan=launch-monthly`.
 
-Current placeholder IDs that need replacing before go-live:
-- `pri_launch_monthly_placeholder`
-- `pri_launch_yearly_placeholder`
-- `pri_grow_monthly_placeholder`
-- `pri_grow_yearly_placeholder`
-- `pri_scale_monthly_placeholder`
-- `pri_scale_yearly_placeholder`
 
 ## Editing features and copy
 
@@ -91,7 +84,7 @@ The component is hardcoded for 3 plans. Adding a 4th requires changes to the CSS
 
 ## Trial badge and CTA labels
 
-`trialBadge` on the Launch plan drives the green badge above the card (monthly cycle only). On yearly, it switches to `ctaLabelNoTrial`. Set `trialBadge: null` to suppress the badge.
+`trialBadge` (boolean) on a plan enables the green badge and trial CTA text. `trialDays` (integer) sets the number of days shown in both. `trialDaysYearly` (integer or null) overrides `trialDays` for the yearly cycle — set to `null` to suppress the trial badge and CTA on yearly (e.g. Launch yearly links to a no-trial plan). The CTA text is constructed as `"Start {n}-day free trial"` when trial is active; otherwise falls back to `ctaLabel`.
 
 ## "Everything in X, plus" label
 
