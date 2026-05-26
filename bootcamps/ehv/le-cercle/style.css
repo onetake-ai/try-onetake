@@ -733,7 +733,8 @@ section.warm { background: var(--bg-warm); }
   gap: 8px;
   margin-bottom: 8px;
 }
-.plan .price .amount {
+.plan .price .amount,
+.plan .price .paddle-price {
   font-family: var(--serif);
   font-size: 72px;
   line-height: 1;
