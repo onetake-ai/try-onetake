@@ -1020,7 +1020,7 @@
 
   // ---------- Main render ----------
   function render(mount, data, opts) {
-    _lang = normLang(mount.getAttribute('data-lang') || document.documentElement.lang);
+    _lang = normLang(mount.getAttribute('data-lang'));
     var cycle = opts.billing === 'yearly' ? 'yearly' : 'monthly';
     var compareMode = opts.comparison || 'toggle'; // 'toggle' | 'open' | 'hidden'
     var ctaBase = opts.ctaBase || 'https://try.onetake.ai/?plan=';
