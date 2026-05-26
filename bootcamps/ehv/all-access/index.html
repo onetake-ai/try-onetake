@@ -280,6 +280,10 @@
       color: rgba(36, 24, 38, 0.7);
     }
 
+    /* oto/style.css sets .faq-answer { display: none } for a JS-based FAQ;
+       override it for native <details> toggle */
+    details[open] .faq-answer { display: block; }
+
     .faq-answer p { margin-bottom: 0.75rem; }
     .faq-answer p:last-child { margin-bottom: 0; }
 
