@@ -9,8 +9,10 @@
  *   2. Call window.localizePrices() explicitly after Paddle.Initialize().
  *   3. Mark price elements: <span data-paddle-price-id="pri_xxx">995 €</span>
  *
- * All prices are rounded to the nearest integer and displayed with the compact
- * currency symbol (e.g. S$ for SGD, $ for USD, € for EUR).
+ * All prices are rounded to the nearest integer and displayed with the
+ * unambiguous currency symbol (S$ for SGD, A$ for AUD, $ for USD, € for EUR).
+ * Dollar-family currencies are formatted in their native locale so the symbol
+ * is correct regardless of the visitor's browser language setting.
  * Elements with data-paddle-price-divisor="N" divide the price by N before
  * rounding (for per-month figures derived from a quarterly or annual total).
  *
@@ -47,7 +49,15 @@ window.localizePrices = function () {
       priceMap[item.price.id] = parseFloat(item.totals.subtotal) / 100;
     });
 
-    // Update each span — always round, always use compact currency symbol
+    // Dollar-family currencies need their native locale so 'symbol' is unambiguous:
+    // SGD in en-US gives '$', but SGD in en-SG gives 'S$'. Same issue for AUD, CAD, etc.
+    var NATIVE_LOCALE = {
+      AUD: 'en-AU', CAD: 'en-CA', HKD: 'en-HK',
+      MXN: 'es-MX', NZD: 'en-NZ', SGD: 'en-SG', TWD: 'zh-TW'
+    };
+    var locale = NATIVE_LOCALE[currencyCode] || navigator.language;
+
+    // Update each span — always round, always use the unambiguous currency symbol
     spans.forEach(function (el) {
       var id      = el.getAttribute('data-paddle-price-id');
       var divisor = parseFloat(el.getAttribute('data-paddle-price-divisor')) || 1;
@@ -56,24 +66,15 @@ window.localizePrices = function () {
 
       var amount = Math.round(raw / divisor);
 
-      // narrowSymbol gives compact symbols (S$ not SGD); fall back for older browsers
       try {
-        el.textContent = new Intl.NumberFormat(navigator.language, {
+        el.textContent = new Intl.NumberFormat(locale, {
           style:           'currency',
           currency:        currencyCode,
-          currencyDisplay: 'narrowSymbol',
+          currencyDisplay: 'symbol',
           maximumFractionDigits: 0
         }).format(amount);
       } catch (e) {
-        try {
-          el.textContent = new Intl.NumberFormat(navigator.language, {
-            style:    'currency',
-            currency: currencyCode,
-            maximumFractionDigits: 0
-          }).format(amount);
-        } catch (e2) {
-          // Intl failed entirely — leave content unchanged
-        }
+        // Intl failed entirely — leave content unchanged
       }
     });
   })
