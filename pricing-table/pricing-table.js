@@ -914,7 +914,7 @@
       var billingHtml = ''
         + '<div class="ot-billing" role="group" aria-label="Billing cycle">'
         +   '<div class="ot-billing__inner">'
-        +     '<button class="ot-billing__btn" type="button" data-cycle="monthly" aria-pressed="' + (cycle === 'monthly') + '">'Monthly</button>'
+        +     '<button class="ot-billing__btn" type="button" data-cycle="monthly" aria-pressed="' + (cycle === 'monthly') + '">Monthly</button>'
         +     '<button class="ot-billing__btn" type="button" data-cycle="yearly" aria-pressed="' + (cycle === 'yearly') + '">'
         +       'Annual <span class="ot-billing__save">Save ~17%</span>'
         +     '</button>'
