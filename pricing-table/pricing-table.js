@@ -987,6 +987,12 @@
       mount.dispatchEvent(new CustomEvent('ot-pricing:rendered', { detail: { cycle: cycle } }));
       // Standard event many localizers listen for
       document.dispatchEvent(new CustomEvent('paddle-prices-updated', { detail: { container: mount } }));
+      // Trigger price localization directly
+      if (window.PriceLocalizer && typeof window.PriceLocalizer.refresh === 'function') {
+        window.PriceLocalizer.refresh(mount);
+      } else if (typeof window.localizePrices === 'function') {
+        try { window.localizePrices(mount); } catch (e) {}
+      }
     }
 
     build();
