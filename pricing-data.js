@@ -296,6 +296,24 @@ const planPresets = {
         freeToPaidConversionRate: 0.30
     },
 
+    // Launch plans — no trial
+    'launch-monthly': {
+        tier: 'Launch',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ksgq485zrfqr2vb8k96zgsdp',
+        firstExpectedPayment: 59,
+        freeToPaidConversionRate: 1
+    },
+    'launch-yearly': {
+        tier: 'Launch',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01ksgq75z2c95a3ep20dp4evac',
+        firstExpectedPayment: 590,
+        freeToPaidConversionRate: 1
+    },
+
     // Grow plans — no trial
     'grow-monthly': {
         tier: 'Grow',

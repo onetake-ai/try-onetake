@@ -26,10 +26,16 @@
         showJohnsonBox(isTrial, isOneDollarTrial);
     }
     
-    // Get translation helper
-    function getTranslation(key) {
+    // Get translation helper, with optional {placeholder} substitution
+    function getTranslation(key, params) {
         const lang = window.oneTakeState ? window.oneTakeState.currentLanguage : 'en';
-        return translations[lang]?.[key] || translations['en']?.[key] || key;
+        const raw = translations[lang]?.[key] || translations['en']?.[key] || key;
+        return applyTranslationParams(raw, params);
+    }
+
+    function getTrialDays() {
+        return (window.oneTakeState && window.oneTakeState.planInfo && window.oneTakeState.planInfo.trial)
+            || DEFAULT_TRIAL_DAYS;
     }
     
     // Show/hide sub-headline (show only for NON-trials)
@@ -53,12 +59,12 @@
         if (isOneDollarTrial) {
             benefits.push(getTranslation('benefit.trialOneDollar'));
             benefits.push(getTranslation('benefit.features'));
-            benefits.push(getTranslation('benefit.payOneDollar'));
+            benefits.push(getTranslation('benefit.payOneDollar', { days: getTrialDays() }));
             benefits.push(getTranslation('benefit.cancel'));
         } else if (isTrial) {
             benefits.push(getTranslation('benefit.trial'));
             benefits.push(getTranslation('benefit.features'));
-            benefits.push(getTranslation('benefit.payNothing'));
+            benefits.push(getTranslation('benefit.payNothing', { days: getTrialDays() }));
             benefits.push(getTranslation('benefit.cancel'));
         } else {
             benefits.push(getTranslation('benefit.features'));
@@ -79,7 +85,7 @@
             ? getTranslation('faq.creditCard.questionOneDollar')
             : getTranslation('faq.creditCard.question');
         const creditCardAnswer = isOneDollarTrial
-            ? getTranslation('faq.creditCard.answerOneDollar')
+            ? getTranslation('faq.creditCard.answerOneDollar', { days: getTrialDays() })
             : getTranslation('faq.creditCard.answer');
 
         const faqs = [
@@ -109,7 +115,7 @@
             if (isOneDollarTrial) {
                 const headlineEl = johnsonBox.querySelector('.johnson-headline');
                 if (headlineEl) {
-                    headlineEl.textContent = getTranslation('johnson.headlineOneDollar');
+                    headlineEl.textContent = getTranslation('johnson.headlineOneDollar', { days: getTrialDays() });
                     headlineEl.setAttribute('data-i18n', 'johnson.headlineOneDollar');
                 }
             }
