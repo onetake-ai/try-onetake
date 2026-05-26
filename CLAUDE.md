@@ -16,6 +16,7 @@
 ```
 
 - The fallback text (shown until the API responds) should be the EUR amount in European format: `995 €`, `4 995 €`.
+- Localized prices are always rounded to the nearest integer and shown with the compact currency symbol (`S$` not `SGD`, `$` not `USD`).
 - Always include the CSS class `paddle-price` — Weglot is configured to skip these elements.
 - For a price that is a subdivision of another (e.g. quarterly total displayed as per-month), add `data-paddle-price-divisor="3"`. The localizer divides and floors.
 

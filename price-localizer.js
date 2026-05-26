@@ -7,12 +7,12 @@
  * Usage:
  *   1. Include this script AFTER paddle.js and AFTER Paddle.Initialize() has been called.
  *   2. Call window.localizePrices() explicitly after Paddle.Initialize().
- *   3. Mark price elements: <span data-paddle-price-id="pri_xxx">$99</span>
+ *   3. Mark price elements: <span data-paddle-price-id="pri_xxx">995 €</span>
  *
- * The element's text content is replaced with the formatted localized price
- * (pre-tax / subtotal, e.g. "$99" for USD visitors, "€85" for EUR visitors).
- * Elements with data-paddle-price-divisor="N" divide the price by N (for
- * per-month calculations derived from a quarterly total) and round DOWN.
+ * All prices are rounded to the nearest integer and displayed with the compact
+ * currency symbol (e.g. S$ for SGD, $ for USD, € for EUR).
+ * Elements with data-paddle-price-divisor="N" divide the price by N before
+ * rounding (for per-month figures derived from a quarterly or annual total).
  *
  * All elements should also carry the CSS class "paddle-price" so that Weglot
  * can be told to exclude them from translation.
@@ -41,48 +41,38 @@ window.localizePrices = function () {
     var lineItems = result.data.details.lineItems;
     var currencyCode = result.data.currencyCode;
 
-    // Build a map of priceId → pre-tax subtotal (formatted + raw)
+    // Build a map of priceId → raw pre-tax subtotal (Paddle returns minor units)
     var priceMap = {};
     lineItems.forEach(function (item) {
-      priceMap[item.price.id] = {
-        formatted: item.formattedTotals.subtotal,
-        raw:       parseFloat(item.totals.subtotal) / 100   // Paddle returns minor units
-      };
+      priceMap[item.price.id] = parseFloat(item.totals.subtotal) / 100;
     });
 
-    // Update each span
+    // Update each span — always round, always use compact currency symbol
     spans.forEach(function (el) {
       var id      = el.getAttribute('data-paddle-price-id');
       var divisor = parseFloat(el.getAttribute('data-paddle-price-divisor')) || 1;
-      var entry   = priceMap[id];
-      if (!entry) return;
+      var raw     = priceMap[id];
+      if (raw == null) return;
 
-      if (divisor !== 1) {
-        // Divide and round DOWN, then reformat with Intl
-        var divided = Math.floor(entry.raw / divisor);
+      var amount = Math.round(raw / divisor);
+
+      // narrowSymbol gives compact symbols (S$ not SGD); fall back for older browsers
+      try {
+        el.textContent = new Intl.NumberFormat(navigator.language, {
+          style:           'currency',
+          currency:        currencyCode,
+          currencyDisplay: 'narrowSymbol',
+          maximumFractionDigits: 0
+        }).format(amount);
+      } catch (e) {
         try {
           el.textContent = new Intl.NumberFormat(navigator.language, {
             style:    'currency',
             currency: currencyCode,
             maximumFractionDigits: 0
-          }).format(divided);
-        } catch (e) {
-          // Intl failed — leave content unchanged
-        }
-      } else {
-        // Strip decimals for round prices (e.g. €20.00 → €20, but €19.99 stays)
-        if (entry.raw === Math.floor(entry.raw)) {
-          try {
-            el.textContent = new Intl.NumberFormat(navigator.language, {
-              style:    'currency',
-              currency: currencyCode,
-              maximumFractionDigits: 0
-            }).format(entry.raw);
-          } catch (e) {
-            el.textContent = entry.formatted;
-          }
-        } else {
-          el.textContent = entry.formatted;
+          }).format(amount);
+        } catch (e2) {
+          // Intl failed entirely — leave content unchanged
         }
       }
     });
