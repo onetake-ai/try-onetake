@@ -280,6 +280,10 @@
       color: rgba(36, 24, 38, 0.7);
     }
 
+    /* oto/style.css sets .faq-answer { display: none } for a JS-based FAQ;
+       override it for native <details> toggle */
+    details[open] .faq-answer { display: block; }
+
     .faq-answer p { margin-bottom: 0.75rem; }
     .faq-answer p:last-child { margin-bottom: 0; }
 
@@ -304,8 +308,16 @@
       font-size: clamp(1.2rem, 3vw, 1.7rem);
       font-weight: 700;
       color: var(--alabaster);
-      margin-bottom: 3rem;
+      margin-bottom: 1rem;
       line-height: 1.25;
+    }
+
+    .testimonials-intro {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(248, 247, 247, 0.55);
+      max-width: 680px;
+      margin-bottom: 3rem;
     }
 
     .testimonials-grid {
@@ -525,6 +537,7 @@
     <div class="testimonials-inner">
       <p class="section-eyebrow">Testimonials</p>
       <h2>Experts who transformed their business</h2>
+      <p class="testimonials-intro">For over 15 years, I've supported entrepreneurs in 41 countries. Most of the best-known experts and coaches in the French-speaking web are former students — or students of my students. What you see below is what becomes possible when you have the right method.</p>
 
       <div class="testimonials-grid">
 
