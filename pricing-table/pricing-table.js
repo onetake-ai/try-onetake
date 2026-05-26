@@ -737,8 +737,123 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  function priceSpan(priceId, fallback) {
-    return '<strong data-paddle-price-id="' + esc(priceId) + '" class="paddle-price ot-card__amount">' + esc(fallback) + '</strong>';
+  // ---------- i18n ----------
+  var PRICING_STRINGS = {
+    en: {
+      monthly: 'Monthly', annual: 'Annual', savePercent: 'Save ~17%',
+      perMonth: '/ month', billedMonthly: 'Billed monthly', billedAnnually: 'Billed annually',
+      startTrial: 'Start {days}-day free trial', trialBadge: '{days}-day free trial',
+      whatsIncluded: "What’s included", everythingIn: 'Everything in {plan}, plus',
+      compareAll: 'Compare all features', hideComparison: 'Hide comparison',
+      compareTitle: 'Compare every feature',
+      compareSub: "A full breakdown of what’s included in each plan.",
+      featureCol: 'Feature', soon: 'Soon!', addon: 'Add-on'
+    },
+    fr: {
+      monthly: 'Mensuel', annual: 'Annuel', savePercent: 'Économisez ~17 %',
+      perMonth: '/ mois', billedMonthly: 'Facturé mensuellement', billedAnnually: 'Facturé annuellement',
+      startTrial: 'Essai gratuit de {days} jours', trialBadge: 'Essai gratuit {days} jours',
+      whatsIncluded: 'Ce qui est inclus', everythingIn: 'Tout ce qui est dans {plan}, plus',
+      compareAll: 'Comparer toutes les fonctionnalités', hideComparison: 'Masquer la comparaison',
+      compareTitle: 'Comparez chaque fonctionnalité',
+      compareSub: 'Un aperçu complet de ce qui est inclus dans chaque forfait.',
+      featureCol: 'Fonctionnalité', soon: 'Bientôt !', addon: 'Module complémentaire'
+    },
+    es: {
+      monthly: 'Mensual', annual: 'Anual', savePercent: 'Ahorra ~17 %',
+      perMonth: '/ mes', billedMonthly: 'Facturado mensualmente', billedAnnually: 'Facturado anualmente',
+      startTrial: 'Prueba gratuita de {days} días', trialBadge: 'Prueba gratuita {days} días',
+      whatsIncluded: 'Qué está incluido', everythingIn: 'Todo lo de {plan}, más',
+      compareAll: 'Comparar todas las funciones', hideComparison: 'Ocultar comparación',
+      compareTitle: 'Comparar cada función',
+      compareSub: 'Un desglose completo de lo que incluye cada plan.',
+      featureCol: 'Función', soon: '¡Próximamente!', addon: 'Complemento'
+    },
+    'pt-br': {
+      monthly: 'Mensal', annual: 'Anual', savePercent: 'Economize ~17 %',
+      perMonth: '/ mês', billedMonthly: 'Cobrado mensalmente', billedAnnually: 'Cobrado anualmente',
+      startTrial: 'Teste grátis por {days} dias', trialBadge: 'Teste grátis {days} dias',
+      whatsIncluded: 'O que está incluído', everythingIn: 'Tudo do {plan}, mais',
+      compareAll: 'Comparar todos os recursos', hideComparison: 'Ocultar comparação',
+      compareTitle: 'Comparar todos os recursos',
+      compareSub: 'Um resumo completo do que está incluído em cada plano.',
+      featureCol: 'Recurso', soon: 'Em breve!', addon: 'Add-on'
+    },
+    it: {
+      monthly: 'Mensile', annual: 'Annuale', savePercent: 'Risparmia ~17 %',
+      perMonth: '/ mese', billedMonthly: 'Fatturato mensilmente', billedAnnually: 'Fatturato annualmente',
+      startTrial: 'Prova gratuita di {days} giorni', trialBadge: 'Prova gratuita {days} giorni',
+      whatsIncluded: 'Cosa è incluso', everythingIn: 'Tutto di {plan}, più',
+      compareAll: 'Confronta tutte le funzionalità', hideComparison: 'Nascondi confronto',
+      compareTitle: 'Confronta ogni funzionalità',
+      compareSub: 'Una panoramica completa di ciò che è incluso in ogni piano.',
+      featureCol: 'Funzionalità', soon: 'Presto!', addon: 'Componente aggiuntivo'
+    },
+    ja: {
+      monthly: '月払い', annual: '年払い', savePercent: '絀17%節約',
+      perMonth: '/ 月', billedMonthly: '月払い', billedAnnually: '年払い',
+      startTrial: '{days}日間無料トライアルを開始',
+      trialBadge: '{days}日間無料トライアル',
+      whatsIncluded: '含まれるもの', everythingIn: '{plan}のすべて、さらに',
+      compareAll: 'すべての機能を比較', hideComparison: '比較を非表示',
+      compareTitle: 'すべての機能を比較する',
+      compareSub: '各プランに含まれる内容の詳細な内訳。',
+      featureCol: '機能', soon: '近日公開！', addon: 'アドオン'
+    },
+    ru: {
+      monthly: 'Ежемесячно',
+      annual: 'Ежегодно',
+      savePercent: 'Экономия ~17 %',
+      perMonth: '/ мес',
+      billedMonthly: 'Ежемесячная оплата',
+      billedAnnually: 'Ежегодная оплата',
+      startTrial: 'Начать {days}-дневный бесплатный пробный период',
+      trialBadge: '{days}-дневный бесплатный пробный период',
+      whatsIncluded: 'Что включено',
+      everythingIn: 'Всё из {plan}, плюс',
+      compareAll: 'Сравнить все функции',
+      hideComparison: 'Скрыть сравнение',
+      compareTitle: 'Сравнить каждую функцию',
+      compareSub: 'Полный обзор того, что включено в каждый план.',
+      featureCol: 'Функция', soon: 'Скоро!', addon: 'Дополнение'
+    },
+    de: {
+      monthly: 'Monatlich', annual: 'Jährlich', savePercent: 'Spare ~17 %',
+      perMonth: '/ Monat', billedMonthly: 'Monatlich abgerechnet', billedAnnually: 'Jährlich abgerechnet',
+      startTrial: '{days}-tägige kostenlose Testversion starten',
+      trialBadge: '{days}-tägige kostenlose Testversion',
+      whatsIncluded: 'Was enthalten ist', everythingIn: 'Alles aus {plan}, plus',
+      compareAll: 'Alle Funktionen vergleichen', hideComparison: 'Vergleich ausblenden',
+      compareTitle: 'Jede Funktion vergleichen',
+      compareSub: 'Eine vollständige Übersicht über den Inhalt jedes Plans.',
+      featureCol: 'Funktion', soon: 'Bald!', addon: 'Add-on'
+    }
+  };
+
+  var _lang = 'en';
+
+  function normLang(l) {
+    var s = (l || '').toLowerCase().replace('_', '-');
+    if (PRICING_STRINGS[s]) return s;
+    var base = s.split('-')[0];
+    if (base === 'pt') return 'pt-br';
+    return PRICING_STRINGS[base] ? base : 'en';
+  }
+
+  function t(key, params) {
+    var dict = PRICING_STRINGS[_lang] || PRICING_STRINGS['en'];
+    var raw = (dict && dict[key]) || PRICING_STRINGS['en'][key] || key;
+    if (params) {
+      Object.keys(params).forEach(function(k) {
+        raw = raw.split('{' + k + '}').join(String(params[k]));
+      });
+    }
+    return raw;
+  }
+
+  function priceSpan(priceId, fallback, divisor) {
+    var divisorAttr = (divisor && divisor !== 1) ? ' data-paddle-price-divisor="' + divisor + '"' : '';
+    return '<strong data-paddle-price-id="' + esc(priceId) + '"' + divisorAttr + ' class="paddle-price ot-card__amount">' + esc(fallback) + '</strong>';
   }
 
   // Tooltip + Soon-pill helpers (used by cards AND comparison rows)
@@ -757,7 +872,7 @@
       + '</span>';
   }
   function soonPill() {
-    return '<span class="ot-soon">Soon!</span>';
+    return '<span class="ot-soon">' + t('soon') + '</span>';
   }
 
   function renderFeature(item) {
@@ -778,10 +893,8 @@
     var preset = cycle === 'yearly' ? plan.presetYearly : plan.presetMonthly;
     var priceId = cycle === 'yearly' ? plan.yearlyPriceId : plan.monthlyPriceId;
     var fallback = cycle === 'yearly' ? plan.yearlyFallback : plan.monthlyFallback;
-    var period = cycle === 'yearly' ? '/ mo' : '/ month';
-    var billed = cycle === 'yearly'
-      ? 'Billed annually'
-      : 'Billed monthly';
+    var period = t('perMonth');
+    var billed = cycle === 'yearly' ? t('billedAnnually') : t('billedMonthly');
 
     var activeDays = (cycle !== 'monthly' && Object.prototype.hasOwnProperty.call(plan, 'trialDaysYearly'))
       ? plan.trialDaysYearly
@@ -789,12 +902,12 @@
 
     var ctaLabel = plan.ctaLabel;
     if (plan.trialBadge && activeDays) {
-      ctaLabel = 'Start ' + activeDays + '-day free trial';
+      ctaLabel = t('startTrial', { days: activeDays });
     }
 
     var badgeHtml = '';
     if (plan.trialBadge && activeDays) {
-      badgeHtml = '<span class="ot-card__badge ot-card__badge--trial">' + activeDays + '-day free trial</span>';
+      badgeHtml = '<span class="ot-card__badge ot-card__badge--trial">' + t('trialBadge', { days: activeDays }) + '</span>';
     } else if (plan.featured && plan.featuredLabel) {
       badgeHtml = '<span class="ot-card__badge">' + esc(plan.featuredLabel) + '</span>';
     }
@@ -802,8 +915,8 @@
     var featuresHtml = (plan.highlights || []).map(renderFeature).join('');
 
     var includesLabel = plan.previousPlanName
-      ? 'Everything in ' + plan.previousPlanName + ', plus'
-      : 'What\u2019s included';
+      ? t('everythingIn', { plan: plan.previousPlanName })
+      : t('whatsIncluded');
 
     return ''
       + '<article class="ot-card' + (plan.featured ? ' ot-card--featured' : '') + '" data-plan-id="' + esc(plan.id) + '">'
@@ -814,7 +927,7 @@
       +     '<p class="ot-card__desc">' + esc(plan.description) + '</p>'
       +   '</header>'
       +   '<div class="ot-card__price">'
-      +     priceSpan(priceId, fallback)
+      +     priceSpan(priceId, fallback, cycle === 'yearly' ? 12 : undefined)
       +     '<span class="ot-card__period">' + period + '</span>'
       +   '</div>'
       +   '<p class="ot-card__billed">' + esc(billed) + '</p>'
@@ -837,7 +950,7 @@
       return '<span class="ot-dash" aria-label="Not included"></span>';
     }
     if (value === 'addon' || value === 'add-on') {
-      return '<span class="ot-addon">Add-on</span>';
+      return '<span class="ot-addon">' + t('addon') + '</span>';
     }
     if (typeof value === 'object' && value !== null) {
       // Try-once-then-priced cell: { trial: '...', after: '...' }
@@ -893,12 +1006,12 @@
     return ''
       + '<section class="ot-compare" id="ot-compare">'
       +   '<div class="ot-compare__caption">'
-      +     '<h2 class="ot-compare__title">Compare every feature</h2>'
-      +     '<p class="ot-compare__sub">A full breakdown of what\u2019s included in each plan.</p>'
+      +     '<h2 class="ot-compare__title">' + t('compareTitle') + '</h2>'
+      +     '<p class="ot-compare__sub">' + t('compareSub') + '</p>'
       +   '</div>'
       +   '<div class="ot-compare__scroll">'
       +     '<table class="ot-compare__table">'
-      +       '<thead><tr><th>Feature</th>' + headCells + '</tr></thead>'
+      +       '<thead><tr><th>' + t('featureCol') + '</th>' + headCells + '</tr></thead>'
       +       '<tbody>' + bodyHtml + '</tbody>'
       +     '</table>'
       +   '</div>'
@@ -907,6 +1020,7 @@
 
   // ---------- Main render ----------
   function render(mount, data, opts) {
+    _lang = normLang(mount.getAttribute('data-lang') || document.documentElement.lang);
     var cycle = opts.billing === 'yearly' ? 'yearly' : 'monthly';
     var compareMode = opts.comparison || 'toggle'; // 'toggle' | 'open' | 'hidden'
     var ctaBase = opts.ctaBase || 'https://try.onetake.ai/?plan=';
@@ -915,9 +1029,9 @@
       var billingHtml = ''
         + '<div class="ot-billing" role="group" aria-label="Billing cycle">'
         +   '<div class="ot-billing__inner">'
-        +     '<button class="ot-billing__btn" type="button" data-cycle="monthly" aria-pressed="' + (cycle === 'monthly') + '">Monthly</button>'
+        +     '<button class="ot-billing__btn" type="button" data-cycle="monthly" aria-pressed="' + (cycle === 'monthly') + '">' + t('monthly') + '</button>'
         +     '<button class="ot-billing__btn" type="button" data-cycle="yearly" aria-pressed="' + (cycle === 'yearly') + '">'
-        +       'Annual <span class="ot-billing__save">Save ~17%</span>'
+        +       t('annual') + ' <span class="ot-billing__save">' + t('savePercent') + '</span>'
         +     '</button>'
         +   '</div>'
         + '</div>';
@@ -935,7 +1049,7 @@
           compareHtml = ''
             + '<div class="ot-compare-toggle-wrap">'
             +   '<button class="ot-compare-toggle" type="button" aria-expanded="false" aria-controls="ot-compare">'
-            +     '<span class="ot-compare-toggle__label">Compare all features</span>'
+            +     '<span class="ot-compare-toggle__label">' + t('compareAll') + '</span>'
             +     '<span class="ot-compare-toggle__chev">' + ICONS.chev + '</span>'
             +   '</button>'
             + '</div>'
@@ -973,10 +1087,10 @@
           toggle.setAttribute('aria-expanded', String(next));
           if (next) {
             compareEl.hidden = false;
-            toggle.querySelector('.ot-compare-toggle__label').textContent = 'Hide comparison';
+            toggle.querySelector('.ot-compare-toggle__label').textContent = t('hideComparison');
           } else {
             compareEl.hidden = true;
-            toggle.querySelector('.ot-compare-toggle__label').textContent = 'Compare all features';
+            toggle.querySelector('.ot-compare-toggle__label').textContent = t('compareAll');
           }
         });
       }
