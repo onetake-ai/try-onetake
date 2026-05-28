@@ -943,6 +943,19 @@
         data.downsell_accepted = String(state.downsellAccepted);
         data.original_plan     = state.originalPlanKey || '';
 
+        // Downsell checkout context — only present when the user accepted a downsell offer.
+        // Lets the backend distinguish transaction.created/completed for a downsell checkout
+        // from a normal checkout, and know which plan the prospect originally considered.
+        if (state.downsellAccepted && state.originalPlanKey) {
+            data.checkout_type = 'downsell';
+            const originalPlan = activePlanPresets[state.originalPlanKey];
+            if (originalPlan) {
+                data.original_plan_id       = originalPlan.product || '';
+                data.original_plan_name     = originalPlan.tier || '';
+                data.original_plan_interval = originalPlan.recurrence || '';
+            }
+        }
+
         return data;
     }
 
