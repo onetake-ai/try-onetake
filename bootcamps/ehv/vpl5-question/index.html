@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A personal message from Sébastien — The High-Value Expert's Bootcamp</title>
+  <meta name="description" content="Enrollment in the High-Value Expert Circle is closing soon. If you have any questions before you sign up, this is the moment to ask." />
+  <link rel="preconnect" href="https://fonts.bunny.net" />
+  <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../oto/style.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <script src="../../../tools.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       EPISODE NAV
+  ═══════════════════════════════════════════ -->
+  <nav class="episode-nav" aria-label="Bootcamp Episodes">
+    <div class="episode-nav-inner">
+
+      <a href="../vpl1-10k/" class="episode-nav-item is-link">
+        <span class="episode-nav-label">Episode 1<br/>The AI-Augmented Expert</span>
+        <span class="episode-nav-status">↑ Watch first</span>
+      </a>
+
+      <a href="../vpl2-diagnostic/" class="episode-nav-item is-link">
+        <span class="episode-nav-label">Episode 2<br/>The 5 Pillars</span>
+        <span class="episode-nav-status">↑ Watch second</span>
+      </a>
+
+      <a href="../vpl3-plan/" class="episode-nav-item is-link">
+        <span class="episode-nav-label">Episode 3<br/>The Complete Plan</span>
+        <span class="episode-nav-status">↑ Watch third</span>
+      </a>
+
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="episode-nav-item is-link">
+        <span class="episode-nav-label">Episode 4<br/>The High-Value Expert Circle</span>
+        <span class="episode-nav-status">↑ Watch fourth</span>
+      </a>
+
+      <span class="episode-nav-item is-active" aria-current="page">
+        <span class="episode-nav-label">Bonus<br/>A message from Sébastien</span>
+        <span class="episode-nav-status">↓ Watch below</span>
+      </span>
+
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════ -->
+  <main class="bootcamp-main">
+
+    <!-- ── HERO ── -->
+    <section class="bootcamp-hero">
+      <p class="bootcamp-series-label">The High-Value Experts' Bootcamp</p>
+      <h1 class="bootcamp-title">Personal message from Sébastien<br/>(and a question !)</h1>
+      <p class="bootcamp-promise">
+        Enrollment in the High-Value Expert Circle is closing soon. If you've been watching the bootcamp and still have questions before you sign up, this message is for you.
+      </p>
+    </section>
+
+    <!-- ── VIDEO ── -->
+    <section class="bootcamp-video">
+      <div class="video-wrapper">
+        <iframe
+          style="border: none; position: absolute; top: 0; width: 100%; height: 100%; left: 0"
+          src="https://my.onetake.ai/b9502ad6/1ebe53af/"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+          allowfullscreen="true"
+          title="Personal message from Sébastien"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- ── COMMENT CTA ── -->
+    <section class="comment-cta" id="comment-cta">
+      <h2 class="comment-cta-title">
+        Have a question about the<br><strong>High-Value Expert Circle?</strong>
+      </h2>
+      <p class="comment-cta-body">
+        Whether it's about how the program works, what's included, how we'll move forward together, or how to sign up — post your question in the comments below. Sébastien reads every message personally and will answer before enrollment closes.
+      </p>
+      <p class="comment-cta-arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        Post your question below
+      </p>
+    </section>
+
+    <!-- ── COMMENTS ── -->
+    <section class="comments-section">
+      <p class="comments-section-title">💬 Ask your question — Sébastien reads every message</p>
+
+      <hyvor-talk-comments
+        website-id="10804"
+        page-id="bootcamps/ehv/vpl5-question"
+        loading="manual"
+      ></hyvor-talk-comments>
+
+      <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
+      <script>
+        customElements.whenDefined('hyvor-talk-comments').then(() => {
+          const comments = document.querySelector('hyvor-talk-comments');
+
+          comments.api.hooks.register('time:format', (props) => {
+            props.text = props.datetime.toLocaleString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+              timeZone: 'Europe/Paris'
+            }) + ' CET';
+            return props;
+          });
+
+          comments.load();
+        });
+      </script>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+      <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
+      <p><strong>What is OneTake?</strong></p>
+      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+      <p>
+        Useful links:
+        <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a>
+        ·
+        <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a>
+        ·
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a>
+      </p>
+      <p></p>
+      <p><strong>Who came up with the idea?</strong></p>
+      <p>Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement — an organization supporting over 20,000 entrepreneur clients and 300,000 supporters in 41 countries since 2010. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to create a tool that would be both incredibly powerful and utterly easy to use: OneTake.</strong></p>
+      <p></p>
+      <p>
+        <span>To contact Sébastien and his team,</span>
+        <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
