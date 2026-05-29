@@ -364,6 +364,32 @@ const planPresets = {
         product: 'pri_01ksfresjrwabasp4p2vbbm8x3',
         firstExpectedPayment: 2990,
         freeToPaidConversionRate: 1
+    },
+
+    // Pioneer Unlimited plans — no trial, no OTO
+    'pioneer-yearly': {
+        tier: 'Pioneer Unlimited',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01kst4y1n6xk1pc23h5217zt35',
+        firstExpectedPayment: 999,
+        freeToPaidConversionRate: 1
+    },
+    'pioneer-quarterly': {
+        tier: 'Pioneer Unlimited',
+        recurrence: 'quarterly',
+        trial: null,
+        product: 'pri_01kst4w2bp68pe2hdhnjtmmpkv',
+        firstExpectedPayment: 299,
+        freeToPaidConversionRate: 1
+    },
+    'pioneer-monthly': {
+        tier: 'Pioneer Unlimited',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ksj5s0rxfn6b9wtny484t163',
+        firstExpectedPayment: 99,
+        freeToPaidConversionRate: 1
     }
 };
 
