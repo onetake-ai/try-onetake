@@ -13,108 +13,18 @@
 <link rel="preconnect" href="https://fonts.bunny.net" />
 <link href="https://fonts.bunny.net/css?family=instrument-serif:400,400i&family=geist:300,400,500,600,700&family=geist-mono:400,500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
-<style>
-#countdown-bar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #0f0f0f;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding: 0.7rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-#countdown-bar .cdlabel {
-  font-family: 'Geist', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  white-space: nowrap;
-}
-#countdown-bar .cdunits {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-#countdown-bar .cdunit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 2.8rem;
-}
-#countdown-bar .cdnum {
-  font-family: 'Geist Mono', monospace;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #fff;
-  line-height: 1;
-}
-#countdown-bar .cdname {
-  font-family: 'Geist', sans-serif;
-  font-size: 0.55rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.38);
-  margin-top: 0.2rem;
-}
-#countdown-bar .cdsep {
-  font-family: 'Geist Mono', monospace;
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.25);
-  line-height: 1;
-  margin-bottom: 0.4rem;
-}
-@media (max-width: 480px) {
-  #countdown-bar { gap: 0.6rem; padding: 0.55rem 1rem; }
-  #countdown-bar .cdlabel { font-size: 0.62rem; }
-  #countdown-bar .cdnum { font-size: 1rem; }
-}
-</style>
+<script
+  src="/oto/countdown/countdown.js"
+  data-deadline="2026-05-29T22:00:00Z"
+  data-redirect="/oto/too-late/"
+  data-label="Offre ouverte encore"
+  data-label-hours="heures"
+  data-label-min="min"
+  data-label-sec="sec"
+></script>
 
 </head>
 <body>
-
-<!-- ==================== COUNTDOWN ==================== -->
-<div id="countdown-bar">
-  <span class="cdlabel">Offre ouverte encore</span>
-  <div class="cdunits">
-    <div class="cdunit"><span class="cdnum" id="cd-h">--</span><span class="cdname">heures</span></div>
-    <span class="cdsep">:</span>
-    <div class="cdunit"><span class="cdnum" id="cd-m">--</span><span class="cdname">min</span></div>
-    <span class="cdsep">:</span>
-    <div class="cdunit"><span class="cdnum" id="cd-s">--</span><span class="cdname">sec</span></div>
-  </div>
-</div>
-<script>
-(function(){
-  /* Deadline: midnight CEST (UTC+2) ending Friday May 29 2026 = 2026-05-29T22:00:00Z */
-  var deadline = new Date('2026-05-29T22:00:00Z').getTime();
-  var tooLate = 'https://try.onetake.ai/oto/too-late/';
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function tick(){
-    var diff = deadline - Date.now();
-    if(diff <= 0){
-      clearInterval(timer);
-      location.replace(tooLate);
-      return;
-    }
-    var h = Math.floor(diff / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    var s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cd-h').textContent = pad(h);
-    document.getElementById('cd-m').textContent = pad(m);
-    document.getElementById('cd-s').textContent = pad(s);
-  }
-  tick();
-  var timer = setInterval(tick, 1000);
-})();
-</script>
 
 <!-- ==================== NAV ==================== -->
 <header class="nav">

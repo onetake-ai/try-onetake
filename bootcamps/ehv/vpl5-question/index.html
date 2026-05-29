@@ -10,6 +10,34 @@
   <link rel="stylesheet" href="../../../oto/style.css" />
   <link rel="stylesheet" href="../style.css" />
   <script src="../../../tools.js"></script>
+  <style>
+    .vpl5-offer-btn {
+      display: block;
+      width: fit-content;
+      margin: 2rem auto 0;
+      background: #E3AE28;
+      color: #241826;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      text-align: center;
+      transition: opacity 0.15s;
+    }
+    .vpl5-offer-btn:hover { opacity: 0.85; }
+    @media (max-width: 480px) {
+      .vpl5-offer-btn { width: 100%; box-sizing: border-box; }
+    }
+  </style>
+  <script
+    src="/oto/countdown/countdown.js"
+    data-deadline="2026-05-29T22:00:00Z"
+    data-redirect="/oto/too-late/"
+    data-label="Offer closes in"
+  ></script>
 </head>
 <body>
 
@@ -73,6 +101,13 @@
           title="Personal message from Sébastien"
         ></iframe>
       </div>
+    </section>
+
+    <!-- ── OFFER CTA ── -->
+    <section style="text-align:center; padding: 0 1.5rem;">
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="vpl5-offer-btn">
+        Watch my offer before it's too late!
+      </a>
     </section>
 
     <!-- ── COMMENT CTA ── -->
