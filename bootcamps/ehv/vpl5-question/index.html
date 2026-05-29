@@ -10,8 +10,117 @@
   <link rel="stylesheet" href="../../../oto/style.css" />
   <link rel="stylesheet" href="../style.css" />
   <script src="../../../tools.js"></script>
+  <style>
+    #countdown-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #0f0f0f;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    #countdown-bar .cdlabel {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      white-space: nowrap;
+    }
+    #countdown-bar .cdunits {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    #countdown-bar .cdunit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 2.8rem;
+    }
+    #countdown-bar .cdnum {
+      font-family: 'Montserrat', monospace;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1;
+    }
+    #countdown-bar .cdname {
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-top: 0.2rem;
+    }
+    #countdown-bar .cdsep {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.25);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .vpl5-offer-btn {
+      display: block;
+      width: fit-content;
+      margin: 2rem auto 0;
+      background: #E3AE28;
+      color: #241826;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      text-align: center;
+      transition: opacity 0.15s;
+    }
+    .vpl5-offer-btn:hover { opacity: 0.85; }
+    @media (max-width: 480px) {
+      #countdown-bar { gap: 0.6rem; padding: 0.55rem 1rem; }
+      #countdown-bar .cdnum { font-size: 1rem; }
+      .vpl5-offer-btn { width: 100%; box-sizing: border-box; }
+    }
+  </style>
 </head>
 <body>
+
+<!-- ==================== COUNTDOWN ==================== -->
+<div id="countdown-bar">
+  <span class="cdlabel">Offer closes in</span>
+  <div class="cdunits">
+    <div class="cdunit"><span class="cdnum" id="cd-h">--</span><span class="cdname">hours</span></div>
+    <span class="cdsep">:</span>
+    <div class="cdunit"><span class="cdnum" id="cd-m">--</span><span class="cdname">min</span></div>
+    <span class="cdsep">:</span>
+    <div class="cdunit"><span class="cdnum" id="cd-s">--</span><span class="cdname">sec</span></div>
+  </div>
+</div>
+<script>
+(function(){
+  var deadline = new Date('2026-05-29T22:00:00Z').getTime();
+  var tooLate = 'https://try.onetake.ai/oto/too-late/';
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var diff = deadline - Date.now();
+    if(diff <= 0){ clearInterval(timer); location.replace(tooLate); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }
+  tick();
+  var timer = setInterval(tick, 1000);
+})();
+</script>
 
   <!-- ═══════════════════════════════════════════
        EPISODE NAV
@@ -73,6 +182,13 @@
           title="Personal message from Sébastien"
         ></iframe>
       </div>
+    </section>
+
+    <!-- ── OFFER CTA ── -->
+    <section style="text-align:center; padding: 0 1.5rem;">
+      <a href="https://try.onetake.ai/bootcamps/ehv/le-cercle/" class="vpl5-offer-btn">
+        Watch my offer before it's too late!
+      </a>
     </section>
 
     <!-- ── COMMENT CTA ── -->
