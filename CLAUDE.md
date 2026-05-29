@@ -35,4 +35,41 @@ All Paddle price IDs live in `/pricing-data.js`. Each plan entry has a `product`
 
 ### Pricing table (`/pricing-table/`)
 
+
 `pricing-table.js` handles price localization internally — it generates `paddle-price` elements and calls `window.localizePrices()` after rendering. No extra setup needed on pages that embed the pricing table. See `/pricing-table/CLAUDE.md` for the full component docs.
+
+## Countdown bar
+
+**File:** `/oto/countdown/countdown.js`
+
+A self-contained sticky countdown bar that injects its own CSS and DOM. Add a single `<script>` tag in `<head>` — no `async` or `defer`.
+
+```html
+<script
+  src="/oto/countdown/countdown.js"
+  data-deadline="2026-05-29T22:00:00Z"
+  data-redirect="/oto/too-late/"
+  data-label="Offer closes in"
+  data-label-hours="hours"
+  data-label-min="min"
+  data-label-sec="sec"
+></script>
+```
+
+**Required attributes:**
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-deadline` | ISO 8601 UTC string for when the countdown ends |
+| `data-redirect` | URL (absolute or root-relative) to redirect to on expiry |
+
+**Optional attributes** (all have English defaults):
+
+| Attribute | Default |
+|-----------|---------|
+| `data-label` | `"Offer closes in"` |
+| `data-label-hours` | `"hours"` |
+| `data-label-min` | `"min"` |
+| `data-label-sec` | `"sec"` |
+
+The bar inserts itself as the first child of `<body>` and is `position: sticky; top: 0`, so it scrolls with the page and stays pinned at the top. When the deadline is reached the script calls `location.replace(data-redirect)`.
