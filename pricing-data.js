@@ -269,6 +269,14 @@ const planPresets = {
         firstExpectedPayment: 995,
         freeToPaidConversionRate: 1
     },
+    'cercle-quarterly': {
+        tier: 'Cercle',
+        recurrence: 'quarterly',
+        trial: null,
+        product: 'pri_01kt1s9gg8d6bk3vt1q4xq64wy',
+        firstExpectedPayment: 2700,
+        freeToPaidConversionRate: 1
+    },
     'cercle-semester': {
         tier: 'Cercle',
         recurrence: 'semester',

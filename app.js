@@ -69,7 +69,8 @@
         'launch-yearly-trial':              'launch-monthly-trial',
         // launch-monthly-trial → no downsell (omitted)
         // Cercle plans
-        'cercle-semester':                  'cercle-monthly',
+        'cercle-semester':                  'cercle-quarterly',
+        'cercle-quarterly':                 'cercle-monthly',
         // Pioneer Unlimited plans
         'pioneer-yearly':                   'pioneer-quarterly',
         'pioneer-quarterly':                'pioneer-monthly'
