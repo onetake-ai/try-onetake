@@ -29,13 +29,12 @@
         { "icon": "host",    "label": "Hosted video pages + embeddable player",
           "tip": "Every video gets its own shareable page with a transcript, and a copy-paste embed for your course platform, blog, or sales page. No Vimeo/Wistia needed." },
         { "icon": "youtube", "label": "Direct publish to YouTube",
-          "tip": "Send the finished video straight to your channel — title, description and chapters filled in for you.",
-          "soon": true },
+          "tip": "Send the finished video straight to your channel — title, description and chapters filled in for you." },
         { "icon": "shorts",  "label": "1 viral Short generated per video",
           "tip": "Auto-clipped highlight from your video that you can post to your feeds to drive new students in." },
         { "icon": "lock",    "label": "Watermark-free Full HD exports",
           "tip": "Crisp 1080p downloads you can use anywhere — no OneTake logo, no sneaky branding on your work." },
-        { "icon": "support", "label": "“The Real Time” live demos with the founder",
+        { "icon": "support", "label": ""The Real Time" live demos with the founder",
           "tip": "Weekly group session with our team — bring questions, watch real workflows, learn the tricks before you need them." }
       ]
     },
@@ -64,8 +63,7 @@
         { "icon": "shorts",  "label": "Unlimited Shorts generation & downloads",
           "tip": "Regenerate Shorts as many times as you like and pick the one that hits — no per-video cap on attempts or downloads." },
         { "icon": "social",  "label": "Publish + schedule to YouTube, Instagram, TikTok, Facebook, LinkedIn",
-          "tip": "Send each finished video to every channel — and queue it for the best posting time without leaving OneTake.",
-          "soon": true },
+          "tip": "Send each finished video to every channel — and queue it for the best posting time without leaving OneTake." },
         { "icon": "thumb",   "label": "AI thumbnails optimised for engagement",
           "tip": "Pick from three click-tested thumbnail concepts per video — designed to make people stop scrolling.",
           "soon": true },
@@ -74,7 +72,7 @@
         { "icon": "podcast", "label": "Clean podcast audio exports",
           "tip": "One click to a podcast-ready audio file with the same edits as your video — turn every recording into a Spotify episode." },
         { "icon": "import",  "label": "Auto-import from your YouTube channel",
-          "tip": "Connect your channel once and we’ll auto-edit every new upload in the background. Set-and-forget content pipeline." },
+          "tip": "Connect your channel once and we'll auto-edit every new upload in the background. Set-and-forget content pipeline." },
         { "icon": "support", "label": "Priority support + 1-on-1 Zoom with the team",
           "tip": "Jump the queue, and book real face-time when something is on fire — not chatbot purgatory." }
       ]
@@ -205,10 +203,10 @@
       "rows": [
         { "label": "Direct social publishing",
           "tip": "Send your finished video straight to the platform with title, description and hashtags filled in.",
-          "values": ["YouTube only", "YouTube, Instagram, TikTok, Facebook, LinkedIn", "YouTube, Instagram, TikTok, Facebook, LinkedIn"], "status": "soon" },
+          "values": ["YouTube only", "YouTube, Instagram, TikTok, Facebook, LinkedIn", "YouTube, Instagram, TikTok, Facebook, LinkedIn"], "status": "live" },
         { "label": "Scheduled posts per month",
           "tip": "Queue up content to post at peak times automatically — set it on Sunday, ship all week.",
-          "values": ["no", "Unlimited", "Unlimited"], "status": "soon" }
+          "values": ["no", "Unlimited", "Unlimited"], "status": "live" }
       ]
     },
 
@@ -234,7 +232,7 @@
       "title": "Translation & dubbing",
       "rows": [
         { "label": "Subtitles-only translation",
-          "tip": "Translate the captions on your video into another language — great for reaching students who don’t speak your native language but understand by reading.",
+          "tip": "Translate the captions on your video into another language — great for reaching students who don't speak your native language but understand by reading.",
           "values": [
             { "trial": "Try once on a video, 1 target language", "after": "€0.50/min after" },
             { "trial": "Try once on a video, up to 3 languages", "after": "€0.50/min after" },
@@ -264,7 +262,7 @@
       "title": "Premium editing",
       "rows": [
         { "label": "Gaze correction",
-          "tip": "Makes it look like you’re looking right into the camera — even when you were reading notes off-screen. Saves the take, every time.",
+          "tip": "Makes it look like you're looking right into the camera — even when you were reading notes off-screen. Saves the take, every time.",
           "values": [
             { "trial": "Try once on a ≤30 min video", "after": "€0.50/min after" },
             { "trial": "Try once on a ≤45 min video", "after": "€0.50/min after" },
@@ -288,7 +286,7 @@
         { "label": "Knowledge base + email + in-app chat",
           "tip": "Self-serve help for the everyday stuff — answers in minutes, not days.",
           "values": ["yes", "yes", "yes"], "status": "live" },
-        { "label": "“The Real Time” live demos with the founder",
+        { "label": ""The Real Time" live demos with the founder",
           "tip": "Recurring live session with our team — bring real questions and watch real workflows.",
           "values": ["yes", "yes", "yes"], "status": "live" },
         { "label": "Priority support + 1-on-1 Zoom with the team",
