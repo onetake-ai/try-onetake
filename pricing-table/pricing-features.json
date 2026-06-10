@@ -29,8 +29,7 @@
         { "icon": "host",    "label": "Hosted video pages + embeddable player",
           "tip": "Every video gets its own shareable page with a transcript, and a copy-paste embed for your course platform, blog, or sales page. No Vimeo/Wistia needed." },
         { "icon": "youtube", "label": "Direct publish to YouTube",
-          "tip": "Send the finished video straight to your channel — title, description and chapters filled in for you.",
-          "soon": true },
+          "tip": "Send the finished video straight to your channel — title, description and chapters filled in for you." },
         { "icon": "shorts",  "label": "1 viral Short generated per video",
           "tip": "Auto-clipped highlight from your video that you can post to your feeds to drive new students in." },
         { "icon": "lock",    "label": "Watermark-free Full HD exports",
@@ -64,8 +63,7 @@
         { "icon": "shorts",  "label": "Unlimited Shorts generation & downloads",
           "tip": "Regenerate Shorts as many times as you like and pick the one that hits — no per-video cap on attempts or downloads." },
         { "icon": "social",  "label": "Publish + schedule to YouTube, Instagram, TikTok, Facebook, LinkedIn",
-          "tip": "Send each finished video to every channel — and queue it for the best posting time without leaving OneTake.",
-          "soon": true },
+          "tip": "Send each finished video to every channel — and queue it for the best posting time without leaving OneTake." },
         { "icon": "thumb",   "label": "AI thumbnails optimised for engagement",
           "tip": "Pick from three click-tested thumbnail concepts per video — designed to make people stop scrolling.",
           "soon": true },
@@ -205,10 +203,10 @@
       "rows": [
         { "label": "Direct social publishing",
           "tip": "Send your finished video straight to the platform with title, description and hashtags filled in.",
-          "values": ["YouTube only", "YouTube, Instagram, TikTok, Facebook, LinkedIn", "YouTube, Instagram, TikTok, Facebook, LinkedIn"], "status": "soon" },
+          "values": ["YouTube only", "YouTube, Instagram, TikTok, Facebook, LinkedIn", "YouTube, Instagram, TikTok, Facebook, LinkedIn"], "status": "live" },
         { "label": "Scheduled posts per month",
           "tip": "Queue up content to post at peak times automatically — set it on Sunday, ship all week.",
-          "values": ["no", "Unlimited", "Unlimited"], "status": "soon" }
+          "values": ["no", "Unlimited", "Unlimited"], "status": "live" }
       ]
     },
 
