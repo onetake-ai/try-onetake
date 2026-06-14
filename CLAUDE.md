@@ -85,9 +85,9 @@ When a page embeds YouTube testimonial videos, use this lightweight pattern inst
 Include both files on any page that uses YouTube embeds:
 
 ```html
-<link rel="stylesheet" href="../../../assets/youtube-thumbnails.css">
+<link rel="stylesheet" href="/assets/youtube-thumbnails.css">
 <!-- ... -->
-<script src="../../../assets/youtube-thumbnails.js"></script>
+<script src="/assets/youtube-thumbnails.js"></script>
 ```
 
 (Adjust the relative path based on the page's depth in the folder tree.)
