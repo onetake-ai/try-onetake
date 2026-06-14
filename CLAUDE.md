@@ -73,3 +73,35 @@ A self-contained sticky countdown bar that injects its own CSS and DOM. Add a si
 | `data-label-sec` | `"sec"` |
 
 The bar inserts itself as the first child of `<body>` and is `position: sticky; top: 0`, so it scrolls with the page and stays pinned at the top. When the deadline is reached the script calls `location.replace(data-redirect)`.
+
+## YouTube lazy embed
+
+**Files:** `/assets/youtube-thumbnails.css` and `/assets/youtube-thumbnails.js`
+
+When a page embeds YouTube testimonial videos, use this lightweight pattern instead of loading iframes on page load. It displays a static thumbnail with a play button; clicking replaces the thumbnail with an autoplay iframe.
+
+### Setup
+
+Include both files on any page that uses YouTube embeds:
+
+```html
+<link rel="stylesheet" href="/assets/youtube-thumbnails.css">
+<!-- ... -->
+<script src="/assets/youtube-thumbnails.js"></script>
+```
+
+(Adjust the relative path based on the page's depth in the folder tree.)
+
+### Usage
+
+```html
+<div class="youtube-player" data-id="YOUTUBE_VIDEO_ID"></div>
+```
+
+The script initializes all `.youtube-player` elements on `DOMContentLoaded`. For elements added dynamically after that (e.g. rendered by JS), call `initThumbs()` manually after inserting them into the DOM — see `bootcamps/mav/vpl1-secret/testimonials.js` for the pattern.
+
+### Playlists
+
+```html
+<div class="youtube-player" data-id="VIDEO_ID" data-list="PLAYLIST_ID" data-index="1"></div>
+```

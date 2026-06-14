@@ -1,0 +1,60 @@
+/* ============================================================
+   YouTube Lazy Embed — Lightweight thumbnail + click-to-play
+   Based on @labnol, updated by Sébastien Night for playlists
+   Include this file on any MAV bootcamp page that uses YouTube embeds.
+   ============================================================ */
+
+.youtube-player {
+  position: relative;
+  padding-top: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000;
+  border-radius: 8px;
+}
+
+.youtube-player iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: transparent;
+  border: none;
+}
+
+.youtube-player img {
+  bottom: 0;
+  display: block;
+  left: 0;
+  margin: auto;
+  max-width: 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: none;
+  height: auto;
+  cursor: pointer;
+  transition: 0.4s all;
+}
+
+.youtube-player img:hover {
+  filter: brightness(75%);
+}
+
+.youtube-player .play {
+  height: 72px;
+  width: 72px;
+  left: 50%;
+  top: 50%;
+  margin-left: -36px;
+  margin-top: -36px;
+  position: absolute;
+  background: url("https://d1yei2z3i6k35z.cloudfront.net/2914/653dab020a9f3_yt-play-button.png") no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  z-index: 10;
+}
