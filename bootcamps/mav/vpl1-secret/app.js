@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Show bonus modal when a comment is published
-  ht.addEventListener("comment:created", function (ev) {
+  ht.addEventListener("comment:published", function (ev) {
     var email = "";
     try { email = ev.detail.user.email; } catch (_) {}
     openBonusModal(email);
