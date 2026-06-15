@@ -34,23 +34,25 @@ document.addEventListener("DOMContentLoaded", function () {
   var ht = section ? section.querySelector("hyvor-talk-comments") : null;
   if (!ht) return;
 
-  // Lazy-load when visible
-  if ("IntersectionObserver" in window) {
-    var obs = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            if (typeof ht.load === "function") ht.load();
-            obs.disconnect();
-          }
-        });
-      },
-      { rootMargin: "300px" }
-    );
-    obs.observe(section);
-  } else {
-    if (typeof ht.load === "function") ht.load();
-  }
+  customElements.whenDefined("hyvor-talk-comments").then(function () {
+    // Lazy-load when visible
+    if ("IntersectionObserver" in window) {
+      var obs = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              ht.load();
+              obs.disconnect();
+            }
+          });
+        },
+        { rootMargin: "300px" }
+      );
+      obs.observe(section);
+    } else {
+      ht.load();
+    }
+  });
 
   // Show bonus modal when a comment is published
   ht.addEventListener("comment:published", function (ev) {
