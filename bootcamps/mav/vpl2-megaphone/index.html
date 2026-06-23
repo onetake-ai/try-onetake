@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Access control: redirect after June 24 2026 00:01 CET unless ?optin=1 -->
-  <script>
-    (function(){
-      var p=new URLSearchParams(location.search);
-      if(p.get('optin')==='1')return;
-      if(new Date()>new Date('2026-06-24T00:01:00+01:00')){
-        location.replace('https://try.onetake.ai/bootcamps/mav/le-cercle/');
-      }
-    })();
-  </script>
+  <!-- Access control: redirect after June 25 2026 12:00 CET unless ?optin=1 -->
+  <script src="../countdown.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kind Marketing vs Megaphone Marketing — Les Secrets des Entrepreneurs Libres</title>
