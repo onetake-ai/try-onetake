@@ -45,4 +45,4 @@ Episode nav is baked into each page. As new episodes go live, update the `episod
 
 ## Access control
 
-VPL1 has a hidden redirect: after **June 24, 2026 00:01 CET**, visitors without `?optin=1` are sent to `https://try.onetake.ai/bootcamps/mav/le-cercle/`. The script sits at the top of `<head>` for immediate execution.
+All VPL pages share a redirect script at `bootcamps/mav/countdown.js`. After **June 25, 2026 12:00 CET**, visitors without `?optin=1` are sent to `https://try.onetake.ai/bootcamps/mav/le-cercle/`. Each page loads it as the first `<script>` in `<head>` for immediate execution.
