@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Access control: redirect after June 24 2026 00:01 CET unless ?optin=1 -->
+  <script>
+    (function(){
+      var p=new URLSearchParams(location.search);
+      if(p.get('optin')==='1')return;
+      if(new Date()>new Date('2026-06-24T00:01:00+01:00')){
+        location.replace('https://try.onetake.ai/bootcamps/mav/le-cercle/');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5 Steps to Clone Yourself and Sell on Autopilot — Les Secrets des Entrepreneurs Libres</title>
+  <meta name="description" content="The complete plan for the High-Value Expert — from positioning to partnerships, with the step-by-step roadmap to automate your sales without hiring an army.">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="5 Steps to Clone Yourself and Sell on Autopilot — Les Secrets des Entrepreneurs Libres">
+  <meta property="og:description" content="The complete plan for the High-Value Expert — from positioning to partnerships, with the step-by-step roadmap to automate your sales without hiring an army.">
+  <meta property="og:type" content="video">
+  <meta property="og:url" content="https://try.onetake.ai/bootcamps/mav/vpl3-clone/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Bunny Fonts (GDPR-compliant) -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=dm-sans:400,500,600,700|dm-serif-display:400" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../vpl-styles.css">
+  <link rel="stylesheet" href="../../../assets/youtube-thumbnails.css">
+</head>
+<body>
+
+  <!-- ====== Episode Navigation ====== -->
+  <nav class="episode-nav" aria-label="Episode navigation">
+    <div class="episode-nav__inner">
+      <a href="https://try.onetake.ai/bootcamps/mav/vpl1-secret/" class="episode-pill">
+        <span class="episode-pill__num">1</span>
+        <span class="episode-pill__title">The Secret of "Free Entrepreneurs"</span>
+      </a>
+      <a href="https://try.onetake.ai/bootcamps/mav/vpl2-megaphone/" class="episode-pill">
+        <span class="episode-pill__num">2</span>
+        <span class="episode-pill__title">Kind Marketing vs Megaphone Marketing</span>
+      </a>
+      <a href="https://try.onetake.ai/bootcamps/mav/vpl3-clone/" class="episode-pill episode-pill--active" aria-current="page">
+        <span class="episode-pill__num">3</span>
+        <span class="episode-pill__title">5 Steps to Clone Yourself</span>
+      </a>
+      <div class="episode-pill episode-pill--locked">
+        <span class="episode-pill__num">4</span>
+        <span class="episode-pill__title">The High-Value Experts Circle</span>
+        <span class="episode-pill__badge">Coming soon</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== Hero ====== -->
+  <header class="hero">
+    <div class="hero__inner">
+      <h1 class="hero__title">5 Steps to Clone Yourself<br>and Sell on Autopilot</h1>
+      <p class="hero__promise">The complete plan for the High-Value Expert — from positioning your signature method to launching partnerships, with the exact roadmap to automate your sales without losing your voice or hiring an army.</p>
+    </div>
+  </header>
+
+  <!-- ====== Video ====== -->
+  <section class="video-section">
+    <div class="video-section__inner">
+      <div class="video-wrap">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/c1cda071/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Engage: 2-col layout (main + sidebar) ====== -->
+  <div class="engage-layout">
+
+    <!-- Main column: CTA + Questions + Comments -->
+    <div class="engage-layout__main">
+
+      <section class="cta-section">
+        <div class="cta-section__inner">
+          <div class="cta-card">
+            <p class="cta-card__eyebrow">🎁 Exclusive gift — for active participants only</p>
+            <h2 class="cta-card__title">Leave a comment and instantly receive your High-Value Expert Action Plan</h2>
+            <p class="cta-card__body">This AI-powered tool evaluates where you stand on each of the five functions of the clone — positioning, offer, video content, sales system, and partnerships — and generates your personalized action plan: a visual diagnostic of your strengths and gaps, your top priority, and a concrete 3-horizon plan (this week / this month / in 3 months).</p>
+            <div class="cta-card__arrow" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M19 12l-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="questions-section">
+        <div class="questions-section__inner">
+          <p class="questions-section__intro">To receive your High-Value Expert Action Plan, answer these questions in your comment:</p>
+          <ol class="questions-list">
+            <li>Among the five functions of the clone I presented today, which one is the most urgent for you right now — and why?</li>
+            <li>What question would you need to ask me before taking the leap and joining the Circle?</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="comments-section" id="comments">
+        <div class="comments-section__inner">
+          <hyvor-talk-comments website-id="10804" page-id="bootcamps/mav" loading="manual"></hyvor-talk-comments>
+        </div>
+      </section>
+
+    </div><!-- /.engage-layout__main -->
+
+    <!-- Sidebar: Testimonials (desktop) / below comments (mobile) -->
+    <aside class="engage-layout__sidebar">
+      <h2 class="sidebar-title">What entrepreneurs are saying</h2>
+      <p class="sidebar-subtitle">Real results from real experts who automated their sales</p>
+      <div id="testimonial-gallery"></div>
+    </aside>
+
+  </div><!-- /.engage-layout -->
+
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-legal">
+        <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy">Privacy Policy</a>.</p>
+        <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
+      </div>
+      <div class="footer-about">
+        <div class="footer-about__block">
+          <h3>What is OneTake?</h3>
+          <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+          <p class="footer-links"><a href="https://www.onetake.ai/blog">OneTake's Blog</a> · <a href="https://welove.onetake.ai/">Wall of Love</a> · <a href="https://docs.onetake.ai/en/">FAQ &amp; Docs</a></p>
+        </div>
+        <div class="footer-about__block">
+          <h3>Who came up with the idea?</h3>
+          <p><a href="https://www.sebastiennight.com">Sébastien Night</a>, our CEO, is the founder of the "Free Entrepreneurs" Movement — an organization supporting over 20,000 entrepreneur clients and 300,000 supporters in 41 countries since 2010. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to create a tool that would be both incredibly powerful and utterly easy to use: OneTake.</strong> To contact Sébastien and his team, <a href="https://www.onetake.ai/contact">simply click here</a>.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== Bonus Modal ====== -->
+  <div class="modal-overlay" id="bonusModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal-card">
+      <button class="modal-close" aria-label="Close" onclick="closeBonusModal()">&times;</button>
+      <div class="modal-emoji">🎉</div>
+      <h2 class="modal-title" id="modalTitle">Thanks for your comment!</h2>
+      <p class="modal-body">Your High-Value Expert Action Plan is ready. Click below to get your personalized diagnostic and your 3-horizon action plan.</p>
+      <a href="https://contraband.onetake.ai/mav/plan/" class="modal-btn" id="modalBtn">Open My High-Value Expert Action Plan →</a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../../../assets/youtube-thumbnails.js"></script>
+  <script src="../vpl1-secret/testimonials.js"></script>
+  <script src="app.js"></script>
+  <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
+  <script src="../../../tools.js"></script>
+</body>
+</html>
