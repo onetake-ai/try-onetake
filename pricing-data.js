@@ -286,6 +286,16 @@ const planPresets = {
         freeToPaidConversionRate: 1
     },
 
+    // Cercle application fee (one-time)
+    'cercle-application': {
+        tier: 'Cercle',
+        recurrence: 'one-time',
+        trial: null,
+        product: 'pri_01kvxv2nexenyhdz4m47s3qqqt',
+        firstExpectedPayment: 95,
+        freeToPaidConversionRate: 1
+    },
+
     // Launch plans — 3-day trial
     'launch-monthly-trial': {
         tier: 'Launch',
