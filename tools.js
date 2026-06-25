@@ -30,15 +30,17 @@
 !function(e,t,n,s,a){(a=t.createElement(n)).async=!0,a.src="https://assets.anytrack.io/01Nrajm7X3x6.js",(t=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,t),e[s]=e[s]||function(){(e[s].q=e[s].q||[]).push(arguments)}}(window,document,"script","AnyTrack");
 
 // ── Weglot ─────────────────────────────────────────────────────────────────
-(function () {
-  var s = document.createElement('script');
-  s.type = 'text/javascript';
-  s.src = 'https://cdn.weglot.com/weglot.min.js';
-  s.onload = function () {
-    Weglot.initialize({ api_key: 'wg_b5330e33967081afe868173757c877b34' });
-  };
-  document.head.appendChild(s);
-}());
+if (!window.__disable_weglot) {
+  (function () {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = 'https://cdn.weglot.com/weglot.min.js';
+    s.onload = function () {
+      Weglot.initialize({ api_key: 'wg_b5330e33967081afe868173757c877b34' });
+    };
+    document.head.appendChild(s);
+  }());
+}
 
 // ── FirstPromoter ──────────────────────────────────────────────────────────
 (function(w){w.fpr=w.fpr||function(){w.fpr.q=w.fpr.q||[];w.fpr.q[arguments[0]==='set'?'unshift':'push'](arguments);};})(window);

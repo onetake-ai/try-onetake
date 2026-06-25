@@ -857,7 +857,7 @@
 .btn-apply {
   display: inline-block;
   padding: 18px 40px;
-  background: var(--ocean);
+  background: #d49b1f;
   color: #fff;
   font-family: var(--font-body);
   font-size: 17px;
@@ -865,16 +865,16 @@
   border-radius: 100px;
   text-decoration: none;
   transition: all 0.25s;
-  box-shadow: 0 4px 20px rgba(11, 157, 168, 0.30);
+  box-shadow: 0 4px 20px rgba(212, 155, 31, 0.30);
   border: none;
   cursor: pointer;
 }
 .btn-apply:hover {
-  background: var(--ocean-dark);
+  background: #b8860b;
   color: #fff;
   text-decoration: none;
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(11, 157, 168, 0.38);
+  box-shadow: 0 6px 24px rgba(212, 155, 31, 0.38);
 }
 
 /* ============ Urgency Section (dark) ============ */
@@ -1021,6 +1021,18 @@
   padding: 14px 24px;
   font-size: 15px;
 }
+
+/* ============ Footer links ============ */
+.footer-links {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-light);
+  border-top: 1px solid rgba(11, 157, 168, 0.08);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+.footer-links a { color: var(--text-secondary); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
 
 /* ============ Responsive ============ */
 @media (max-width: 1024px) {

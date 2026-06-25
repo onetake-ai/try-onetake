@@ -29,6 +29,16 @@ All Paddle price IDs live in `/pricing-data.js`. Each plan entry has a `product`
 'cercle-semester':  { product: 'pri_01ks5316ncrk8gzk6g2h6ty6ss', price: 4995, ... }
 ```
 
+### Per-plan post-purchase redirect
+
+Add `successUrl` to any plan preset in `/pricing-data.js` to send buyers to a custom page instead of the default `/onboarding/`. `app.js` picks this up automatically — no other changes needed.
+
+```js
+'cercle-application': { ..., successUrl: '/onboarding/ehv/' }
+```
+
+The value is a root-relative path. `app.js` prepends `https://try.onetake.ai` and appends the standard query params (`email`, `language`, `product`, `plan`) as usual.
+
 ### Live token
 
 `live_bb0b00885e63d509a759b2e2b29` — used for both client-side `PricePreview` calls and checkout.
@@ -71,6 +81,7 @@ A self-contained sticky countdown bar that injects its own CSS and DOM. Add a si
 | `data-label-hours` | `"hours"` |
 | `data-label-min` | `"min"` |
 | `data-label-sec` | `"sec"` |
+| `data-show-within` | Hours before deadline to start showing the bar. Bar is hidden until the deadline is within this window (e.g. `"48"` shows it only during the last 2 days). |
 
 The bar inserts itself as the first child of `<body>` and is `position: sticky; top: 0`, so it scrolls with the page and stays pinned at the top. When the deadline is reached the script calls `location.replace(data-redirect)`.
 

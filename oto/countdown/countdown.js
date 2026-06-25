@@ -13,6 +13,7 @@
  *   data-label-hours  Unit label for hours  (default: "hours")
  *   data-label-min    Unit label for minutes (default: "min")
  *   data-label-sec    Unit label for seconds (default: "sec")
+ *   data-show-within  Hours before deadline to start showing the bar (e.g. "48")
  */
 (function () {
   var s = document.currentScript;
@@ -22,6 +23,8 @@
   var labelH     = s.getAttribute('data-label-hours')  || 'hours';
   var labelM     = s.getAttribute('data-label-min')    || 'min';
   var labelSec   = s.getAttribute('data-label-sec')    || 'sec';
+  var showWithin = s.getAttribute('data-show-within');
+  var showWithinMs = showWithin ? parseFloat(showWithin) * 3600000 : null;
 
   var style = document.createElement('style');
   style.textContent = [
@@ -74,6 +77,11 @@
       location.replace(redirectTo);
       return;
     }
+    if (showWithinMs && diff > showWithinMs) {
+      bar.style.display = 'none';
+      return;
+    }
+    bar.style.display = '';
     bar.querySelector('#cd-h').textContent = pad(Math.floor(diff / 3600000));
     bar.querySelector('#cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
     bar.querySelector('#cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));

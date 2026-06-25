@@ -434,6 +434,9 @@
   align-items: center;
   box-shadow: var(--shadow-sm);
 }
+.bonus-row > div:first-child {
+  text-align: left;
+}
 .bonus-row__name {
   font-weight: 600;
   color: var(--text);
@@ -727,6 +730,12 @@
 .sales-footer a {
   color: var(--text-secondary);
   text-decoration: underline;
+}
+.sales-footer__links {
+  font-size: 12px;
+  border-top: 1px solid rgba(11, 157, 168, 0.08);
+  padding-top: 12px;
+  margin-top: 8px;
 }
 
 /* ============ Mobile Sticky CTA ============ */

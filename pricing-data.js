@@ -293,7 +293,8 @@ const planPresets = {
         trial: null,
         product: 'pri_01kvxv2nexenyhdz4m47s3qqqt',
         firstExpectedPayment: 95,
-        freeToPaidConversionRate: 1
+        freeToPaidConversionRate: 1,
+        successUrl: '/onboarding/ehv/'
     },
 
     // Launch plans — 3-day trial

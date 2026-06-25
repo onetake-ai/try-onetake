@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome — Expert à Haute Valeur</title>
+
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+  <link href="https://fonts.bunny.net/css?family=dm-serif-display:400|dm-sans:400,500,600,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="/bootcamps/mav/vpl-styles.css">
+  <style>
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .welcome { max-width: 640px; margin: 0 auto; padding: 60px 24px; text-align: center; }
+    .welcome h1 {
+      font-family: var(--font-heading);
+      font-size: 36px;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+    .welcome p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .welcome .steps {
+      text-align: left;
+      background: var(--glass-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 28px 32px;
+      margin: 32px 0;
+    }
+    .welcome .steps h2 {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .welcome .steps ol {
+      padding-left: 20px;
+      margin: 0;
+    }
+    .welcome .steps li {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .welcome .steps li:last-child { margin-bottom: 0; }
+    .welcome .steps li strong { color: var(--text); }
+    .btn-book {
+      display: inline-block;
+      padding: 18px 40px;
+      background: #d49b1f;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(212, 155, 31, 0.30);
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn-book:hover {
+      background: #b8860b;
+      color: #fff;
+      text-decoration: none;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(212, 155, 31, 0.38);
+    }
+    .welcome .note {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="welcome">
+  <h1>Your application has been received.</h1>
+  <p>
+    Thank you for applying to Le Cercle des Experts à Haute Valeur.
+    We're excited to learn more about you and your business.
+  </p>
+
+  <div class="steps">
+    <h2>What happens next</h2>
+    <ol>
+      <li><strong>Book your call</strong> — Schedule a short call with Nirina, our Chief Operating Officer. She'll assess your application and answer any questions you have about the program.</li>
+      <li><strong>Assessment</strong> — During the call, we'll discuss your business, your goals, and whether Le Cercle is the right fit for you.</li>
+      <li><strong>Decision</strong> — If your application is accepted, you'll receive your welcome kit and onboarding instructions within 48 hours.</li>
+    </ol>
+  </div>
+
+  <a href="https://cal.com/nirina-rabary/ehv-candidature" class="btn-book" target="_blank">
+    Book your assessment call with Nirina
+  </a>
+
+  <p class="note">
+    If your application is not accepted, your application fee will be fully refunded.
+  </p>
+</div>
+
+<script src="../../tools.js"></script>
+</body>
+</html>
