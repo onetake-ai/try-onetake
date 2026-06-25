@@ -34,10 +34,14 @@ All Paddle price IDs live in `/pricing-data.js`. Each plan entry has a `product`
 Add `successUrl` to any plan preset in `/pricing-data.js` to send buyers to a custom page instead of the default `/onboarding/`. `app.js` picks this up automatically — no other changes needed.
 
 ```js
-'cercle-application': { ..., successUrl: '/onboarding/ehv/' }
+// Root-relative (domain is prepended automatically)
+'cercle-monthly': { ..., successUrl: '/onboarding/cercle/' }
+
+// Absolute URL (used as-is, no domain prepended)
+'cercle-application': { ..., successUrl: 'https://onfire.onetake.ai/ehv-application/' }
 ```
 
-The value is a root-relative path. `app.js` prepends `https://try.onetake.ai` and appends the standard query params (`email`, `language`, `product`, `plan`) as usual.
+The value can be either a root-relative path (e.g. `/onboarding/ehv/`) or a full absolute URL (e.g. `https://onfire.onetake.ai/ehv-application/`). When root-relative, `app.js` prepends `https://try.onetake.ai`; when absolute, it is used as-is. The standard query params (`email`, `language`, `product`, `plan`) are always appended.
 
 ### Live token
 

@@ -294,7 +294,7 @@ const planPresets = {
         product: 'pri_01kvxv2nexenyhdz4m47s3qqqt',
         firstExpectedPayment: 95,
         freeToPaidConversionRate: 1,
-        successUrl: '/onboarding/ehv/'
+        successUrl: 'https://onfire.onetake.ai/ehv-application/'
     },
 
     // Launch plans — 3-day trial
