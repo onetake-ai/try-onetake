@@ -22,20 +22,13 @@
     data-label-hours="hours"
     data-label-min="min"
     data-label-sec="sec"
+    data-show-within="48"
   ></script>
 
   <!-- YouTube thumbnails CSS -->
   <link rel="stylesheet" href="/assets/youtube-thumbnails.css">
 </head>
 <body>
-
-<!-- ============ Nav ============ -->
-<nav class="sales-nav">
-  <div class="sales-nav__inner">
-    <a href="/" class="sales-nav__brand">OneTake AI</a>
-    <span class="sales-nav__meta">Evergreen Masterclass</span>
-  </div>
-</nav>
 
 <!-- ============ Hero ============ -->
 <section class="sales-hero">
@@ -48,19 +41,15 @@
     </p>
     <div class="hero-bullets">
       <div class="hero-bullet">
-        <div class="hero-bullet__icon">&#127916;</div>
         <div class="hero-bullet__text">Professional video editing</div>
       </div>
       <div class="hero-bullet">
-        <div class="hero-bullet__icon">&#128640;</div>
         <div class="hero-bullet__text">Automated publishing</div>
       </div>
       <div class="hero-bullet">
-        <div class="hero-bullet__icon">&#9858;</div>
         <div class="hero-bullet__text">Evergreen sales system</div>
       </div>
       <div class="hero-bullet">
-        <div class="hero-bullet__icon">&#128737;</div>
         <div class="hero-bullet__text">14-day guarantee</div>
       </div>
     </div>
@@ -132,19 +121,27 @@
     <div class="morning-timeline">
       <div class="morning-step">
         <span class="morning-step__time">8:00 AM</span>
-        <p class="morning-step__desc">You make coffee and check your phone. Three new customers signed up overnight. You didn't lift a finger.</p>
+        <p class="morning-step__desc">Breakfast with the kids. No stress, no rush. You're present.</p>
+      </div>
+      <div class="morning-step">
+        <span class="morning-step__time">9:00 AM</span>
+        <p class="morning-step__desc">You check your email. Sales came in overnight. Your system worked while you slept.</p>
       </div>
       <div class="morning-step">
         <span class="morning-step__time">9:30 AM</span>
-        <p class="morning-step__desc">You record a 20-minute video — just you talking to the camera, sharing what you know. No studio, no crew, no script.</p>
+        <p class="morning-step__desc">You check your calendar. Two coaching sessions today — with premium clients who pay you what you're worth.</p>
       </div>
       <div class="morning-step">
-        <span class="morning-step__time">10:00 AM</span>
-        <p class="morning-step__desc">OneTake takes that raw footage, removes the background noise, cuts the silences, adds captions and background music — and publishes a polished video across all your channels.</p>
+        <span class="morning-step__time">10:30 AM</span>
+        <p class="morning-step__desc">You record a quick video — 20 minutes, just you talking to the camera, sharing what you know.</p>
       </div>
       <div class="morning-step">
-        <span class="morning-step__time">Afternoon</span>
-        <p class="morning-step__desc">You spend the rest of the day however you want. Your Evergreen Waterslide is running: new people discover your videos, enter your funnel, watch your training, and become paying customers — all automatically.</p>
+        <span class="morning-step__time">11:00 AM</span>
+        <p class="morning-step__desc">All your content for the week is edited and scheduled by OneTake. Captions, music, translation, publishing — all done.</p>
+      </div>
+      <div class="morning-step">
+        <span class="morning-step__time">1:00 PM</span>
+        <p class="morning-step__desc">Your work day is over. You go have lunch with the people you love. Your business keeps running without you.</p>
       </div>
     </div>
     <p class="center mt-4" style="color: var(--text-secondary); font-size: 17px;">
@@ -211,42 +208,34 @@
     </p>
     <div class="feature-list">
       <div class="feature-item">
-        <div class="feature-item__icon">&#127908;</div>
         <div class="feature-item__title">Audio cleanup</div>
         <p class="feature-item__desc">Removes background noise, hums, and echoes — no sound booth required.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#9986;</div>
         <div class="feature-item__title">Silence removal</div>
         <p class="feature-item__desc">Automatically cuts dead air and awkward pauses to keep your videos tight and engaging.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#128172;</div>
         <div class="feature-item__title">Smart captions</div>
         <p class="feature-item__desc">Generates accurate, animated captions and highlights key points on screen.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#127925;</div>
         <div class="feature-item__title">Custom background music</div>
         <p class="feature-item__desc">Composes a unique background track tailored to each video's mood and pacing.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#127760;</div>
         <div class="feature-item__title">Hosted pages &amp; multi-platform publishing</div>
         <p class="feature-item__desc">Publishes your finished video to YouTube, social media, and hosted landing pages — all at once.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#128248;</div>
         <div class="feature-item__title">Shorts generation</div>
         <p class="feature-item__desc">Automatically creates vertical short clips from your long-form content to maximize reach.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#127463;&#127462;</div>
         <div class="feature-item__title">Automatic translation</div>
         <p class="feature-item__desc">Translates your videos into your viewer's language to reach a global audience.</p>
       </div>
       <div class="feature-item">
-        <div class="feature-item__icon">&#128260;</div>
         <div class="feature-item__title">Topic transitions</div>
         <p class="feature-item__desc">Detects topic changes and creates smooth visual transitions automatically.</p>
       </div>
@@ -283,58 +272,61 @@
     <p class="section__subtitle center" style="margin-left:auto;margin-right:auto;">
       A step-by-step program that shows you how to build an automated sales system
       — one that brings in new customers every day, without launches, without ads,
-      without constant hustle. Five modules plus live Q&amp;A.
+      without constant hustle. Five modules plus an extensive written Q&amp;A.
     </p>
     <div class="module-list">
       <div class="module-card">
         <div class="module-card__num">Module 1</div>
-        <h3 class="module-card__title">The Waterslide Blueprint</h3>
+        <h3 class="module-card__title">The Evergreen Sales Machine</h3>
         <p class="module-card__desc">
-          Understand the core principle: how a single piece of video content can feed an
-          automated funnel that converts strangers into paying customers — without launches,
-          without ads, on autopilot.
+          The foundational framework: what the Waterslide actually is, why it works, and how it
+          differs from everything else you've tried. This module establishes the mental model the
+          rest of the course is built on.
         </p>
       </div>
       <div class="module-card">
         <div class="module-card__num">Module 2</div>
-        <h3 class="module-card__title">Your Irresistible Entry Point</h3>
+        <h3 class="module-card__title">The Secret of Free Entrepreneurs</h3>
         <p class="module-card__desc">
-          Create the "slide entrance" — the free video or piece of content that attracts your
-          ideal audience and gets them to raise their hand. You'll learn exactly what to say and
-          how to structure it.
+          The four keys to a successful Waterslide implementation. Why changing your story cheats
+          your audience — and what to do instead. Introduction to the Conditional Launch,
+          Sebastien's most advanced evergreen architecture.
         </p>
       </div>
       <div class="module-card">
         <div class="module-card__num">Module 3</div>
-        <h3 class="module-card__title">The Trust Sequence</h3>
+        <h3 class="module-card__title">The One Secret to Freedom</h3>
         <p class="module-card__desc">
-          Build the automated email and video sequence that nurtures your prospects, demonstrates
-          your expertise, and moves them naturally toward a purchase decision.
+          How to run a seven-figure business and still start your weekends on Thursday night.
+          The mindset shift required to let a system sell for you — and the specific structural
+          choices that make it possible.
         </p>
       </div>
       <div class="module-card">
         <div class="module-card__num">Module 4</div>
-        <h3 class="module-card__title">The Evergreen Offer</h3>
+        <h3 class="module-card__title">Let's Go Deep</h3>
         <p class="module-card__desc">
-          Craft a compelling offer that sells without urgency tricks. Learn the pricing
-          psychology, guarantee structure, and presentation format that converts — every day of
-          the year.
+          A real-world walkthrough of a complete Waterslide sequence. How to transition from live
+          webinars and launches to a fully evergreen model. And the counterintuitive strategy
+          Sebastien used to double his business overnight.
         </p>
       </div>
       <div class="module-card">
         <div class="module-card__num">Module 5</div>
-        <h3 class="module-card__title">Scale &amp; Optimize</h3>
+        <h3 class="module-card__title">The Optimal Sales Strategy</h3>
         <p class="module-card__desc">
-          Analyze your numbers, find the bottlenecks, and scale what works. This module turns
-          your waterslide from a trickle into a steady stream of sales.
+          Advanced questions answered: scheduling evergreen campaigns, layering multiple offers,
+          pausing evergreen during live launches. Recorded during Sebastien's session for Jeff
+          Walker's Launch Club — his highest-level coaching program.
         </p>
       </div>
       <div class="module-card">
         <div class="module-card__num">Bonus</div>
-        <h3 class="module-card__title">Live Q&amp;A Sessions</h3>
+        <h3 class="module-card__title">The Q&amp;A</h3>
         <p class="module-card__desc">
-          Get your questions answered in live group sessions with Sebastien. Bring your specific
-          situation, your funnel, your offer — and get personalized feedback.
+          An extensive written Q&amp;A covering the questions Sebastien's mastermind members asked
+          over multiple years: pricing, scarcity, email open rates, evergreen webinars, customer
+          lifetime value, refund strategies, and more.
         </p>
       </div>
     </div>
@@ -389,7 +381,7 @@
       <div class="bonus-row">
         <div>
           <div class="bonus-row__name">Evergreen Waterslide Masterclass</div>
-          <div class="bonus-row__desc">5 modules + live Q&amp;A to build your automated sales system</div>
+          <div class="bonus-row__desc">5 modules + extensive written Q&amp;A to build your automated sales system</div>
         </div>
         <div class="bonus-row__value">995 $</div>
       </div>
@@ -457,7 +449,7 @@
 <section class="section">
   <div class="section__inner">
     <div class="guarantee">
-      <div class="guarantee__seal">&#128737;</div>
+      <div class="guarantee__seal">14</div>
       <h3>14-Day Unconditional Money-Back Guarantee</h3>
       <p>
         Try OneTake Grow and the Evergreen Waterslide Masterclass for a full 14 days. If for any
@@ -691,11 +683,17 @@
 
 <!-- ============ Footer ============ -->
 <footer class="sales-footer">
-  <p>&copy; 2026 OneTake AI Pte Ltd. All rights reserved.</p>
+  <p>&copy; 2026 OneTake AI &middot; Mouvement des Entrepreneurs Libres</p>
   <p>
-    <a href="/legal/terms/">Terms of Service</a> &middot;
-    <a href="/legal/privacy/">Privacy Policy</a> &middot;
-    <a href="/legal/refund/">Refund Policy</a>
+    <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms &amp; Refund Policy</a> &middot;
+    <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a> &middot;
+    <a href="https://www.onetake.ai/contact" target="_blank">Contact</a>
+  </p>
+  <p class="sales-footer__links">
+    <a href="https://www.onetake.ai/blog" target="_blank">Blog</a> &middot;
+    <a href="https://welove.onetake.ai/" target="_blank">Customer Reviews</a> &middot;
+    <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a> &middot;
+    <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">Affiliate Program</a>
   </p>
 </footer>
 

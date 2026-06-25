@@ -1012,7 +1012,8 @@
             window.oneTakeTracking.addTrackingToSuccessUrl(successParams, state.trackingParams);
         }
 
-        const successUrl = `https://try.onetake.ai/onboarding/?${successParams.toString()}`;
+        const successPath = (state.planInfo && state.planInfo.successUrl) || '/onboarding/';
+        const successUrl = `https://try.onetake.ai${successPath}?${successParams.toString()}`;
         
         const settings = {
             displayMode: 'overlay',
