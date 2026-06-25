@@ -1013,7 +1013,9 @@
         }
 
         const successPath = (state.planInfo && state.planInfo.successUrl) || '/onboarding/';
-        const successUrl = `https://try.onetake.ai${successPath}?${successParams.toString()}`;
+        const successUrl = /^https?:\/\//.test(successPath)
+            ? `${successPath}?${successParams.toString()}`
+            : `https://try.onetake.ai${successPath}?${successParams.toString()}`;
         
         const settings = {
             displayMode: 'overlay',
