@@ -152,6 +152,15 @@
   margin-top: 4px;
 }
 
+/* ============ Sales Video Section ============ */
+.sales-video-section {
+  padding: 40px 24px 48px;
+}
+.sales-video-section__inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 /* ============ Questions Stack ============ */
 .questions-stack {
   padding: 48px 24px;
