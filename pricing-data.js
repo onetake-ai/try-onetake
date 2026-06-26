@@ -297,6 +297,16 @@ const planPresets = {
         successUrl: 'https://onfire.onetake.ai/ehv-application/'
     },
 
+    // Launch plan — 3-month trial
+    'launch-monthly-trial-3mo': {
+        tier: 'Launch',
+        recurrence: 'monthly',
+        trial: 90,
+        product: 'pri_01kvtaw7we2b1v526qmkjmw4j8',
+        firstExpectedPayment: 59,
+        freeToPaidConversionRate: 0.30
+    },
+
     // Launch plans — 3-day trial
     'launch-monthly-trial': {
         tier: 'Launch',

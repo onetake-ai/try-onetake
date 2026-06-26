@@ -27,7 +27,8 @@ function labnolThumb(id) {
   return thumb.replace("ID", id) + play;
 }
 
-function labnolIframe() {
+function labnolIframe(e) {
+  if (e) e.stopPropagation();
   var iframe = document.createElement("iframe");
   var embed =
     "https://www.youtube.com/embed/ID?autoplay=1&rel=0" +
