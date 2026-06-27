@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portes Ouvertes &mdash; Le Bootcamp de la Machine &agrave; Vendre</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Countdown bar -->
+  <script
+    src="/oto/countdown/countdown.js"
+    data-deadline="2026-06-28T21:59:59Z"
+    data-redirect="/bootcamps/mav/le-cercle/"
+    data-label="Acc&egrave;s ouvert encore"
+    data-label-hours="heures"
+    data-label-min="min"
+    data-label-sec="sec"
+  ></script>
+
+  <!-- Bunny Fonts (GDPR-compliant) -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=dm-serif-display:400&family=dm-sans:400,500,600,700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../vpl-styles.css">
+  <link rel="stylesheet" href="../le-cercle/style.css">
+  <link rel="stylesheet" href="/assets/youtube-thumbnails.css">
+
+  <style>
+    /* ============ Hero ============ */
+    .page-hero {
+      padding: 80px 24px 48px;
+      text-align: center;
+    }
+    .page-hero__inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .page-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sand-muted);
+      margin-bottom: 16px;
+    }
+    .page-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 18px;
+      text-wrap: balance;
+    }
+    .page-h1 em {
+      font-style: normal;
+      color: var(--ocean);
+    }
+    .page-hero-meta {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ============ Episodes ============ */
+    .episodes-section {
+      padding: 0 24px 32px;
+    }
+    .episode-block {
+      max-width: var(--content-w);
+      margin: 0 auto;
+      background: var(--glass-strong);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 44px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .episode-num {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ocean);
+      margin-bottom: 8px;
+    }
+    .episode-block h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(22px, 3.5vw, 30px);
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .episode-promise {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 600px;
+    }
+    .episode-video {
+      margin-bottom: 20px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .bonus-link {
+      margin: 8px 0;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    .bonus-link a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.15s;
+    }
+    .bonus-link a:hover {
+      color: var(--ocean);
+    }
+    .episode-cta {
+      margin-top: 20px;
+    }
+
+    /* ============ Sales Section ============ */
+    .sales-section {
+      padding: 32px 24px 0;
+    }
+    .sales-section__inner {
+      max-width: var(--content-w);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .sales-section__title {
+      font-family: var(--font-heading);
+      font-size: clamp(24px, 4vw, 36px);
+      color: var(--text);
+      margin-bottom: 12px;
+      text-wrap: balance;
+    }
+    .sales-section__sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .sales-video-wrap {
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    /* ============ FAQ ============ */
+    .faq-wrap {
+      padding: 64px 24px;
+    }
+    .faq-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--glass-strong);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 44px;
+      box-shadow: var(--shadow);
+    }
+    .faq-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sand-muted);
+      margin-bottom: 8px;
+    }
+    .faq-inner > h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(22px, 3vw, 30px);
+      color: var(--text);
+      margin-bottom: 28px;
+      line-height: 1.25;
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(11, 157, 168, 0.08);
+    }
+    .faq-item summary {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      padding: 16px 32px 16px 0;
+      cursor: pointer;
+      list-style: none;
+      display: block;
+      position: relative;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--ocean);
+      line-height: 1;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .faq-item[open] summary::after { content: '\2212'; }
+    .faq-answer {
+      padding: 0 0 16px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    details[open] .faq-answer { display: block; }
+    .faq-answer p { margin-bottom: 10px; }
+    .faq-answer p:last-child { margin-bottom: 0; }
+    .faq-cta {
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    /* ============ Responsive ============ */
+    @media (max-width: 768px) {
+      .page-hero { padding: 56px 20px 32px; }
+      .episodes-section { padding: 0 16px 24px; }
+      .episode-block { padding: 28px 22px; }
+      .sales-section { padding: 24px 16px 0; }
+      .faq-wrap { padding: 48px 16px; }
+      .faq-inner { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Hero ====== -->
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <p class="page-badge">Le Bootcamp de la Machine &agrave; Vendre</p>
+      <h1 class="page-h1">Acc&egrave;s limit&eacute; : <em>toutes les ressources</em> du Bootcamp</h1>
+      <p class="page-hero-meta">3 &eacute;pisodes &nbsp;&middot;&nbsp; Vid&eacute;o de vente &nbsp;&middot;&nbsp; FAQ &nbsp;&middot;&nbsp; T&eacute;moignages</p>
+    </div>
+  </section>
+
+  <!-- ====== Episodes ====== -->
+  <section class="episodes-section">
+
+    <!-- Episode 1 -->
+    <div class="episode-block">
+      <p class="episode-num">&Eacute;pisode 1 sur 3</p>
+      <h2>Le Secret des Entrepreneurs Libres</h2>
+      <p class="episode-promise">Comment multiplier tes ventes sans multiplier tes heures de travail ? Cette vid&eacute;o explique pourquoi ton revenu s'&eacute;croule d&egrave;s que tu l&egrave;ves le pied &mdash; et comment enfin automatiser tes ventes.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/1c90e2ca/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/bilan/" target="_blank" rel="noopener">Acc&egrave;de &agrave; ton bonus gratuit : le Bilan d'Entrepreneur Libre</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=cercle-application" class="btn-apply">D&eacute;poser ma candidature &mdash; <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T.</a>
+      </div>
+    </div>
+
+    <!-- Episode 2 -->
+    <div class="episode-block">
+      <p class="episode-num">&Eacute;pisode 2 sur 3</p>
+      <h2>Le Marketing Bienveillant vs le Marketing M&eacute;gaphone</h2>
+      <p class="episode-promise">Comment vendre du haut de gamme sans courir apr&egrave;s l'algorithme ? D&eacute;couvre le cadre du Toboggan qui transforme des inconnus en clients fid&egrave;les automatiquement.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/2255d143/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/architect/" target="_blank" rel="noopener">Acc&egrave;de &agrave; ton bonus gratuit : l'Architecte Visuel du Toboggan</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=cercle-application" class="btn-apply">D&eacute;poser ma candidature &mdash; <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T.</a>
+      </div>
+    </div>
+
+    <!-- Episode 3 -->
+    <div class="episode-block">
+      <p class="episode-num">&Eacute;pisode 3 sur 3</p>
+      <h2>5 &Eacute;tapes pour te Cloner et Vendre en Automatique</h2>
+      <p class="episode-promise">Le plan complet de l'Expert &agrave; Haute Valeur &mdash; ta feuille de route pour automatiser tes ventes sans recruter une arm&eacute;e.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/c1cda071/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/plan/" target="_blank" rel="noopener">Acc&egrave;de &agrave; ton bonus gratuit : le Plan d'Action de l'Expert &agrave; Haute Valeur</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=cercle-application" class="btn-apply">D&eacute;poser ma candidature &mdash; <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T.</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ====== Sales Video + Offer ====== -->
+  <section class="sales-section">
+    <div class="sales-section__inner">
+      <h2 class="sales-section__title">Rejoins le Cercle des Experts &agrave; Haute Valeur</h2>
+      <p class="sales-section__sub">Un accompagnement de 6 mois en petit comit&eacute; avec S&eacute;bastien Night pour structurer ton expertise, automatiser tes ventes et cr&eacute;er un business qui tourne sans toi.</p>
+    </div>
+    <div class="sales-video-wrap">
+      <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/cf8af8c9/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+    </div>
+  </section>
+
+  <section class="apply-section" id="candidature">
+    <div class="apply-section__inner">
+      <div class="apply-card">
+        <p class="apply-card__eyebrow">Candidature</p>
+        <h2>Rejoins le Cercle des Experts &agrave; Haute Valeur</h2>
+        <div class="apply-card__price"><span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span></div>
+        <p class="apply-card__price-note">Frais de candidature (H.T.) &mdash; rembours&eacute;s si ta candidature n'est pas retenue.</p>
+
+        <div class="apply-card__steps">
+          <div class="apply-card__step">
+            <span class="apply-card__step-num">1</span>
+            <span>Tu d&eacute;poses ta candidature et r&egrave;gles les frais de dossier.</span>
+          </div>
+          <div class="apply-card__step">
+            <span class="apply-card__step-num">2</span>
+            <span>Tu remplis un court formulaire pour nous parler de toi et de ton business.</span>
+          </div>
+          <div class="apply-card__step">
+            <span class="apply-card__step-num">3</span>
+            <span>Un membre de l'&eacute;quipe te contacte pour un entretien.</span>
+          </div>
+          <div class="apply-card__step">
+            <span class="apply-card__step-num">4</span>
+            <span>Si ta candidature est accept&eacute;e, tu rejoins le Cercle.</span>
+          </div>
+        </div>
+
+        <a href="https://try.onetake.ai/?plan=cercle-application" class="btn-apply">D&eacute;poser ma candidature &mdash; <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T.</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section class="faq-wrap">
+    <div class="faq-inner">
+      <p class="faq-eyebrow">FAQ</p>
+      <h2>Tout ce qu'il faut savoir avant de rejoindre le Cercle</h2>
+
+      <details class="faq-item">
+        <summary>Le Cercle des Experts &agrave; Haute Valeur : c'est quoi exactement ?</summary>
+        <div class="faq-answer">
+          <p>C'est un accompagnement de 6 mois en petit comit&eacute; avec S&eacute;bastien Night. 12 sessions live, une toutes les deux semaines, pour transformer ton expertise en un syst&egrave;me qui vend 24h/24.</p>
+          <p>Chaque session est un atelier Zoom de 90 minutes &mdash; pas un cours magistral. Tu arrives avec ta situation. Tu repars avec quelque chose de concret et construit.</p>
+          <p>Tu re&ccedil;ois aussi : la formation compl&egrave;te &laquo; La Machine &agrave; Vendre &raquo; (valeur 4 995 &euro;), 6 mois d'OneTake Scale inclus, une Feuille de Route apr&egrave;s chaque session, un Kit de D&eacute;l&eacute;gation IA, une Bo&icirc;te &agrave; Outils de l'Expert, un Annuaire des Membres, et l'acc&egrave;s au groupe Telegram priv&eacute;. Valeur totale : 18 367 &euro;.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>&Agrave; qui s'adresse ce programme ?</summary>
+        <div class="faq-answer">
+          <p>Le Cercle s'adresse aux coachs, consultants, formateurs et th&eacute;rapeutes qui ont une v&eacute;ritable expertise &agrave; vendre &mdash; id&eacute;alement avec au moins 5 ans d'exp&eacute;rience terrain.</p>
+          <p>Que tu aies d&eacute;j&agrave; un business en place mais que tout d&eacute;pende de toi, ou que tu d&eacute;marres ta pr&eacute;sence en ligne avec une expertise solide &mdash; le Cercle est fait pour toi.</p>
+          <p>La seule condition non n&eacute;gociable : &ecirc;tre pr&ecirc;t &agrave; appara&icirc;tre en vid&eacute;o. (OneTake s'occupe du montage &mdash; rapide, simple et professionnel.)</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Quels r&eacute;sultats peut-on esp&eacute;rer ?</summary>
+        <div class="faq-answer">
+          <p>Les r&eacute;sultats d&eacute;pendent du travail que tu fournis. Mais les experts accompagn&eacute;s par S&eacute;bastien dans ses programmes ont :</p>
+          <p>&ndash; Doubl&eacute; leur chiffre d'affaires en reconditionnant leurs offres existantes.<br>
+          &ndash; Form&eacute; 30 000 personnes en ligne en partant de z&eacute;ro.<br>
+          &ndash; G&eacute;n&eacute;r&eacute; 10 000 &agrave; 50 000 &euro;/mois en automatique.<br>
+          &ndash; Pass&eacute; de 300 &euro;/mois &agrave; 28 000 &euro;/mois.<br>
+          &ndash; D&eacute;pass&eacute; 1 million d'euros de ventes en ligne.</p>
+          <p>Tous les t&eacute;moignages ci-dessous viennent de personnes qui &eacute;taient &agrave; ta place aujourd'hui.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Qui est S&eacute;bastien Night ?</summary>
+        <div class="faq-answer">
+          <p>S&eacute;bastien Night est le fondateur du Mouvement des Entrepreneurs Libres et de la startup IA OneTake AI. Depuis 2010, il a accompagn&eacute; plus de 300 000 entrepreneurs dans 41 pays.</p>
+          <p>Ses entreprises ont &eacute;t&eacute; mises en avant sur TF1, France 2, M6, ainsi que sur France Culture, RTL et Europe 1. La plupart des figures de r&eacute;f&eacute;rence du web francophone &mdash; Olivier Roland, Aur&eacute;lien Amacker, Maxence Rigottier, Maryse Lehoux &mdash; sont d'anciens &eacute;l&egrave;ves, ou des &eacute;l&egrave;ves de ses &eacute;l&egrave;ves.</p>
+          <p>Pour contacter S&eacute;bastien et son &eacute;quipe : <a href="https://www.onetake.ai/contact" target="_blank">cliquez ici</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Y a-t-il une garantie ?</summary>
+        <div class="faq-answer">
+          <p>Oui. Garantie inconditionnelle de 14 jours.</p>
+          <p>Si apr&egrave;s ta premi&egrave;re session tu estimes que le Cercle n'est pas fait pour toi, tu es rembours&eacute; int&eacute;gralement &mdash; sans condition, sans justification. Un simple email suffit. Et tu gardes toutes les ressources et outils re&ccedil;us jusque-l&agrave;.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Combien &ccedil;a co&ucirc;te ?</summary>
+        <div class="faq-answer">
+          <p>Le processus commence par un d&eacute;p&ocirc;t de candidature de <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T. (rembours&eacute;s si ta candidature n'est pas retenue).</p>
+          <p>Si ta candidature est accept&eacute;e, deux options de paiement s'offrent &agrave; toi :</p>
+          <p><strong>Option 1 &mdash; Paiements mensuels :</strong> 995 &euro;/mois &times; 6 mois (total 5 970 &euro;). Tu r&eacute;partis l'investissement sur toute la dur&eacute;e du programme.</p>
+          <p><strong>Option 2 &mdash; Paiement unique :</strong> 4 995 &euro; en une fois. Tu &eacute;conomises 975 &euro; (l'&eacute;quivalent d'un mois) et tu d&eacute;bloques deux bonus exclusifs : un appel priv&eacute; &laquo; SOS &raquo; avec S&eacute;bastien, et le d&icirc;ner VIP au Web2Connect &agrave; Paris.</p>
+          <p>La valeur totale de ce que tu re&ccedil;ois (programme principal + 7 bonus) est de 18 367 &euro;.</p>
+        </div>
+      </details>
+
+      <div class="faq-cta">
+        <a href="https://try.onetake.ai/?plan=cercle-application" class="btn-apply">D&eacute;poser ma candidature &mdash; <span class="paddle-price" data-paddle-price-id="pri_01kvxv2nexenyhdz4m47s3qqqt">95 &euro;</span> H.T.</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Testimonials ====== -->
+  <section class="yt-grid-section">
+    <div class="yt-grid-section__inner">
+      <h2>Ils ont transform&eacute; leur business</h2>
+      <div class="yt-grid">
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ChwiwKQKrTU" target="_blank"><div class="youtube-player" data-id="ChwiwKQKrTU"></div></a><p class="yt-caption">&laquo; J'ai g&eacute;n&eacute;r&eacute; 210 000 &euro; de ventes et j'ai surmont&eacute; un cancer et un burnout ! &raquo;<em>&mdash; Jeanne Muvira, Coach en d&eacute;veloppement personnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=fpWEoh9621I" target="_blank"><div class="youtube-player" data-id="fpWEoh9621I"></div></a><p class="yt-caption">&laquo; J'ai refus&eacute; un poste salari&eacute; &agrave; 50 000 &euro; et organis&eacute; un lancement qui a rapport&eacute; 500 000 &euro; ! &raquo;<em>&mdash; Aur&eacute;lien Amacker, Fondateur de systeme.io</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=9gaGUvelg3M" target="_blank"><div class="youtube-player" data-id="9gaGUvelg3M"></div></a><p class="yt-caption">&laquo; Notre chiffre d'affaires a augment&eacute; de 50 % gr&acirc;ce &agrave; un seul lancement orchestr&eacute; ! &raquo;<em>&mdash; Catherine Booth, &Eacute;ducatrice canine &eacute;thologique</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=2-AE9WWZ8lQ" target="_blank"><div class="youtube-player" data-id="2-AE9WWZ8lQ"></div></a><p class="yt-caption">&laquo; Je gagnais 60 000 &euro;/an. Maintenant je gagne 80 000 &euro;/mois en automatique ! &raquo;<em>&mdash; L&eacute;andro Lozahic, Formateur professionnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=PkrnfkEUI-Q" target="_blank"><div class="youtube-player" data-id="PkrnfkEUI-Q"></div></a><p class="yt-caption">&laquo; J'ai augment&eacute; mon chiffre d'affaires de 30 % en un an et sauv&eacute; l'entreprise familiale ! &raquo;<em>&mdash; Nathalie Simon, G&eacute;rante d'une entreprise de perles artisanales</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=liSamVmxHtc" target="_blank"><div class="youtube-player" data-id="liSamVmxHtc"></div></a><p class="yt-caption">&laquo; Je suis libre de travailler o&ugrave; et quand je veux. La consultation de S&eacute;bastien m'a donn&eacute; un retour sur investissement de 10x en seulement 6 mois ! &raquo;<em>&mdash; David Jay, Fondateur de La R&eacute;volution Vid&eacute;o</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=qGX8tvn3P5s" target="_blank"><div class="youtube-player" data-id="qGX8tvn3P5s"></div></a><p class="yt-caption">&laquo; En seulement 11 mois, j'ai appris &agrave; voir grand et &agrave; ne plus me limiter ! &raquo;<em>&mdash; Yvan Keyna, Sp&eacute;cialiste en marketing de r&eacute;seau</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=7H-iSnqvcjs" target="_blank"><div class="youtube-player" data-id="7H-iSnqvcjs"></div></a><p class="yt-caption">&laquo; J'ai g&eacute;n&eacute;r&eacute; 60 000 &euro; en 9 mois ! Aujourd'hui je suis un papa heureux qui passe du temps avec sa fille. &raquo;<em>&mdash; Alexis Marigny, Coach sportif</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=H3dAZIhsPzM" target="_blank"><div class="youtube-player" data-id="H3dAZIhsPzM"></div></a><p class="yt-caption">&laquo; J'ai automatis&eacute; mes ventes avec seulement 4 emails et 5 vid&eacute;os ! &raquo;<em>&mdash; Jo&euml;l Bernard, Instructeur de golf</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ipt1laQG0Og" target="_blank"><div class="youtube-player" data-id="ipt1laQG0Og"></div></a><p class="yt-caption">&laquo; En partant de z&eacute;ro, je forme maintenant 30 000 personnes en ligne et je vis enfin la vie de mes r&ecirc;ves. &raquo;<em>&mdash; Maryse Lehoux, Professeure de yoga</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=8pqwZTEYNEI" target="_blank"><div class="youtube-player" data-id="8pqwZTEYNEI"></div></a><p class="yt-caption">&laquo; J'ai cr&eacute;&eacute; seulement 4 pages qui attirent des milliers de clients potentiels chaque mois ! &raquo;<em>&mdash; Luc Geiger, Sp&eacute;cialiste en gestion du stress</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ebCbQrU0M-o" target="_blank"><div class="youtube-player" data-id="ebCbQrU0M-o"></div></a><p class="yt-caption">&laquo; J'ai fait ma premi&egrave;re vente avec le 4e prospect inscrit sur mon site ! &raquo;<em>&mdash; Janique Villeneuve, Consultante en image et personal shopper</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=wzHh7i6doOE" target="_blank"><div class="youtube-player" data-id="wzHh7i6doOE"></div></a><p class="yt-caption">&laquo; Internet m'a permis de toucher des milliers de personnes gr&acirc;ce &agrave; ma passion &mdash; je suis une Entrepreneur Libre ! &raquo;<em>&mdash; Christine Cuisiniez, Pharmacienne</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=qedkSpADXAY" target="_blank"><div class="youtube-player" data-id="qedkSpADXAY"></div></a><p class="yt-caption">&laquo; Depuis que j'ai automatis&eacute; mon business, je gagne au moins 20 000 &euro;/mois. &raquo;<em>&mdash; Maxence Rigottier, Expert en paris sportifs</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Lri741F9ozA" target="_blank"><div class="youtube-player" data-id="Lri741F9ozA"></div></a><p class="yt-caption">&laquo; Je g&eacute;n&egrave;re 300 000 &euro; de ventes annuelles en travaillant seulement un jour par semaine ! &raquo;<em>&mdash; Julien Romain, Formateur</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Ez6vGI6tBr0" target="_blank"><div class="youtube-player" data-id="Ez6vGI6tBr0"></div></a><p class="yt-caption">&laquo; Je suis pass&eacute; de 300 &euro; &agrave; 28 000 &euro;/mois, et je suis devenu un expert reconnu sur le web francophone ! &raquo;<em>&mdash; Olivier Roland, Auteur et blogueur professionnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=IFrEu8JRjcg" target="_blank"><div class="youtube-player" data-id="IFrEu8JRjcg"></div></a><p class="yt-caption">&laquo; J'ai pu faire mon premier lancement, qui a &eacute;t&eacute; un succ&egrave;s &eacute;norme ! &raquo;<em>&mdash; Ga&euml;lle Le Reun, Coach en d&eacute;veloppement personnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=CoV9hEzwPkQ" target="_blank"><div class="youtube-player" data-id="CoV9hEzwPkQ"></div></a><p class="yt-caption">&laquo; J'ai gagn&eacute; plusieurs milliers d'euros en quelques jours en vendant des produits sur mon blog ! &raquo;<em>&mdash; Charles, Blogueur</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ZuMvskOqLds" target="_blank"><div class="youtube-player" data-id="ZuMvskOqLds"></div></a><p class="yt-caption">&laquo; En seulement 4 ans, je suis pass&eacute;e de 50 000 &euro; &agrave; 1 million &euro; de ventes en ligne ! &raquo;<em>&mdash; Nathalie Cariou, Coach en intelligence financi&egrave;re</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=mhkGwfu3VV8" target="_blank"><div class="youtube-player" data-id="mhkGwfu3VV8"></div></a><p class="yt-caption">&laquo; Les conseils de S&eacute;bastien m'ont permis de r&eacute;aliser 210 000 &euro; de ventes en partant de z&eacute;ro ! &raquo;<em>&mdash; Alexandre Lahouel, Sp&eacute;cialiste en alimentation crue</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=JP_in9niWic" target="_blank"><div class="youtube-player" data-id="JP_in9niWic"></div></a><p class="yt-caption">&laquo; J'ai g&eacute;n&eacute;r&eacute; 50 000 &euro; de revenus gr&acirc;ce aux partenaires et je touche maintenant 25 000 femmes en ligne ! &raquo;<em>&mdash; Sophie Gueidon, Coach succ&egrave;s au f&eacute;minin</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=BXjQ2khMJds" target="_blank"><div class="youtube-player" data-id="BXjQ2khMJds"></div></a><p class="yt-caption">&laquo; J'ai fait 350 000 &euro; de ventes&hellip; sans site web, sans liste email, et sans produit &agrave; vendre ! &raquo;<em>&mdash; David Colom, Expert en d&eacute;veloppement personnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=-73WxGaptas" target="_blank"><div class="youtube-player" data-id="-73WxGaptas"></div></a><p class="yt-caption">&laquo; En parall&egrave;le de mon emploi, j'ai un site qui me rapporte 10 000 &euro; de revenus suppl&eacute;mentaires ! &raquo;<em>&mdash; Matthieu Deloison, D&eacute;veloppeur logiciel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=4N9j5vFJZXg" target="_blank"><div class="youtube-player" data-id="4N9j5vFJZXg"></div></a><p class="yt-caption">&laquo; Nous avons r&eacute;alis&eacute; 48 000 &euro; de ventes en une semaine lors du premier lancement Maxxivoice ! &raquo;<em>&mdash; Lorenzo Pancino, Expert en prise de parole en public</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=9UyNEpwewY8" target="_blank"><div class="youtube-player" data-id="9UyNEpwewY8"></div></a><p class="yt-caption">&laquo; Le jour du lancement, 2 personnes sont venues chez moi pour s'assurer d'&ecirc;tre inscrites &agrave; temps ! &raquo;<em>&mdash; Romy Malbroukou, Psychologue</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Dw81DhfGvec" target="_blank"><div class="youtube-player" data-id="Dw81DhfGvec"></div></a><p class="yt-caption">&laquo; J'ai tripl&eacute; ma client&egrave;le en 1 an et multipli&eacute; ma liste de prospects par 9 ! &raquo;<em>&mdash; Caroline Burel, Coach en d&eacute;veloppement personnel</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Dy6fi2ii-TI" target="_blank"><div class="youtube-player" data-id="Dy6fi2ii-TI"></div></a><p class="yt-caption">&laquo; Avec les strat&eacute;gies de S&eacute;bastien, j'ai d&eacute;pass&eacute; 1 million &euro; de chiffre d'affaires ! &raquo;<em>&mdash; Yoann Romano, Entrepreneur</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=fO7qRpX1kOE" target="_blank"><div class="youtube-player" data-id="fO7qRpX1kOE"></div></a><p class="yt-caption">&laquo; La m&eacute;thode de S&eacute;bastien m'a aid&eacute; &agrave; cr&eacute;er mon entreprise et &agrave; g&eacute;n&eacute;rer 45 000 &euro; de ventes pour notre nouveau produit ! &raquo;<em>&mdash; Fabrice Mouchain, Consultant</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=EPUS_MciAec" target="_blank"><div class="youtube-player" data-id="EPUS_MciAec"></div></a><p class="yt-caption">&laquo; La strat&eacute;gie de S&eacute;bastien m'a aid&eacute; &agrave; doubler mon chiffre d'affaires sur mes ventes de produits offline ! &raquo;<em>&mdash; Yannick Alain, Formateur en vente professionnelle</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=CjNAN24DJEU" target="_blank"><div class="youtube-player" data-id="CjNAN24DJEU"></div></a><p class="yt-caption">&laquo; J'ai atteint la premi&egrave;re position sur Google avec mon site ACP Coaching, gr&acirc;ce aux conseils de S&eacute;bastien ! &raquo;<em>&mdash; Vincent Guihard, Coach sportif</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=iEozawSmlBE" target="_blank"><div class="youtube-player" data-id="iEozawSmlBE"></div></a><p class="yt-caption">&laquo; S&eacute;bastien m'a aid&eacute; &agrave; atteindre les grands m&eacute;dias, avec de nombreuses apparitions TV et articles de presse ! &raquo;<em>&mdash; Jean Sommer, Coach vocal</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=BhSh8QZvqVU" target="_blank"><div class="youtube-player" data-id="BhSh8QZvqVU"></div></a><p class="yt-caption">&laquo; J'ai pu construire une relation unique avec mes prospects et clients, et toucher exactement le public que je cherchais ! &raquo;<em>&mdash; Nathalie Simon, Artisane</em></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-legal">
+        <span>&copy; 2026 OneTake AI &middot; Mouvement des Entrepreneurs Libres</span>
+        <span>
+          <a href="https://www.onetake.ai/terms-of-service" target="_blank">CGV &amp; Politique de remboursement</a> &middot;
+          <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialit&eacute;</a> &middot;
+          <a href="https://www.onetake.ai/contact" target="_blank">Contact</a>
+        </span>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.onetake.ai/blog" target="_blank">Blog OneTake</a> &middot;
+        <a href="https://welove.onetake.ai/" target="_blank">Avis clients</a> &middot;
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a> &middot;
+        <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">Programme affili&eacute;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== Scripts ====== -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script src="../../../price-localizer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      Paddle.Initialize({ token: 'live_bb0b00885e63d509a759b2e2b29' });
+      window.localizePrices();
+    });
+  </script>
+  <script>window.__disable_weglot = true;</script>
+  <script src="../../../tools.js"></script>
+  <script src="/assets/youtube-thumbnails.js"></script>
+
+</body>
+</html>
