@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Resources &mdash; The Automated Video Sales Bootcamp</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Countdown bar -->
+  <script
+    src="/oto/countdown/countdown.js"
+    data-deadline="2026-06-28T21:59:59Z"
+    data-redirect="/bootcamps/mav/evergreen-masterclass/"
+    data-label="Access closes in"
+    data-label-hours="hours"
+    data-label-min="min"
+    data-label-sec="sec"
+  ></script>
+
+  <!-- Bunny Fonts (GDPR-compliant) -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=dm-serif-display:400&family=dm-sans:400,500,600,700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../vpl-styles.css">
+  <link rel="stylesheet" href="../evergreen-masterclass/style.css">
+  <link rel="stylesheet" href="/assets/youtube-thumbnails.css">
+
+  <style>
+    /* ============ Hero ============ */
+    .page-hero {
+      padding: 80px 24px 48px;
+      text-align: center;
+    }
+    .page-hero__inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .page-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sand-muted);
+      margin-bottom: 16px;
+    }
+    .page-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 18px;
+      text-wrap: balance;
+    }
+    .page-h1 em {
+      font-style: normal;
+      color: var(--ocean);
+    }
+    .page-hero-meta {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ============ Episodes ============ */
+    .episodes-section {
+      padding: 0 24px 32px;
+    }
+    .episode-block {
+      max-width: var(--content-w);
+      margin: 0 auto;
+      background: var(--glass-strong);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 44px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .episode-num {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ocean);
+      margin-bottom: 8px;
+    }
+    .episode-block h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(22px, 3.5vw, 30px);
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .episode-promise {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 600px;
+    }
+    .episode-video {
+      margin-bottom: 20px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .bonus-link {
+      margin: 8px 0;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    .bonus-link a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.15s;
+    }
+    .bonus-link a:hover {
+      color: var(--ocean);
+    }
+    .episode-cta {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ============ Sales Section ============ */
+    .sales-section {
+      padding: 32px 24px 0;
+    }
+    .sales-section__inner {
+      max-width: var(--content-w);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .sales-section__title {
+      font-family: var(--font-heading);
+      font-size: clamp(24px, 4vw, 36px);
+      color: var(--text);
+      margin-bottom: 12px;
+      text-wrap: balance;
+    }
+    .sales-section__sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .sales-video-wrap {
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    /* ============ FAQ ============ */
+    .faq-wrap {
+      padding: 64px 24px;
+    }
+    .faq-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--glass-strong);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 44px;
+      box-shadow: var(--shadow);
+    }
+    .faq-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sand-muted);
+      margin-bottom: 8px;
+    }
+    .faq-inner > h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(22px, 3vw, 30px);
+      color: var(--text);
+      margin-bottom: 28px;
+      line-height: 1.25;
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(11, 157, 168, 0.08);
+    }
+    .faq-item summary {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      padding: 16px 32px 16px 0;
+      cursor: pointer;
+      list-style: none;
+      display: block;
+      position: relative;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--ocean);
+      line-height: 1;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .faq-item[open] summary::after { content: '\2212'; }
+    .faq-answer {
+      padding: 0 0 16px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+    details[open] .faq-answer { display: block; }
+    .faq-answer p { margin-bottom: 10px; }
+    .faq-answer p:last-child { margin-bottom: 0; }
+    .faq-cta {
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    /* ============ Responsive ============ */
+    @media (max-width: 768px) {
+      .page-hero { padding: 56px 20px 32px; }
+      .episodes-section { padding: 0 16px 24px; }
+      .episode-block { padding: 28px 22px; }
+      .episode-cta { flex-direction: column; }
+      .sales-section { padding: 24px 16px 0; }
+      .faq-wrap { padding: 48px 16px; }
+      .faq-inner { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Hero ====== -->
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <p class="page-badge">The Automated Video Sales Bootcamp</p>
+      <h1 class="page-h1">Limited-time access: <em>all resources</em> from the Bootcamp</h1>
+      <p class="page-hero-meta">3 episodes &nbsp;&middot;&nbsp; Sales video &nbsp;&middot;&nbsp; FAQ &nbsp;&middot;&nbsp; Testimonials</p>
+    </div>
+  </section>
+
+  <!-- ====== Episodes ====== -->
+  <section class="episodes-section">
+
+    <!-- Episode 1 -->
+    <div class="episode-block">
+      <p class="episode-num">Episode 1 of 3</p>
+      <h2>The Secret of &ldquo;Free Entrepreneurs&rdquo;</h2>
+      <p class="episode-promise">How can you multiply your sales without multiplying your working hours? This video explains why your revenue dries up the moment you take your foot off the gas &mdash; and how to finally automate your sales.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/1c90e2ca/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/bilan/" target="_blank" rel="noopener">Access your free bonus: the &ldquo;Free Entrepreneur&rdquo; Assessment</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=grow-monthly-offer" class="btn-cta">Start monthly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs19c7zgc6cz4jjartxqsp">99 &euro;</span>/mo</a>
+        <a href="https://try.onetake.ai/?plan=grow-yearly-offer" class="btn-cta--outline btn-cta">Start yearly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr" data-paddle-price-divisor="12">83 &euro;</span>/mo</a>
+      </div>
+    </div>
+
+    <!-- Episode 2 -->
+    <div class="episode-block">
+      <p class="episode-num">Episode 2 of 3</p>
+      <h2>Kind Marketing vs Megaphone Marketing</h2>
+      <p class="episode-promise">How to sell high-end without chasing the algorithm. Discover the Waterslide framework that turns strangers into loyal clients automatically.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/2255d143/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/architect/" target="_blank" rel="noopener">Access your free bonus: the Visual Waterslide Architect</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=grow-monthly-offer" class="btn-cta">Start monthly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs19c7zgc6cz4jjartxqsp">99 &euro;</span>/mo</a>
+        <a href="https://try.onetake.ai/?plan=grow-yearly-offer" class="btn-cta--outline btn-cta">Start yearly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr" data-paddle-price-divisor="12">83 &euro;</span>/mo</a>
+      </div>
+    </div>
+
+    <!-- Episode 3 -->
+    <div class="episode-block">
+      <p class="episode-num">Episode 3 of 3</p>
+      <h2>5 Steps to Clone Yourself and Sell on Autopilot</h2>
+      <p class="episode-promise">The complete plan for the High-Value Expert &mdash; your roadmap to automate sales without hiring an army.</p>
+      <div class="episode-video">
+        <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/c1cda071/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+      </div>
+      <p class="bonus-link">&#127873; <a href="https://contraband.onetake.ai/mav/plan/" target="_blank" rel="noopener">Access your free bonus: the High-Value Expert Action Plan</a></p>
+      <div class="episode-cta">
+        <a href="https://try.onetake.ai/?plan=grow-monthly-offer" class="btn-cta">Start monthly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs19c7zgc6cz4jjartxqsp">99 &euro;</span>/mo</a>
+        <a href="https://try.onetake.ai/?plan=grow-yearly-offer" class="btn-cta--outline btn-cta">Start yearly &mdash; <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr" data-paddle-price-divisor="12">83 &euro;</span>/mo</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ====== Sales Video + Offer ====== -->
+  <section class="sales-section">
+    <div class="sales-section__inner">
+      <h2 class="sales-section__title">Get OneTake Grow + Evergreen Waterslide Masterclass</h2>
+      <p class="sales-section__sub">OneTake edits your videos automatically while the Evergreen Waterslide system turns them into a sales machine that works around the clock &mdash; so you can focus on what you do best: sharing your knowledge.</p>
+    </div>
+    <div class="sales-video-wrap">
+      <div style="position: relative; padding-top: 56.25%;"><iframe style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" src="https://my.onetake.ai/b9502ad6/641dd733/" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen="true"></iframe></div>
+    </div>
+  </section>
+
+  <!-- ====== Pricing ====== -->
+  <section class="pricing-section" id="pricing">
+    <h2 class="section__title">Choose your plan</h2>
+    <p class="section__subtitle" style="margin: 0 auto 12px; max-width: 600px;">
+      Get OneTake Grow + the full Evergreen Waterslide Masterclass + all bonuses.
+    </p>
+
+    <div class="pricing-grid">
+      <!-- Monthly -->
+      <div class="pricing-card">
+        <h3 class="pricing-card__name">Monthly</h3>
+        <div class="pricing-card__price">
+          <span class="paddle-price" data-paddle-price-id="pri_01ksfs19c7zgc6cz4jjartxqsp">99 &#8364;</span>
+        </div>
+        <div class="pricing-card__period">per month</div>
+        <ul class="pricing-card__list">
+          <li>OneTake Grow &mdash; full access</li>
+          <li>Evergreen Waterslide Masterclass</li>
+          <li>Professional wireless microphone kit</li>
+          <li>Amazon gift card (20 $)</li>
+          <li>OneTake AI Creator Swag Box</li>
+          <li>&ldquo;10x Your Business Income&rdquo; training</li>
+          <li>14-day money-back guarantee</li>
+        </ul>
+        <a href="https://try.onetake.ai/?plan=grow-monthly-offer" class="pricing-card__cta">
+          Start monthly
+        </a>
+      </div>
+
+      <!-- Yearly (featured) -->
+      <div class="pricing-card pricing-card--featured">
+        <div class="pricing-card__ribbon">Best value</div>
+        <h3 class="pricing-card__name">Yearly</h3>
+        <div class="pricing-card__price">
+          <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr">999 &#8364;</span>
+        </div>
+        <div class="pricing-card__period">
+          per year &mdash;
+          <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr" data-paddle-price-divisor="12">83 &#8364;</span>/month
+        </div>
+        <ul class="pricing-card__list">
+          <li>OneTake Grow &mdash; full access</li>
+          <li>Evergreen Waterslide Masterclass</li>
+          <li>Professional wireless microphone kit</li>
+          <li>Amazon gift card (20 $)</li>
+          <li>OneTake AI Creator Swag Box</li>
+          <li>&ldquo;10x Your Business Income&rdquo; training</li>
+          <li>14-day money-back guarantee</li>
+          <li><strong>Save over 15% vs. monthly</strong></li>
+        </ul>
+        <a href="https://try.onetake.ai/?plan=grow-yearly-offer" class="pricing-card__cta">
+          Start yearly &mdash; save more
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section class="faq-wrap">
+    <div class="faq-inner">
+      <p class="faq-eyebrow">FAQ</p>
+      <h2>Everything you need to know before getting started</h2>
+
+      <details class="faq-item">
+        <summary>What exactly do I get?</summary>
+        <div class="faq-answer">
+          <p>You get two things in one package: <strong>OneTake Grow</strong>, which edits your videos automatically &mdash; removing silences, adding captions, composing background music, creating transitions, and even translating into other languages &mdash; and the <strong>Evergreen Waterslide Masterclass</strong>, a 5-module training on building an automated sales system for your expertise.</p>
+          <p>On top of that, you receive physical bonuses shipped to your door: a professional wireless microphone kit, an Amazon gift card, and the OneTake AI Creator Swag Box. Plus the full &ldquo;10x Your Business Income&rdquo; training.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Who is this for?</summary>
+        <div class="faq-answer">
+          <p>This is for coaches, consultants, trainers, and experts who want to create professional video content and build an automated sales system &mdash; without spending hours on editing or chasing the algorithm.</p>
+          <p>Whether you already create videos and want them to look more professional, or you&rsquo;re just getting started and want to do it right from day one, OneTake Grow and the Waterslide system will save you time and help you reach more customers.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What results can I expect?</summary>
+        <div class="faq-answer">
+          <p>Results depend on the work you put in. But entrepreneurs who have followed S&eacute;bastien&rsquo;s methods have:</p>
+          <p>&ndash; Doubled their revenue by repackaging their existing offers.<br>
+          &ndash; Trained 30,000 people online starting from zero.<br>
+          &ndash; Generated $10,000 to $50,000/month on autopilot.<br>
+          &ndash; Gone from $300/month to $28,000/month.<br>
+          &ndash; Surpassed $1 million in online sales.</p>
+          <p>All the testimonials below come from people who were where you are today.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Who is S&eacute;bastien Night?</summary>
+        <div class="faq-answer">
+          <p>S&eacute;bastien Night is the founder of the Free Entrepreneurs Movement and the AI startup OneTake AI. Since 2010, he has supported more than 300,000 entrepreneurs in 41 countries.</p>
+          <p>After producing and editing thousands of videos himself over 15+ years, S&eacute;bastien decided to create OneTake &mdash; an AI agent that turns raw footage into professional, profitable content in minutes.</p>
+          <p>To contact S&eacute;bastien and his team: <a href="https://www.onetake.ai/contact" target="_blank">click here</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is there a guarantee?</summary>
+        <div class="faq-answer">
+          <p>Yes. Unconditional 14-day money-back guarantee.</p>
+          <p>Try OneTake Grow and the Evergreen Waterslide Masterclass for a full 14 days. If for any reason you&rsquo;re not completely satisfied, contact us and we will refund every cent. No questions asked, no hoops to jump through. The risk is entirely on us.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How much does it cost?</summary>
+        <div class="faq-answer">
+          <p>Two payment options:</p>
+          <p><strong>Monthly:</strong> <span class="paddle-price" data-paddle-price-id="pri_01ksfs19c7zgc6cz4jjartxqsp">99 &euro;</span>/month. Cancel anytime.</p>
+          <p><strong>Yearly:</strong> <span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr">999 &euro;</span>/year (<span class="paddle-price" data-paddle-price-id="pri_01ksfs4mevg65tcd51s4bz9rnr" data-paddle-price-divisor="12">83 &euro;</span>/month). Save over 15% compared to monthly.</p>
+          <p>Both plans include everything: OneTake Grow, the Evergreen Waterslide Masterclass, all physical bonuses, and the 14-day money-back guarantee.</p>
+        </div>
+      </details>
+
+      <div class="faq-cta">
+        <a href="https://try.onetake.ai/?plan=grow-yearly-offer" class="btn-cta">Start yearly &mdash; save more</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Testimonials ====== -->
+  <section class="section section--center">
+    <div class="section__inner">
+      <h2 class="section__title">What entrepreneurs are saying</h2>
+      <p class="section__subtitle" style="margin-left:auto;margin-right:auto;">
+        Real results from real entrepreneurs who put the system to work.
+      </p>
+      <div class="yt-grid mt-4">
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ChwiwKQKrTU" target="_blank"><div class="youtube-player" data-id="ChwiwKQKrTU"></div></a><p class="yt-caption">&ldquo;Generated $210,000 in sales while overcoming cancer and burnout.&rdquo;<em>&mdash; Jeanne Muvira, Personal development coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=fpWEoh9621I" target="_blank"><div class="youtube-player" data-id="fpWEoh9621I"></div></a><p class="yt-caption">&ldquo;Turned down a $50,000 salary and ran a launch that brought in $500,000.&rdquo;<em>&mdash; Aurelien Amacker, Founder of systeme.io</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=9gaGUvelg3M" target="_blank"><div class="youtube-player" data-id="9gaGUvelg3M"></div></a><p class="yt-caption">&ldquo;Revenue increased 50% from a single orchestrated launch.&rdquo;<em>&mdash; Catherine Booth, Canine behavior educator</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=2-AE9WWZ8lQ" target="_blank"><div class="youtube-player" data-id="2-AE9WWZ8lQ"></div></a><p class="yt-caption">&ldquo;Went from $60,000/year to $80,000/month on autopilot.&rdquo;<em>&mdash; Leandro Lozahic, Professional trainer</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=PkrnfkEUI-Q" target="_blank"><div class="youtube-player" data-id="PkrnfkEUI-Q"></div></a><p class="yt-caption">&ldquo;Grew revenue 30% in one year and saved the family business.&rdquo;<em>&mdash; Nathalie Simon, Artisan bead business owner</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=liSamVmxHtc" target="_blank"><div class="youtube-player" data-id="liSamVmxHtc"></div></a><p class="yt-caption">&ldquo;Free to work where and when I want &mdash; 10x ROI in just 6 months.&rdquo;<em>&mdash; David Jay, Founder of La Revolution Video</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=qGX8tvn3P5s" target="_blank"><div class="youtube-player" data-id="qGX8tvn3P5s"></div></a><p class="yt-caption">&ldquo;In just 11 months, learned to think bigger and stop self-limiting.&rdquo;<em>&mdash; Yvan Keyna, Network marketing specialist</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=7H-iSnqvcjs" target="_blank"><div class="youtube-player" data-id="7H-iSnqvcjs"></div></a><p class="yt-caption">&ldquo;Generated $60,000 in 9 months &mdash; now a happy dad who spends time with his daughter.&rdquo;<em>&mdash; Alexis Marigny, Sports coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=H3dAZIhsPzM" target="_blank"><div class="youtube-player" data-id="H3dAZIhsPzM"></div></a><p class="yt-caption">&ldquo;Automated sales with just 4 emails and 5 videos.&rdquo;<em>&mdash; Joel Bernard, Golf instructor</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ipt1laQG0Og" target="_blank"><div class="youtube-player" data-id="ipt1laQG0Og"></div></a><p class="yt-caption">&ldquo;Started from zero, now trains 30,000 people online and lives her dream life.&rdquo;<em>&mdash; Maryse Lehoux, Yoga instructor</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=8pqwZTEYNEI" target="_blank"><div class="youtube-player" data-id="8pqwZTEYNEI"></div></a><p class="yt-caption">&ldquo;Created just 4 pages that attract thousands of potential clients every month.&rdquo;<em>&mdash; Luc Geiger, Stress management specialist</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ebCbQrU0M-o" target="_blank"><div class="youtube-player" data-id="ebCbQrU0M-o"></div></a><p class="yt-caption">&ldquo;Made her first sale with just the 4th prospect who signed up.&rdquo;<em>&mdash; Janique Villeneuve, Image consultant</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=wzHh7i6doOE" target="_blank"><div class="youtube-player" data-id="wzHh7i6doOE"></div></a><p class="yt-caption">&ldquo;Reached thousands of people online through her passion.&rdquo;<em>&mdash; Christine Cuisiniez, Pharmacist</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=qedkSpADXAY" target="_blank"><div class="youtube-player" data-id="qedkSpADXAY"></div></a><p class="yt-caption">&ldquo;Since automating, earns at least $20,000/month.&rdquo;<em>&mdash; Maxence Rigottier, Sports betting expert</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Lri741F9ozA" target="_blank"><div class="youtube-player" data-id="Lri741F9ozA"></div></a><p class="yt-caption">&ldquo;Generates $300,000 in annual sales working just one day per week.&rdquo;<em>&mdash; Julien Romain, Trainer</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Ez6vGI6tBr0" target="_blank"><div class="youtube-player" data-id="Ez6vGI6tBr0"></div></a><p class="yt-caption">&ldquo;Went from $300 to $28,000/month and became a recognized expert.&rdquo;<em>&mdash; Olivier Roland, Author &amp; blogger</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=IFrEu8JRjcg" target="_blank"><div class="youtube-player" data-id="IFrEu8JRjcg"></div></a><p class="yt-caption">&ldquo;First launch was a massive success.&rdquo;<em>&mdash; Gaelle Le Reun, Personal development coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=CoV9hEzwPkQ" target="_blank"><div class="youtube-player" data-id="CoV9hEzwPkQ"></div></a><p class="yt-caption">&ldquo;Earned several thousand dollars in just a few days selling on his blog.&rdquo;<em>&mdash; Charles, Blogger</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=ZuMvskOqLds" target="_blank"><div class="youtube-player" data-id="ZuMvskOqLds"></div></a><p class="yt-caption">&ldquo;Went from $50,000 to $1 million in online sales in just 4 years.&rdquo;<em>&mdash; Nathalie Cariou, Financial intelligence coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=mhkGwfu3VV8" target="_blank"><div class="youtube-player" data-id="mhkGwfu3VV8"></div></a><p class="yt-caption">&ldquo;Generated $210,000 in sales starting from zero.&rdquo;<em>&mdash; Alexandre Lahouel, Raw food specialist</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=JP_in9niWic" target="_blank"><div class="youtube-player" data-id="JP_in9niWic"></div></a><p class="yt-caption">&ldquo;Generated $50,000 through partnerships, now reaching 25,000 women online.&rdquo;<em>&mdash; Sophie Gueidon, Women&rsquo;s success coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=BXjQ2khMJds" target="_blank"><div class="youtube-player" data-id="BXjQ2khMJds"></div></a><p class="yt-caption">&ldquo;Made $350,000 in sales &mdash; with no website, no email list, and no product.&rdquo;<em>&mdash; David Colom, Personal development expert</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=-73WxGaptas" target="_blank"><div class="youtube-player" data-id="-73WxGaptas"></div></a><p class="yt-caption">&ldquo;Built a site earning $10,000 in extra revenue alongside his job.&rdquo;<em>&mdash; Matthieu Deloison, Software developer</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=4N9j5vFJZXg" target="_blank"><div class="youtube-player" data-id="4N9j5vFJZXg"></div></a><p class="yt-caption">&ldquo;$48,000 in sales in one week during the first Maxxivoice launch.&rdquo;<em>&mdash; Lorenzo Pancino, Public speaking expert</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=9UyNEpwewY8" target="_blank"><div class="youtube-player" data-id="9UyNEpwewY8"></div></a><p class="yt-caption">&ldquo;On launch day, 2 people showed up at her door to make sure they signed up.&rdquo;<em>&mdash; Romy Malbroukou, Psychologist</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Dw81DhfGvec" target="_blank"><div class="youtube-player" data-id="Dw81DhfGvec"></div></a><p class="yt-caption">&ldquo;Tripled her client base in 1 year and multiplied her prospect list by 9.&rdquo;<em>&mdash; Caroline Burel, Personal development coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=Dy6fi2ii-TI" target="_blank"><div class="youtube-player" data-id="Dy6fi2ii-TI"></div></a><p class="yt-caption">&ldquo;Surpassed $1 million in revenue using Sebastien&rsquo;s strategies.&rdquo;<em>&mdash; Yoann Romano, Entrepreneur</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=fO7qRpX1kOE" target="_blank"><div class="youtube-player" data-id="fO7qRpX1kOE"></div></a><p class="yt-caption">&ldquo;Created his business and generated $45,000 in sales for a new product.&rdquo;<em>&mdash; Fabrice Mouchain, Consultant</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=EPUS_MciAec" target="_blank"><div class="youtube-player" data-id="EPUS_MciAec"></div></a><p class="yt-caption">&ldquo;Doubled revenue on offline product sales.&rdquo;<em>&mdash; Yannick Alain, Professional sales trainer</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=CjNAN24DJEU" target="_blank"><div class="youtube-player" data-id="CjNAN24DJEU"></div></a><p class="yt-caption">&ldquo;Reached #1 on Google with his coaching site.&rdquo;<em>&mdash; Vincent Guihard, Sports coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=iEozawSmlBE" target="_blank"><div class="youtube-player" data-id="iEozawSmlBE"></div></a><p class="yt-caption">&ldquo;Reached major media outlets with numerous TV appearances.&rdquo;<em>&mdash; Jean Sommer, Vocal coach</em></p></div>
+        <div class="yt-item"><a href="https://www.youtube.com/watch?v=BhSh8QZvqVU" target="_blank"><div class="youtube-player" data-id="BhSh8QZvqVU"></div></a><p class="yt-caption">&ldquo;Built a unique relationship with prospects, reaching exactly the right audience.&rdquo;<em>&mdash; Nathalie Simon, Artisan</em></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Footer ====== -->
+  <footer class="sales-footer">
+    <p>&copy; 2026 OneTake AI &middot; Mouvement des Entrepreneurs Libres</p>
+    <p>
+      <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms &amp; Refund Policy</a> &middot;
+      <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a> &middot;
+      <a href="https://www.onetake.ai/contact" target="_blank">Contact</a>
+    </p>
+    <p class="sales-footer__links">
+      <a href="https://www.onetake.ai/blog" target="_blank">Blog</a> &middot;
+      <a href="https://welove.onetake.ai/" target="_blank">Customer Reviews</a> &middot;
+      <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a> &middot;
+      <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">Affiliate Program</a>
+    </p>
+  </footer>
+
+  <!-- ====== Scripts ====== -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script src="../../../price-localizer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      Paddle.Initialize({ token: 'live_bb0b00885e63d509a759b2e2b29' });
+      window.localizePrices();
+    });
+  </script>
+  <script src="../../../tools.js"></script>
+  <script src="/assets/youtube-thumbnails.js"></script>
+
+</body>
+</html>
