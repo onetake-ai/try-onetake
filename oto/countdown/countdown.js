@@ -14,8 +14,13 @@
  *   data-label-min    Unit label for minutes (default: "min")
  *   data-label-sec    Unit label for seconds (default: "sec")
  *   data-show-within  Hours before deadline to start showing the bar (e.g. "48")
+ *
+ * URL parameter:
+ *   ?unlockfor=<any-value>   Disables the bar and redirect entirely for this page load
  */
 (function () {
+  if (new URLSearchParams(window.location.search).get('unlockfor')) return;
+
   var s = document.currentScript;
   var deadline   = new Date(s.getAttribute('data-deadline')).getTime();
   var redirectTo = s.getAttribute('data-redirect');
