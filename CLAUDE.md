@@ -52,6 +52,57 @@ The value can be either a root-relative path (e.g. `/onboarding/ehv/`) or a full
 
 `pricing-table.js` handles price localization internally — it generates `paddle-price` elements and calls `window.localizePrices()` after rendering. No extra setup needed on pages that embed the pricing table. See `/pricing-table/CLAUDE.md` for the full component docs.
 
+## Embeddable checkout snippet
+
+**Files:** `/assets/checkout/checkout-embed.js`, `/assets/checkout/checkout-embed.css`, `/assets/checkout/checkout-core.js`
+
+A self-contained embeddable checkout form that can be loaded on any page (same domain or external). It shows a 2-step form that ends with a Paddle checkout popup, preserving all tracking and downsell behaviors from the main signup page.
+
+### Architecture
+
+- `checkout-core.js` — shared checkout logic (Paddle init, checkout opening, tracking, downsell) used by both `app.js` and the embed snippet. Exposes `window.oneTakeCheckout`.
+- `checkout-embed.js` — the embeddable snippet (UI rendering, form flow, dependency loading). Dynamically loads all required scripts from `try.onetake.ai`.
+- `checkout-embed.css` — self-contained styles, all classes prefixed with `otc-` to avoid collisions.
+
+### Usage
+
+```html
+<div id="onetake-checkout"></div>
+<script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
+        data-plans="launch-monthly-trial,pro-monthly-trial"
+        data-container="onetake-checkout"></script>
+```
+
+### Data attributes
+
+| Attribute | Required | Default | Description |
+|-----------|----------|---------|-------------|
+| `data-plans` | Yes | — | Comma-separated plan keys from `pricing-data.js` |
+| `data-container` | Yes | — | ID of the mount element |
+| `data-cta-1` | No | Translated button text | Button text for step 1 |
+| `data-cta-2` | No | Same as cta-1 | Button text for step 2 |
+| `data-success-url` | No | Plan's `successUrl` or `/onboarding/` | Post-purchase redirect URL |
+
+### Multi-plan radio selector
+
+When `data-plans` contains multiple plan keys, a radio list appears between the name/email fields and the CTA button. Each option shows the plan tier name and payment conditions with localized prices via `Paddle.PricePreview()`. EUR fallback text is shown until the API responds.
+
+When only one plan is provided, no radio list is shown.
+
+### 2-step flow
+
+1. **Step 1:** First name + email + (if multi-plan) plan selector + CTA
+2. **Step 2:** Use cases multi-select + usage frequency dropdown + CTA
+3. **After step 2 CTA:** Tracking fires, then Paddle checkout overlay opens
+
+### Dependencies
+
+The snippet dynamically loads from `try.onetake.ai`: `pricing-data.js`, `translations.js`, `tracking-params.js`, `cohort.js`, `tools.js` (tracking scripts), `checkout-core.js`, Paddle SDK, and Montserrat font.
+
+### Relationship to app.js
+
+`app.js` (the main signup page controller) also uses `checkout-core.js`. Any page loading `app.js` must load `checkout-core.js` first (see the script order in `index.html`). The embed snippet loads its own dependencies dynamically, so no manual script setup is needed.
+
 ## Countdown bar
 
 **File:** `/oto/countdown/countdown.js`
