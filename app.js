@@ -22,19 +22,19 @@
             useCases: [],
             estimatedVolume: ''
         },
-        productId: 'pri_01ksfshd2k1145y5v96v8bk0se',
-        planKey: null,
-        planInfo: null,
-        hasTrial: true,
-        hasOneTimeCharge: false,
+        productId: 'pri_01ksfshd2k1145y5v96v8bk0se', // Default product (launch-monthly-trial)
+        planKey: null,                  // Will be set if using a preset
+        planInfo: null,                 // Will contain plan details if using a preset
+        hasTrial: true,                 // Default has trial
+        hasOneTimeCharge: false,        // True for $1 trial plans
         isSubmitting: false,
-        checkoutCompleted: false,
-        downsellShown: false,
-        downsellAccepted: false,
-        downsellPlanKey: null,
-        downsellPlanInfo: null,
-        originalPlanKey: null,
-        trackingParams: {}
+        checkoutCompleted: false,       // Set to true on checkout.completed; prevents downsell after purchase
+        downsellShown: false,           // Prevents showing the downsell more than once per session
+        downsellAccepted: false,        // True if user clicked accept on the downsell modal
+        downsellPlanKey: null,          // The plan key offered in the downsell
+        downsellPlanInfo: null,         // The plan info offered in the downsell
+        originalPlanKey: null,          // Preserved plan key before any downsell switch
+        trackingParams: {}              // UTM/ad tracking params from URL (populated by tracking-params.js)
     };
 
     // Make state accessible globally for special-offer.js
@@ -76,6 +76,7 @@
         const planKey = urlParams.get('plan');
         const productId = urlParams.get('product');
 
+        // Plan preset found
         if (planKey && activePlanPresets[planKey]) {
             state.planKey = planKey;
             state.planInfo = activePlanPresets[planKey];
@@ -83,6 +84,7 @@
             state.hasTrial = !!state.planInfo.trial;
             state.hasOneTimeCharge = !!state.planInfo.oneTimeCharge;
             console.log('Using plan preset:', planKey, state.planInfo);
+        // Direct product ID provided without a matching preset
         } else if (productId) {
             state.productId = productId;
             state.planKey = null;
@@ -90,6 +92,7 @@
             state.hasTrial = false;
             state.hasOneTimeCharge = false;
             console.log('Using direct product ID:', productId);
+        // No ?plan= or unrecognised value — default to launch-monthly-trial
         } else {
             const defaultKey = 'launch-monthly-trial';
             const defaultPreset = activePlanPresets[defaultKey];
@@ -101,6 +104,7 @@
             console.log('Using default product ID:', state.productId);
         }
 
+        // Extract tracking params (UTM + optional ad params) via tracking module
         state.trackingParams = window.oneTakeTracking
             ? window.oneTakeTracking.parseTrackingParams(urlParams)
             : {};
@@ -189,6 +193,7 @@
         const optionsContainer = document.getElementById('dropdownOptions');
         if (!optionsContainer) return;
 
+        // Separate 'other' from the rest, shuffle regular cases, add 'other' at the end
         const otherCase = 'other';
         const regularCases = useCaseValues.filter(uc => uc !== otherCase);
         const shuffled = core.shuffleArray([...regularCases]);
@@ -303,20 +308,24 @@
 
         if (!dropdown || !trigger || !menu) return;
 
+        // Toggle dropdown on click
         trigger.addEventListener('click', () => {
             dropdown.classList.toggle('open');
         });
 
+        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!dropdown.contains(e.target)) {
                 dropdown.classList.remove('open');
             }
         });
 
+        // Prevent dropdown from closing when clicking inside menu
         menu.addEventListener('click', (e) => {
             e.stopPropagation();
         });
 
+        // Handle keyboard
         trigger.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -336,6 +345,7 @@
             const translation = getTranslation(key);
 
             if (translation) {
+                // Use innerHTML for translations that contain HTML (like links)
                 if (key === 'footer.privacy' || translation.includes('<a')) {
                     element.innerHTML = translation;
                 } else {
@@ -366,12 +376,15 @@
         state.currentLanguage = newLanguage;
         document.documentElement.lang = newLanguage;
 
+        // Re-render use cases with new translations
         renderUseCases();
         applyTranslations();
         updateHeadline();
         updateButtonText();
+        // Restore chips after re-rendering with new language
         restoreSelectedUseCases();
 
+        // Refresh special offer content if function exists (special-offer.html page)
         if (typeof window.refreshSpecialOfferContent === 'function') {
             window.refreshSpecialOfferContent();
         }
@@ -387,12 +400,14 @@
             form.addEventListener('submit', handleFormSubmit);
         }
 
+        // Language selector
         const languageSelect = document.getElementById('languageSelect');
         if (languageSelect) {
             languageSelect.value = state.currentLanguage;
             languageSelect.addEventListener('change', handleLanguageChange);
         }
 
+        // Downsell modal buttons
         const downsellClose   = document.getElementById('downsellClose');
         const downsellAcceptBtn = document.getElementById('downsellAccept');
         const downsellDismiss = document.getElementById('downsellDismiss');
@@ -412,6 +427,7 @@
             if (e.key === 'Escape') hideDownsellModal();
         });
 
+        // Real-time validation
         const firstNameInput = document.getElementById('firstName');
         const emailInput = document.getElementById('email');
 
@@ -484,6 +500,7 @@
             errorSpan.textContent = '';
         }
 
+        // Special handling for dropdown
         if (fieldName === 'useCases') {
             const dropdownTrigger = document.querySelector('.dropdown-trigger');
             if (dropdownTrigger) {
@@ -560,11 +577,13 @@
 
         if (state.isSubmitting) return;
 
+        // Validate form
         if (!validateForm()) {
             console.log('Form validation failed');
             return;
         }
 
+        // Collect form data
         state.formData.firstName = document.getElementById('firstName').value.trim();
         state.formData.email = document.getElementById('email').value.trim();
         state.formData.useCases = getSelectedUseCases();
@@ -572,18 +591,23 @@
 
         console.log('Form data:', state.formData);
 
+        // Show loading state
         setSubmitButtonLoading(true);
         state.isSubmitting = true;
 
         try {
+            // Track formSubmit event (only if not personal/music use cases)
             core.trackFormSubmit(state, isSandbox);
 
+            // UserList deprecated — form data now flows via Paddle custom data & webhooks
             trackUserListEvent('formSubmit');
 
+            // FirstPromoter referral tracking
             if (window.fpr) window.fpr("referral", { email: state.formData.email });
 
             await core.sleep(500);
 
+            // Open Paddle checkout
             core.openCheckout(state, activePlanPresets, {
                 onError: function(msg) { showError(msg); }
             });
@@ -637,22 +661,26 @@
         const modal = document.getElementById('downsellModal');
         if (!modal) return;
 
+        // Determine downsell type: yearly/quarterly → monthly, or higher tier → lower tier
         const originalPlan = activePlanPresets[originalPlanKey] || state.planInfo;
         const isRecurrenceDownsell = originalPlan &&
             (originalPlan.recurrence === 'yearly' || originalPlan.recurrence === 'quarterly') &&
             downsellPlan.recurrence === 'monthly';
 
+        // Set dynamic title and body based on downsell type
         const titleEl = document.getElementById('downsellTitle');
         const bodyEl  = document.getElementById('downsellBody');
         if (titleEl) titleEl.textContent = getTranslation(isRecurrenceDownsell ? 'downsell.title.yearly' : 'downsell.title.tier');
         if (bodyEl)  bodyEl.textContent  = getTranslation(isRecurrenceDownsell ? 'downsell.body.yearly'  : 'downsell.body.tier');
 
+        // Set plan name
         const planNameEl = document.getElementById('downsellPlanName');
         if (planNameEl) {
             const recurrenceLabel = downsellPlan.recurrence.charAt(0).toUpperCase() + downsellPlan.recurrence.slice(1);
             planNameEl.textContent = downsellPlan.tier + ' — ' + recurrenceLabel;
         }
 
+        // Set price (e.g. "€39/mo · after 7-day free trial")
         const planPriceEl = document.getElementById('downsellPlanPrice');
         if (planPriceEl) {
             const recurrenceMap = {
@@ -667,17 +695,20 @@
             planPriceEl.textContent = '€' + downsellPlan.firstExpectedPayment + perPeriod + trialSuffix;
         }
 
+        // Translate static data-i18n elements inside the modal
         modal.querySelectorAll('[data-i18n]').forEach(function(el) {
             const t = getTranslation(el.getAttribute('data-i18n'));
             if (t) el.textContent = t;
         });
 
+        // Store downsell plan in state so acceptDownsell() can use it
         state.downsellPlanKey  = downsellKey;
         state.downsellPlanInfo = downsellPlan;
         state.downsellShown    = true;
 
         modal.classList.add('is-open');
 
+        // Analytics (skipped in sandbox)
         if (!isSandbox && typeof plausible !== 'undefined') {
             plausible('DownsellShown', { props: { downsell_plan: downsellKey, original_plan: originalPlanKey } });
         }
@@ -687,11 +718,13 @@
         console.log('Downsell shown:', downsellKey);
     }
 
+    // Close the downsell modal without accepting
     function hideDownsellModal() {
         const modal = document.getElementById('downsellModal');
         if (modal) modal.classList.remove('is-open');
     }
 
+    // User accepted the downsell — switch to the new plan and reopen checkout
     function handleAcceptDownsell() {
         hideDownsellModal();
         core.acceptDownsell(state, isSandbox);

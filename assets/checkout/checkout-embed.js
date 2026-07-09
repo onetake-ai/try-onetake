@@ -10,6 +10,7 @@
 (function() {
     'use strict';
 
+    // Capture currentScript at parse time (unavailable after async execution)
     var scriptEl = document.currentScript;
     if (!scriptEl) return;
 
@@ -17,6 +18,7 @@
     var baseUrl = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
     var siteRoot = baseUrl.replace(/assets\/checkout\/$/, '');
 
+    // Parse configuration from data attributes on the script tag
     var config = {
         plans: (scriptEl.getAttribute('data-plans') || '').split(',').filter(Boolean),
         containerId: scriptEl.getAttribute('data-container'),
@@ -30,6 +32,7 @@
         return;
     }
 
+    // Embed-local state (independent from app.js state; passed to checkout-core functions)
     var state = {
         currentLanguage: 'en',
         planKey: null,
@@ -53,11 +56,16 @@
     };
 
     var isSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
-    var activePlanPresets = null;
-    var core = null;
-    var container = null;
-    var localizedPrices = {};
+    var activePlanPresets = null;   // Set to planPresets or sandboxPlanPresets after deps load
+    var core = null;                // Reference to window.oneTakeCheckout
+    var container = null;           // Mount-point DOM element
+    var localizedPrices = {};       // productId → localized price string from Paddle PricePreview
 
+    // ======================================================================
+    // DEPENDENCY LOADING
+    // ======================================================================
+
+    // Load a script by URL; resolves immediately if Paddle is already present
     function loadScript(src) {
         return new Promise(function(resolve, reject) {
             if (src.indexOf('paddle.js') !== -1 && typeof Paddle !== 'undefined') { resolve(); return; }
@@ -70,6 +78,7 @@
         });
     }
 
+    // Inject a <link rel="stylesheet"> into the document head
     function loadCSS(href) {
         var link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -77,6 +86,7 @@
         document.head.appendChild(link);
     }
 
+    // Load Montserrat font if not already present on the host page
     function loadFont() {
         if (document.querySelector('link[href*="montserrat"]')) return;
         var link = document.createElement('link');
@@ -85,6 +95,7 @@
         document.head.appendChild(link);
     }
 
+    // Load CSS, font, and all JS dependencies in parallel
     function loadDependencies() {
         loadCSS(baseUrl + 'checkout-embed.css');
         loadFont();
@@ -106,15 +117,22 @@
         }));
     }
 
+    // ======================================================================
+    // TRANSLATION / PRICE HELPERS
+    // ======================================================================
+
+    // Shorthand for translated strings; delegates to checkout-core
     function t(key, params) {
         if (core) return core.getTranslation(state.currentLanguage, key, params);
         return key;
     }
 
+    // Return the trial length in days for a plan (fallback to default)
     function getTrialDays(planInfo) {
         return (planInfo && planInfo.trial) || (typeof DEFAULT_TRIAL_DAYS !== 'undefined' ? DEFAULT_TRIAL_DAYS : 3);
     }
 
+    // Map recurrence key (monthly/yearly/quarterly) to translated suffix
     function getRecurrenceLabel(recurrence) {
         var map = {
             monthly: t('downsell.perMonth'),
@@ -124,6 +142,7 @@
         return map[recurrence] || '/' + recurrence;
     }
 
+    // Build EUR fallback price text (shown until PricePreview responds)
     function buildFallbackPriceText(planInfo) {
         var price = planInfo.firstExpectedPayment || 0;
         var suffix = getRecurrenceLabel(planInfo.recurrence);
@@ -135,6 +154,7 @@
         return text;
     }
 
+    // Build price text using the localized amount from Paddle PricePreview
     function buildLocalizedPriceText(planInfo, localizedPrice) {
         var suffix = getRecurrenceLabel(planInfo.recurrence);
         var text = '';
@@ -145,9 +165,11 @@
         return text;
     }
 
+    // Call Paddle PricePreview to get visitor-localized prices for all plans
     function fetchLocalizedPrices() {
         if (typeof Paddle === 'undefined') return;
 
+        // Build PricePreview items from configured plan product IDs
         var items = config.plans.map(function(key) {
             var preset = activePlanPresets[key];
             if (!preset) return null;
@@ -160,13 +182,16 @@
             Paddle.PricePreview({
                 items: items
             }).then(function(result) {
+                // Parse lineItems from the PricePreview response
                 if (result && result.data && result.data.details && result.data.details.lineItems) {
                     result.data.details.lineItems.forEach(function(item) {
                         var priceId = item.price && item.price.id;
                         var formatted = item.formattedTotals && item.formattedTotals.total;
                         if (priceId && formatted) {
+                            // Extract numeric amount (in minor units) and currency symbol
                             var amount = parseInt(formatted.replace(/[^0-9]/g, ''), 10);
                             var symbol = formatted.replace(/[\d\s.,]/g, '').trim();
+                            // Format: "S$59" for short symbols, "59 CHF" for longer ones
                             localizedPrices[priceId] = (symbol.length <= 3 ? symbol : '') + Math.round(amount / 100 || 0);
                             if (symbol.length > 3) {
                                 localizedPrices[priceId] = Math.round(amount / 100 || 0) + ' ' + symbol;
@@ -183,6 +208,7 @@
         }
     }
 
+    // Replace EUR fallback text in plan radio labels with localized prices
     function updatePlanRadioLabels() {
         config.plans.forEach(function(key) {
             var preset = activePlanPresets[key];
@@ -196,12 +222,18 @@
         });
     }
 
+    // ======================================================================
+    // RENDERING
+    // ======================================================================
+
+    // Return the correct headline translation key based on plan type
     function getHeadlineKey() {
         if (state.hasOneTimeCharge) return 'headlineOneDollarTrial';
         if (state.hasTrial) return 'headline';
         return 'headlineNoTrial';
     }
 
+    // Resolve CTA button text (prefers data-cta attributes, then translated defaults)
     function getButtonText(step) {
         if (step === 1 && config.cta1) return config.cta1;
         if (step === 2 && config.cta2) return config.cta2;
@@ -211,6 +243,7 @@
         return t('button.submitNoTrial');
     }
 
+    // Render step 1: first name, email, plan radio (if multi-plan), and CTA
     function renderStep1() {
         var multiPlan = config.plans.length > 1;
         var trialDays = state.planInfo ? getTrialDays(state.planInfo) : 3;
@@ -265,6 +298,7 @@
         bindStep1Events();
     }
 
+    // Render step 2 fields: use case multi-select dropdown and frequency select
     function renderStep2Fields() {
         var useCases = typeof useCaseValues !== 'undefined' ? useCaseValues : [];
         var html = '<div class="otc-group">' +
@@ -304,6 +338,11 @@
         return html;
     }
 
+    // ======================================================================
+    // EVENT BINDING
+    // ======================================================================
+
+    // Bind step 1 CTA click and plan radio selection handlers
     function bindStep1Events() {
         var cta1 = container.querySelector('#otcCta1');
         if (cta1) cta1.addEventListener('click', handleStep1Submit);
@@ -326,6 +365,7 @@
         }
     }
 
+    // Bind step 2 CTA click, use case dropdown toggle, and outside-click close
     function bindStep2Events() {
         var cta2 = container.querySelector('#otcCta2');
         if (cta2) cta2.addEventListener('click', handleStep2Submit);
@@ -360,6 +400,7 @@
         });
     }
 
+    // Sync use case chips display with checkbox state; update form data
     function updateUseCaseSelection() {
         var menu = container.querySelector('#otcUseCaseMenu');
         var chipsContainer = container.querySelector('#otcUseCaseChips');
@@ -393,6 +434,7 @@
         if (errorEl && selected.length > 0) errorEl.textContent = '';
     }
 
+    // Resolve a plan key and update state + UI (headline, CTA text)
     function selectPlan(planKey) {
         var resolved = core.resolvePlan(planKey, activePlanPresets);
         if (!resolved) return;
@@ -413,6 +455,7 @@
         if (cta2) cta2.textContent = getButtonText(2);
     }
 
+    // Validate step 1 (name + email) and transition to step 2
     function handleStep1Submit() {
         var firstNameInput = container.querySelector('#otcFirstName');
         var emailInput = container.querySelector('#otcEmail');
@@ -457,7 +500,9 @@
         bindStep2Events();
     }
 
+    // Validate step 2, fire tracking events, and open Paddle checkout
     function handleStep2Submit() {
+        // Validate form
         var useCaseError = container.querySelector('#otcUseCaseError');
         var valid = true;
 
@@ -485,14 +530,18 @@
             cta2.innerHTML = '<span class="otc-spinner"></span>';
         }
 
+        // Collect tracking params from URL
         if (window.oneTakeTracking) {
             state.trackingParams = window.oneTakeTracking.parseTrackingParams();
         }
 
+        // Track formSubmit event across analytics providers
         core.trackFormSubmit(state, isSandbox);
 
+        // Expose state for external access (e.g. tracking scripts)
         window.oneTakeState = state;
 
+        // Open Paddle checkout
         var checkoutOpts = {
             onError: function(msg) {
                 console.error(msg);
@@ -514,6 +563,11 @@
         }
     }
 
+    // ======================================================================
+    // PADDLE EVENT HANDLING
+    // ======================================================================
+
+    // Route Paddle checkout events (completed → track purchase; closed → show downsell)
     function handlePaddleEvent(data) {
         if (!data || !data.name) return;
 
@@ -528,6 +582,11 @@
         }
     }
 
+    // ======================================================================
+    // DOWNSELL
+    // ======================================================================
+
+    // Render the downsell overlay with plan details and localized price
     function showDownsellModal(downsellKey, downsellPlan, originalPlanKey) {
         state.downsellPlanKey = downsellKey;
         state.downsellPlanInfo = downsellPlan;
@@ -535,6 +594,7 @@
         var overlay = container.querySelector('#otcDownsell');
         if (!overlay) return;
 
+        // Determine downsell type: yearly→monthly or higher→lower tier
         var isYearly = (state.planInfo && state.planInfo.recurrence === 'yearly') &&
                        downsellPlan.recurrence === 'monthly';
         var titleKey = isYearly ? 'downsell.title.yearly' : 'downsell.title.tier';
@@ -573,11 +633,13 @@
         overlay.querySelector('#otcDsAccept').addEventListener('click', handleAcceptDownsell);
     }
 
+    // Close the downsell overlay
     function hideDownsell() {
         var overlay = container.querySelector('#otcDownsell');
         if (overlay) overlay.classList.remove('otc-open');
     }
 
+    // Accept the downsell offer: switch plan and reopen Paddle checkout
     function handleAcceptDownsell() {
         hideDownsell();
         core.acceptDownsell(state, isSandbox);
@@ -590,39 +652,56 @@
         core.openCheckout(state, activePlanPresets, checkoutOpts);
     }
 
+    // ======================================================================
+    // INITIALIZATION
+    // ======================================================================
+
+    // Bootstrap the embed: load deps, init Paddle, resolve plans, render form
     function init() {
+        // Find the mount-point container element
         container = document.getElementById(config.containerId);
         if (!container) {
             console.error('OneTake Checkout Embed: container #' + config.containerId + ' not found');
             return;
         }
 
+        // Show loading spinner while dependencies load
         container.innerHTML = '<div class="otc-root"><div class="otc-card" style="text-align:center;padding:3rem"><span class="otc-spinner"></span></div></div>';
 
         loadDependencies().then(function() {
+            // Grab reference to checkout-core API
             core = window.oneTakeCheckout;
             if (!core) {
                 console.error('OneTake Checkout Embed: checkout-core.js failed to load');
                 return;
             }
 
+            // Select live or sandbox plan presets
             activePlanPresets = isSandbox ? (typeof sandboxPlanPresets !== 'undefined' ? sandboxPlanPresets : {}) : (typeof planPresets !== 'undefined' ? planPresets : {});
+
+            // Detect browser language
             state.currentLanguage = core.detectLanguage();
 
+            // Parse UTM/ad tracking params from URL
             if (window.oneTakeTracking) {
                 state.trackingParams = window.oneTakeTracking.parseTrackingParams();
             }
 
+            // Initialize Paddle SDK with event callback
             core.initPaddle(isSandbox, handlePaddleEvent);
 
+            // Resolve first plan and render the form
             selectPlan(config.plans[0]);
             renderStep1();
+
+            // Fetch localized prices to replace EUR fallback text
             fetchLocalizedPrices();
         }).catch(function(err) {
             console.error('OneTake Checkout Embed: initialization failed', err);
         });
     }
 
+    // Run init when DOM is ready (or immediately if already loaded)
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
