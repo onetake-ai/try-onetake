@@ -423,6 +423,47 @@ const planPresets = {
 };
 
 
+// Downsell map: for each plan key, the plan key to offer as a downsell.
+// Priority: yearly → monthly (same tier), then higher tier monthly → lower tier monthly.
+// Plans already at the lowest option (occasional-monthly variants) are omitted → no downsell.
+const downsellMap = {
+    'premium-studio-yearly-trial':      'premium-studio-monthly-trial',
+    'premium-studio-yearly-trial-99':   'premium-studio-monthly-trial',
+    'premium-studio-yearly':            'premium-studio-monthly',
+    'pro-yearly-trial':                 'pro-monthly-trial',
+    'pro-yearly-trial-39':              'pro-monthly-trial',
+    'pro-yearly':                       'pro-monthly',
+    'occasional-yearly-trial':          'occasional-monthly-trial',
+    'occasional-yearly-trial-19':       'occasional-monthly-trial',
+    'occasional-yearly':                'occasional-monthly',
+    'premium-studio-monthly-trial':     'pro-monthly-trial',
+    'premium-studio-monthly-trial-149': 'pro-monthly-trial',
+    'premium-studio-monthly':           'pro-monthly',
+    'premium-studio-quarterly':         'premium-studio-monthly',
+    'pro-monthly-trial':                'occasional-monthly-trial',
+    'pro-monthly-trial-59':             'occasional-monthly-trial',
+    'pro-monthly':                      'occasional-monthly',
+    'occasional-yearly-trial-1':        'occasional-monthly-trial-1',
+    'pro-yearly-trial-1':               'pro-monthly-trial-1',
+    'premium-studio-yearly-1-99':       'premium-studio-monthly-1-149',
+    'premium-studio-monthly-1-149':     'pro-monthly-trial-1',
+    'pro-monthly-trial-1':              'occasional-monthly-trial-1',
+    'scale-yearly-offer':               'scale-quarterly-offer',
+    'scale-quarterly-offer':            'grow-monthly',
+    'scale-yearly':                     'scale-monthly',
+    'scale-monthly':                    'grow-monthly',
+    'grow-yearly-offer':                'grow-monthly-offer',
+    'grow-yearly':                      'grow-monthly',
+    'grow-monthly-offer':               'launch-monthly-trial',
+    'grow-monthly':                     'launch-monthly-trial',
+    'launch-yearly-trial':              'launch-monthly-trial',
+    'cercle-semester':                  'cercle-quarterly',
+    'cercle-quarterly':                 'cercle-monthly',
+    'pioneer-yearly':                   'pioneer-quarterly',
+    'pioneer-quarterly':                'pioneer-monthly'
+};
+
+
 const sandboxPlanPresets = {
     'pro-monthly-trial': {
         tier: 'Pro',

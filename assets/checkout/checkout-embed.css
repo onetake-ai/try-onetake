@@ -1,0 +1,680 @@
+/* OneTake AI - Embeddable Checkout Snippet Styles
+   All classes prefixed with otc- to avoid collisions with host page */
+
+.otc-root {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    color: #241826;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.otc-root *,
+.otc-root *::before,
+.otc-root *::after {
+    box-sizing: border-box;
+}
+
+.otc-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(36, 24, 38, 0.08);
+    border: 1px solid rgba(36, 24, 38, 0.06);
+    max-width: 480px;
+    margin: 0 auto;
+    transition: box-shadow 250ms ease;
+}
+
+.otc-card:hover {
+    box-shadow: 0 8px 30px rgba(36, 24, 38, 0.12);
+}
+
+.otc-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #E3AE28;
+    margin: 0 0 1.5rem;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+/* Steps */
+.otc-step {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.otc-step[hidden] {
+    display: none;
+}
+
+/* Form group */
+.otc-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.otc-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #241826;
+    letter-spacing: 0.01em;
+}
+
+.otc-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #241826;
+    background: #F8F7F7;
+    border: 2px solid rgba(36, 24, 38, 0.1);
+    border-radius: 8px;
+    outline: none;
+    transition: all 250ms ease;
+}
+
+.otc-input::placeholder {
+    color: rgba(36, 24, 38, 0.4);
+}
+
+.otc-input:hover {
+    border-color: rgba(36, 24, 38, 0.2);
+}
+
+.otc-input:focus {
+    border-color: #E3AE28;
+    box-shadow: 0 0 0 4px rgba(227, 174, 40, 0.15);
+    background: white;
+}
+
+.otc-input.otc-error {
+    border-color: #D33E5D;
+    background: rgba(211, 62, 93, 0.03);
+}
+
+/* Error message */
+.otc-error-msg {
+    font-size: 0.8125rem;
+    color: #D33E5D;
+    font-weight: 500;
+    min-height: 1.25rem;
+    display: block;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.otc-error-msg:not(:empty) {
+    opacity: 1;
+}
+
+/* Plan radio list */
+.otc-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.otc-plan-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #241826;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.25rem;
+}
+
+.otc-plan-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: #F8F7F7;
+    border: 2px solid rgba(36, 24, 38, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 250ms ease;
+}
+
+.otc-plan-option:hover {
+    border-color: rgba(36, 24, 38, 0.2);
+}
+
+.otc-plan-option.otc-selected {
+    border-color: #E3AE28;
+    background: rgba(227, 174, 40, 0.05);
+}
+
+.otc-plan-option input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(36, 24, 38, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: all 150ms ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.otc-plan-option input[type="radio"]:checked {
+    border-color: #E3AE28;
+}
+
+.otc-plan-option input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 8px;
+    height: 8px;
+    background: #E3AE28;
+    border-radius: 50%;
+}
+
+.otc-plan-text {
+    flex: 1;
+}
+
+.otc-plan-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #241826;
+    display: block;
+    line-height: 1.3;
+}
+
+.otc-plan-price {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgba(36, 24, 38, 0.7);
+    display: block;
+    margin-top: 0.125rem;
+}
+
+/* Use case dropdown (checkbox multi-select) */
+.otc-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.otc-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    background: #F8F7F7;
+    border: 2px solid rgba(36, 24, 38, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 250ms ease;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #241826;
+}
+
+.otc-dropdown-trigger:hover {
+    border-color: rgba(36, 24, 38, 0.2);
+}
+
+.otc-dropdown-trigger:focus,
+.otc-dropdown.otc-open .otc-dropdown-trigger {
+    border-color: #E3AE28;
+    box-shadow: 0 0 0 4px rgba(227, 174, 40, 0.15);
+    background: white;
+}
+
+.otc-dropdown-trigger.otc-error {
+    border-color: #D33E5D;
+    background: rgba(211, 62, 93, 0.03);
+}
+
+.otc-dropdown-arrow {
+    flex-shrink: 0;
+    color: rgba(36, 24, 38, 0.4);
+    transition: transform 250ms ease;
+}
+
+.otc-dropdown.otc-open .otc-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.otc-chips {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    align-items: center;
+}
+
+.otc-placeholder {
+    color: rgba(36, 24, 38, 0.4);
+    font-size: 1rem;
+}
+
+.otc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    background: #E3AE28;
+    color: white;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: otcChipAppear 0.2s ease;
+}
+
+@keyframes otcChipAppear {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.otc-chip-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 150ms ease;
+    border: none;
+    padding: 0;
+    color: white;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.otc-chip-remove:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.otc-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid rgba(36, 24, 38, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(36, 24, 38, 0.12);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 250ms ease;
+    padding: 0.5rem;
+}
+
+.otc-dropdown.otc-open .otc-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.otc-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 150ms ease;
+}
+
+.otc-dropdown-option:hover {
+    background: rgba(227, 174, 40, 0.05);
+}
+
+.otc-dropdown-option input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(36, 24, 38, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 150ms ease;
+    flex-shrink: 0;
+}
+
+.otc-dropdown-option input[type="checkbox"]:hover {
+    border-color: #E3AE28;
+}
+
+.otc-dropdown-option input[type="checkbox"]:checked {
+    background: #E3AE28;
+    border-color: #E3AE28;
+}
+
+.otc-dropdown-option input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.otc-dropdown-option span {
+    flex: 1;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: #241826;
+    cursor: pointer;
+    user-select: none;
+}
+
+.otc-dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.otc-dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(36, 24, 38, 0.05);
+    border-radius: 4px;
+}
+
+.otc-dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(36, 24, 38, 0.2);
+    border-radius: 4px;
+}
+
+/* Frequency select */
+.otc-select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #241826;
+    background: #F8F7F7;
+    border: 2px solid rgba(36, 24, 38, 0.1);
+    border-radius: 8px;
+    outline: none;
+    transition: all 250ms ease;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23241826' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.otc-select:hover {
+    border-color: rgba(36, 24, 38, 0.2);
+}
+
+.otc-select:focus {
+    border-color: #E3AE28;
+    box-shadow: 0 0 0 4px rgba(227, 174, 40, 0.15);
+    background-color: white;
+}
+
+/* CTA button */
+.otc-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    margin-top: 0.5rem;
+    font-family: inherit;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #E3AE28 0%, #d49b1f 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 250ms ease;
+    box-shadow: 0 4px 14px rgba(227, 174, 40, 0.3);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.01em;
+}
+
+.otc-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.otc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(227, 174, 40, 0.4);
+}
+
+.otc-btn:hover::before {
+    left: 100%;
+}
+
+.otc-btn:active {
+    transform: translateY(0);
+}
+
+.otc-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.otc-btn:disabled:hover {
+    box-shadow: 0 4px 14px rgba(227, 174, 40, 0.3);
+}
+
+/* Spinner */
+.otc-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: otcSpin 0.6s linear infinite;
+}
+
+@keyframes otcSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Privacy footer */
+.otc-privacy {
+    margin-top: 1rem;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.otc-privacy p {
+    font-size: 0.75rem;
+    color: rgba(36, 24, 38, 0.4);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.otc-privacy a {
+    color: rgba(36, 24, 38, 0.5);
+    text-decoration: underline;
+    transition: color 250ms ease;
+}
+
+.otc-privacy a:hover {
+    color: #E3AE28;
+}
+
+/* Downsell overlay (scoped to container) */
+.otc-downsell-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(36, 24, 38, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border-radius: 20px;
+}
+
+.otc-downsell-overlay.otc-open {
+    display: flex;
+}
+
+.otc-downsell-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(36, 24, 38, 0.25);
+    text-align: center;
+}
+
+.otc-downsell-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: rgba(36, 24, 38, 0.4);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 150ms ease;
+}
+
+.otc-downsell-close:hover {
+    background: rgba(36, 24, 38, 0.05);
+    color: #241826;
+}
+
+.otc-downsell-eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #E3AE28;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.otc-downsell-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #241826;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.otc-downsell-body {
+    font-size: 0.9375rem;
+    color: rgba(36, 24, 38, 0.7);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+}
+
+.otc-downsell-plan {
+    background: rgba(227, 174, 40, 0.08);
+    border: 2px solid #E3AE28;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.otc-downsell-plan-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: rgba(36, 24, 38, 0.6);
+    margin-bottom: 0.375rem;
+}
+
+.otc-downsell-plan-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #241826;
+}
+
+.otc-downsell-plan-note {
+    font-size: 0.8125rem;
+    color: #E3AE28;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.otc-downsell-cta {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #E3AE28, #d49b1f);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(227, 174, 40, 0.3);
+    transition: all 250ms ease;
+    margin-bottom: 0.75rem;
+}
+
+.otc-downsell-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(227, 174, 40, 0.4);
+}
+
+.otc-downsell-dismiss {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: rgba(36, 24, 38, 0.5);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 250ms ease;
+}
+
+.otc-downsell-dismiss:hover {
+    color: #241826;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .otc-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .otc-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .otc-card {
+        padding: 1.25rem;
+    }
+}
