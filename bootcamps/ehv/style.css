@@ -77,6 +77,20 @@
   color: rgba(248, 247, 247, 0.3);
 }
 
+.episode-nav-item.is-locked {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.episode-nav-item.is-locked .episode-nav-label {
+  color: rgba(248, 247, 247, 0.35);
+}
+
+.episode-nav-item.is-locked .episode-nav-status {
+  color: rgba(248, 247, 247, 0.25);
+  font-style: italic;
+}
+
 /* ── MAIN CONTENT ── */
 main.bootcamp-main {
   flex: 1;
