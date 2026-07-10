@@ -6,6 +6,7 @@
   <title>Le canal Telegram de Sébastien Night — Entrepreneur Libre</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
   <!-- Open Graph Metadata -->
   <meta property="og:title" content="Le canal Telegram de conseils pour devenir Entrepreneur Libre !">
@@ -17,294 +18,6 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Le canal Telegram de conseils pour devenir Entrepreneur Libre !">
   <meta name="twitter:description" content="Un canal exclusif de mentoring pour les coaches, consultants et formateurs qui veulent devenir Entrepreneurs Libres.">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --golden-grass: #E3AE28;
-      --bleached-cedar: #241826;
-      --alabaster: #F8F7F7;
-      --white: #ffffff;
-      --muted: rgba(36, 24, 38, 0.65);
-      --border: rgba(36, 24, 38, 0.1);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 15px;
-      color: var(--bleached-cedar);
-      background: var(--alabaster);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── MOBILE STICKY CTA ── */
-    .mobile-sticky-cta {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background: var(--bleached-cedar);
-      padding: 0.75rem 1.25rem;
-      box-shadow: 0 2px 12px rgba(36, 24, 38, 0.2);
-    }
-    .mobile-sticky-cta .btn-tg { width: 100%; justify-content: center; }
-
-    /* ── SPLIT LAYOUT ── */
-    .split {
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      flex: 1;
-      min-height: 100vh;
-    }
-
-    .left {
-      padding: 4rem 3.5rem 4rem 4rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .right {
-      background: var(--white);
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 3rem 2rem;
-      overflow-y: auto;
-    }
-
-    /* ── LEFT CONTENT ── */
-    .eyebrow {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--golden-grass);
-      background: rgba(227, 174, 40, 0.1);
-      border: 1px solid rgba(227, 174, 40, 0.3);
-      border-radius: 100px;
-      padding: 0.3rem 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 700;
-      line-height: 1.2;
-      color: var(--bleached-cedar);
-      margin-bottom: 1.5rem;
-    }
-
-    h1 em {
-      font-style: normal;
-      color: var(--golden-grass);
-    }
-
-    .intro {
-      font-size: 15px;
-      line-height: 1.75;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
-    ul.perks {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
-
-    ul.perks li {
-      position: relative;
-      padding-left: 1.75rem;
-      font-size: 15px;
-      line-height: 1.75;
-      color: var(--bleached-cedar);
-      margin-bottom: 0.6rem;
-    }
-
-    ul.perks li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--golden-grass);
-      font-weight: 700;
-    }
-
-    ul.perks li strong { font-weight: 600; }
-
-    .card-info {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--golden-grass);
-      border-radius: 0 12px 12px 0;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .card-info h2 {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--golden-grass);
-      margin-bottom: 0.6rem;
-    }
-
-    .card-info p {
-      font-size: 13.5px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .card-info p + p { margin-top: 0.5rem; }
-
-    .install-steps {
-      margin-top: 0.75rem;
-      padding-left: 0;
-      list-style: none;
-    }
-
-    .install-steps li {
-      font-size: 13px;
-      line-height: 1.65;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-      padding-left: 1.25rem;
-      position: relative;
-    }
-
-    .install-steps li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: var(--golden-grass);
-      font-weight: 600;
-    }
-
-    .install-steps a { color: var(--bleached-cedar); font-weight: 600; }
-    .install-steps a:hover { color: var(--golden-grass); }
-
-    /* ── CTA BUTTON ── */
-    .btn-tg {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: var(--golden-grass);
-      color: var(--bleached-cedar);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      text-decoration: none;
-      padding: 1rem 2rem;
-      border-radius: 10px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      white-space: nowrap;
-    }
-
-    .btn-tg:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(227, 174, 40, 0.4);
-    }
-
-    .btn-tg svg { width: 1.2rem; height: 1.2rem; flex-shrink: 0; }
-
-    .cta-wrap { margin-bottom: 1.5rem; }
-
-    .closing {
-      font-size: 13.5px;
-      line-height: 1.75;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    /* ── RIGHT PANEL ── */
-    .panel-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.25rem;
-      text-align: center;
-      width: 100%;
-    }
-
-    .tg-feed {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .panel-cta {
-      margin-top: 1.5rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .panel-cta .btn-tg { width: 100%; justify-content: center; }
-
-    .panel-free {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      font-size: 11px;
-      color: rgba(0, 0, 0, 0.7);
-      line-height: 1.7;
-    }
-
-    footer .footer-inner {
-      max-width: 780px;
-      margin: 0 auto;
-    }
-
-    footer p { margin-bottom: 0.75rem; }
-    footer p:last-child { margin-bottom: 0; }
-    footer a { color: inherit; text-decoration: underline; }
-    footer a:hover { color: var(--golden-grass); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .mobile-sticky-cta { display: block; }
-
-      .split {
-        grid-template-columns: 1fr;
-        min-height: 0;
-      }
-
-      .left {
-        padding: 2.5rem 1.5rem 2rem;
-        justify-content: flex-start;
-      }
-
-      .right {
-        border-left: none;
-        border-top: 1px solid var(--border);
-        padding: 2rem 1.5rem 3rem;
-      }
-
-      h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
-    }
-  </style>
 </head>
 <body>
 
@@ -340,22 +53,22 @@
         C'est une excellente manière de vous connecter directement avec moi et avec une communauté d'Entrepreneurs Libres.
       </p>
 
+      <div class="cta-wrap">
+        <a class="btn-tg" href="https://www.sebastiennight.com/telegram/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 4.03 2.7 11.27c-1.26.5-1.25 1.2-.23 1.51l4.7 1.47 1.82 5.6c.22.55.36.78.72.78.36 0 .53-.16.76-.4l2.2-2.13 4.56 3.36c.85.47 1.46.23 1.67-.78l3.03-14.3c.32-1.28-.22-1.85-1.13-1.35Zm-11.3 9.87-1.65-.52 9.85-6.1c.28-.17.48-.08.28.1l-8.48 6.52Zm.55 4.24-1-3.06 6.1-4.68c.24-.17.4-.03.28.14l-5.38 7.6Z"/></svg>
+          Rejoindre le canal gratuitement
+        </a>
+      </div>
+
       <div class="card-info">
         <h2>Vous ne connaissez pas Telegram ?</h2>
         <p>C'est comme WhatsApp, mais c'est anonyme et beaucoup plus sécurisé ; vous pouvez recevoir mes messages sans que votre numéro soit diffusé aux autres membres du groupe.</p>
         <p>Pour rejoindre le groupe, installez simplement Telegram ; c'est entièrement gratuit.</p>
         <ol class="install-steps">
           <li><a href="https://telegram.org/" target="_blank" rel="noopener">Installez Telegram (gratuit) sur Windows, macOS, Linux, iOS ou Android</a></li>
-          <li>Cliquez sur le bouton ci-dessous</li>
+          <li>Cliquez sur le bouton ci-dessus</li>
           <li>Vous rejoignez le groupe, c'est fait !</li>
         </ol>
-      </div>
-
-      <div class="cta-wrap">
-        <a class="btn-tg" href="https://www.sebastiennight.com/telegram/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 4.03 2.7 11.27c-1.26.5-1.25 1.2-.23 1.51l4.7 1.47 1.82 5.6c.22.55.36.78.72.78.36 0 .53-.16.76-.4l2.2-2.13 4.56 3.36c.85.47 1.46.23 1.67-.78l3.03-14.3c.32-1.28-.22-1.85-1.13-1.35Zm-11.3 9.87-1.65-.52 9.85-6.1c.28-.17.48-.08.28.1l-8.48 6.52Zm.55 4.24-1-3.06 6.1-4.68c.24-.17.4-.03.28.14l-5.38 7.6Z"/></svg>
-          Rejoindre le canal gratuitement
-        </a>
       </div>
 
       <p class="closing">
@@ -371,12 +84,10 @@
 
       <div class="tg-feed" id="tg-feed">
 
-        <!-- Fixed posts: /6, /8, /9 (existing as of page creation) -->
-        <script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/6" data-width="100%"></script>
-        <script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/8" data-width="100%"></script>
-        <script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/9" data-width="100%"></script>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/6" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/8" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/9" data-width="100%"></script></div>
 
-        <!-- Dynamic posts: computed from today's date -->
         <div id="tg-dynamic"></div>
 
       </div>
@@ -396,44 +107,55 @@
   <!-- ══════════════ FOOTER ══════════════ -->
   <footer>
     <div class="footer-inner">
-      <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-      <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
-      <p><strong>What is OneTake?</strong></p>
-      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake.AI, the first all-in-one video editing software powered by artificial intelligence</a>.</p>
+      <p>En vous inscrivant, vous acceptez les <a href="https://www.onetake.ai/terms-of-service" target="_blank">CGV et politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <p>Vous avez une audience d'entrepreneurs ? Vous pouvez <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">devenir affilié d'OneTake AI et toucher des commissions récurrentes</a>.</p>
+      <p><strong>Qu'est-ce qu'OneTake ?</strong></p>
+      <p><strong>OneTake AI transforme vos vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, formateurs, coachs et auteurs à créer et publier leurs contenus vidéo, nous avons créé <a href="https://www.onetake.ai" target="_blank">OneTake.AI, le premier logiciel de montage vidéo tout-en-un propulsé par l'intelligence artificielle</a>.</p>
       <p>
-        Useful links:
-        <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a>
+        Liens utiles :
+        <a href="https://www.onetake.ai/blog" target="_blank">Le Blog OneTake</a>
         &middot;
-        <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a>
+        <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (avis clients)</a>
         &middot;
-        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a>
+        <a href="https://docs.onetake.ai/en/" target="_blank">FAQ et documentation</a>
       </p>
       <p></p>
-      <p><strong>Who came up with the idea?</strong></p>
-      <p>Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement — an organization supporting over 20,000 entrepreneur clients and 300,000 supporters in 41 countries since 2010. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to create a tool that would be both incredibly powerful and utterly easy to use: OneTake.</strong></p>
+      <p><strong>À l'origine de l'idée</strong></p>
+      <p>Sébastien Night, notre CEO, est le fondateur du Mouvement des Entrepreneurs Libres ; une organisation qui accompagne plus de 20 000 clients entrepreneurs et 300 000 sympathisants dans 41 pays depuis 2010. <strong>Après avoir produit et monté des milliers de vidéos lui-même pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et facile à utiliser : OneTake.</strong></p>
       <p></p>
       <p>
-        <span>To contact Sébastien and his team,</span>
-        <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a>
+        <span>Pour contacter Sébastien et son équipe,</span>
+        <a href="https://www.onetake.ai/contact" target="_blank">cliquez simplement ici</a>
       </p>
     </div>
   </footer>
 
   <script>
     (function () {
-      var baseDate = Date.UTC(2026, 6, 10); // July 10, 2026
+      // July 10, 2026 — JS months are 0-indexed: 6 = July
+      var baseDate = Date.UTC(2026, 6, 10);
       var daysSince = Math.floor((Date.now() - baseDate) / 86400000);
       var n1 = 10 + daysSince;
       var n2 = 11 + daysSince;
       var container = document.getElementById('tg-dynamic');
       [n1, n2].forEach(function (n) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'tg-post';
         var s = document.createElement('script');
         s.async = true;
         s.src = 'https://telegram.org/js/telegram-widget.js?24';
         s.setAttribute('data-telegram-post', 'sebastiennight/' + n);
         s.setAttribute('data-width', '100%');
-        container.appendChild(s);
+        wrapper.appendChild(s);
+        container.appendChild(wrapper);
       });
+
+      function scrollFeedToBottom() {
+        var feed = document.getElementById('tg-feed');
+        if (feed) feed.scrollTop = feed.scrollHeight;
+      }
+      [500, 1500, 4000].forEach(function (ms) { setTimeout(scrollFeedToBottom, ms); });
+      window.addEventListener('load', scrollFeedToBottom);
     })();
   </script>
 
