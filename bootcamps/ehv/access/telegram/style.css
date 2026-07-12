@@ -38,10 +38,8 @@ body {
 .split {
   display: grid;
   grid-template-columns: 3fr 2fr;
-  grid-template-rows: 1fr;
-  align-items: stretch;
+  align-items: start;
   flex: 1;
-  min-height: 0;
 }
 
 .left {
@@ -49,7 +47,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow-y: auto;
 }
 
 .right {
@@ -230,7 +227,6 @@ ul.perks li strong { font-weight: 600; }
   padding: 1rem;
   overflow-y: auto;
   flex: 1;
-  min-height: 0;
 }
 
 .tg-post {
