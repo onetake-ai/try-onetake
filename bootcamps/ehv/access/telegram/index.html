@@ -150,12 +150,25 @@
         container.appendChild(wrapper);
       });
 
+      function syncHeight() {
+        var left = document.querySelector('.left');
+        var right = document.querySelector('.right');
+        if (!left || !right || window.innerWidth <= 900) {
+          if (right) right.style.maxHeight = '';
+          return;
+        }
+        right.style.maxHeight = left.offsetHeight + 'px';
+      }
+
       function scrollFeedToBottom() {
         var feed = document.getElementById('tg-feed');
         if (feed) feed.scrollTop = feed.scrollHeight;
       }
-      [500, 1500, 4000].forEach(function (ms) { setTimeout(scrollFeedToBottom, ms); });
-      window.addEventListener('load', scrollFeedToBottom);
+
+      function update() { syncHeight(); scrollFeedToBottom(); }
+      [500, 1500, 4000].forEach(function (ms) { setTimeout(update, ms); });
+      window.addEventListener('load', update);
+      window.addEventListener('resize', syncHeight);
     })();
   </script>
 
