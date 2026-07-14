@@ -82,12 +82,29 @@
 
       <p class="panel-label">Aperçu du canal Telegram</p>
 
+      <script>
+      (function () {
+        var obs = new MutationObserver(function (mutations) {
+          for (var i = 0; i < mutations.length; i++) {
+            var nodes = mutations[i].addedNodes;
+            for (var j = 0; j < nodes.length; j++) {
+              var el = nodes[j];
+              if (el.tagName === 'IFRAME' && el.src && el.src.indexOf('//t.me/') !== -1) {
+                el.src = el.src.replace('//t.me/', '//telegram.me/');
+              }
+            }
+          }
+        });
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      }());
+      </script>
+
       <div class="tg-feed" id="tg-feed">
 
-        <div class="tg-post"><script async src="https://telegram.me/js/telegram-widget.js?24" data-telegram-post="sebastiennight/6" data-width="100%"></script></div>
-        <div class="tg-post"><script async src="https://telegram.me/js/telegram-widget.js?24" data-telegram-post="sebastiennight/8" data-width="100%"></script></div>
-        <div class="tg-post"><script async src="https://telegram.me/js/telegram-widget.js?24" data-telegram-post="sebastiennight/9" data-width="100%"></script></div>
-        <div class="tg-post"><script async src="https://telegram.me/js/telegram-widget.js?24" data-telegram-post="sebastiennight/10" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/6" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/8" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/9" data-width="100%"></script></div>
+        <div class="tg-post"><script async src="https://telegram.org/js/telegram-widget.js?24" data-telegram-post="sebastiennight/10" data-width="100%"></script></div>
 
         <div id="tg-dynamic"></div>
 
@@ -148,7 +165,7 @@
         wrapper.className = 'tg-post';
         var s = document.createElement('script');
         s.async = true;
-        s.src = 'https://telegram.me/js/telegram-widget.js?24';
+        s.src = 'https://telegram.org/js/telegram-widget.js?24';
         s.setAttribute('data-telegram-post', 'sebastiennight/' + n);
         s.setAttribute('data-width', '100%');
         wrapper.appendChild(s);
