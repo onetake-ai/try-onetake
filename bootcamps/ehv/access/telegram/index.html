@@ -153,7 +153,7 @@
       </p>
       <p></p>
       <p><strong>À l'origine de l'idée</strong></p>
-      <p><a href="https://www.sebastiennight.com/">Sébastien Night</a>a>, notre CEO, est le fondateur du Mouvement des Entrepreneurs Libres ; une organisation qui a accompagné plus de 300 000 entrepreneurs dans 41 pays depuis 2010. <strong>Après avoir produit et monté des milliers de vidéos lui-même pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et facile à utiliser : <a href="https://onetake.ai">OneTake</a>.</strong></p>
+      <p><a href="https://www.sebastiennight.com/">Sébastien Night</a>, notre CEO, est le fondateur du Mouvement des Entrepreneurs Libres ; une organisation qui a accompagné plus de 300 000 entrepreneurs dans 41 pays depuis 2010. <strong>Après avoir produit et monté des milliers de vidéos lui-même pendant plus de 15 ans, Sébastien a décidé de créer un outil à la fois incroyablement puissant et facile à utiliser : <a href="https://onetake.ai">OneTake</a>.</strong></p>
       <p></p>
       <p>
         <span>Pour contacter Sébastien et son équipe,</span>
@@ -208,5 +208,16 @@
     })();
   </script>
 
+
+  <script src="/tools.js"></script>
+  <script>
+    document.querySelectorAll('.btn-tg').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (window.plausible) plausible('OutboundClick', { props: { url: el.href } });
+        if (window.AnyTrack) AnyTrack('trigger', 'OutboundClick', { url: el.href });
+        (window.CE_API || (window.CE_API = [])).push(function () { CE2.converted('d6c78aab-c488-4ec2-830b-d818f32f27e9'); });
+      });
+    });
+  </script>
 </body>
 </html>
