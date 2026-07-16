@@ -208,6 +208,15 @@
     })();
   </script>
 
+  <script>
+    document.querySelectorAll('.btn-tg').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (window.plausible) plausible('OutboundClick', { props: { url: el.href } });
+        if (window.AnyTrack) AnyTrack('trigger', 'OutboundClick', { url: el.href });
+      });
+    });
+  </script>
+
   <script src="/tools.js"></script>
 </body>
 </html>
