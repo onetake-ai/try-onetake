@@ -213,6 +213,7 @@
       el.addEventListener('click', function () {
         if (window.plausible) plausible('OutboundClick', { props: { url: el.href } });
         if (window.AnyTrack) AnyTrack('trigger', 'OutboundClick', { url: el.href });
+        (window.CE_API || (window.CE_API = [])).push(function () { CE2.converted('d6c78aab-c488-4ec2-830b-d818f32f27e9'); });
       });
     });
   </script>
