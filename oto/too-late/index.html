@@ -12,7 +12,7 @@
   <script src="../../tools.js"></script>
   <style>
     .too-late-wrap {
-      max-width: 640px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 5rem 2rem 4rem;
       text-align: center;
@@ -45,7 +45,7 @@
       font-weight: 400;
       line-height: 1.75;
       color: #5a5260;
-      max-width: 520px;
+      max-width: 560px;
       text-wrap: pretty;
     }
     .too-late-body a {
@@ -58,26 +58,78 @@
     .too-late-body a:hover {
       color: var(--golden-grass);
     }
-    .too-late-cta {
-      display: inline-block;
-      background: var(--golden-grass);
-      color: var(--bleached-cedar);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 0.9rem 2.25rem;
-      margin-top: 0.5rem;
-      transition: opacity 0.15s;
-    }
-    .too-late-cta:hover { opacity: 0.85; }
     .too-late-divider {
       width: 40px;
       height: 2px;
       background: var(--golden-grass);
       opacity: 0.4;
     }
+
+    /* ── Cards ── */
+    .too-late-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      text-align: left;
+    }
+    .too-late-card {
+      background: var(--white);
+      border: 1.5px solid rgba(36, 24, 38, 0.09);
+      border-radius: 4px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .too-late-card--primary {
+      border-color: var(--golden-grass);
+    }
+    .too-late-card-icon {
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+    .too-late-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--bleached-cedar);
+      line-height: 1.25;
+    }
+    .too-late-card-desc {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #5a5260;
+      flex: 1;
+      text-wrap: pretty;
+    }
+    .too-late-cta {
+      display: inline-block;
+      background: var(--golden-grass);
+      color: var(--bleached-cedar);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.8rem 1.5rem;
+      margin-top: 0.25rem;
+      align-self: flex-start;
+      transition: opacity 0.15s;
+    }
+    .too-late-cta:hover { opacity: 0.85; }
+    .too-late-cta--outline {
+      background: transparent;
+      color: var(--bleached-cedar);
+      border: 2px solid var(--bleached-cedar);
+    }
+    .too-late-cta--outline:hover {
+      opacity: 1;
+      background: var(--bleached-cedar);
+      color: var(--white);
+    }
+
     .too-late-contact {
       font-size: 0.82rem;
       color: #8a8090;
@@ -90,8 +142,10 @@
       text-underline-offset: 2px;
     }
     .too-late-contact a:hover { color: var(--golden-grass); }
-    @media (max-width: 480px) {
+
+    @media (max-width: 560px) {
       .too-late-wrap { padding: 3rem 1.25rem 3rem; }
+      .too-late-cards { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -124,11 +178,32 @@
       <div class="too-late-divider"></div>
 
       <p class="too-late-body">
-        The good news? You can still grow your coaching or online course business with OneTake.
-        Try it free and see how much time you save on video editing — starting today.
+        The good news? There are still two great ways to move forward from here.
       </p>
 
-      <a href="https://www.onetake.ai/pricing" class="too-late-cta">Try OneTake for free</a>
+      <div class="too-late-cards">
+
+        <div class="too-late-card too-late-card--primary">
+          <div class="too-late-card-icon">🎬</div>
+          <p class="too-late-card-title">Try OneTake for free</p>
+          <p class="too-late-card-desc">
+            Start editing your videos in minutes. OneTake removes silences, adds captions,
+            builds a background track, and more — all automatically, at no cost to start.
+          </p>
+          <a href="https://www.onetake.ai/pricing" class="too-late-cta">Get started free</a>
+        </div>
+
+        <div class="too-late-card">
+          <div class="too-late-card-icon">💬</div>
+          <p class="too-late-card-title">Join the free mentoring channel</p>
+          <p class="too-late-card-desc">
+            Get access to our private Telegram community — tips, feedback, and support
+            from the OneTake team and fellow entrepreneurs, at no charge.
+          </p>
+          <a href="https://try.onetake.ai/bootcamps/ehv/access/telegram/" class="too-late-cta too-late-cta--outline">Join on Telegram</a>
+        </div>
+
+      </div>
 
       <p class="too-late-contact">
         Have a question? <a href="https://www.onetake.ai/contact">Reach out to us here.</a>
