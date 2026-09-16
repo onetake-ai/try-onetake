@@ -130,6 +130,28 @@
       color: var(--white);
     }
 
+    .too-late-social {
+      font-size: 0.85rem;
+      color: #5a5260;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .too-late-social a {
+      color: var(--bleached-cedar);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--golden-grass);
+      text-underline-offset: 3px;
+    }
+    .too-late-social a:hover {
+      color: var(--golden-grass);
+    }
+    .too-late-social svg {
+      flex-shrink: 0;
+    }
+
     .too-late-contact {
       font-size: 0.82rem;
       color: #8a8090;
@@ -205,9 +227,37 @@
 
       </div>
 
+      <p class="too-late-social">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Follow us on Instagram for videos and advice: <a id="ig-link" href="https://www.instagram.com/yes.onetake.ai/" target="_blank" rel="noopener">@yes.onetake.ai</a>
+      </p>
+
       <p class="too-late-contact">
         Have a question? <a href="https://www.onetake.ai/contact">Reach out to us here.</a>
       </p>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          var link = document.getElementById('ig-link');
+          if (!link) return;
+          var lang = document.documentElement.lang;
+          if (lang && lang.substring(0, 2) === 'fr') {
+            link.href = 'https://www.instagram.com/onetake.ai/';
+            link.textContent = '@onetake.ai';
+          }
+          if (typeof Weglot !== 'undefined' && Weglot.on) {
+            Weglot.on('languageChanged', function (newLang) {
+              if (newLang === 'fr') {
+                link.href = 'https://www.instagram.com/onetake.ai/';
+                link.textContent = '@onetake.ai';
+              } else {
+                link.href = 'https://www.instagram.com/yes.onetake.ai/';
+                link.textContent = '@yes.onetake.ai';
+              }
+            });
+          }
+        });
+      </script>
 
     </div>
   </main>
