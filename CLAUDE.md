@@ -77,11 +77,29 @@ A self-contained embeddable checkout form that can be loaded on any page (same d
 
 | Attribute | Required | Default | Description |
 |-----------|----------|---------|-------------|
-| `data-plans` | Yes | — | Comma-separated plan keys from `pricing-data.js` |
+| `data-plans` | No* | `launch-monthly-trial` | Comma-separated plan keys from `pricing-data.js`. Required in standard mode; defaults to `launch-monthly-trial` in minimalist mode. |
 | `data-container` | Yes | — | ID of the mount element |
-| `data-cta-1` | No | Translated button text | Button text for step 1 |
-| `data-cta-2` | No | Same as cta-1 | Button text for step 2 |
+| `data-minimalist` | No | — | Presence enables minimalist mode: email + CTA inline, no name/use-case/frequency fields, opens Paddle checkout directly |
+| `data-cta-1` | No | Translated button text | Button text for step 1 (or the only CTA in minimalist mode) |
+| `data-cta-2` | No | Same as cta-1 | Button text for step 2 (ignored in minimalist mode) |
 | `data-success-url` | No | Plan's `successUrl` or `/onboarding/` | Post-purchase redirect URL |
+
+### Minimalist mode
+
+A compact inline layout (email field + CTA button side by side) that opens the Paddle checkout directly; no first name, use case, or frequency fields. Add `data-minimalist` to the script tag:
+
+```html
+<div id="onetake-checkout"></div>
+<script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
+        data-minimalist
+        data-container="onetake-checkout"></script>
+```
+
+When `data-plans` is omitted in minimalist mode, it defaults to `launch-monthly-trial`. Multiple plans still produce a radio selector above the email row.
+
+### Prices and VAT
+
+All prices displayed in the embed (plan radio labels, downsell modal) are shown **exclusive of VAT**. The localized price comes from Paddle's `PricePreview` subtotal. A localized "excl. VAT" label is appended automatically (e.g. "HT" in French, "zzgl. MwSt." in German).
 
 ### Multi-plan radio selector
 

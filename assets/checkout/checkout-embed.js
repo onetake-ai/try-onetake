@@ -24,8 +24,13 @@
         containerId: scriptEl.getAttribute('data-container'),
         cta1: scriptEl.getAttribute('data-cta-1') || '',
         cta2: scriptEl.getAttribute('data-cta-2') || '',
-        successUrl: scriptEl.getAttribute('data-success-url') || ''
+        successUrl: scriptEl.getAttribute('data-success-url') || '',
+        minimalist: scriptEl.hasAttribute('data-minimalist')
     };
+
+    if (config.plans.length === 0 && config.minimalist) {
+        config.plans = ['launch-monthly-trial'];
+    }
 
     if (!config.containerId || config.plans.length === 0) {
         console.error('OneTake Checkout Embed: data-container and data-plans are required');
@@ -142,6 +147,19 @@
         return map[recurrence] || '/' + recurrence;
     }
 
+    function getExclVatLabel() {
+        var labels = {
+            'fr': 'HT',
+            'de': 'zzgl. MwSt.',
+            'es': 'sin IVA',
+            'pt-br': 's/ IVA',
+            'it': 'IVA esclusa',
+            'ja': '税抜',
+            'ru': 'без НДС'
+        };
+        return labels[state.currentLanguage] || 'excl. VAT';
+    }
+
     // Build EUR fallback price text (shown until PricePreview responds)
     function buildFallbackPriceText(planInfo) {
         var price = planInfo.firstExpectedPayment || 0;
@@ -150,7 +168,7 @@
         if (planInfo.trial) {
             text = t('downsell.trialNote', { days: planInfo.trial }) + ', ';
         }
-        text += price + ' €' + suffix;
+        text += price + ' €' + suffix + ' ' + getExclVatLabel();
         return text;
     }
 
@@ -161,7 +179,7 @@
         if (planInfo.trial) {
             text = t('downsell.trialNote', { days: planInfo.trial }) + ', ';
         }
-        text += localizedPrice + suffix;
+        text += localizedPrice + suffix + ' ' + getExclVatLabel();
         return text;
     }
 
@@ -186,7 +204,7 @@
                 if (result && result.data && result.data.details && result.data.details.lineItems) {
                     result.data.details.lineItems.forEach(function(item) {
                         var priceId = item.price && item.price.id;
-                        var formatted = item.formattedTotals && item.formattedTotals.total;
+                        var formatted = item.formattedTotals && item.formattedTotals.subtotal;
                         if (priceId && formatted) {
                             // Extract numeric amount (in minor units) and currency symbol
                             var amount = parseInt(formatted.replace(/[^0-9]/g, ''), 10);
@@ -453,6 +471,8 @@
         if (cta1) cta1.textContent = getButtonText(1);
         var cta2 = container.querySelector('#otcCta2');
         if (cta2) cta2.textContent = getButtonText(2);
+        var minCta = container.querySelector('#otcMinCta');
+        if (minCta) minCta.textContent = getButtonText(1);
     }
 
     // Validate step 1 (name + email) and transition to step 2
@@ -564,6 +584,125 @@
     }
 
     // ======================================================================
+    // MINIMALIST MODE
+    // ======================================================================
+
+    function renderMinimalist() {
+        var multiPlan = config.plans.length > 1;
+
+        var html = '<div class="otc-root otc-minimalist" style="position:relative;">';
+
+        if (multiPlan) {
+            html += '<div class="otc-plans otc-plans-minimalist">';
+            config.plans.forEach(function(key, idx) {
+                var preset = activePlanPresets[key];
+                if (!preset) return;
+                var checked = idx === 0 ? ' checked' : '';
+                var selectedClass = idx === 0 ? ' otc-selected' : '';
+                html += '<div class="otc-plan-option' + selectedClass + '" data-plan-key="' + key + '">' +
+                    '<input type="radio" name="otcPlan" value="' + key + '"' + checked + '>' +
+                    '<div class="otc-plan-text">' +
+                    '<span class="otc-plan-name">' + (preset.tier || key) + '</span>' +
+                    '<span class="otc-plan-price" data-plan-price="' + key + '">' + buildFallbackPriceText(preset) + '</span>' +
+                    '</div>' +
+                    '</div>';
+            });
+            html += '</div>';
+        }
+
+        html += '<div class="otc-inline-row">' +
+            '<div class="otc-inline-field">' +
+            '<input class="otc-input" type="email" id="otcEmail" placeholder="' + t('placeholder.email') + '" autocomplete="email">' +
+            '<span class="otc-error-msg" id="otcEmailError"></span>' +
+            '</div>' +
+            '<button type="button" class="otc-btn otc-btn-inline" id="otcMinCta">' + getButtonText(1) + '</button>' +
+            '</div>';
+
+        html += '<div class="otc-downsell-overlay" id="otcDownsell"></div>';
+        html += '</div>';
+
+        container.innerHTML = html;
+        bindMinimalistEvents();
+    }
+
+    function bindMinimalistEvents() {
+        var cta = container.querySelector('#otcMinCta');
+        if (cta) cta.addEventListener('click', handleMinimalistSubmit);
+
+        var planOptions = container.querySelectorAll('.otc-plan-option');
+        planOptions.forEach(function(opt) {
+            opt.addEventListener('click', function() {
+                var radio = opt.querySelector('input[type="radio"]');
+                radio.checked = true;
+                planOptions.forEach(function(o) { o.classList.remove('otc-selected'); });
+                opt.classList.add('otc-selected');
+                selectPlan(opt.getAttribute('data-plan-key'));
+            });
+        });
+
+        var emailInput = container.querySelector('#otcEmail');
+        if (emailInput) {
+            emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleMinimalistSubmit();
+            });
+        }
+    }
+
+    function handleMinimalistSubmit() {
+        var emailInput = container.querySelector('#otcEmail');
+        var emailError = container.querySelector('#otcEmailError');
+        var email = (emailInput.value || '').trim();
+
+        if (!email) {
+            emailInput.classList.add('otc-error');
+            emailError.textContent = t('error.required');
+            return;
+        }
+        if (!core.isValidEmail(email)) {
+            emailInput.classList.add('otc-error');
+            emailError.textContent = t('error.email');
+            return;
+        }
+
+        emailInput.classList.remove('otc-error');
+        emailError.textContent = '';
+        state.formData.email = email;
+
+        var cta = container.querySelector('#otcMinCta');
+        if (cta) {
+            cta.disabled = true;
+            cta.innerHTML = '<span class="otc-spinner"></span>';
+        }
+
+        if (window.oneTakeTracking) {
+            state.trackingParams = window.oneTakeTracking.parseTrackingParams();
+        }
+
+        core.trackFormSubmit(state, isSandbox);
+        window.oneTakeState = state;
+
+        var checkoutOpts = {
+            onError: function(msg) {
+                console.error(msg);
+                if (cta) {
+                    cta.disabled = false;
+                    cta.textContent = getButtonText(1);
+                }
+            }
+        };
+        if (config.successUrl) {
+            checkoutOpts.successUrl = config.successUrl;
+        }
+
+        core.openCheckout(state, activePlanPresets, checkoutOpts);
+
+        if (cta) {
+            cta.disabled = false;
+            cta.textContent = getButtonText(1);
+        }
+    }
+
+    // ======================================================================
     // PADDLE EVENT HANDLING
     // ======================================================================
 
@@ -600,10 +739,10 @@
         var titleKey = isYearly ? 'downsell.title.yearly' : 'downsell.title.tier';
         var bodyKey = isYearly ? 'downsell.body.yearly' : 'downsell.body.tier';
 
-        var priceText = downsellPlan.firstExpectedPayment + ' €' + getRecurrenceLabel(downsellPlan.recurrence);
+        var priceText = downsellPlan.firstExpectedPayment + ' €' + getRecurrenceLabel(downsellPlan.recurrence) + ' ' + getExclVatLabel();
         var localizedPrice = localizedPrices[downsellPlan.product];
         if (localizedPrice) {
-            priceText = localizedPrice + getRecurrenceLabel(downsellPlan.recurrence);
+            priceText = localizedPrice + getRecurrenceLabel(downsellPlan.recurrence) + ' ' + getExclVatLabel();
         }
 
         var noteHtml = '';
@@ -692,7 +831,11 @@
 
             // Resolve first plan and render the form
             selectPlan(config.plans[0]);
-            renderStep1();
+            if (config.minimalist) {
+                renderMinimalist();
+            } else {
+                renderStep1();
+            }
 
             // Fetch localized prices to replace EUR fallback text
             fetchLocalizedPrices();
