@@ -703,12 +703,12 @@
 
 .otc-minimalist .otc-input {
     border-radius: 50px;
-    background: white;
+    background: #F8F7F7;
     border-color: rgba(36, 24, 38, 0.15);
 }
 
 .otc-minimalist .otc-input:focus {
-    background: white;
+    background: #F8F7F7;
 }
 
 .otc-btn-inline {
@@ -718,6 +718,7 @@
     flex-shrink: 0;
     border: 2px solid transparent;
     border-radius: 50px;
+    color: #241826;
 }
 
 @media (max-width: 480px) {
