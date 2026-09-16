@@ -41,6 +41,9 @@
     // Returns a plain object — string values for single occurrences,
     // array of strings if a key appears more than once.
     function parseTrackingParams(urlSearchParams) {
+        if (!urlSearchParams) {
+            urlSearchParams = new URLSearchParams(window.location.search);
+        }
         const result = {};
         const keys = getActiveParamKeys();
 
