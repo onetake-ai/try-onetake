@@ -684,6 +684,10 @@
     margin-bottom: 1rem;
 }
 
+.otc-minimalist .otc-plan-option {
+    border-radius: 50px;
+}
+
 .otc-inline-row {
     display: flex;
     gap: 0.75rem;
@@ -697,12 +701,23 @@
     gap: 0.375rem;
 }
 
+.otc-minimalist .otc-input {
+    border-radius: 50px;
+    background: white;
+    border-color: rgba(36, 24, 38, 0.15);
+}
+
+.otc-minimalist .otc-input:focus {
+    background: white;
+}
+
 .otc-btn-inline {
     width: auto;
     white-space: nowrap;
     margin-top: 0;
     flex-shrink: 0;
     border: 2px solid transparent;
+    border-radius: 50px;
 }
 
 @media (max-width: 480px) {
