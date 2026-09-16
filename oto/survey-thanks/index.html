@@ -238,26 +238,15 @@
       </p>
 
       <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        (function () {
           var link = document.getElementById('ig-link');
           if (!link) return;
-          var lang = document.documentElement.lang;
-          if (lang && lang.substring(0, 2) === 'fr') {
+          var lang = (navigator.language || '').substring(0, 2);
+          if (lang === 'fr') {
             link.href = 'https://www.instagram.com/onetake.ai/';
             link.textContent = '@onetake.ai';
           }
-          if (typeof Weglot !== 'undefined' && Weglot.on) {
-            Weglot.on('languageChanged', function (newLang) {
-              if (newLang === 'fr') {
-                link.href = 'https://www.instagram.com/onetake.ai/';
-                link.textContent = '@onetake.ai';
-              } else {
-                link.href = 'https://www.instagram.com/yes.onetake.ai/';
-                link.textContent = '@yes.onetake.ai';
-              }
-            });
-          }
-        });
+        })();
       </script>
 
     </div>
