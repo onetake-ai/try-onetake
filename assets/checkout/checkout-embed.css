@@ -711,6 +711,7 @@
     border-radius: 50px;
     background: #F8F7F7;
     border-color: rgba(36, 24, 38, 0.15);
+    line-height: 1.6;
 }
 
 .otc-minimalist .otc-input:focus {
