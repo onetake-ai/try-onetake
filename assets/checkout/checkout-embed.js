@@ -32,6 +32,10 @@
         config.plans = ['launch-monthly-trial'];
     }
 
+    if (config.minimalist && !config.cta1) {
+        config.cta1 = 'Try it free';
+    }
+
     if (!config.containerId || config.plans.length === 0) {
         console.error('OneTake Checkout Embed: data-container and data-plans are required');
         return;
