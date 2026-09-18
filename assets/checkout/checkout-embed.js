@@ -25,14 +25,17 @@
         cta1: scriptEl.getAttribute('data-cta-1') || '',
         cta2: scriptEl.getAttribute('data-cta-2') || '',
         successUrl: scriptEl.getAttribute('data-success-url') || '',
-        minimalist: scriptEl.hasAttribute('data-minimalist')
+        minimalist: scriptEl.hasAttribute('data-minimalist'),
+        lightbox: scriptEl.hasAttribute('data-lightbox'),
+        lightboxHeadline: scriptEl.getAttribute('data-lightbox-headline') || '',
+        lightboxSubheadline: scriptEl.getAttribute('data-lightbox-subheadline') || ''
     };
 
-    if (config.plans.length === 0 && config.minimalist) {
+    if (config.plans.length === 0 && (config.minimalist || config.lightbox)) {
         config.plans = ['launch-monthly-trial'];
     }
 
-    if (config.minimalist && !config.cta1) {
+    if ((config.minimalist || config.lightbox) && !config.cta1) {
         config.cta1 = 'Try it free';
     }
 
@@ -69,6 +72,7 @@
     var core = null;                // Reference to window.oneTakeCheckout
     var container = null;           // Mount-point DOM element
     var localizedPrices = {};       // productId → localized price string from Paddle PricePreview
+    var lightboxOverlay = null;     // Lightbox overlay element appended to document.body
 
     // ======================================================================
     // DEPENDENCY LOADING
@@ -124,6 +128,11 @@
                 console.warn('OneTake Checkout Embed:', err.message);
             });
         }));
+    }
+
+    // Return the DOM root for form elements (lightbox overlay or container)
+    function getFormRoot() {
+        return (config.lightbox && lightboxOverlay) ? lightboxOverlay : container;
     }
 
     // ======================================================================
@@ -232,10 +241,11 @@
 
     // Replace EUR fallback text in plan radio labels with localized prices
     function updatePlanRadioLabels() {
+        var root = getFormRoot();
         config.plans.forEach(function(key) {
             var preset = activePlanPresets[key];
             if (!preset) return;
-            var priceEl = container.querySelector('[data-plan-price="' + key + '"]');
+            var priceEl = root.querySelector('[data-plan-price="' + key + '"]');
             if (!priceEl) return;
             var localized = localizedPrices[preset.product];
             if (localized) {
@@ -477,6 +487,8 @@
         if (cta2) cta2.textContent = getButtonText(2);
         var minCta = container.querySelector('#otcMinCta');
         if (minCta) minCta.textContent = getButtonText(1);
+
+        if (config.lightbox) updateLightboxContent();
     }
 
     // Validate step 1 (name + email) and transition to step 2
@@ -707,6 +719,222 @@
     }
 
     // ======================================================================
+    // LIGHTBOX MODE
+    // ======================================================================
+
+    var savedBodyOverflow = '';
+
+    function renderLightbox() {
+        container.innerHTML = '<div class="otc-lightbox-trigger">' +
+            '<button type="button" class="otc-btn otc-btn-trigger" id="otcLbTrigger">' + getButtonText(1) + '</button>' +
+            '</div>';
+
+        lightboxOverlay = document.createElement('div');
+        lightboxOverlay.className = 'otc-root otc-lb-overlay';
+        lightboxOverlay.innerHTML = buildLightboxContent();
+        document.body.appendChild(lightboxOverlay);
+
+        bindLightboxEvents();
+    }
+
+    function getLightboxHeadlineText() {
+        var trialDays = state.planInfo ? getTrialDays(state.planInfo) : 3;
+        if (state.hasOneTimeCharge) return t('headlineOneDollarTrial', { days: trialDays });
+        if (state.hasTrial) return t('headline', { days: trialDays });
+        return t('headlineNoTrial');
+    }
+
+    function getLightboxSubmitText() {
+        if (state.hasOneTimeCharge) return t('button.submitOneDollarTrial');
+        if (state.hasTrial) return t('button.submit');
+        return t('button.submitNoTrial');
+    }
+
+    function buildBenefitsHtml() {
+        var trialDays = state.planInfo ? getTrialDays(state.planInfo) : 3;
+        var benefits = [];
+
+        if (state.hasOneTimeCharge) {
+            benefits.push(t('benefit.trialOneDollar'));
+            benefits.push(t('benefit.features'));
+            benefits.push(t('benefit.payOneDollar', { days: trialDays }));
+            benefits.push(t('benefit.cancel'));
+        } else if (state.hasTrial) {
+            benefits.push(t('benefit.trial'));
+            benefits.push(t('benefit.features'));
+            benefits.push(t('benefit.payNothing', { days: trialDays }));
+            benefits.push(t('benefit.cancel'));
+        } else {
+            benefits.push(t('benefit.features'));
+        }
+
+        return benefits.map(function(b) {
+            return '<li class="otc-lb-benefit">' + b + '</li>';
+        }).join('');
+    }
+
+    function buildLightboxContent() {
+        var multiPlan = config.plans.length > 1;
+        var eyebrowText = config.lightboxHeadline || t('special.headline');
+        var headlineText = config.lightboxSubheadline || getLightboxHeadlineText();
+
+        var html = '<div class="otc-lb-backdrop" id="otcLbBackdrop"></div>' +
+            '<div class="otc-lb-card">' +
+            '<button type="button" class="otc-lb-close" id="otcLbClose">&times;</button>' +
+            '<div class="otc-lb-eyebrow" id="otcLbEyebrow">' + eyebrowText + '</div>' +
+            '<div class="otc-lb-headline" id="otcLbHeadline">' + headlineText + '</div>' +
+            '<ul class="otc-lb-benefits" id="otcLbBenefits">' + buildBenefitsHtml() + '</ul>';
+
+        if (multiPlan) {
+            html += '<div class="otc-plans otc-lb-plans">';
+            config.plans.forEach(function(key, idx) {
+                var preset = activePlanPresets[key];
+                if (!preset) return;
+                var checked = idx === 0 ? ' checked' : '';
+                var selectedClass = idx === 0 ? ' otc-selected' : '';
+                html += '<div class="otc-plan-option' + selectedClass + '" data-plan-key="' + key + '">' +
+                    '<input type="radio" name="otcPlan" value="' + key + '"' + checked + '>' +
+                    '<div class="otc-plan-text">' +
+                    '<span class="otc-plan-name">' + (preset.tier || key) + '</span>' +
+                    '<span class="otc-plan-price" data-plan-price="' + key + '">' + buildFallbackPriceText(preset) + '</span>' +
+                    '</div>' +
+                    '</div>';
+            });
+            html += '</div>';
+        }
+
+        html += '<div class="otc-lb-email-group">' +
+            '<input class="otc-input" type="email" id="otcLbEmail" placeholder="' + t('placeholder.email') + '" autocomplete="email">' +
+            '<span class="otc-error-msg otc-lb-error" id="otcLbEmailError"></span>' +
+            '</div>' +
+            '<button type="button" class="otc-btn" id="otcLbSubmit">' + getLightboxSubmitText() + '</button>' +
+            '<div class="otc-lb-privacy"><p>' + t('footer.privacy') + '</p></div>' +
+            '<div class="otc-downsell-overlay" id="otcDownsell"></div>' +
+            '</div>';
+
+        return html;
+    }
+
+    function bindLightboxEvents() {
+        var trigger = container.querySelector('#otcLbTrigger');
+        if (trigger) trigger.addEventListener('click', openLightbox);
+
+        var close = lightboxOverlay.querySelector('#otcLbClose');
+        if (close) close.addEventListener('click', closeLightbox);
+
+        var backdrop = lightboxOverlay.querySelector('#otcLbBackdrop');
+        if (backdrop) backdrop.addEventListener('click', closeLightbox);
+
+        document.addEventListener('keydown', handleLightboxEscape);
+
+        var submit = lightboxOverlay.querySelector('#otcLbSubmit');
+        if (submit) submit.addEventListener('click', handleLightboxSubmit);
+
+        var emailInput = lightboxOverlay.querySelector('#otcLbEmail');
+        if (emailInput) {
+            emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLightboxSubmit();
+            });
+        }
+
+        var planOptions = lightboxOverlay.querySelectorAll('.otc-plan-option');
+        planOptions.forEach(function(opt) {
+            opt.addEventListener('click', function() {
+                var radio = opt.querySelector('input[type="radio"]');
+                radio.checked = true;
+                planOptions.forEach(function(o) { o.classList.remove('otc-selected'); });
+                opt.classList.add('otc-selected');
+                selectPlan(opt.getAttribute('data-plan-key'));
+            });
+        });
+    }
+
+    function openLightbox() {
+        savedBodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        lightboxOverlay.classList.add('otc-open');
+        var emailInput = lightboxOverlay.querySelector('#otcLbEmail');
+        if (emailInput) setTimeout(function() { emailInput.focus(); }, 300);
+    }
+
+    function closeLightbox() {
+        lightboxOverlay.classList.remove('otc-open');
+        document.body.style.overflow = savedBodyOverflow;
+    }
+
+    function handleLightboxEscape(e) {
+        if (e.key === 'Escape' && lightboxOverlay && lightboxOverlay.classList.contains('otc-open')) {
+            closeLightbox();
+        }
+    }
+
+    function handleLightboxSubmit() {
+        var emailInput = lightboxOverlay.querySelector('#otcLbEmail');
+        var emailError = lightboxOverlay.querySelector('#otcLbEmailError');
+        var email = (emailInput.value || '').trim();
+
+        if (!email) {
+            emailInput.classList.add('otc-error');
+            emailError.textContent = t('error.required');
+            return;
+        }
+        if (!core.isValidEmail(email)) {
+            emailInput.classList.add('otc-error');
+            emailError.textContent = t('error.email');
+            return;
+        }
+
+        emailInput.classList.remove('otc-error');
+        emailError.textContent = '';
+        state.formData.email = email;
+
+        var cta = lightboxOverlay.querySelector('#otcLbSubmit');
+        if (cta) {
+            cta.disabled = true;
+            cta.innerHTML = '<span class="otc-spinner"></span>';
+        }
+
+        if (window.oneTakeTracking) {
+            state.trackingParams = window.oneTakeTracking.parseTrackingParams();
+        }
+
+        core.trackFormSubmit(state, isSandbox);
+        window.oneTakeState = state;
+
+        var checkoutOpts = {
+            onError: function(msg) {
+                console.error(msg);
+                if (cta) {
+                    cta.disabled = false;
+                    cta.textContent = getLightboxSubmitText();
+                }
+            }
+        };
+        if (config.successUrl) {
+            checkoutOpts.successUrl = config.successUrl;
+        }
+
+        core.openCheckout(state, activePlanPresets, checkoutOpts);
+
+        if (cta) {
+            cta.disabled = false;
+            cta.textContent = getLightboxSubmitText();
+        }
+    }
+
+    function updateLightboxContent() {
+        if (!lightboxOverlay) return;
+        if (!config.lightboxSubheadline) {
+            var headline = lightboxOverlay.querySelector('#otcLbHeadline');
+            if (headline) headline.textContent = getLightboxHeadlineText();
+        }
+        var benefits = lightboxOverlay.querySelector('#otcLbBenefits');
+        if (benefits) benefits.innerHTML = buildBenefitsHtml();
+        var submit = lightboxOverlay.querySelector('#otcLbSubmit');
+        if (submit) submit.textContent = getLightboxSubmitText();
+    }
+
+    // ======================================================================
     // PADDLE EVENT HANDLING
     // ======================================================================
 
@@ -734,7 +962,7 @@
         state.downsellPlanKey = downsellKey;
         state.downsellPlanInfo = downsellPlan;
 
-        var overlay = container.querySelector('#otcDownsell');
+        var overlay = getFormRoot().querySelector('#otcDownsell');
         if (!overlay) return;
 
         // Determine downsell type: yearly→monthly or higher→lower tier
@@ -778,7 +1006,7 @@
 
     // Close the downsell overlay
     function hideDownsell() {
-        var overlay = container.querySelector('#otcDownsell');
+        var overlay = getFormRoot().querySelector('#otcDownsell');
         if (overlay) overlay.classList.remove('otc-open');
     }
 
@@ -835,7 +1063,9 @@
 
             // Resolve first plan and render the form
             selectPlan(config.plans[0]);
-            if (config.minimalist) {
+            if (config.lightbox) {
+                renderLightbox();
+            } else if (config.minimalist) {
                 renderMinimalist();
             } else {
                 renderStep1();

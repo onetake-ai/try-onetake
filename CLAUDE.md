@@ -77,11 +77,14 @@ A self-contained embeddable checkout form that can be loaded on any page (same d
 
 | Attribute | Required | Default | Description |
 |-----------|----------|---------|-------------|
-| `data-plans` | No* | `launch-monthly-trial` | Comma-separated plan keys from `pricing-data.js`. Required in standard mode; defaults to `launch-monthly-trial` in minimalist mode. |
+| `data-plans` | No* | `launch-monthly-trial` | Comma-separated plan keys from `pricing-data.js`. Required in standard mode; defaults to `launch-monthly-trial` in minimalist and lightbox modes. |
 | `data-container` | Yes | — | ID of the mount element |
 | `data-minimalist` | No | — | Presence enables minimalist mode: email + CTA inline, no name/use-case/frequency fields, opens Paddle checkout directly |
-| `data-cta-1` | No | Translated button text | Button text for step 1 (or the only CTA in minimalist mode) |
-| `data-cta-2` | No | Same as cta-1 | Button text for step 2 (ignored in minimalist mode) |
+| `data-lightbox` | No | — | Presence enables lightbox mode: renders only a CTA button; click opens a full-viewport overlay with headline, benefits, email, and submit |
+| `data-lightbox-headline` | No | Translated `special.headline` | Override the eyebrow marketing headline in the lightbox |
+| `data-lightbox-subheadline` | No | Translated trial-aware headline | Override the main action headline in the lightbox |
+| `data-cta-1` | No | Translated button text | Button text for step 1 (or the only CTA in minimalist/lightbox trigger) |
+| `data-cta-2` | No | Same as cta-1 | Button text for step 2 (ignored in minimalist and lightbox modes) |
 | `data-success-url` | No | Plan's `successUrl` or `/onboarding/` | Post-purchase redirect URL |
 
 ### Minimalist mode
@@ -96,6 +99,32 @@ A compact inline layout (email field + CTA button side by side) that opens the P
 ```
 
 When `data-plans` is omitted in minimalist mode, it defaults to `launch-monthly-trial`. Multiple plans still produce a radio selector above the email row.
+
+### Lightbox mode
+
+A button-only layout for tight spaces. Only a CTA button is rendered in the container; clicking it opens a full-viewport overlay lightbox with a marketing eyebrow headline, a trial-aware action headline, benefit bullets, an email field, and a submit CTA that opens the Paddle checkout. Add `data-lightbox` to the script tag:
+
+```html
+<div id="onetake-cta"></div>
+<script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
+        data-lightbox
+        data-container="onetake-cta"></script>
+```
+
+Both headlines are customizable via data attributes:
+
+```html
+<div id="onetake-cta"></div>
+<script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
+        data-lightbox
+        data-plans="pro-monthly-trial"
+        data-cta-1="Start editing now"
+        data-lightbox-headline="Your videos, professionally edited"
+        data-lightbox-subheadline="Try OneTake free for 7 days"
+        data-container="onetake-cta"></script>
+```
+
+When `data-plans` is omitted, it defaults to `launch-monthly-trial`. Multiple plans produce a radio selector inside the lightbox. The lightbox overlay is appended to `document.body` (not inside the container) so it covers the full viewport regardless of host page CSS. The downsell flow works inside the lightbox card after the Paddle checkout closes without purchase.
 
 ### Prices and VAT
 
