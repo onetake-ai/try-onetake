@@ -717,6 +717,15 @@
     background: #F8F7F7;
 }
 
+.otc-minimalist .otc-error-msg {
+    min-height: 0;
+    display: none;
+}
+
+.otc-minimalist .otc-error-msg:not(:empty) {
+    display: block;
+}
+
 .otc-btn-inline {
     width: auto;
     white-space: nowrap;
@@ -725,6 +734,7 @@
     border: 2px solid transparent;
     border-radius: 50px;
     color: #241826;
+    padding: 0.875rem 2rem;
 }
 
 @media (max-width: 480px) {
