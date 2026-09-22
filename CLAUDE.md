@@ -83,7 +83,7 @@ A self-contained embeddable checkout form that can be loaded on any page (same d
 | `data-lightbox` | No | — | Presence enables lightbox mode: renders only a CTA button; click opens a full-viewport overlay with headline, benefits, email, and submit |
 | `data-lightbox-headline` | No | Translated `special.headline` | Override the eyebrow marketing headline in the lightbox |
 | `data-lightbox-subheadline` | No | Translated trial-aware headline | Override the main action headline in the lightbox |
-| `data-trigger` | No | — | CSS selector for an existing element to use as the lightbox trigger (e.g. `#my-button`). When set, no trigger button is rendered and `data-container` is not required. Lightbox mode only. |
+| `data-trigger` | No | — | CSS selector for existing element(s) to use as lightbox triggers (e.g. `.cta-button` or `#my-button`). Binds to all matching elements. When set, no trigger button is rendered and `data-container` is not required. Lightbox mode only. |
 | `data-cta-1` | No | Translated button text | Button text for step 1 (or the only CTA in minimalist/lightbox trigger) |
 | `data-cta-2` | No | Same as cta-1 | Button text for step 2 (ignored in minimalist and lightbox modes) |
 | `data-success-url` | No | Plan's `successUrl` or `/onboarding/` | Post-purchase redirect URL |
@@ -125,18 +125,15 @@ Both headlines are customizable via data attributes:
         data-container="onetake-cta"></script>
 ```
 
-To attach the lightbox to an existing button (e.g. on a Webflow page), use `data-trigger` with a CSS selector instead of `data-container`:
+To attach the lightbox to existing buttons (e.g. on a Webflow page), use `data-trigger` with a CSS selector instead of `data-container`. The selector matches all elements with that class, so every CTA on the page opens the lightbox:
 
 ```html
-<!-- Existing Webflow button -->
-<a id="my-cta" href="#" class="webflow-button">Try it free</a>
-
 <script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
         data-lightbox
-        data-trigger="#my-cta"></script>
+        data-trigger=".cta-button"></script>
 ```
 
-When `data-trigger` is set, no trigger button is rendered and `data-container` is not required. The `click` event on the matched element opens the lightbox (with `preventDefault` so `<a>` tags don't navigate).
+When `data-trigger` is set, no trigger button is rendered and `data-container` is not required. The `click` event on every matched element opens the lightbox (with `preventDefault` so `<a>` tags don't navigate). Works with any CSS selector: `.class`, `#id`, `[data-attr]`, etc.
 
 When `data-plans` is omitted, it defaults to `launch-monthly-trial`. Multiple plans produce a radio selector inside the lightbox. The lightbox overlay is appended to `document.body` (not inside the container) so it covers the full viewport regardless of host page CSS. The downsell flow works inside the lightbox card after the Paddle checkout closes without purchase.
 

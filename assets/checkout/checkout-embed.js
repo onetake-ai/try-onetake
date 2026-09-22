@@ -820,17 +820,16 @@
     }
 
     function bindLightboxEvents() {
-        var triggerEl;
         if (config.trigger) {
-            triggerEl = document.querySelector(config.trigger);
-            if (triggerEl) {
-                triggerEl.addEventListener('click', function(e) {
+            var triggerEls = document.querySelectorAll(config.trigger);
+            triggerEls.forEach(function(el) {
+                el.addEventListener('click', function(e) {
                     e.preventDefault();
                     openLightbox();
                 });
-            }
+            });
         } else {
-            triggerEl = container.querySelector('#otcLbTrigger');
+            var triggerEl = container.querySelector('#otcLbTrigger');
             if (triggerEl) triggerEl.addEventListener('click', openLightbox);
         }
 
