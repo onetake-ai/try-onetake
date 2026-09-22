@@ -78,11 +78,12 @@ A self-contained embeddable checkout form that can be loaded on any page (same d
 | Attribute | Required | Default | Description |
 |-----------|----------|---------|-------------|
 | `data-plans` | No* | `launch-monthly-trial` | Comma-separated plan keys from `pricing-data.js`. Required in standard mode; defaults to `launch-monthly-trial` in minimalist and lightbox modes. |
-| `data-container` | Yes | — | ID of the mount element |
+| `data-container` | No* | — | ID of the mount element. Required unless using `data-trigger` in lightbox mode. |
 | `data-minimalist` | No | — | Presence enables minimalist mode: email + CTA inline, no name/use-case/frequency fields, opens Paddle checkout directly |
 | `data-lightbox` | No | — | Presence enables lightbox mode: renders only a CTA button; click opens a full-viewport overlay with headline, benefits, email, and submit |
 | `data-lightbox-headline` | No | Translated `special.headline` | Override the eyebrow marketing headline in the lightbox |
 | `data-lightbox-subheadline` | No | Translated trial-aware headline | Override the main action headline in the lightbox |
+| `data-trigger` | No | — | CSS selector for an existing element to use as the lightbox trigger (e.g. `#my-button`). When set, no trigger button is rendered and `data-container` is not required. Lightbox mode only. |
 | `data-cta-1` | No | Translated button text | Button text for step 1 (or the only CTA in minimalist/lightbox trigger) |
 | `data-cta-2` | No | Same as cta-1 | Button text for step 2 (ignored in minimalist and lightbox modes) |
 | `data-success-url` | No | Plan's `successUrl` or `/onboarding/` | Post-purchase redirect URL |
@@ -123,6 +124,19 @@ Both headlines are customizable via data attributes:
         data-lightbox-subheadline="Try OneTake free for 7 days"
         data-container="onetake-cta"></script>
 ```
+
+To attach the lightbox to an existing button (e.g. on a Webflow page), use `data-trigger` with a CSS selector instead of `data-container`:
+
+```html
+<!-- Existing Webflow button -->
+<a id="my-cta" href="#" class="webflow-button">Try it free</a>
+
+<script src="https://try.onetake.ai/assets/checkout/checkout-embed.js"
+        data-lightbox
+        data-trigger="#my-cta"></script>
+```
+
+When `data-trigger` is set, no trigger button is rendered and `data-container` is not required. The `click` event on the matched element opens the lightbox (with `preventDefault` so `<a>` tags don't navigate).
 
 When `data-plans` is omitted, it defaults to `launch-monthly-trial`. Multiple plans produce a radio selector inside the lightbox. The lightbox overlay is appended to `document.body` (not inside the container) so it covers the full viewport regardless of host page CSS. The downsell flow works inside the lightbox card after the Paddle checkout closes without purchase.
 

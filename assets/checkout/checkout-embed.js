@@ -28,7 +28,8 @@
         minimalist: scriptEl.hasAttribute('data-minimalist'),
         lightbox: scriptEl.hasAttribute('data-lightbox'),
         lightboxHeadline: scriptEl.getAttribute('data-lightbox-headline') || '',
-        lightboxSubheadline: scriptEl.getAttribute('data-lightbox-subheadline') || ''
+        lightboxSubheadline: scriptEl.getAttribute('data-lightbox-subheadline') || '',
+        trigger: scriptEl.getAttribute('data-trigger') || ''
     };
 
     if (config.plans.length === 0 && (config.minimalist || config.lightbox)) {
@@ -39,7 +40,8 @@
         config.cta1 = 'Try it free';
     }
 
-    if (!config.containerId || config.plans.length === 0) {
+    var needsContainer = !(config.lightbox && config.trigger);
+    if ((needsContainer && !config.containerId) || config.plans.length === 0) {
         console.error('OneTake Checkout Embed: data-container and data-plans are required');
         return;
     }
@@ -725,9 +727,11 @@
     var savedBodyOverflow = '';
 
     function renderLightbox() {
-        container.innerHTML = '<div class="otc-lightbox-trigger">' +
-            '<button type="button" class="otc-btn otc-btn-trigger" id="otcLbTrigger">' + getButtonText(1) + '</button>' +
-            '</div>';
+        if (!config.trigger) {
+            container.innerHTML = '<div class="otc-lightbox-trigger">' +
+                '<button type="button" class="otc-btn otc-btn-trigger" id="otcLbTrigger">' + getButtonText(1) + '</button>' +
+                '</div>';
+        }
 
         lightboxOverlay = document.createElement('div');
         lightboxOverlay.className = 'otc-root otc-lb-overlay';
@@ -816,8 +820,19 @@
     }
 
     function bindLightboxEvents() {
-        var trigger = container.querySelector('#otcLbTrigger');
-        if (trigger) trigger.addEventListener('click', openLightbox);
+        var triggerEl;
+        if (config.trigger) {
+            triggerEl = document.querySelector(config.trigger);
+            if (triggerEl) {
+                triggerEl.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openLightbox();
+                });
+            }
+        } else {
+            triggerEl = container.querySelector('#otcLbTrigger');
+            if (triggerEl) triggerEl.addEventListener('click', openLightbox);
+        }
 
         var close = lightboxOverlay.querySelector('#otcLbClose');
         if (close) close.addEventListener('click', closeLightbox);
@@ -1029,15 +1044,19 @@
 
     // Bootstrap the embed: load deps, init Paddle, resolve plans, render form
     function init() {
-        // Find the mount-point container element
-        container = document.getElementById(config.containerId);
-        if (!container) {
-            console.error('OneTake Checkout Embed: container #' + config.containerId + ' not found');
-            return;
-        }
+        if (config.lightbox && config.trigger) {
+            // Trigger mode: no container needed; overlay is appended to body
+        } else {
+            // Find the mount-point container element
+            container = document.getElementById(config.containerId);
+            if (!container) {
+                console.error('OneTake Checkout Embed: container #' + config.containerId + ' not found');
+                return;
+            }
 
-        // Show loading spinner while dependencies load
-        container.innerHTML = '<div class="otc-root"><div class="otc-card" style="text-align:center;padding:3rem"><span class="otc-spinner"></span></div></div>';
+            // Show loading spinner while dependencies load
+            container.innerHTML = '<div class="otc-root"><div class="otc-card" style="text-align:center;padding:3rem"><span class="otc-spinner"></span></div></div>';
+        }
 
         loadDependencies().then(function() {
             // Grab reference to checkout-core API
