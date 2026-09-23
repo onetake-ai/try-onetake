@@ -478,17 +478,19 @@
         state.hasTrial = resolved.hasTrial;
         state.hasOneTimeCharge = resolved.hasOneTimeCharge;
 
-        var titleEl = container.querySelector('.otc-title');
-        if (titleEl) {
-            titleEl.textContent = t(getHeadlineKey(), { days: getTrialDays(state.planInfo) });
-        }
+        if (container) {
+            var titleEl = container.querySelector('.otc-title');
+            if (titleEl) {
+                titleEl.textContent = t(getHeadlineKey(), { days: getTrialDays(state.planInfo) });
+            }
 
-        var cta1 = container.querySelector('#otcCta1');
-        if (cta1) cta1.textContent = getButtonText(1);
-        var cta2 = container.querySelector('#otcCta2');
-        if (cta2) cta2.textContent = getButtonText(2);
-        var minCta = container.querySelector('#otcMinCta');
-        if (minCta) minCta.textContent = getButtonText(1);
+            var cta1 = container.querySelector('#otcCta1');
+            if (cta1) cta1.textContent = getButtonText(1);
+            var cta2 = container.querySelector('#otcCta2');
+            if (cta2) cta2.textContent = getButtonText(2);
+            var minCta = container.querySelector('#otcMinCta');
+            if (minCta) minCta.textContent = getButtonText(1);
+        }
 
         if (config.lightbox) updateLightboxContent();
     }
@@ -823,8 +825,10 @@
         if (config.trigger) {
             var triggerEls = document.querySelectorAll(config.trigger);
             triggerEls.forEach(function(el) {
+                el.removeAttribute('href');
                 el.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopImmediatePropagation();
                     openLightbox();
                 });
             });
