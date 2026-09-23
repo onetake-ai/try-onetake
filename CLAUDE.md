@@ -229,3 +229,52 @@ The script initializes all `.youtube-player` elements on `DOMContentLoaded`. For
 ```html
 <div class="youtube-player" data-id="VIDEO_ID" data-list="PLAYLIST_ID" data-index="1"></div>
 ```
+
+## Standard footer
+
+Every landing page ends with this footer. Copy the version matching the page language. Copy rules apply: OneTake is "an AI agent" (never a tool, software or platform), no em dashes, no separator lines. The Meta/Google disclaimer is required on every page, since traffic comes from Instagram, Facebook, Google and YouTube ads and links.
+
+### English
+
+```html
+<footer>
+  <div class="footer-inner">
+    <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+    <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
+    <p><strong>What is OneTake?</strong></p>
+    <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
+    <p>Useful links: <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a> · <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a> · <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a></p>
+    <p><strong>Who came up with the idea?</strong></p>
+    <p>Sébastien Night, our CEO, is the founder of the Free Entrepreneurs Movement. Since 2010, this organization has supported over 20,000 entrepreneur clients and 300,000 supporters in 41 countries. <strong>After producing and editing thousands of videos himself over 15+ years, Sébastien decided to create an AI agent that would be both incredibly powerful and utterly easy to use: OneTake.</strong></p>
+    <p>To contact Sébastien and his team, <a href="https://www.onetake.ai/contact" target="_blank">simply click here</a>.</p>
+    <p class="footer-disclaimer">This site is not part of the Facebook, Instagram or Google websites, and is not endorsed by Meta Platforms, Inc. or Alphabet Inc. in any way. Facebook and Instagram are trademarks of Meta Platforms, Inc. Google and YouTube are trademarks of Google LLC.</p>
+  </div>
+</footer>
+```
+
+### French
+
+```html
+<footer>
+  <div class="footer-inner">
+    <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+    <p><strong>Qu'est-ce que OneTake ?</strong></p>
+    <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
+    <p><strong>Qui a eu cette idée ?</strong></p>
+    <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui accompagne depuis 2010 plus de 20 000 entrepreneurs et compte 300 000 sympathisants dans 41 pays. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un agent IA à la fois incroyablement puissant et d'une simplicité d'utilisation absolue : OneTake.</strong></p>
+    <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    <p class="footer-disclaimer">Ce site ne fait pas partie des sites Facebook, Instagram ou Google, et n'est en aucun cas approuvé par Meta Platforms, Inc. ou Alphabet Inc. Facebook et Instagram sont des marques de Meta Platforms, Inc. Google et YouTube sont des marques de Google LLC.</p>
+  </div>
+</footer>
+```
+
+Pages that use `translations.js` (e.g. `/onboarding/`) read the same text from the `onboarding.footer.*` keys, including `onboarding.footer.disclaimer`, in all 8 languages. Weglot-translated pages use the English version and let Weglot translate it.
+
+## Instagram landing page (`/instagram/`)
+
+Mobile-first free trial page for visitors coming from Manychat DMs on Instagram. Plan: `launch-monthly-trial` (3 days, then the localized Launch monthly price).
+
+- `instagram/app.js` is a thin controller over `checkout-core.js` (not `app.js`). The form only asks for first name and email; `useCases` and `estimatedVolume` are sent empty.
+- The page is written in English and translated by Weglot. All copy lives in the HTML, including the strings the JS shows (see `#messages`, a hidden block Weglot translates). The Paddle checkout opens in the current Weglot language (`Weglot.getCurrentLang()`, falling back to `<html lang>`).
+- Closing Paddle without paying replaces the form with the "one step away" panel (`#oneStep`); its button reopens checkout with the same data. No downsell on this page.
+- Media placeholders live in `instagram/media/`. To add a real clip, drop the file in that folder: the hero uses `hero-before-after.mp4` / `.webm` and `hero-poster` (replace the `.svg` references with the WebP); feature and E1 clips go in each video's `data-src` (lazy-loaded). Replace `og-placeholder.png` with the real 1200×630 image.
