@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Try OneTake free for 3 days</title>
+  <meta name="description" content="Record once. OneTake turns it into a pro video in minutes. Try OneTake free for 3 days, with every Launch plan feature.">
+  <meta name="theme-color" content="#F8F7F7">
+
+  <!-- Social share (asset OG: replace og-placeholder.png with the 1200x630 image) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://try.onetake.ai/instagram/">
+  <meta property="og:title" content="Record once. OneTake turns it into a pro video in minutes.">
+  <meta property="og:description" content="Try OneTake free for 3 days, with every Launch plan feature.">
+  <meta property="og:image" content="https://try.onetake.ai/instagram/media/og-placeholder.png">
+
+  <!-- Hero poster first, so something shows instantly (LCP) -->
+  <link rel="preload" as="image" href="media/hero-poster.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Tracking: CrazyEgg, Plausible, AnyTrack, Weglot, FirstPromoter, useBouncer -->
+  <script src="../tools.js"></script>
+
+  <!-- Paddle Checkout -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
+  <!-- Revue testimonials widget -->
+  <script type="module" src="https://widgets.revue.us/2.0/rw-widget-masonry.js"></script>
+</head>
+<body>
+
+  <!-- 1. HERO -->
+  <header class="hero" id="top">
+    <img class="hero__logo"
+         src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
+         alt="OneTake AI" width="104" height="28">
+
+    <p class="hero__eyebrow">👋 You asked for it on Instagram. Here it is.</p>
+    <h1 class="hero__title">Record once. OneTake turns it into a pro video in minutes.</h1>
+    <p class="hero__subline">Try OneTake free for 3 days, with every Launch plan feature.</p>
+
+    <!-- Asset H1: 4:5 before/after loop, MP4 (H.264) + WebM, under 1 MB. Asset H1-P: poster, WebP, under 80 KB. -->
+    <div class="hero__video-wrap">
+      <video class="hero__video" autoplay muted loop playsinline preload="auto"
+             poster="media/hero-poster.svg" width="400" height="500"
+             aria-label="Before and after: a raw video, then the same video edited by OneTake">
+        <source src="media/hero-before-after.webm" type="video/webm">
+        <source src="media/hero-before-after.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Signup form. Hidden after the visitor closes checkout without paying. -->
+    <div class="signup" id="signup">
+      <form class="signup__form" id="signupForm" novalidate>
+        <label class="sr-only" for="firstName">First name</label>
+        <input class="signup__input" type="text" id="firstName" name="firstName"
+               placeholder="First name" autocomplete="given-name" enterkeyhint="next" required>
+
+        <label class="sr-only" for="email">Email</label>
+        <input class="signup__input bouncer" type="email" id="email" name="email"
+               placeholder="Email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+
+        <p class="signup__error" id="formError" role="alert" hidden></p>
+
+        <button class="btn btn--primary signup__btn" type="submit" id="submitBtn">
+          <span class="btn__label">Start my 3-day free trial</span>
+          <span class="btn__loading" hidden>One moment please</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- "One step away" state: shown when checkout is closed without paying -->
+    <div class="one-step" id="oneStep" hidden>
+      <p class="one-step__title">Your free trial is one step away</p>
+      <p class="one-step__text">Your details are saved. Tap the button to finish your secure checkout.</p>
+      <button class="btn btn--primary" type="button" id="reopenBtn">Start my 3-day free trial</button>
+    </div>
+
+    <p class="terms">
+      3 days free, then your Launch plan starts at <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59 €</span>/month (plus tax).
+      Cancel before the end of the trial and you pay nothing. Secure checkout by Paddle.
+    </p>
+
+    <p class="proof">
+      <span class="proof__stars" aria-hidden="true">★★★★★</span>
+      <span><strong>4.7/5 on Capterra.</strong> Thousands of coaches and trainers use OneTake in dozens of languages.</span>
+    </p>
+  </header>
+
+  <main>
+
+    <!-- 2. WHAT HAPPENS NEXT -->
+    <section class="section">
+      <h2 class="section__title">What happens next</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          </span>
+          <div>
+            <p class="step__title">1. Start your trial.</p>
+            <p class="step__text">Enter your name and email, then confirm with secure checkout.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+          </span>
+          <div>
+            <p class="step__title">2. Upload a raw video.</p>
+            <p class="step__text">Straight from your phone, your computer, Zoom or YouTube.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
+          </span>
+          <div>
+            <p class="step__title">3. OneTake edits it for you.</p>
+            <p class="step__text">Clean sound, captions, key points on screen, music. Ask for changes like you'd talk to your video guy.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 3. THE PROBLEM -->
+    <section class="section section--dark">
+      <h2 class="section__title">You're great on camera. Editing is what's killing you.</h2>
+      <div class="story">
+        <p>You want to sell your expertise with video: a course, YouTube videos, Reels that bring clients.</p>
+        <p>But one 30-second video takes you an hour to edit.</p>
+        <p>So you try to learn editing software. But it's too technical, and you're a coach, not a video editor.</p>
+        <p>So you hire a freelancer. But it costs a fortune, and you wait a week for every video.</p>
+        <p>So your best ideas stay stuck on your phone.</p>
+        <p class="story__turn">With OneTake, you record once and your video is ready in minutes. No timeline, no software to learn, no freelancer to chase.</p>
+      </div>
+    </section>
+
+    <!-- 4. WHAT ONETAKE DOES FOR YOU -->
+    <!-- Assets F1 to F6: 1:1 loops, 3 to 5 s, MP4, under 400 KB each. Put the file in data-src when it exists. -->
+    <section class="section">
+      <h2 class="section__title">One click. OneTake does the rest.</h2>
+      <div class="features">
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f1.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">Sound like you're in a studio.</h3>
+          <p class="feature__text">OneTake removes background noise and awkward silences.</p>
+        </article>
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f2.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">No more "ums" and retakes.</h3>
+          <p class="feature__text">OneTake cleans up stutters, filler words and mistakes.</p>
+        </article>
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f3.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">Captions and key points on screen.</h3>
+          <p class="feature__text">Your viewers follow along and remember more.</p>
+        </article>
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f4.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">Smooth transitions between topics.</h3>
+          <p class="feature__text">Your course looks structured and professional.</p>
+        </article>
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f5.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">Music made for your video.</h3>
+          <p class="feature__text">OneTake composes a unique, discreet background track.</p>
+        </article>
+        <article class="feature">
+          <video class="feature__media lazy-video" muted loop playsinline preload="none" width="400" height="400"
+                 data-poster="media/placeholder-f6.svg" data-src="" aria-hidden="true"></video>
+          <h3 class="feature__title">Speak your viewer's language.</h3>
+          <p class="feature__text">OneTake translates and dubs your video with your own voice.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5. EDIT BY TALKING -->
+    <!-- Asset E1: 4:5 screen recording, 10 to 15 s, MP4. -->
+    <section class="section section--tint">
+      <h2 class="section__title">Want a change? Just ask.</h2>
+      <p class="section__text">No timeline and no buttons to learn. Tell OneTake what you want, in your own words, like you'd talk to a talented videographer. "Make the intro shorter." "Change the colors to match my brand." Done.</p>
+      <video class="talk__media lazy-video" muted loop playsinline preload="none" width="400" height="500"
+             data-poster="media/placeholder-e1.svg" data-src="" aria-hidden="true"></video>
+    </section>
+
+    <!-- 7. TESTIMONIALS -->
+    <section class="section">
+      <h2 class="section__title">What entrepreneurs like you say about OneTake</h2>
+      <div class="reviews">
+        <rw-widget-masonry data-rw-masonry="39663"></rw-widget-masonry>
+      </div>
+      <div class="capterra">
+        <a href="https://www.capterra.com/p/10017052/OneTake-AI/" target="_blank" rel="noopener">
+          <img src="https://brand-assets.capterra.com/badge/d99f9893-1182-4293-a004-8158134b7e0a.svg"
+               alt="Capterra 2025 Best Ease of Use badge" width="120" height="120" loading="lazy">
+        </a>
+        <p>Rated 4.7/5 on Capterra, and awarded the 2025 Best "Ease of Use" badge in the AI Video Generator and Video Editing category.</p>
+      </div>
+      <p class="center"><a class="link" href="https://welove.onetake.ai/" target="_blank" rel="noopener">See all reviews</a></p>
+    </section>
+
+    <!-- 8. WHO IT'S FOR -->
+    <section class="section section--tint">
+      <h2 class="section__title">Is OneTake right for you?</h2>
+      <div class="fit">
+        <div class="fit__col fit__col--yes">
+          <h3 class="fit__title">OneTake is for you if</h3>
+          <ul>
+            <li>you're a coach, consultant or trainer;</li>
+            <li>you want to sell online courses, publish YouTube videos or get more clients with Reels;</li>
+            <li>you want pro videos without learning to edit.</li>
+          </ul>
+        </div>
+        <div class="fit__col fit__col--no">
+          <h3 class="fit__title">OneTake is not for you if</h3>
+          <ul>
+            <li>you want to edit every frame by hand;</li>
+            <li>you make cinematic films or music videos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. FAQ (one open at a time, handled in app.js) -->
+    <section class="section">
+      <h2 class="section__title">Questions</h2>
+      <div class="faq" id="faq">
+        <details class="faq__item">
+          <summary>I'm not technical at all. Can I use OneTake?</summary>
+          <p>Yes. You upload a video and OneTake does the editing. To change something, you just write what you want, in plain words.</p>
+        </details>
+        <details class="faq__item">
+          <summary>My camera and microphone are basic. Will it look pro?</summary>
+          <p>Yes. Record "as you are", even on your phone. OneTake cleans your sound and makes the video look professional.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What's included in the free trial?</summary>
+          <p>Every feature of the Launch plan, for 3 days.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Why do you ask for a card?</summary>
+          <p>It lets your plan continue without interruption after the trial. Cancel before the 3 days are over and you pay nothing.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Can I use videos I already recorded?</summary>
+          <p>Yes. Import from your computer, Zoom, YouTube, Dropbox and more.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Which languages does OneTake support?</summary>
+          <p>OneTake edits videos in dozens of languages, and can translate and dub your video into your viewer's language.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 10. FINAL CTA -->
+    <section class="section section--dark final" id="finalCta">
+      <h2 class="section__title">Your next video could be ready in minutes.</h2>
+      <button class="btn btn--primary js-go-to-form" type="button">Start my 3-day free trial</button>
+      <p class="terms terms--dark">
+        3 days free, then your Launch plan starts at <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59 €</span>/month (plus tax).
+        Cancel before the end of the trial and you pay nothing. Secure checkout by Paddle.
+      </p>
+    </section>
+  </main>
+
+  <!-- 11. FOOTER -->
+  <footer class="footer">
+    <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank" rel="noopener">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+    <p class="footer__links">
+      <a href="https://www.onetake.ai/privacy-policy" target="_blank" rel="noopener">Privacy policy</a> ·
+      <a href="https://www.onetake.ai/terms-of-service" target="_blank" rel="noopener">Terms of Service &amp; Refund policy</a> ·
+      <a href="https://www.onetake.ai/contact" target="_blank" rel="noopener">Contact</a>
+    </p>
+    <p>OneTake AI Pte Ltd, Singapore</p>
+    <p class="footer__disclaimer">This site is not part of the Facebook, Instagram or Google websites, and is not endorsed by Meta Platforms, Inc. or Alphabet Inc. in any way. Facebook and Instagram are trademarks of Meta Platforms, Inc. Google and YouTube are trademarks of Google LLC.</p>
+  </footer>
+
+  <!-- Sticky CTA: shown only while the signup form is out of view -->
+  <div class="sticky-cta" id="stickyCta" aria-hidden="true">
+    <button class="btn btn--primary js-go-to-form" type="button" tabindex="-1">Start my 3-day free trial</button>
+  </div>
+
+  <!-- Strings used by app.js. Kept in the HTML so Weglot translates them like the rest of the page. -->
+  <div id="messages" hidden>
+    <span data-msg="firstName">Please enter your first name.</span>
+    <span data-msg="email">Please enter a valid email address, like name@example.com.</span>
+    <span data-msg="checkout">We couldn't open the secure checkout. Check your internet connection and try again.</span>
+  </div>
+
+  <!-- Scripts (same order as /index.html) -->
+  <script src="../pricing-data.js"></script>
+  <script src="../translations.js"></script>
+  <script src="../tracking-params.js"></script>
+  <script src="../cohort.js"></script>
+  <script src="../assets/checkout/checkout-core.js"></script>
+  <script src="../price-localizer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

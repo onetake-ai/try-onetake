@@ -83,5 +83,6 @@ var bouncerConfig = {
   var s = document.createElement('script');
   s.async = true;
   s.src = 'https://app.usebouncer.com/bouncer-script/bouncer-script-beta.js';
-  document.body.appendChild(s);
+  // tools.js is usually loaded in <head>, where document.body doesn't exist yet
+  (document.body || document.head).appendChild(s);
 }());
