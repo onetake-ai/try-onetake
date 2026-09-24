@@ -118,6 +118,12 @@ p { margin: 0; }
 .signup__input:focus { outline: none; border-color: var(--golden-grass); box-shadow: var(--shadow-focus); }
 .signup__input[aria-invalid="true"] { border-color: var(--cabaret); }
 
+/* padding-top keeps the button clear of the Bouncer overlay (about 44px) shown under the email field */
+.signup__cta-label {
+  padding-top: 40px;
+  font-size: 14px; font-weight: 600; line-height: 1.3; text-align: left;
+}
+
 .signup__error {
   font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--cabaret); text-align: left;
 }
@@ -142,7 +148,7 @@ p { margin: 0; }
   display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
   margin-top: 12px; font-size: 13px; line-height: 1.35;
 }
-.proof__badge img { height: 36px; width: auto; }
+.proof__badge { height: 36px; width: auto; }
 
 /* ── Sections ────────────────────────────────────────────────────────── */
 
