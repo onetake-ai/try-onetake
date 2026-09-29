@@ -5,6 +5,29 @@
 (function() {
     'use strict';
 
+    // ==========================================
+    // CONTENT TO FILL IN (the only place to edit)
+    // ==========================================
+
+    // Video slots: paste a my.onetake.ai player URL (autoplay=true&loop=true, like the hero ones).
+    // A slot stays hidden until every URL it needs is filled in.
+    //   pair slots:   before + after (shown side by side, 9:16)
+    //   single slots: main (ratio '9:16' or '16:9')
+    var VIDEO_SLOTS = {
+        'feature-sound':       { before: '', after: '' },
+        'feature-ums':         { before: '', after: '' },
+        'feature-captions':    { main: '', ratio: '9:16' },
+        'feature-transitions': { main: '', ratio: '9:16' },
+        'feature-music':       { main: '', ratio: '9:16' },
+        'feature-language':    { before: '', after: '' },
+        'feature-short':       { main: '', ratio: '9:16' },
+        'just-ask-recording':  { main: '', ratio: '16:9' },
+        'founder-video':       { main: '', ratio: '16:9' }
+    };
+
+    // Set to true once /instagram/img/sebastien-night.webp exists (600x750)
+    var FOUNDER_PHOTO_READY = false;
+
     var PLAN_KEY = 'launch-monthly-trial';
 
     var core = window.oneTakeCheckout;
@@ -230,35 +253,69 @@
     }
 
     // ==========================================
-    // LAZY MEDIA AND FAQ
+    // VIDEO SLOTS, FOUNDER PHOTO, CHAT AND FAQ
     // ==========================================
 
-    // Below-the-fold videos load their poster and source only when near the viewport
-    function setupLazyVideos() {
-        var videos = document.querySelectorAll('.lazy-video');
+    // Fill each [data-slot] whose URLs are set in VIDEO_SLOTS, then show it.
+    // The OneTake player handles autoplay, loop and sound by itself.
+    function setupVideoSlots() {
+        document.querySelectorAll('[data-slot]').forEach(function(slot) {
+            var config = VIDEO_SLOTS[slot.dataset.slot];
+            if (!config) return;
 
-        function load(video) {
-            if (video.dataset.poster) video.poster = video.dataset.poster;
-            if (video.dataset.src) {
-                video.src = video.dataset.src;
-                video.play().catch(function() {});
-            }
-        }
+            var holders = slot.querySelectorAll('[data-frame]');
+            var ready = holders.length > 0 && Array.prototype.every.call(holders, function(holder) {
+                return !!config[holder.dataset.frame];
+            });
+            if (!ready) return;
 
-        if (!('IntersectionObserver' in window)) {
-            videos.forEach(load);
-            return;
-        }
+            holders.forEach(function(holder) {
+                if (config.ratio === '16:9' && holder.dataset.frame === 'main') {
+                    holder.classList.add('player--wide');
+                }
+                var iframe = document.createElement('iframe');
+                iframe.className = 'player__frame';
+                iframe.title = holder.dataset.title || '';
+                iframe.src = config[holder.dataset.frame];
+                iframe.loading = 'lazy';
+                iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen';
+                iframe.allowFullscreen = true;
+                holder.appendChild(iframe);
+            });
+
+            slot.hidden = false;
+            var host = slot.closest('[data-slot-host]');
+            if (host) host.classList.add('has-media');
+        });
+    }
+
+    function setupFounderPhoto() {
+        var photo = document.getElementById('founderPhoto');
+        if (!FOUNDER_PHOTO_READY || !photo) return;
+        photo.src = photo.dataset.src;
+        photo.hidden = false;
+        document.getElementById('founder').classList.add('has-photo');
+    }
+
+    // Chat messages appear one by one when the mockup scrolls into view.
+    // Without IntersectionObserver, or with reduced motion, they are all shown at once.
+    function setupChat() {
+        var chat = document.getElementById('chat');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!chat || reduceMotion || !('IntersectionObserver' in window)) return;
+
+        var messages = chat.querySelectorAll('.chat__msg');
+        chat.classList.add('is-pending');
 
         var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (!entry.isIntersecting) return;
-                load(entry.target);
-                observer.unobserve(entry.target);
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            messages.forEach(function(msg, i) {
+                setTimeout(function() { msg.classList.add('is-shown'); }, 300 + i * 900);
             });
-        }, { rootMargin: '300px 0px' });
+        }, { threshold: 0.4 });
 
-        videos.forEach(function(video) { observer.observe(video); });
+        observer.observe(chat);
     }
 
     // Keep one FAQ answer open at a time
@@ -312,7 +369,9 @@
         });
 
         setupStickyCta();
-        setupLazyVideos();
+        setupVideoSlots();
+        setupFounderPhoto();
+        setupChat();
         setupFaq();
     }
 
