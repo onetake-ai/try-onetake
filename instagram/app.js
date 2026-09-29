@@ -17,10 +17,14 @@
         'feature-sound':       { before: '', after: '' },
         'feature-ums':         { before: '', after: '' },
         'feature-captions':    { main: '', ratio: '9:16' },
+        'feature-subtitles':   { main: '', ratio: '9:16' },
         'feature-transitions': { main: '', ratio: '9:16' },
+        'feature-chapters':    { main: '', ratio: '9:16' },
         'feature-music':       { main: '', ratio: '9:16' },
         'feature-language':    { before: '', after: '' },
         'feature-short':       { main: '', ratio: '9:16' },
+        'feature-gaze':        { before: '', after: '' },
+        'feature-background':  { before: '', after: '' },
         'just-ask-recording':  { main: '', ratio: '16:9' },
         'founder-video':       { main: '', ratio: '16:9' }
     };
@@ -318,6 +322,102 @@
         observer.observe(chat);
     }
 
+    // "Editing complete" checklist: steps check off one by one when the list scrolls into view.
+    // Without IntersectionObserver, or with reduced motion, every step shows as done.
+    function setupDoneList() {
+        var list = document.getElementById('doneList');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!list || reduceMotion || !('IntersectionObserver' in window)) return;
+
+        var steps = list.querySelectorAll('.done__step');
+        list.classList.add('is-pending');
+
+        var observer = new IntersectionObserver(function(entries) {
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            steps.forEach(function(step, i) {
+                setTimeout(function() { step.classList.add('is-done'); }, 200 + i * 280);
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(list);
+    }
+
+    // ==========================================
+    // SAVINGS CALCULATOR
+    // ==========================================
+
+    // Yearly cost of what OneTake replaces, for V videos a month of M minutes each.
+    // Defaults (12 videos of 10 minutes) match the original table: $39,502.
+    var FIXED_YEARLY_SAVINGS = 750 + 288 + 110 + 588 + 948 + 74 + 144; // Adobe, After Effects, Canva, Vimeo, Wistia, Office, Google
+
+    function computeSavings(videos, minutes) {
+        var yearlyMinutes = videos * minutes * 12;
+        var videoHours = yearlyMinutes / 60;
+        var batches = Math.ceil(videos / 12);          // 1 shoot day per 12 videos a month
+        var cameraDays = batches * 12;
+        var designerDays = batches * 6;                 // half a day per 12 videos a month
+        var rows = {
+            camera: cameraDays * 500,
+            editor: Math.round(videoHours * 900),
+            designer: designerDays * 300,
+            transcription: yearlyMinutes * 2,
+            subtitles: yearlyMinutes * 3
+        };
+        rows.total = rows.camera + rows.editor + rows.designer + rows.transcription + rows.subtitles + FIXED_YEARLY_SAVINGS;
+        rows.cameraDays = cameraDays;
+        rows.designerDays = designerDays;
+        rows.videoHours = videoHours;
+        rows.monthlyMinutes = videos * minutes;
+        return rows;
+    }
+
+    // Amounts stay in US dollars, whatever the page language
+    function formatDollars(n) {
+        return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function formatNumber(n) {
+        return (Math.round(n * 10) / 10).toLocaleString('en-US');
+    }
+
+    function setupCalculator() {
+        var videosInput = document.getElementById('calcVideos');
+        var minutesInput = document.getElementById('calcMinutes');
+        if (!videosInput || !minutesInput) return;
+
+        var MONEY = ['camera', 'editor', 'designer', 'transcription', 'subtitles', 'total'];
+        var planLines = document.querySelectorAll('[data-plan-minutes]');
+
+        function update() {
+            var videos = parseInt(videosInput.value, 10);
+            var minutes = parseInt(minutesInput.value, 10);
+            var result = computeSavings(videos, minutes);
+
+            document.getElementById('calcVideosOut').textContent = videos;
+            document.getElementById('calcMinutesOut').textContent = minutes;
+
+            // Queried on every update: Weglot may replace the text nodes around these spans
+            document.querySelectorAll('[data-calc]').forEach(function(el) {
+                var key = el.dataset.calc;
+                if (!(key in result)) return;
+                el.textContent = MONEY.indexOf(key) !== -1 ? formatDollars(result[key]) : formatNumber(result[key]);
+            });
+
+            // Show the smallest plan that covers the monthly minutes
+            var shown = false;
+            planLines.forEach(function(line) {
+                var fits = !shown && result.monthlyMinutes <= parseInt(line.dataset.planMinutes, 10);
+                line.hidden = !fits;
+                if (fits) shown = true;
+            });
+        }
+
+        videosInput.addEventListener('input', update);
+        minutesInput.addEventListener('input', update);
+        update();
+    }
+
     // Keep one FAQ answer open at a time
     function setupFaq() {
         var items = document.querySelectorAll('#faq details');
@@ -372,6 +472,8 @@
         setupVideoSlots();
         setupFounderPhoto();
         setupChat();
+        setupDoneList();
+        setupCalculator();
         setupFaq();
     }
 

@@ -272,13 +272,10 @@ Pages that use `translations.js` (e.g. `/onboarding/`) read the same text from t
 
 ## Instagram landing page (`/instagram/`)
 
-Mobile-first free trial page for visitors coming from Manychat DMs on Instagram. Plan: `launch-monthly-trial` (3 days, then the localized Launch monthly price).
+Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from Manychat DMs on Instagram. Written in English and translated by Weglot.
 
-- `instagram/app.js` is a thin controller over `checkout-core.js` (not `app.js`). The form only asks for first name and email; `useCases` and `estimatedVolume` are sent empty.
-- The page is written in English and translated by Weglot. All copy lives in the HTML, including the strings the JS shows (see `#messages`, a hidden block Weglot translates). The Paddle checkout opens in the current Weglot language (`Weglot.getCurrentLang()`, falling back to `<html lang>`).
-- Closing Paddle without paying replaces the form with the "one step away" panel (`#oneStep`); its button reopens checkout with the same data. No downsell on this page.
-- Videos are OneTake player iframes (`my.onetake.ai`), which handle autoplay, loop and sound themselves; never add sound controls or drive the iframes from JS. The hero before/after pair is hardcoded in the HTML (`loading="eager"`). Every other video slot is a hidden `[data-slot]` element: paste its URL(s) in `VIDEO_SLOTS` at the top of `instagram/app.js` and the slot fills itself (lazy iframe) and appears. A slot stays hidden until all its URLs are set. Pair slots take `before` and `after`; single slots take `main` and a `ratio` (`'9:16'` or `'16:9'`).
-- The founder photo is loaded from `https://www.sebastiennight.com/images/press/Sebastien-03-official-sd.jpeg` (853×1280, cropped to 4:5 in CSS), set in the `data-src` of `#founderPhoto`. `FOUNDER_PHOTO_READY` in `instagram/app.js` turns it on or off.
-- Every CTA outside the form (mid-page, final, sticky bar) uses the `.js-go-to-form` class: it scrolls to the form and focuses the first name field (or the reopen button in the "one step away" state). Never write new checkout logic.
-- The only remaining hidden asset is the OG image, wrapped in an HTML comment starting with `<!-- PLACEHOLDER (hidden until the asset is ready`: put the 1200×630 image in `instagram/media/`, replace `og-placeholder.png`, then delete the comment wrapper.
-- `instagram/legacy.html` is the archived previous version (with its own `legacy-style.css` and `legacy-app.js`, `noindex, nofollow`, linked nowhere). It still loads the shared scripts (`tools.js`, `checkout-core.js`...), so changes to those also affect it.
+- Never write new checkout logic: every CTA outside the form uses `.js-go-to-form`, which sends the visitor to the existing form.
+- The videos are OneTake player iframes, which handle autoplay, loop and sound themselves. Never add sound controls or drive the iframes from JS.
+- Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
+- The "Editing complete" checklist lists only what OneTake does automatically. Premium options (gaze correction, background removal, translation) never go in it.
+- `instagram/legacy.html` is an archive: never link to it. It still loads the shared scripts (`tools.js`, `checkout-core.js`...), so changes to those also affect it.
