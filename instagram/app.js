@@ -25,8 +25,8 @@
         'founder-video':       { main: '', ratio: '16:9' }
     };
 
-    // Set to true once /instagram/img/sebastien-night.webp exists (600x750)
-    var FOUNDER_PHOTO_READY = false;
+    // Founder photo, hosted on sebastiennight.com (src in #founderPhoto data-src). Set to false to hide it.
+    var FOUNDER_PHOTO_READY = true;
 
     var PLAN_KEY = 'launch-monthly-trial';
 

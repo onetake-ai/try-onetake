@@ -283,7 +283,7 @@ figure { margin: 0; }
 
 /* Founder */
 .founder { display: grid; gap: 20px; max-width: 760px; margin: 0 auto; }
-.founder__photo { width: 100%; max-width: 280px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; margin: 0 auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); }
+.founder__photo { width: 100%; max-width: 280px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 78%; margin: 0 auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); }
 .founder__text { display: grid; gap: 14px; }
 .founder__sig { margin-top: 4px; }
 .founder__slot { margin-top: 8px; }
