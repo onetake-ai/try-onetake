@@ -128,9 +128,9 @@ figure { margin: 0; }
 .hero__subline { font-size: 14px; line-height: 1.35; color: var(--cedar-muted); }
 
 /* Mobile: keep the players compact so the form starts within the first screen */
-.hero__media { --hero-ba-h: clamp(160px, calc(100svh - 470px), 300px); }
+.hero__media { --hero-ba-h: clamp(160px, calc(100svh - 440px), 300px); }
 @supports not (height: 1svh) {
-  .hero__media { --hero-ba-h: clamp(160px, calc(100vh - 470px), 300px); }
+  .hero__media { --hero-ba-h: clamp(160px, calc(100vh - 440px), 300px); }
 }
 .hero__media .ba { --ba-h: var(--hero-ba-h); }
 .hero__hint { margin-top: 8px; font-size: 12px; line-height: 1.35; color: var(--cedar-muted); }
