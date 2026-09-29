@@ -301,19 +301,31 @@
         document.getElementById('founder').classList.add('has-photo');
     }
 
-    // Chat messages appear one by one when the mockup scrolls into view.
-    // Without IntersectionObserver, or with reduced motion, they are all shown at once.
+    // "Just ask" chat: messages appear one by one at the bottom of the chat window and push the older ones up.
+    // The conversation starts over 5 s after it ends, only while it is on screen.
+    // With reduced motion or without IntersectionObserver, the whole conversation shows at once.
     function setupChat() {
         var chat = document.getElementById('chat');
+        if (!chat) return;
+
+        function scrollToBottom() { chat.scrollTop = chat.scrollHeight; }
+
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!chat || reduceMotion || !('IntersectionObserver' in window)) return;
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+            scrollToBottom();
+            return;
+        }
 
         var messages = chat.querySelectorAll('.chat__msg');
-        var STEP = 900;          // between two messages
+        var STEP = 1100;         // between two messages
+        var GROW = 450;          // height animation of a new message (see style.css)
         var PAUSE = 5000;        // once the conversation is complete, before it starts over
+        var FADE = 300;          // fade out before starting over
         var timers = [];
         var visible = false;
         var running = false;
+
+        function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
 
         function stop() {
             timers.forEach(clearTimeout);
@@ -321,24 +333,66 @@
             running = false;
         }
 
+        // Keeps the newest message in view while it grows
+        function followGrowth() {
+            var start = Date.now();
+            (function frame() {
+                scrollToBottom();
+                if (Date.now() - start < GROW + 50) window.requestAnimationFrame(frame);
+            })();
+        }
+
+        function show(msg) {
+            msg.classList.add('is-shown');
+            followGrowth();
+        }
+
         function play() {
             running = true;
-            messages.forEach(function(msg) { msg.classList.remove('is-shown'); });
             messages.forEach(function(msg, i) {
-                timers.push(setTimeout(function() { msg.classList.add('is-shown'); }, 300 + i * STEP));
+                later(function() { show(msg); }, 300 + i * STEP);
             });
-            timers.push(setTimeout(function() {
-                running = false;
-                if (visible) play();
-            }, 300 + (messages.length - 1) * STEP + PAUSE));
+            later(function() {
+                // Fade out, empty the chat, then start over
+                chat.classList.add('is-resetting');
+                later(function() {
+                    messages.forEach(function(msg) { msg.classList.remove('is-shown'); });
+                    chat.scrollTop = 0;
+                    window.requestAnimationFrame(function() {
+                        chat.classList.remove('is-resetting');
+                        running = false;
+                        if (visible) play();
+                    });
+                }, FADE);
+            }, 300 + (messages.length - 1) * STEP + GROW + PAUSE);
         }
 
         chat.classList.add('is-pending');
 
-        // Plays only while the chat is on screen, and starts over when it comes back
+        // Hidden messages have no height, so their lazy images would only load once shown
+        var images = chat.querySelectorAll('img[loading="lazy"]');
+        var preload = new IntersectionObserver(function(entries) {
+            if (!entries[0].isIntersecting) return;
+            images.forEach(function(img) { img.loading = 'eager'; });
+            preload.disconnect();
+        }, { rootMargin: '600px 0px' });
+        preload.observe(chat);
+
+        // Empties the chat instantly (no fade)
+        function reset() {
+            chat.classList.add('is-resetting');
+            messages.forEach(function(msg) { msg.classList.remove('is-shown'); });
+            chat.scrollTop = 0;
+            void chat.offsetHeight; // apply the empty state before transitions come back
+            chat.classList.remove('is-resetting');
+        }
+
         var observer = new IntersectionObserver(function(entries) {
             visible = entries[0].isIntersecting;
-            if (visible && !running) play();
+            if (visible && !running) {
+                reset();
+                play();
+            }
             if (!visible) stop();
         }, { threshold: 0.4 });
 

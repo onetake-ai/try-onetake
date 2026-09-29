@@ -342,42 +342,68 @@
       <h2 class="section__title">Want a change? Just ask.</h2>
       <p class="section__text center">No timeline and no buttons to learn. Tell OneTake what you want, in your own words, like you'd talk to a talented videographer.</p>
       <div class="talk" data-slot-host>
-        <!-- Name and text are separate block elements so Weglot translates each one on its own -->
-        <ol class="chat" id="chat" aria-label="Example conversation with OneTake">
-          <li class="chat__msg chat__msg--you">
-            <figure class="chat__video">
-              <img src="media/chat-raw.jpg" alt="Video attachment: the raw recording" width="622" height="936" loading="lazy">
-            </figure>
-            <div class="chat__bubble">
-              <p class="sr-only">You</p>
-              <p class="chat__text">Please fix this video!</p>
+        <!-- Chat window: messages stack from the bottom, like a messaging app (animation in app.js) -->
+        <div class="chatbox">
+          <div class="chatbox__head">
+            <span class="chatbox__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+            </span>
+            <div>
+              <p class="chatbox__name">OneTake</p>
+              <p class="chatbox__status">Online</p>
             </div>
-          </li>
-          <li class="chat__msg chat__msg--onetake">
-            <figure class="chat__video">
-              <img src="media/chat-edited.jpg" alt="Video attachment: the edited video, with captions" width="618" height="1106" loading="lazy">
-            </figure>
-            <div class="chat__bubble">
-              <p class="chat__name">OneTake</p>
-              <p class="chat__text">Done. I edited it &amp; fixed the sound as well. Want me to add B-roll or music?</p>
-            </div>
-          </li>
-          <li class="chat__msg chat__msg--you">
-            <div class="chat__bubble">
-              <p class="sr-only">You</p>
-              <p class="chat__text">Yes, add both please.</p>
-            </div>
-          </li>
-          <li class="chat__msg chat__msg--onetake">
-            <figure class="chat__video">
-              <img src="media/chat-broll.jpg" alt="Video attachment: the new version, with B-roll and music" width="620" height="1100" loading="lazy">
-            </figure>
-            <div class="chat__bubble">
-              <p class="chat__name">OneTake</p>
-              <p class="chat__text">Here's your new version!</p>
-            </div>
-          </li>
-        </ol>
+          </div>
+          <!-- Name and text are separate block elements so Weglot translates each one on its own -->
+          <ol class="chat" id="chat" aria-label="Example conversation with OneTake">
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="media/chat-raw.jpg" alt="Video attachment: the raw recording" width="622" height="936" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="sr-only">You</p>
+                  <p class="chat__text">Please fix this video!</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="media/chat-edited.jpg" alt="Video attachment: the edited video, with captions" width="618" height="1106" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">Done. I edited it &amp; fixed the sound as well. Want me to add B-roll or music?</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <div class="chat__bubble">
+                  <p class="sr-only">You</p>
+                  <p class="chat__text">Yes, add both please.</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="media/chat-broll.jpg" alt="Video attachment: the new version, with B-roll and music" width="620" height="1100" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">Here's your new version!</p>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <div class="chatbox__input" aria-hidden="true">
+            <p class="chatbox__placeholder">Tell OneTake what you want...</p>
+            <span class="chatbox__send">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </span>
+          </div>
+        </div>
         <div class="slot talk__slot" data-slot="just-ask-recording" hidden>
           <div class="player" data-frame="main" data-title="Screen recording: editing a video by chatting with OneTake"></div>
         </div>

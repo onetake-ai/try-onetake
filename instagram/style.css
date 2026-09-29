@@ -270,33 +270,72 @@ figure { margin: 0; }
 
 /* Just ask: chat mockup */
 .talk { display: grid; gap: 24px; }
-.chat {
-  list-style: none; margin: 0 auto; padding: 18px 14px;
-  width: 100%; max-width: 440px;
-  display: flex; flex-direction: column; gap: 10px;
-  background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);
+/* Chat window: header, message area, decorative input bar */
+.chatbox {
+  width: 100%; max-width: 420px; margin: 0 auto;
+  background: var(--white); border-radius: 24px; box-shadow: var(--shadow-soft);
+  overflow: hidden;
 }
+.chatbox__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid #EDE8E9;
+}
+.chatbox__avatar {
+  flex: 0 0 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--golden-grass); color: var(--bleached-cedar);
+}
+.chatbox__name { font-size: 15px; font-weight: 700; line-height: 1.2; }
+.chatbox__status { font-size: 12px; line-height: 1.2; color: var(--cedar-muted); }
+.chatbox__input {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-top: 1px solid #EDE8E9;
+}
+.chatbox__placeholder {
+  flex: 1; padding: 9px 14px; border-radius: 999px;
+  background: var(--alabaster); color: #8C8290; font-size: 14px;
+}
+.chatbox__send {
+  flex: 0 0 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--golden-grass); color: var(--bleached-cedar);
+}
+
+/* Message area: fixed height, messages stack from the bottom and older ones scroll up.
+   margin-top: auto on the first message (not justify-content: flex-end) keeps the top scrollable. */
+.chat {
+  list-style: none; margin: 0; padding: 0 14px 14px;
+  height: 460px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  display: flex; flex-direction: column;
+  background: #FBF9F6;
+}
+.chat__msg:first-child { margin-top: auto; }
 .chat__msg {
   max-width: 85%;
-  display: flex; flex-direction: column; gap: 6px;
+  display: grid; grid-template-rows: 1fr;
   font-size: 15px; line-height: 1.4;
 }
-.chat__msg--you { align-self: flex-end; align-items: flex-end; }
-.chat__msg--onetake { align-self: flex-start; align-items: flex-start; }
+.chat__msg--you { align-self: flex-end; }
+.chat__msg--onetake { align-self: flex-start; }
+/* The spacing lives inside the animated part, so a hidden message takes no room at all */
+.chat__inner { min-height: 0; overflow: hidden; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.chat__msg--you .chat__inner { align-items: flex-end; }
+.chat__msg--onetake .chat__inner { align-items: flex-start; }
 .chat__bubble { padding: 10px 14px; border-radius: 18px; color: var(--bleached-cedar); }
 .chat__msg--you .chat__bubble { background: var(--golden-grass); border-bottom-right-radius: 6px; font-weight: 500; }
-.chat__msg--onetake .chat__bubble { background: var(--alabaster); border: 1px solid #ECE7E8; border-bottom-left-radius: 6px; }
+.chat__msg--onetake .chat__bubble { background: var(--white); border: 1px solid #ECE7E8; border-bottom-left-radius: 6px; }
 .chat__name { margin-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--cedar-muted); }
 /* Video attachment above its bubble: 9:16 thumbnail (the play button is part of the image) */
 .chat__video {
-  width: 150px; aspect-ratio: 9 / 16;
+  width: 150px; aspect-ratio: 9 / 16; margin: 0;
   border-radius: 14px; overflow: hidden; background: var(--bleached-cedar);
-  box-shadow: var(--shadow-soft);
 }
 .chat__video img { width: 100%; height: 100%; object-fit: cover; }
-/* Set by app.js only when the animation will run: the space stays reserved, so nothing shifts */
-.chat.is-pending .chat__msg { opacity: 0; transform: translateY(8px); transition: opacity 350ms ease, transform 350ms ease; }
-.chat.is-pending .chat__msg.is-shown { opacity: 1; transform: none; }
+/* Set by app.js only when the animation runs: a new message grows in at the bottom and pushes the others up */
+.chat.is-pending .chat__msg { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 450ms ease, opacity 300ms ease 150ms; }
+.chat.is-pending .chat__msg.is-shown { grid-template-rows: 1fr; opacity: 1; }
+.chat.is-resetting { opacity: 0; transition: opacity 300ms ease; }
+.chat.is-resetting .chat__msg { transition: none; }
 .talk__slot { width: 100%; max-width: 440px; margin: 0 auto; }
 .talk__slot .player:not(.player--wide) { max-width: 260px; margin: 0 auto; }
 
@@ -540,6 +579,6 @@ figure { margin: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sticky-cta, .btn, .chat__msg, .done__step::before, .done__step::after { transition: none !important; }
+  .sticky-cta, .btn, .chat, .chat__msg, .done__step::before, .done__step::after { transition: none !important; }
   html { scroll-behavior: auto; }
 }
