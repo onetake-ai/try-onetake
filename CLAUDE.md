@@ -277,5 +277,6 @@ Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from M
 - Never write new checkout logic: every CTA outside the form uses `.js-go-to-form`, which sends the visitor to the existing form.
 - The videos are OneTake player iframes, which handle autoplay, loop and sound themselves. Never add sound controls or drive the iframes from JS.
 - Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
-- The "Editing complete" checklist lists only what OneTake does automatically. Premium options (gaze correction, background removal, translation) never go in it.
+- Premium options (gaze correction, background removal) always carry a "Try once free" label, in the "Editing complete" checklist and in the feature cards. Anything reserved for higher plans carries "Higher plans".
+- Comparison and calculator amounts are always marked up as `.money` elements (or `[data-calc]`), never as bare text: `app.js` shows them in dollars, or in euros (same numbers) on the French, Spanish and Italian versions.
 - `instagram/legacy.html` is an archive: never link to it. It still loads the shared scripts (`tools.js`, `checkout-core.js`...), so changes to those also affect it.
