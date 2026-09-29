@@ -310,7 +310,7 @@
 
         var messages = chat.querySelectorAll('.chat__msg');
         var STEP = 900;          // between two messages
-        var PAUSE = 2500;        // once the conversation is complete, before it starts over
+        var PAUSE = 5000;        // once the conversation is complete, before it starts over
         var timers = [];
         var visible = false;
         var running = false;
