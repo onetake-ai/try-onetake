@@ -19,10 +19,10 @@
         'feature-captions':    { main: '', ratio: '9:16' },
         'feature-subtitles':   { main: '', ratio: '9:16' },
         'feature-transitions': { main: '', ratio: '9:16' },
-        'feature-chapters':    { main: '', ratio: '9:16' },
         'feature-music':       { main: '', ratio: '9:16' },
         'feature-language':    { before: '', after: '' },
         'feature-short':       { main: '', ratio: '9:16' },
+        'feature-publishing':  { main: '', ratio: '9:16' },
         'feature-gaze':        { before: '', after: '' },
         'feature-background':  { before: '', after: '' },
         'just-ask-recording':  { main: '', ratio: '16:9' },
@@ -309,38 +309,70 @@
         if (!chat || reduceMotion || !('IntersectionObserver' in window)) return;
 
         var messages = chat.querySelectorAll('.chat__msg');
+        var STEP = 900;          // between two messages
+        var PAUSE = 2500;        // once the conversation is complete, before it starts over
+        var timers = [];
+        var visible = false;
+        var running = false;
+
+        function stop() {
+            timers.forEach(clearTimeout);
+            timers = [];
+            running = false;
+        }
+
+        function play() {
+            running = true;
+            messages.forEach(function(msg) { msg.classList.remove('is-shown'); });
+            messages.forEach(function(msg, i) {
+                timers.push(setTimeout(function() { msg.classList.add('is-shown'); }, 300 + i * STEP));
+            });
+            timers.push(setTimeout(function() {
+                running = false;
+                if (visible) play();
+            }, 300 + (messages.length - 1) * STEP + PAUSE));
+        }
+
         chat.classList.add('is-pending');
 
+        // Plays only while the chat is on screen, and starts over when it comes back
         var observer = new IntersectionObserver(function(entries) {
-            if (!entries[0].isIntersecting) return;
-            observer.disconnect();
-            messages.forEach(function(msg, i) {
-                setTimeout(function() { msg.classList.add('is-shown'); }, 300 + i * 900);
-            });
+            visible = entries[0].isIntersecting;
+            if (visible && !running) play();
+            if (!visible) stop();
         }, { threshold: 0.4 });
 
         observer.observe(chat);
     }
 
-    // "Editing complete" checklist: steps check off one by one when the list scrolls into view.
-    // Without IntersectionObserver, or with reduced motion, every step shows as done.
+    // "Editing complete" checklist: each step checks off as it scrolls past 70% of the screen height
+    // (and unchecks when scrolling back up). With reduced motion, every step shows as done.
     function setupDoneList() {
         var list = document.getElementById('doneList');
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!list || reduceMotion || !('IntersectionObserver' in window)) return;
+        if (!list || reduceMotion) return;
 
         var steps = list.querySelectorAll('.done__step');
+        var ticking = false;
         list.classList.add('is-pending');
 
-        var observer = new IntersectionObserver(function(entries) {
-            if (!entries[0].isIntersecting) return;
-            observer.disconnect();
-            steps.forEach(function(step, i) {
-                setTimeout(function() { step.classList.add('is-done'); }, 200 + i * 280);
+        function update() {
+            ticking = false;
+            var line = window.innerHeight * 0.7;
+            steps.forEach(function(step) {
+                step.classList.toggle('is-done', step.getBoundingClientRect().top < line);
             });
-        }, { threshold: 0.3 });
+        }
 
-        observer.observe(list);
+        function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        update();
     }
 
     // ==========================================
@@ -372,13 +404,53 @@
         return rows;
     }
 
-    // Amounts stay in US dollars, whatever the page language
-    function formatDollars(n) {
-        return '$' + Math.round(n).toLocaleString('en-US');
+    // Amounts are in US dollars, except on the French, Spanish and Italian versions,
+    // where the same numbers are shown in euros (1:1, no conversion)
+    var EURO_LOCALES = { fr: 'fr-FR', es: 'es-ES', it: 'it-IT' };
+
+    function euroLocale() {
+        return EURO_LOCALES[getPageLanguage()] || null;
+    }
+
+    function formatMoney(n, decimals) {
+        var opts = { minimumFractionDigits: decimals || 0, maximumFractionDigits: decimals || 0 };
+        var locale = euroLocale();
+        if (locale) return n.toLocaleString(locale, opts) + '\u00a0€';
+        return '$' + n.toLocaleString('en-US', opts);
     }
 
     function formatNumber(n) {
-        return (Math.round(n * 10) / 10).toLocaleString('en-US');
+        return (Math.round(n * 10) / 10).toLocaleString(euroLocale() || 'en-US');
+    }
+
+    // Static amounts: <span class="paddle-price money" data-usd="2.00">$2.00</span>
+    // (paddle-price only makes Weglot skip them; they have no Paddle price ID)
+    function renderStaticMoney() {
+        document.querySelectorAll('.money[data-usd]').forEach(function(el) {
+            var raw = el.dataset.usd;
+            el.textContent = formatMoney(parseFloat(raw), (raw.split('.')[1] || '').length);
+        });
+    }
+
+    var updateCalculator = function() {};
+
+    function renderMoney() {
+        renderStaticMoney();
+        updateCalculator();
+    }
+
+    // Weglot loads asynchronously (tools.js): re-render once it is ready and on every language switch
+    function watchLanguage() {
+        var tries = 0;
+        (function hook() {
+            if (window.Weglot && typeof Weglot.on === 'function') {
+                Weglot.on('initialized', renderMoney);
+                Weglot.on('languageChanged', renderMoney);
+                renderMoney();
+                return;
+            }
+            if (++tries < 40) setTimeout(hook, 250);
+        })();
     }
 
     function setupCalculator() {
@@ -401,7 +473,7 @@
             document.querySelectorAll('[data-calc]').forEach(function(el) {
                 var key = el.dataset.calc;
                 if (!(key in result)) return;
-                el.textContent = MONEY.indexOf(key) !== -1 ? formatDollars(result[key]) : formatNumber(result[key]);
+                el.textContent = MONEY.indexOf(key) !== -1 ? formatMoney(Math.round(result[key])) : formatNumber(result[key]);
             });
 
             // Show the smallest plan that covers the monthly minutes
@@ -415,6 +487,7 @@
 
         videosInput.addEventListener('input', update);
         minutesInput.addEventListener('input', update);
+        updateCalculator = update;
         update();
     }
 
@@ -474,6 +547,8 @@
         setupChat();
         setupDoneList();
         setupCalculator();
+        renderStaticMoney();
+        watchLanguage();
         setupFaq();
     }
 
