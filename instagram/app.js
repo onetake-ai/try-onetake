@@ -17,10 +17,14 @@
         'feature-sound':       { before: '', after: '' },
         'feature-ums':         { before: '', after: '' },
         'feature-captions':    { main: '', ratio: '9:16' },
+        'feature-subtitles':   { main: '', ratio: '9:16' },
         'feature-transitions': { main: '', ratio: '9:16' },
+        'feature-chapters':    { main: '', ratio: '9:16' },
         'feature-music':       { main: '', ratio: '9:16' },
         'feature-language':    { before: '', after: '' },
         'feature-short':       { main: '', ratio: '9:16' },
+        'feature-gaze':        { before: '', after: '' },
+        'feature-background':  { before: '', after: '' },
         'just-ask-recording':  { main: '', ratio: '16:9' },
         'founder-video':       { main: '', ratio: '16:9' }
     };
@@ -318,6 +322,27 @@
         observer.observe(chat);
     }
 
+    // "Editing complete" checklist: steps check off one by one when the list scrolls into view.
+    // Without IntersectionObserver, or with reduced motion, every step shows as done.
+    function setupDoneList() {
+        var list = document.getElementById('doneList');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!list || reduceMotion || !('IntersectionObserver' in window)) return;
+
+        var steps = list.querySelectorAll('.done__step');
+        list.classList.add('is-pending');
+
+        var observer = new IntersectionObserver(function(entries) {
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            steps.forEach(function(step, i) {
+                setTimeout(function() { step.classList.add('is-done'); }, 200 + i * 280);
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(list);
+    }
+
     // ==========================================
     // SAVINGS CALCULATOR
     // ==========================================
@@ -447,6 +472,7 @@
         setupVideoSlots();
         setupFounderPhoto();
         setupChat();
+        setupDoneList();
         setupCalculator();
         setupFaq();
     }
