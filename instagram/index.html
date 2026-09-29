@@ -269,11 +269,33 @@
       <h2 class="section__title">Want a change? Just ask.</h2>
       <p class="section__text center">No timeline and no buttons to learn. Tell OneTake what you want, in your own words, like you'd talk to a talented videographer.</p>
       <div class="talk" data-slot-host>
+        <!-- Name and text are separate block elements so Weglot translates each one on its own -->
         <ol class="chat" id="chat" aria-label="Example conversation with OneTake">
-          <li class="chat__msg chat__msg--you"><span class="sr-only">You: </span>Make the intro shorter and use my brand colors.</li>
-          <li class="chat__msg chat__msg--onetake"><span class="chat__name">OneTake</span>Done. I shortened the intro and applied your brand colors to your captions and titles. Want me to change the music too?</li>
-          <li class="chat__msg chat__msg--you"><span class="sr-only">You: </span>Yes, something more upbeat.</li>
-          <li class="chat__msg chat__msg--onetake"><span class="chat__name">OneTake</span>Here's your new version with a more upbeat track.</li>
+          <li class="chat__msg chat__msg--you">
+            <p class="sr-only">You</p>
+            <figure class="chat__video">
+              <img src="media/chat-raw.jpg" alt="Video attachment: the raw recording" width="622" height="936" loading="lazy">
+            </figure>
+            <p class="chat__text">Please fix this video!</p>
+          </li>
+          <li class="chat__msg chat__msg--onetake">
+            <p class="chat__name">OneTake</p>
+            <p class="chat__text">Done. I edited it &amp; fixed the sound as well. Want me to add B-roll or music?</p>
+            <figure class="chat__video">
+              <img src="media/chat-edited.jpg" alt="Video attachment: the edited video, with captions" width="618" height="1106" loading="lazy">
+            </figure>
+          </li>
+          <li class="chat__msg chat__msg--you">
+            <p class="sr-only">You</p>
+            <p class="chat__text">Yes, add both please.</p>
+          </li>
+          <li class="chat__msg chat__msg--onetake">
+            <p class="chat__name">OneTake</p>
+            <p class="chat__text">Here's your new version!</p>
+            <figure class="chat__video">
+              <img src="media/chat-broll.jpg" alt="Video attachment: the new version, with B-roll and music" width="620" height="1100" loading="lazy">
+            </figure>
+          </li>
         </ol>
         <div class="slot talk__slot" data-slot="just-ask-recording" hidden>
           <div class="player" data-frame="main" data-title="Screen recording: editing a video by chatting with OneTake"></div>
@@ -371,7 +393,24 @@
 
       <div class="compare-block">
         <h3 class="plan__subtitle center" id="compareTitle">You can finally get rid of...</h3>
-        <p class="compare-block__intro">If you shoot 1 day a month (12 videos of 10 minutes each), here's what you no longer pay for every year.</p>
+        <p class="compare-block__intro">Move the sliders to match the videos you make. Here's what you no longer pay for every year.</p>
+
+        <!-- Savings calculator: app.js recomputes every [data-calc] value from the two sliders -->
+        <div class="calc" id="calc">
+          <div class="calc__field">
+            <label class="calc__label" for="calcVideos">Videos per month <output class="calc__value" for="calcVideos" id="calcVideosOut">12</output></label>
+            <input class="calc__range" type="range" id="calcVideos" min="1" max="20" step="1" value="12">
+          </div>
+          <div class="calc__field">
+            <label class="calc__label" for="calcMinutes">Minutes per video <output class="calc__value" for="calcMinutes" id="calcMinutesOut">10</output></label>
+            <input class="calc__range" type="range" id="calcMinutes" min="1" max="30" step="1" value="10">
+          </div>
+          <p class="calc__usage">That's <strong data-calc="monthlyMinutes">120</strong> editing minutes a month.</p>
+          <div class="calc__total" aria-live="polite">
+            <p class="calc__total-label">You save every year</p>
+            <p class="calc__total-amount" data-calc="total">$39,502</p>
+          </div>
+        </div>
 
         <!-- Table on desktop, stacked cards on mobile. The .compare__label spans are the mobile labels. -->
         <table class="compare" aria-labelledby="compareTitle">
@@ -384,9 +423,9 @@
           </thead>
           <tbody>
             <tr class="compare__group"><th colspan="3" scope="rowgroup">Shooting crew</th></tr>
-            <tr><th scope="row">Cameraman</th><td><span class="compare__label">Usual price</span>$500 / day</td><td class="compare__save"><span class="compare__label">You save per year</span>$6,000 (12 days)</td></tr>
-            <tr><th scope="row">Video editor</th><td><span class="compare__label">Usual price</span>$900 / video hour</td><td class="compare__save"><span class="compare__label">You save per year</span>$21,600 (24 video hours)</td></tr>
-            <tr><th scope="row">Graphic designer</th><td><span class="compare__label">Usual price</span>$300 to $600 / day</td><td class="compare__save"><span class="compare__label">You save per year</span>$1,800 (6 days)</td></tr>
+            <tr><th scope="row">Cameraman</th><td><span class="compare__label">Usual price</span>$500 / day</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span data-calc="camera">$6,000</span> (<span data-calc="cameraDays">12</span> days)</span></td></tr>
+            <tr><th scope="row">Video editor</th><td><span class="compare__label">Usual price</span>$900 / video hour</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span data-calc="editor">$21,600</span> (<span data-calc="videoHours">24</span> video hours)</span></td></tr>
+            <tr><th scope="row">Graphic designer</th><td><span class="compare__label">Usual price</span>$300 to $600 / day</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span data-calc="designer">$1,800</span> (<span data-calc="designerDays">6</span> days)</span></td></tr>
           </tbody>
           <tbody>
             <tr class="compare__group"><th colspan="3" scope="rowgroup">Video editing software</th></tr>
@@ -396,8 +435,8 @@
           </tbody>
           <tbody>
             <tr class="compare__group"><th colspan="3" scope="rowgroup">Transcription</th></tr>
-            <tr><th scope="row">Assistant to transcribe</th><td><span class="compare__label">Usual price</span>$2.00 / minute</td><td class="compare__save"><span class="compare__label">You save per year</span>$2,880</td></tr>
-            <tr><th scope="row">Freelancer to create subtitles</th><td><span class="compare__label">Usual price</span>$3.00 / minute</td><td class="compare__save"><span class="compare__label">You save per year</span>$4,320</td></tr>
+            <tr><th scope="row">Assistant to transcribe</th><td><span class="compare__label">Usual price</span>$2.00 / minute</td><td class="compare__save"><span class="compare__label">You save per year</span><span data-calc="transcription">$2,880</span></td></tr>
+            <tr><th scope="row">Freelancer to create subtitles</th><td><span class="compare__label">Usual price</span>$3.00 / minute</td><td class="compare__save"><span class="compare__label">You save per year</span><span data-calc="subtitles">$4,320</span></td></tr>
           </tbody>
           <tbody>
             <tr class="compare__group"><th colspan="3" scope="rowgroup">Transitions, animations, graphics</th></tr>
@@ -421,11 +460,14 @@
             <tr><th scope="row">Google Business Standard (Slides and Docs)</th><td><span class="compare__label">Usual price</span>$144 / year</td><td class="compare__save"><span class="compare__label">You save per year</span>$144</td></tr>
           </tbody>
           <tfoot>
-            <tr><td colspan="3">Over $36,000 saved per year.</td></tr>
+            <tr><td colspan="3"><span data-calc="total">$39,502</span> saved per year.</td></tr>
           </tfoot>
         </table>
 
-        <p class="compare-block__outro">With OneTake, all of this is included in your Launch plan, for <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59 €</span>/month.</p>
+        <!-- One line per plan; app.js shows the smallest plan that covers the monthly minutes -->
+        <p class="compare-block__outro" data-plan-minutes="120">With OneTake, all of this is included in your Launch plan (120 editing minutes a month), for <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59 €</span>/month.</p>
+        <p class="compare-block__outro" data-plan-minutes="240" hidden>With OneTake, all of this is included in the Grow plan (240 editing minutes a month), for <span class="paddle-price" data-paddle-price-id="pri_01ksfs82by8h0v6cgq6jygzsfq">149 €</span>/month.</p>
+        <p class="compare-block__outro" data-plan-minutes="600" hidden>With OneTake, all of this is included in the Scale plan (600 editing minutes a month), for <span class="paddle-price" data-paddle-price-id="pri_01ksfrb0axpe2xevfp5znm7v63">299 €</span>/month.</p>
       </div>
 
       <div class="guarantee">

@@ -254,7 +254,14 @@ figure { margin: 0; }
   background: var(--alabaster); color: var(--bleached-cedar);
   border: 1px solid #ECE7E8; border-bottom-left-radius: 6px;
 }
-.chat__name { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--cedar-muted); }
+.chat__name { margin-bottom: 2px; font-size: 12px; font-weight: 700; color: var(--cedar-muted); }
+/* Video attachment inside a bubble: 9:16 thumbnail (the play button is part of the image) */
+.chat__video {
+  width: 150px; aspect-ratio: 9 / 16; margin: 8px 0 2px;
+  border-radius: 12px; overflow: hidden; background: var(--bleached-cedar);
+}
+.chat__msg--you .chat__video { margin: 0 0 8px; }
+.chat__video img { width: 100%; height: 100%; object-fit: cover; }
 /* Set by app.js only when the animation will run: the space stays reserved, so nothing shifts */
 .chat.is-pending .chat__msg { opacity: 0; transform: translateY(8px); transition: opacity 350ms ease, transform 350ms ease; }
 .chat.is-pending .chat__msg.is-shown { opacity: 1; transform: none; }
@@ -300,6 +307,26 @@ figure { margin: 0; }
 .compare-block { margin-top: 40px; }
 .compare-block__intro { margin-bottom: 18px; text-align: center; color: var(--cedar-muted); }
 .compare-block__outro { margin-top: 16px; text-align: center; font-weight: 600; }
+
+/* Savings calculator */
+.calc {
+  margin: 0 auto 20px; padding: 18px 16px;
+  display: grid; gap: 16px;
+  background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);
+}
+.calc__field { display: grid; gap: 6px; }
+.calc__label { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 600; }
+.calc__value { font-size: 20px; font-weight: 700; min-width: 2ch; text-align: right; }
+.calc__range { width: 100%; height: 32px; margin: 0; accent-color: var(--golden-grass-dark); cursor: pointer; }
+.calc__range:focus-visible { outline: 3px solid var(--golden-grass); outline-offset: 2px; border-radius: 4px; }
+.calc__usage { font-size: 14px; color: var(--cedar-muted); text-align: center; }
+.calc__total {
+  padding: 14px 16px; border-radius: var(--radius-md);
+  background: var(--bleached-cedar); color: var(--alabaster); text-align: center;
+}
+.calc__total-label { font-size: 13px; font-weight: 600; color: var(--cold-turkey); }
+.calc__total-amount { font-size: 30px; line-height: 1.2; font-weight: 700; color: var(--golden-grass); font-variant-numeric: tabular-nums; }
+.compare td, .compare tfoot td { font-variant-numeric: tabular-nums; }
 
 /* Value comparison: stacked cards on mobile, table from 768px */
 .compare { width: 100%; border-collapse: collapse; font-size: 15px; }
@@ -443,6 +470,9 @@ figure { margin: 0; }
   .compare td:nth-child(3), .compare thead th:nth-child(3) { text-align: right; }
   .compare__empty { display: table-cell !important; }
   .compare tfoot td { display: table-cell; border-radius: 0; font-size: 22px; }
+
+  .calc { grid-template-columns: 1fr 1fr; column-gap: 28px; padding: 22px 24px; }
+  .calc__usage, .calc__total { grid-column: 1 / -1; }
 
   .guarantee { padding: 24px 28px; gap: 24px; }
   .guarantee__badge { flex-basis: 88px; height: 88px; }
