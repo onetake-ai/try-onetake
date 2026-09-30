@@ -118,7 +118,6 @@ figure { margin: 0; }
 
 .hero__logo { width: 104px; height: auto; margin: 0 auto 8px; }
 
-.hero__eyebrow { font-size: 13px; font-weight: 500; color: var(--cedar-muted); margin-bottom: 4px; }
 
 .hero__title {
   margin: 0 0 4px;
@@ -566,7 +565,6 @@ figure { margin: 0; }
   .hero__media { grid-area: media; text-align: center; }
   .hero__action { grid-area: action; max-width: 440px; }
   .hero__logo { margin: 0 0 20px; }
-  .hero__eyebrow { font-size: 15px; }
   .hero__title { font-size: 40px; line-height: 1.12; margin-bottom: 10px; }
   .hero__subline { font-size: 17px; }
   .hero__media { --hero-ba-h: clamp(400px, calc(100vh - 220px), 560px); width: calc(var(--hero-ba-h) * 9 / 8 + 16px); }
