@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>C'est confirmé&nbsp;! Rendez-vous jeudi pour la masterclass</title>
+  <meta name="description" content="Votre place à la masterclass gratuite est confirmée. En attendant jeudi, découvrez l'arme secrète des coachs qui rivalisent avec les plus grands.">
+  <meta name="theme-color" content="#F8F7F7">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://try.onetake.ai/masterclass/trafic/confirmation/">
+  <meta property="og:title" content="C'est confirmé&nbsp;! Rendez-vous jeudi pour la masterclass">
+  <meta property="og:description" content="En attendant jeudi, découvrez l'arme secrète des coachs qui rivalisent avec les plus grands.">
+  <!-- TODO(placeholder): déposer l'image OG 1200x630 à cette adresse -->
+  <meta property="og:image" content="https://try.onetake.ai/masterclass/trafic/og-masterclass-trafic-fr.jpg">
+
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://my.onetake.ai">
+
+  <!-- Same offer as /instagram/: this page reuses its stylesheet and its script (see CLAUDE.md).
+       masterclass.css comes first so the /instagram/ design tokens win. -->
+  <link rel="stylesheet" href="../../masterclass.css">
+  <link rel="stylesheet" href="../../../instagram/style.css">
+
+  <script>window.__disable_weglot = true;</script>
+  <!-- Tracking: CrazyEgg, Plausible, AnyTrack, FirstPromoter, useBouncer -->
+  <script src="../../../tools.js"></script>
+
+  <!-- Session date and countdown bar (/oto/countdown/countdown.js), redirecting to the live when it starts -->
+  <script src="../config.js"></script>
+  <script src="../../session-date.js"></script>
+  <script src="../../masterclass.js"></script>
+  <script>window.masterclass.mountSessionCountdown();</script>
+
+  <!-- Paddle Checkout -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
+  <!-- Revue testimonials widget (same as /instagram/) -->
+  <script type="module" src="https://widgets.revue.us/2.0/rw-widget-masonry.js"></script>
+</head>
+<body class="pp-page">
+
+  <!-- 1. CONFIRMATION -->
+  <header class="pp-top">
+    <div class="pp-top__inner">
+      <img class="hero__logo" src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
+           alt="OneTake AI" width="104" height="28">
+      <h1 class="pp-title">C'est confirmé<span data-mc-first-name></span>&nbsp;! Rendez-vous <span class="hl" data-mc-session>jeudi à 20h (heure de Paris)</span></h1>
+      <p class="pp-sub">Le lien pour rejoindre le direct vous sera envoyé par email.</p>
+
+      <!-- 2. JOIN THE LIVE: shown joinButtonMinutesBefore the start; the countdown bar redirects at the start -->
+      <div class="pp-join" id="mcJoin" hidden>
+        <p class="pp-join__title">Le direct commence dans quelques minutes.</p>
+        <a class="btn" href="https://nuro.video/fr-live" data-mc-href="liveUrl">Rejoindre le direct</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3 + 4. PASSE-PASSE VIDEO -->
+  <section class="pp-video" aria-labelledby="ppLead">
+    <div class="pp-video__inner">
+      <p class="pp-video__lead" id="ppLead">En attendant jeudi, découvrez l'arme secrète des coachs qui rivalisent avec les plus grands&nbsp;:</p>
+      <!-- TODO(placeholder): MASTERCLASS_CONFIG.passePasseVideo.embedUrl dans ../config.js -->
+      <div data-mc-player="passePasseVideo.embedUrl" data-title="L'arme secrète des coachs, par Sébastien Night"
+           data-placeholder="Passe-Passe video, OneTake player embed URL, 16:9"></div>
+    </div>
+  </section>
+
+  <!-- 5 + 6. SECRET WEAPON ANGLE, RAW VS EDITED, TRIAL CTA (the /instagram/ hero, with the same IDs for instagram/app.js) -->
+  <section class="hero" id="top">
+    <div class="hero__inner">
+      <div class="hero__intro">
+        <h2 class="hero__title">L'arme secrète des coachs et des créateurs de formations qui rivalisent avec les plus grands</h2>
+        <p class="hero__subline">Les leaders que vous allez découvrir jeudi ont des équipes entières derrière eux&nbsp;: monteurs, spécialistes des extraits vidéo, community managers. Les coachs et les formateurs qui leur font concurrence aujourd'hui ont autre chose&nbsp;: OneTake. Vous filmez une seule fois&nbsp;; OneTake monte votre vidéo, en extrait vos Reels et les publie pour vous. Sans équipe coûteuse, sans heures de montage.</p>
+      </div>
+
+      <!-- Before/after: two 9:16 OneTake players. They autoplay muted and loop; the player handles sound. -->
+      <div class="hero__media">
+        <div class="ba">
+          <figure class="ba__item">
+            <figcaption class="ba__caption">
+              <span class="ba__label">Vidéo brute</span>
+              <span class="ba__badge">plus de 2&nbsp;min&nbsp;30</span>
+            </figcaption>
+            <div class="player">
+              <iframe class="player__frame" title="Enregistrement brut, avant OneTake"
+                      src="https://my.onetake.ai/b9502ad6/0bcd20d1/?background_color=%23e5295a&autoplay=true&loop=true"
+                      loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+          </figure>
+          <figure class="ba__item">
+            <figcaption class="ba__caption">
+              <span class="ba__label">Montée par OneTake</span>
+              <span class="ba__badge ba__badge--after">moins d'1&nbsp;minute</span>
+            </figcaption>
+            <div class="player">
+              <iframe class="player__frame" title="Le même enregistrement, monté par OneTake"
+                      src="https://my.onetake.ai/b9502ad6/7893bb44/?background_color=%23ecab00&autoplay=true&loop=true"
+                      loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="hero__hint">Activez le son de chaque lecteur pour entendre la différence.</p>
+      </div>
+
+      <div class="hero__action">
+        <!-- Signup form (instagram/app.js). Pre-filled from ?first_name= and ?email= or the registration (masterclass.js). -->
+        <div class="signup" id="signup">
+          <form class="signup__form" id="signupForm" novalidate data-mc-prefill>
+            <label class="sr-only" for="firstName">Prénom</label>
+            <input class="signup__input" type="text" id="firstName" name="firstName"
+                   placeholder="Prénom" autocomplete="given-name" enterkeyhint="next" required>
+
+            <label class="sr-only" for="email">Email</label>
+            <input class="signup__input bouncer" type="email" id="email" name="email"
+                   placeholder="Email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+
+            <p class="signup__error" id="formError" role="alert" hidden></p>
+
+            <!-- Also leaves room under the email field for the Bouncer validation overlay -->
+            <p class="signup__cta-label">Maintenant, appuyez ici&nbsp;:</p>
+
+            <button class="btn btn--primary signup__btn" type="submit" id="submitBtn">
+              <span class="btn__label">Démarrer mon essai gratuit de 3 jours</span>
+              <span class="btn__loading" hidden>Un instant, s'il vous plaît</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- "One step away" state: shown when checkout is closed without paying -->
+        <div class="one-step" id="oneStep" hidden>
+          <p class="one-step__title">Votre essai gratuit n'est plus qu'à une étape</p>
+          <p class="one-step__text">Vos informations sont enregistrées. Appuyez sur le bouton pour finaliser votre paiement sécurisé.</p>
+          <button class="btn btn--primary" type="button" id="reopenBtn">Démarrer mon essai gratuit de 3 jours</button>
+        </div>
+
+        <p class="terms">
+          3 jours gratuits, puis votre formule Launch à <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59&nbsp;€</span>/mois (HT).
+          Annulez avant la fin de l'essai et vous ne payez rien. Paiement sécurisé par Paddle.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- CAPTERRA PROOF BAR -->
+    <div class="proofbar">
+      <p class="proof">
+        <img class="proof__badge" src="https://brand-assets.capterra.com/badge/37d923e2-71be-420c-923c-ac298997540d.svg" alt="Avis sur OneTake AI sur Capterra" width="120" height="36">
+        <span><strong>4,7/5 sur Capterra.</strong> Des milliers de coachs et de formateurs utilisent OneTake pour monter leurs vidéos, dans 119 langues.</span>
+      </p>
+    </div>
+
+    <!-- EVERYTHING ONETAKE DOES BY ITSELF (steps check off in instagram/app.js) -->
+    <section class="section">
+      <h2 class="section__title">Tout ce que OneTake fait, tout seul</h2>
+      <div class="done">
+        <div class="done__head">
+          <p class="done__title">Montage terminé</p>
+          <p class="done__subtitle">OneTake a fini de monter votre vidéo&nbsp;!</p>
+        </div>
+        <ul class="done__list" id="doneList">
+          <li class="done__step"><p class="done__text">Tout ce que vous avez dit, transcrit</p></li>
+          <li class="done__step"><p class="done__text">Un son de studio, sans bruit de fond</p></li>
+          <li class="done__step"><p class="done__text">Votre pièce en désordre remplacée par un fond net</p></li>
+          <li class="done__step"><p class="done__text">Votre regard corrigé, droit dans la caméra</p></li>
+          <li class="done__step"><p class="done__text">Les silences gênants coupés</p></li>
+          <li class="done__step"><p class="done__text">Les hésitations, les «&nbsp;euh&nbsp;» et les reprises supprimés</p></li>
+          <li class="done__step"><p class="done__text">Des sous-titres ajoutés, pour suivre même sans le son</p></li>
+          <li class="done__step"><p class="done__text">Les fautes corrigées dans vos sous-titres</p></li>
+          <li class="done__step"><p class="done__text">Vos noms de marque et le vocabulaire de votre métier bien orthographiés</p></li>
+          <li class="done__step"><p class="done__text">La vidéo découpée en chapitres et en scènes</p></li>
+          <li class="done__step"><p class="done__text">Des plans de coupe ajoutés pour illustrer vos propos</p></li>
+          <li class="done__step"><p class="done__text">Une musique libre de droits, composée pour votre vidéo</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WHAT HAPPENS NEXT -->
+    <section class="section">
+      <h2 class="section__title">Comment ça se passe</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          </span>
+          <div>
+            <p class="step__title">1. Démarrez votre essai.</p>
+            <p class="step__text">Indiquez votre prénom et votre email, puis validez sur la page de paiement sécurisé.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+          </span>
+          <div>
+            <p class="step__title">2. Envoyez une vidéo brute.</p>
+            <p class="step__text">Directement depuis votre téléphone, votre ordinateur, Zoom ou YouTube.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
+          </span>
+          <div>
+            <p class="step__title">3. OneTake la monte pour vous.</p>
+            <p class="step__text">Dans la plupart des cas, votre vidéo est prête en moins d'une minute&nbsp;: son propre, sous-titres, points clés à l'écran, musique. Un changement&nbsp;? Demandez-le comme vous le feriez à votre monteur.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- THE PROBLEM -->
+    <section class="section section--dark">
+      <h2 class="section__title">Vous êtes expert dans votre domaine. Mais monter des vidéos avec un logiciel classique, quelle galère&nbsp;!</h2>
+      <div class="story">
+        <p>Vous voulez vendre votre expertise en vidéo&nbsp;: une formation, des vidéos YouTube, des Reels qui vous amènent des clients.</p>
+        <p>Mais une vidéo de 30 secondes vous demande une heure de montage.</p>
+        <p>Alors vous essayez d'apprendre un logiciel de montage. Mais c'est trop technique, et vous êtes coach, pas monteur.</p>
+        <p>Alors vous faites appel à un freelance. Mais ça coûte une fortune, et vous attendez une semaine pour chaque vidéo.</p>
+        <p>Une heure de vidéo montée coûte environ <span class="paddle-price money" data-usd="900">900&nbsp;€</span> chez un monteur freelance, ou 12 heures de votre propre temps.</p>
+        <p>Résultat&nbsp;: vos meilleures idées restent bloquées dans votre téléphone.</p>
+        <p class="story__turn">Avec OneTake, vous filmez une seule fois et votre vidéo est prête en un clic. Pas de timeline, pas de logiciel à apprendre, pas de freelance à relancer.</p>
+      </div>
+    </section>
+
+    <!-- WHAT ONETAKE DOES FOR YOU (video slots filled from VIDEO_SLOTS in instagram/app.js; no translation or dubbing card on this page) -->
+    <section class="section section--wide">
+      <h2 class="section__title">Un clic. OneTake s'occupe du reste.</h2>
+      <div class="features">
+        <article class="feature">
+          <div class="slot" data-slot="feature-sound" hidden>
+            <div class="ba ba--small">
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Avant</span></figcaption>
+                <div class="player" data-frame="before" data-title="Le son avant OneTake"></div>
+              </figure>
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Après</span></figcaption>
+                <div class="player" data-frame="after" data-title="Le son après OneTake"></div>
+              </figure>
+            </div>
+          </div>
+          <h3 class="feature__title">Un son digne d'un studio.</h3>
+          <p class="feature__text">OneTake supprime les bruits de fond et les silences gênants.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-ums" hidden>
+            <div class="ba ba--small">
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Avant</span></figcaption>
+                <div class="player" data-frame="before" data-title="Enregistrement avec des «&nbsp;euh&nbsp;» et des reprises, avant OneTake"></div>
+              </figure>
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Après</span></figcaption>
+                <div class="player" data-frame="after" data-title="Le même enregistrement, nettoyé par OneTake"></div>
+              </figure>
+            </div>
+          </div>
+          <h3 class="feature__title">Fini les «&nbsp;euh&nbsp;» et les reprises.</h3>
+          <p class="feature__text">OneTake nettoie les bafouillages, les mots de remplissage et les erreurs.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-captions" hidden>
+            <div class="player player--single" data-frame="main" data-title="Sous-titres et points clés ajoutés par OneTake"></div>
+          </div>
+          <h3 class="feature__title">Sous-titres et points clés à l'écran.</h3>
+          <p class="feature__text">Vos spectateurs suivent mieux et retiennent davantage.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-subtitles" hidden>
+            <div class="player player--single" data-frame="main" data-title="Sous-titres corrigés par OneTake"></div>
+          </div>
+          <h3 class="feature__title">Des sous-titres propres et sans fautes.</h3>
+          <p class="feature__text">OneTake corrige la grammaire de vos sous-titres et reconnaît votre vocabulaire et vos noms de marque.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-transitions" hidden>
+            <div class="player player--single" data-frame="main" data-title="Transitions et plans de coupe ajoutés par OneTake"></div>
+          </div>
+          <h3 class="feature__title">Des transitions fluides entre les sujets.</h3>
+          <p class="feature__text">OneTake ajoute des transitions et insère vos plans de coupe. Votre formation paraît structurée et professionnelle.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-music" hidden>
+            <div class="player player--single" data-frame="main" data-title="Musique de fond composée par OneTake"></div>
+          </div>
+          <h3 class="feature__title">Une musique faite pour votre vidéo.</h3>
+          <p class="feature__text">OneTake compose une musique de fond unique et libre de droits, adaptée à l'ambiance et au rythme de votre vidéo.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-short" hidden>
+            <div class="player player--single" data-frame="main" data-title="Short tiré des meilleurs moments par OneTake"></div>
+          </div>
+          <h3 class="feature__title">Vos meilleurs moments, prêts à publier.</h3>
+          <p class="feature__text">Dans chaque vidéo, OneTake repère tous les meilleurs moments et en tire des Shorts. Avec Launch, vous choisissez celui que vous préférez et vous le publiez sur Reels, TikTok ou YouTube Shorts.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-publishing" hidden>
+            <div class="player player--single" data-frame="main" data-title="Publication et calendrier éditorial dans OneTake"></div>
+          </div>
+          <p class="feature__pill">Formules supérieures</p>
+          <h3 class="feature__title">Publiez partout, au bon moment.</h3>
+          <p class="feature__text">OneTake se connecte directement à LinkedIn, Instagram, YouTube, TikTok et Facebook, y publie vos contenus et gère votre calendrier éditorial.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-gaze" hidden>
+            <div class="ba ba--small">
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Avant</span></figcaption>
+                <div class="player" data-frame="before" data-title="Regard détourné, avant OneTake"></div>
+              </figure>
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Après</span></figcaption>
+                <div class="player" data-frame="after" data-title="Regard corrigé par OneTake"></div>
+              </figure>
+            </div>
+          </div>
+          <p class="feature__pill">1 essai offert</p>
+          <h3 class="feature__title">Regardez droit dans la caméra.</h3>
+          <p class="feature__text">OneTake donne l'impression que vous regardez droit dans l'objectif, même quand vous lisiez vos notes hors champ. Essayez-le une fois gratuitement sur une vidéo de 30 minutes maximum, puis 0,50&nbsp;€ la minute.</p>
+        </article>
+        <article class="feature">
+          <div class="slot" data-slot="feature-background" hidden>
+            <div class="ba ba--small">
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Avant</span></figcaption>
+                <div class="player" data-frame="before" data-title="Arrière-plan d'origine, avant OneTake"></div>
+              </figure>
+              <figure class="ba__item">
+                <figcaption class="ba__caption"><span class="ba__label">Après</span></figcaption>
+                <div class="player" data-frame="after" data-title="Arrière-plan remplacé par OneTake"></div>
+              </figure>
+            </div>
+          </div>
+          <p class="feature__pill">1 essai offert</p>
+          <h3 class="feature__title">Un arrière-plan soigné.</h3>
+          <p class="feature__text">OneTake efface proprement votre pièce et la remplace par un décor&nbsp;: votre bureau en désordre devient une scène soignée, aux couleurs de votre marque. Essayez-le une fois gratuitement sur une vidéo de 30 minutes maximum, puis 0,50&nbsp;€ la minute.</p>
+        </article>
+      </div>
+      <div class="section-cta">
+        <button class="btn btn--primary js-go-to-form" type="button">Démarrer mon essai gratuit de 3 jours</button>
+      </div>
+    </section>
+
+    <!-- JUST ASK (chat mockup; messages appear one by one in instagram/app.js) -->
+    <section class="section section--tint">
+      <h2 class="section__title">Envie d'un changement&nbsp;? Demandez simplement.</h2>
+      <p class="section__text center">Pas de timeline, pas de boutons à apprendre. Dites à OneTake ce que vous voulez, avec vos propres mots, comme vous le feriez avec un vidéaste de talent.</p>
+      <div class="talk" data-slot-host>
+        <div class="chatbox">
+          <div class="chatbox__head">
+            <span class="chatbox__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+            </span>
+            <div>
+              <p class="chatbox__name">OneTake</p>
+              <p class="chatbox__status">En ligne</p>
+            </div>
+          </div>
+          <ol class="chat" id="chat" aria-label="Exemple de conversation avec OneTake">
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-raw.jpg" alt="Vidéo jointe&nbsp;: l'enregistrement brut" width="622" height="936" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="sr-only">Vous</p>
+                  <p class="chat__text">Vous pouvez arranger cette vidéo&nbsp;?</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-edited.jpg" alt="Vidéo jointe&nbsp;: la vidéo montée, avec sous-titres" width="618" height="1106" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">C'est fait. Je l'ai montée et j'ai aussi corrigé le son. Voulez-vous que j'ajoute des plans de coupe ou de la musique&nbsp;?</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <div class="chat__bubble">
+                  <p class="sr-only">Vous</p>
+                  <p class="chat__text">Oui, les deux, s'il vous plaît.</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-broll.jpg" alt="Vidéo jointe&nbsp;: la nouvelle version, avec plans de coupe et musique" width="620" height="1100" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">Voici votre nouvelle version&nbsp;!</p>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <div class="chatbox__input" aria-hidden="true">
+            <p class="chatbox__placeholder">Dites à OneTake ce que vous voulez…</p>
+            <span class="chatbox__send">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="slot talk__slot" data-slot="just-ask-recording" hidden>
+          <div class="player" data-frame="main" data-title="Enregistrement d'écran&nbsp;: monter une vidéo en discutant avec OneTake"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NO PROMPTING, NO SETUP -->
+    <section class="section">
+      <h2 class="section__title">Pas besoin de savoir écrire des prompts. Rien à installer.</h2>
+      <ul class="checks">
+        <li>OneTake monte votre vidéo automatiquement, dès que vous l'envoyez.</li>
+        <li>Aucun prompt à écrire, aucun travail manuel.</li>
+        <li>Rien à installer&nbsp;: tout fonctionne depuis votre téléphone ou votre ordinateur.</li>
+        <li>Aucun autre abonnement IA à payer.</li>
+        <li>Pas de timeline, pas de logiciel de montage, pas de freelance à relancer.</li>
+      </ul>
+    </section>
+
+    <!-- USE CASES -->
+    <section class="section section--wide section--tint">
+      <h2 class="section__title">Filmez une fois. Utilisez partout.</h2>
+      <div class="usecases">
+        <article class="usecase">
+          <h3 class="usecase__title">Votre formation en ligne peut être prête dès demain.</h3>
+          <p>Vous avez animé un atelier de deux heures sur Zoom. L'enregistrement dort dans un dossier, parce que le découper en leçons vous prendrait un week-end. Envoyez chaque partie à OneTake (jusqu'à une heure par vidéo) et récupérez des leçons propres et sous-titrées, prêtes pour votre plateforme de formation.</p>
+        </article>
+        <article class="usecase">
+          <h3 class="usecase__title">Des vidéos YouTube qui sont enfin publiées.</h3>
+          <p>Vous avez tourné trois vidéos dimanche. Le vendredi, elles sont toujours dans votre téléphone. OneTake monte chacune d'elles, puis la publie directement sur votre chaîne YouTube, avec le titre, la description et les chapitres déjà remplis.</p>
+        </article>
+        <article class="usecase">
+          <h3 class="usecase__title">Des Reels qui vous amènent des clients.</h3>
+          <p>Vous savez que les Reels attirent des clients, mais un extrait de 30 secondes vous coûte une heure. Filmez, envoyez, et OneTake vous livre une vidéo terminée et un Short prêt à publier.</p>
+        </article>
+      </div>
+      <div class="section-cta">
+        <button class="btn btn--primary js-go-to-form" type="button">Démarrer mon essai gratuit de 3 jours</button>
+      </div>
+    </section>
+
+    <!-- FOUNDER (photo shown while FOUNDER_PHOTO_READY is true in instagram/app.js) -->
+    <section class="section section--wide">
+      <h2 class="section__title">Pourquoi j'ai créé OneTake</h2>
+      <div class="founder" id="founder" data-slot-host>
+        <img class="founder__photo" id="founderPhoto" data-src="https://www.sebastiennight.com/images/press/Sebastien-03-official-sd.jpeg"
+             alt="Sébastien Night, fondateur et PDG de OneTake AI" width="853" height="1280" loading="lazy" hidden>
+        <div class="founder__text">
+          <p>Depuis 2010, j'ai aidé plus de 300&nbsp;000 entrepreneurs dans 41 pays à développer leur activité avec le Mouvement des Entrepreneurs Libres. J'ai écrit 11 livres et enregistré des milliers de vidéos. Et j'ai passé un nombre incalculable d'heures à les monter.</p>
+          <p>Tous les coachs que je rencontrais avaient le même problème&nbsp;: experts dans leur domaine, mais bloqués à l'étape du montage. Pendant ce temps, les grands leaders de leur marché avaient des équipes entières pour le faire à leur place. Alors j'ai créé OneTake, pour que vous puissiez filmer une seule fois, rivaliser avec eux sans équipe, et revenir à ce que vous faites de mieux&nbsp;: enseigner et accompagner vos clients.</p>
+          <p>Deux fois par mois, j'anime «&nbsp;The Real Time&nbsp;», une démo en direct où je réponds à vos questions. Elle est incluse dans votre formule Launch.</p>
+          <p class="founder__sig"><strong>Sébastien Night</strong>, fondateur et PDG de OneTake AI</p>
+          <div class="slot founder__slot" data-slot="founder-video" hidden>
+            <div class="player" data-frame="main" data-title="Un message de Sébastien Night"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section">
+      <h2 class="section__title">Ce que les entrepreneurs comme vous disent de OneTake</h2>
+      <div class="capterra">
+        <img src="https://brand-assets.capterra.com/badge/d99f9893-1182-4293-a004-8158134b7e0a.svg"
+             alt="Badge Capterra 2025 Best Ease of Use" width="264" height="264" loading="lazy">
+        <p>Noté 4,7/5 sur Capterra, et récompensé en 2025 par le badge «&nbsp;Best Ease of Use&nbsp;» (le plus simple à utiliser) dans la catégorie des générateurs vidéo IA et du montage vidéo.</p>
+      </div>
+      <div class="reviews">
+        <rw-widget-masonry data-rw-masonry="39663"></rw-widget-masonry>
+      </div>
+      <p class="center"><a class="link" href="https://welove.onetake.ai/" target="_blank" rel="noopener">Voir tous les avis</a></p>
+    </section>
+
+    <!-- YOUR LAUNCH PLAN: list, value comparison, guarantee, then price -->
+    <section class="section section--wide section--tint" id="plan">
+      <h2 class="section__title">Tout ce qui est inclus dans votre essai gratuit</h2>
+
+      <div class="plan">
+        <h3 class="plan__subtitle">Ce qui est inclus (formule Launch)&nbsp;:</h3>
+        <ul class="checks">
+          <li>120 minutes de montage par mois, renouvelées chaque mois</li>
+          <li>Des vidéos jusqu'à 1 heure chacune</li>
+          <li>Montage automatique&nbsp;: son nettoyé, silences et «&nbsp;euh&nbsp;» supprimés, sous-titres, plans de coupe, musique</li>
+          <li>Il suffit de demander&nbsp;: peaufinez votre vidéo en discutant avec OneTake, et obtenez scripts, résumés, quiz et plans de leçons à partir de votre enregistrement</li>
+          <li>1 Short tiré de chaque vidéo, choisi parmi les meilleurs moments</li>
+          <li>Des exports Full HD (1080p) sans filigrane</li>
+          <li>Votre propre page vidéo hébergée et un lecteur à intégrer à votre plateforme de formation ou à votre page de vente</li>
+          <li>Publication directe sur YouTube</li>
+          <li>Téléprompteur et caméraman virtuel</li>
+          <li>Votre logo et les couleurs de votre marque sur chaque vidéo</li>
+          <li>La correction du regard et le remplacement de l'arrière-plan, à essayer une fois gratuitement</li>
+          <li>Les démos en direct «&nbsp;The Real Time&nbsp;» avec le fondateur</li>
+        </ul>
+      </div>
+
+      <div class="compare-block">
+        <h3 class="plan__subtitle center" id="compareTitle">Vous pouvez enfin vous passer de…</h3>
+        <p class="compare-block__intro">Réglez les curseurs selon les vidéos que vous faites. Voici ce que vous n'aurez plus à payer chaque année.</p>
+
+        <!-- Savings calculator: instagram/app.js recomputes every [data-calc] value from the two sliders -->
+        <div class="calc" id="calc">
+          <div class="calc__field">
+            <label class="calc__label" for="calcVideos">Vidéos par mois <output class="calc__value" for="calcVideos" id="calcVideosOut">12</output></label>
+            <input class="calc__range" type="range" id="calcVideos" min="1" max="20" step="1" value="12">
+          </div>
+          <div class="calc__field">
+            <label class="calc__label" for="calcMinutes">Minutes par vidéo <output class="calc__value" for="calcMinutes" id="calcMinutesOut">10</output></label>
+            <input class="calc__range" type="range" id="calcMinutes" min="1" max="30" step="1" value="10">
+          </div>
+          <p class="calc__usage">Soit <strong data-calc="monthlyMinutes">120</strong> minutes de montage par mois.</p>
+          <div class="calc__total" aria-live="polite">
+            <p class="calc__total-label">Vous économisez chaque année</p>
+            <p class="calc__total-amount paddle-price" data-calc="total">39&nbsp;502&nbsp;€</p>
+          </div>
+        </div>
+
+        <table class="compare" aria-labelledby="compareTitle">
+          <thead>
+            <tr>
+              <th scope="col">Ce que vous remplacez</th>
+              <th scope="col">Prix habituel</th>
+              <th scope="col">Économie par an</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Équipe de tournage</th></tr>
+            <tr><th scope="row">Caméraman</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="500">500&nbsp;€</span> / jour</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="compare__val"><span class="paddle-price" data-calc="camera">6&nbsp;000&nbsp;€</span> (<span data-calc="cameraDays">12</span>&nbsp;jours)</span></td></tr>
+            <tr><th scope="row">Monteur vidéo</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="900">900&nbsp;€</span> / heure de vidéo</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="compare__val"><span class="paddle-price" data-calc="editor">21&nbsp;600&nbsp;€</span> (<span data-calc="videoHours">24</span>&nbsp;heures de vidéo)</span></td></tr>
+            <tr><th scope="row">Graphiste</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="300">300&nbsp;€</span> à <span class="paddle-price money" data-usd="600">600&nbsp;€</span> / jour</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="compare__val"><span class="paddle-price" data-calc="designer">1&nbsp;800&nbsp;€</span> (<span data-calc="designerDays">6</span>&nbsp;jours)</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Logiciels de montage vidéo</th></tr>
+            <tr><th scope="row">Adobe Creative Cloud (Premiere)</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="750">750&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="750">750&nbsp;€</span></td></tr>
+            <tr><th scope="row">Filmora Business</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="150">150&nbsp;€</span> / an</td><td class="compare__included">Remplacé par OneTake</td></tr>
+            <tr><th scope="row">InShot et autres applis mobiles</th><td class="compare__empty"></td><td class="compare__included">Remplacé par OneTake</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Transcription</th></tr>
+            <tr><th scope="row">Assistant pour la transcription</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="2.00">2,00&nbsp;€</span> / minute</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price" data-calc="transcription">2&nbsp;880&nbsp;€</span></td></tr>
+            <tr><th scope="row">Freelance pour créer les sous-titres</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="3.00">3,00&nbsp;€</span> / minute</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price" data-calc="subtitles">4&nbsp;320&nbsp;€</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Transitions, animations, graphismes</th></tr>
+            <tr><th scope="row">After Effects</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="300">300&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="288">288&nbsp;€</span></td></tr>
+            <tr><th scope="row">Canva Pro</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="110">110&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="110">110&nbsp;€</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Téléprompteur</th></tr>
+            <tr><th scope="row">Logiciel de téléprompteur</th><td class="compare__empty"></td><td class="compare__included">Remplacé par OneTake</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Hébergement vidéo</th></tr>
+            <tr><th scope="row">YouTube, qui affiche les publicités de vos concurrents et des «&nbsp;vidéos similaires&nbsp;» dans votre vidéo</th><td class="compare__empty"></td><td class="compare__included">Remplacé par OneTake</td></tr>
+            <tr><th scope="row">Vimeo Advanced</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="588">588&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="588">588&nbsp;€</span></td></tr>
+            <tr><th scope="row">Wistia</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="948">948&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="948">948&nbsp;€</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Supports de formation</th></tr>
+            <tr><th scope="row">Microsoft Office 365 (Word, PowerPoint)</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="74">74&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="74">74&nbsp;€</span></td></tr>
+            <tr><th scope="row">Apple Keynote</th><td class="compare__empty"></td><td class="compare__included">Remplacé par OneTake</td></tr>
+            <tr><th scope="row">Google Business Standard (Slides et Docs)</th><td><span class="compare__label">Prix habituel</span><span class="paddle-price money" data-usd="144">144&nbsp;€</span> / an</td><td class="compare__save"><span class="compare__label">Économie par an</span><span class="paddle-price money" data-usd="144">144&nbsp;€</span></td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="3"><span class="paddle-price" data-calc="total">39&nbsp;502&nbsp;€</span> économisés par an.</td></tr>
+          </tfoot>
+        </table>
+
+        <!-- One line per plan; instagram/app.js shows the smallest plan that covers the monthly minutes -->
+        <p class="compare-block__outro" data-plan-minutes="120">Avec OneTake, tout cela est inclus dans votre formule Launch (120 minutes de montage par mois), pour <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59&nbsp;€</span>/mois.</p>
+        <p class="compare-block__outro" data-plan-minutes="240" hidden>Avec OneTake, tout cela est inclus dans la formule Grow (240 minutes de montage par mois), pour <span class="paddle-price" data-paddle-price-id="pri_01ksfs82by8h0v6cgq6jygzsfq">149&nbsp;€</span>/mois.</p>
+        <p class="compare-block__outro" data-plan-minutes="600" hidden>Avec OneTake, tout cela est inclus dans la formule Scale (600 minutes de montage par mois), pour <span class="paddle-price" data-paddle-price-id="pri_01ksfrb0axpe2xevfp5znm7v63">299&nbsp;€</span>/mois.</p>
+      </div>
+
+      <div class="guarantee">
+        <div class="guarantee__badge" aria-hidden="true">
+          <span class="guarantee__days">14</span>
+          <span class="guarantee__unit">jours</span>
+        </div>
+        <div>
+          <p class="guarantee__title">Satisfait ou remboursé pendant 14 jours.</p>
+          <p>Si OneTake ne vous convient pas, demandez un remboursement dans les 14 jours qui suivent votre premier paiement. Sans conditions, sans justification.</p>
+        </div>
+      </div>
+
+      <div class="price">
+        <p class="price__main">3 jours gratuits, puis <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59&nbsp;€</span>/mois (HT).</p>
+        <p>Nous vous prévenons par email avant la fin de votre essai. Vous pouvez annuler à tout moment, en un clic depuis votre compte OneTake.</p>
+        <p class="price__anchor">Un monteur freelance facture environ <span class="paddle-price money" data-usd="900">900&nbsp;€</span> pour une heure de vidéo montée. Launch vous donne 120 minutes de montage chaque mois.</p>
+      </div>
+
+      <div class="section-cta">
+        <button class="btn btn--primary js-go-to-form" type="button">Démarrer mon essai gratuit de 3 jours</button>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="section">
+      <h2 class="section__title">OneTake est-il fait pour vous&nbsp;?</h2>
+      <div class="fit">
+        <div class="fit__col fit__col--yes">
+          <h3 class="fit__title">OneTake est fait pour vous si</h3>
+          <ul>
+            <li>vous êtes coach, consultant ou formateur&nbsp;;</li>
+            <li>vous voulez vendre des formations en ligne, publier des vidéos YouTube ou trouver plus de clients grâce aux Reels&nbsp;;</li>
+            <li>vous voulez des vidéos professionnelles sans apprendre le montage.</li>
+          </ul>
+        </div>
+        <div class="fit__col fit__col--no">
+          <h3 class="fit__title">OneTake n'est pas fait pour vous si</h3>
+          <ul>
+            <li>vous voulez monter chaque image à la main&nbsp;;</li>
+            <li>vous réalisez des films de cinéma ou des clips musicaux.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (one open at a time, handled in instagram/app.js; no language or translation questions on this page) -->
+    <section class="section">
+      <h2 class="section__title">Questions fréquentes</h2>
+      <div class="faq" id="faq">
+        <details class="faq__item">
+          <summary>Je ne suis pas du tout technique. Est-ce que je peux utiliser OneTake&nbsp;?</summary>
+          <p>Oui. Vous envoyez une vidéo et OneTake s'occupe du montage. Pour changer quelque chose, il suffit d'écrire ce que vous voulez, avec des mots simples.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Ma caméra et mon micro sont basiques. Le résultat sera-t-il professionnel&nbsp;?</summary>
+          <p>Oui. Filmez-vous tel que vous êtes, même avec votre téléphone. OneTake nettoie votre son et donne à votre vidéo un rendu professionnel.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Qu'est-ce qui est inclus dans l'essai gratuit&nbsp;?</summary>
+          <p>Toutes les fonctionnalités de la formule Launch, pendant 3 jours&nbsp;: 120 minutes de montage, des vidéos jusqu'à 1 heure, sous-titres, musique, plans de coupe, un Short tiré de chaque vidéo, des exports Full HD sans filigrane, et bien plus encore.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Pourquoi demandez-vous une carte bancaire&nbsp;?</summary>
+          <p>Elle permet à votre formule de continuer sans interruption après l'essai. Nous vous prévenons par email avant la fin de l'essai, et vous pouvez annuler en un clic depuis votre compte. Annulez avant la fin des 3 jours et vous ne payez rien.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Puis-je utiliser des vidéos que j'ai déjà enregistrées&nbsp;?</summary>
+          <p>Oui. Importez-les depuis votre ordinateur, Zoom, YouTube, Dropbox et bien d'autres.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Combien de temps faut-il à OneTake pour monter ma vidéo&nbsp;?</summary>
+          <p>Dans la plupart des cas, moins d'une minute.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Quelle peut être la durée de mes vidéos&nbsp;?</summary>
+          <p>Jusqu'à 1 heure chacune. Votre formule Launch comprend 120 minutes de montage par mois, renouvelées chaque mois.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Dois-je écrire des prompts&nbsp;?</summary>
+          <p>Non. OneTake monte votre vidéo automatiquement dès que vous l'envoyez. Si vous voulez un changement, dites-le simplement avec vos propres mots.</p>
+        </details>
+        <details class="faq__item">
+          <summary>La correction du regard et le remplacement de l'arrière-plan sont-ils inclus&nbsp;?</summary>
+          <p>Vous pouvez essayer chacun d'eux une fois gratuitement, sur une vidéo de 30 minutes maximum. Ensuite, chacun coûte 0,50&nbsp;€ par minute de vidéo.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Puis-je faire des vidéos verticales pour les Reels&nbsp;?</summary>
+          <p>Oui. Filmez à la verticale et OneTake monte votre vidéo dans le même format. Il en tire aussi un Short pour chaque vidéo.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Y aura-t-il un filigrane OneTake&nbsp;?</summary>
+          <p>Non. Vos exports sont en Full HD (1080p), sans logo OneTake.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Y a-t-il une garantie&nbsp;?</summary>
+          <p>Oui. Si OneTake ne vous convient pas, demandez un remboursement dans les 14 jours qui suivent votre premier paiement. Sans conditions.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Où sont hébergées mes vidéos&nbsp;?</summary>
+          <p>OneTake héberge vos vidéos gratuitement&nbsp;: vous pouvez les intégrer à votre site sans payer Wistia ou Vimeo, et sans les publicités que YouTube ajoute à vos vidéos.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section section--dark final" id="finalCta">
+      <h2 class="section__title">Votre arme secrète est prête&nbsp;: votre prochaine vidéo peut être montée en un seul clic.</h2>
+      <button class="btn btn--primary js-go-to-form" type="button">Démarrer mon essai gratuit de 3 jours</button>
+      <p class="terms terms--dark">
+        3 jours gratuits, puis votre formule Launch à <span class="paddle-price" data-paddle-price-id="pri_01ksfshd2k1145y5v96v8bk0se">59&nbsp;€</span>/mois (HT).
+        Annulez avant la fin de l'essai et vous ne payez rien. Paiement sécurisé par Paddle.
+      </p>
+    </section>
+  </main>
+
+  <footer class="mc-footer">
+    <div class="footer-inner">
+      <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
+      <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
+      <p><strong>Qui a eu cette idée&nbsp;?</strong></p>
+      <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui a aidé depuis 2010 plus de 300&nbsp;000 entrepreneurs dans 41 pays à développer leur activité. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un agent IA à la fois incroyablement puissant et d'une simplicité d'utilisation absolue&nbsp;: OneTake.</strong></p>
+      <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+      <p class="footer-disclaimer">Ces créateurs sont des exemples publics utilisés à titre d'illustration&nbsp;; leurs extraits n'impliquent aucune affiliation, aucun partenariat ni aucune recommandation avec, de ou par OneTake Pte Ltd.</p>
+      <p class="footer-disclaimer">Ce site ne fait pas partie des sites Facebook, Instagram ou Google, et n'est en aucun cas approuvé par Meta Platforms, Inc. ou Alphabet Inc. Facebook et Instagram sont des marques de Meta Platforms, Inc. Google et YouTube sont des marques de Google LLC.</p>
+      <p class="footer-disclaimer">OneTake Pte Ltd, Singapour</p>
+    </div>
+  </footer>
+
+  <!-- STICKY CTA: shown only while the signup form and the final CTA are out of view -->
+  <div class="sticky-cta" id="stickyCta" aria-hidden="true">
+    <div class="sticky-cta__inner">
+      <p class="sticky-cta__text">3 jours gratuits</p>
+      <button class="btn btn--primary js-go-to-form sticky-cta__btn" type="button" tabindex="-1">Démarrer mon essai</button>
+    </div>
+  </div>
+
+  <!-- Strings used by instagram/app.js -->
+  <div id="messages" hidden>
+    <span data-msg="firstName">Merci d'indiquer votre prénom.</span>
+    <span data-msg="email">Merci d'indiquer une adresse email valide, par exemple nom@exemple.com.</span>
+    <span data-msg="checkout">Impossible d'ouvrir le paiement sécurisé. Vérifiez votre connexion Internet et réessayez.</span>
+  </div>
+
+  <!-- Scripts (same order as /instagram/index.html) -->
+  <script src="../../../pricing-data.js"></script>
+  <script src="../../../translations.js"></script>
+  <script src="../../../tracking-params.js"></script>
+  <script src="../../../cohort.js"></script>
+  <script src="../../../assets/checkout/checkout-core.js"></script>
+  <script src="../../../price-localizer.js"></script>
+  <script src="../../../instagram/app.js"></script>
+</body>
+</html>

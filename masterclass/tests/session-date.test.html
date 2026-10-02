@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Session date tests</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px 16px; color: #241826; background: #F8F7F7; }
+    h1 { font-size: 20px; }
+    .summary { font-weight: 700; margin-bottom: 16px; }
+    .pass { color: #1E6B3A; }
+    .fail { color: #A3213D; }
+    li { margin-bottom: 6px; }
+    code { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>masterclass/session-date.js</h1>
+  <p class="summary" id="summary">Running...</p>
+  <ol id="results"></ol>
+
+  <script src="../session-date.js"></script>
+  <script src="session-date.test.js"></script>
+  <script>
+    var results = window.runSessionDateTests();
+    var failed = results.filter(function (r) { return !r.pass; }).length;
+    var summary = document.getElementById('summary');
+    summary.textContent = failed ? failed + ' of ' + results.length + ' tests failed' : 'All ' + results.length + ' tests passed';
+    summary.className = 'summary ' + (failed ? 'fail' : 'pass');
+    var list = document.getElementById('results');
+    results.forEach(function (r) {
+      var li = document.createElement('li');
+      li.className = r.pass ? 'pass' : 'fail';
+      li.textContent = (r.pass ? 'PASS ' : 'FAIL ') + r.name + (r.pass ? '' : ' (expected ' + r.expected + ', got ' + r.actual + ')');
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>

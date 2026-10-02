@@ -1,0 +1,337 @@
+/* Masterclass funnels (/masterclass/traffic/ and /masterclass/trafic/). Mobile first.
+   The French confirmation page also loads /instagram/style.css: only .mc-, .ph, .hl, .footer-inner
+   and .pp- rules here may apply to it, so keep generic selectors out of this file's shared part. */
+
+:root {
+  /* Brand colors (same tokens as /styles.css and /instagram/style.css) */
+  --golden-grass: #E3AE28;
+  --golden-grass-dark: #C9951A;
+  --golden-grass-tint: #FBF1D9;
+  --bleached-cedar: #241826;
+  --cedar-muted: #5E5160;
+  --alabaster: #F8F7F7;
+  --cabaret: #D33E5D;
+  --cabaret-dark: #A3213D;
+  --cold-turkey: #D1B0B3;
+  --white: #FFFFFF;
+
+  --font-family: Montserrat, Arial, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 4px 20px rgba(36, 24, 38, 0.08);
+  --shadow-focus: 0 0 0 4px rgba(227, 174, 40, 0.35);
+
+  --column: 560px;
+  --wide: 1080px;
+  --gutter: 16px;
+}
+
+/* ── Highlighter: a soft Golden Grass marker band behind key words ───── */
+
+.hl {
+  padding: 0 0.12em;
+  margin: 0 -0.04em;
+  background-image: linear-gradient(100deg, rgba(227, 174, 40, 0) 0.4%, rgba(227, 174, 40, 0.75) 2.5%, rgba(227, 174, 40, 0.55) 95%, rgba(227, 174, 40, 0) 99.6%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.5em;
+  background-position: 0 88%;
+  border-radius: 0.2em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ── Placeholders: obvious on the page, easy to find in code ([data-placeholder]) ── */
+
+.ph {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%; min-height: 120px; padding: 12px;
+  background: var(--cold-turkey);
+  outline: 2px dashed var(--bleached-cedar); outline-offset: -6px;
+  border-radius: var(--radius-md);
+  color: var(--bleached-cedar);
+  font-family: var(--font-family); font-size: 12px; line-height: 1.35; font-weight: 600; text-align: center;
+  overflow-wrap: anywhere;
+}
+.ph--inline {
+  display: inline; min-height: 0; padding: 1px 6px;
+  outline: 0; border: 1.5px dashed var(--bleached-cedar); border-radius: 4px;
+  font-size: 0.85em;
+}
+.ph--video { aspect-ratio: 16 / 9; min-height: 0; }
+
+/* ── Standard footer (CLAUDE.md) ─────────────────────────────────────── */
+
+.mc-footer {
+  padding: 32px var(--gutter) 40px;
+  background: var(--white);
+  color: var(--cedar-muted);
+  font-family: var(--font-family);
+  font-size: 13px; line-height: 1.6;
+}
+.mc-footer .footer-inner { max-width: 760px; margin: 0 auto; display: grid; gap: 10px; }
+.mc-footer p { margin: 0; }
+.mc-footer strong { color: var(--bleached-cedar); }
+.mc-footer a { color: var(--bleached-cedar); text-underline-offset: 2px; }
+.mc-footer a:focus-visible { outline: 3px solid var(--golden-grass); outline-offset: 2px; border-radius: 2px; }
+.mc-footer .footer-disclaimer { font-size: 12px; }
+
+/* ── Page base (registration, inbox and watch pages) ─────────────────── */
+
+.mc-page {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 16px; line-height: 1.55;
+  color: var(--bleached-cedar);
+  background: var(--alabaster);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+.mc-page *, .mc-page *::before, .mc-page *::after { box-sizing: border-box; }
+.mc-page img { display: block; max-width: 100%; height: auto; }
+.mc-page p { margin: 0; }
+.mc-page figure { margin: 0; }
+.mc-page [hidden] { display: none !important; }
+.mc-page .sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.mc-container { max-width: var(--column); margin: 0 auto; padding: 0 var(--gutter); }
+.mc-container--wide { max-width: var(--wide); }
+
+.mc-logo { width: 104px; height: auto; }
+
+.mc-link { color: var(--bleached-cedar); font-weight: 600; text-underline-offset: 3px; }
+.mc-link:focus-visible { outline: 3px solid var(--golden-grass); outline-offset: 2px; border-radius: 2px; }
+
+/* Buttons */
+.mc-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 54px; padding: 12px 20px;
+  border: 0; border-radius: var(--radius-md);
+  background: var(--golden-grass); color: var(--bleached-cedar);
+  box-shadow: 0 6px 18px rgba(227, 174, 40, 0.35);
+  font-family: inherit; font-size: 17px; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+.mc-btn:hover { background: var(--golden-grass-dark); }
+.mc-btn:active { transform: scale(0.98); }
+.mc-btn:focus-visible { outline: 3px solid var(--bleached-cedar); outline-offset: 2px; box-shadow: var(--shadow-focus); }
+.mc-btn:disabled { opacity: 0.75; cursor: progress; }
+.mc-dark .mc-btn:focus-visible { outline-color: var(--alabaster); }
+
+/* OneTake player (16:9) */
+.mc-page .player {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md); overflow: hidden;
+  background: var(--bleached-cedar); box-shadow: var(--shadow-soft);
+}
+.mc-page .player__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ── Hero (registration page) ────────────────────────────────────────── */
+
+.mc-hero { padding: 14px 0 28px; padding-top: max(14px, env(safe-area-inset-top)); }
+.mc-hero__inner { display: grid; gap: 14px; }
+.mc-hero .mc-logo { margin: 0 auto 2px; }
+
+.mc-eyebrow {
+  justify-self: center;
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  background: var(--bleached-cedar); color: var(--golden-grass);
+  font-size: 12px; line-height: 1.35; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+}
+
+.mc-h1 {
+  margin: 0;
+  font-size: 30px; line-height: 1.16; font-weight: 800; letter-spacing: -0.015em; text-align: center;
+}
+.mc-sub { font-size: 16px; line-height: 1.45; color: var(--cedar-muted); text-align: center; }
+
+/* ── Registration form ───────────────────────────────────────────────── */
+
+.mc-card {
+  padding: 18px 16px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+.mc-card--accent { border: 2px solid var(--golden-grass); }
+
+.mc-form { display: grid; gap: 10px; }
+.mc-form__session { font-size: 14px; font-weight: 600; text-align: center; }
+.mc-field { display: grid; gap: 4px; }
+.mc-label { font-size: 14px; font-weight: 600; }
+.mc-input {
+  width: 100%; min-height: 50px; padding: 12px 14px;
+  font-family: inherit; font-size: 16px; /* 16px minimum stops iOS zoom */
+  color: var(--bleached-cedar); background: var(--white);
+  border: 1.5px solid #B9AEB1; border-radius: var(--radius-md);
+  -webkit-appearance: none; appearance: none;
+}
+.mc-input::placeholder { color: #776B7A; }
+.mc-input:focus { outline: none; border-color: var(--bleached-cedar); box-shadow: var(--shadow-focus); }
+.mc-input[aria-invalid="true"] { border-color: var(--cabaret-dark); }
+/* Leaves room under the email field for the useBouncer validation overlay (about 44px) */
+.mc-field--email { margin-bottom: 26px; }
+.mc-form__error { font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--cabaret-dark); }
+.mc-form__micro { font-size: 13px; line-height: 1.4; color: var(--cedar-muted); text-align: center; }
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+
+.mc-section { padding: 40px 0; }
+.mc-section--white { background: var(--white); }
+.mc-dark { background: var(--bleached-cedar); color: var(--alabaster); }
+.mc-h2 {
+  margin: 0 0 18px;
+  font-size: 24px; line-height: 1.25; font-weight: 800; text-align: center;
+}
+.mc-dark .mc-h2 { color: var(--golden-grass); }
+.mc-text { display: grid; gap: 14px; font-size: 17px; }
+.mc-lead { font-weight: 700; }
+
+/* Checklist with a custom Golden Grass check icon */
+.mc-checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.mc-checks li { position: relative; padding-left: 36px; }
+.mc-checks li::before {
+  content: ''; position: absolute; left: 0; top: 1px;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--golden-grass);
+}
+.mc-checks li::after {
+  content: ''; position: absolute; left: 9px; top: 6px;
+  width: 6px; height: 11px;
+  border: solid var(--bleached-cedar); border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+/* ── Proof ───────────────────────────────────────────────────────────── */
+
+.proof-grid {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+.proof-item { display: grid; gap: 6px; align-content: start; }
+.proof-item > img, .proof-item > .ph { border-radius: var(--radius-md); }
+.proof-item--profile > img, .proof-item--profile > .ph { aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+.proof-item--reel > img, .proof-item--reel > .ph { aspect-ratio: 9 / 16; object-fit: cover; }
+.proof-item__caption { font-size: 13px; line-height: 1.35; text-align: center; color: var(--cold-turkey); }
+.proof-item__caption strong { color: var(--alabaster); }
+.mc-dark .ph--inline { border-color: var(--bleached-cedar); }
+
+.proof-sub { margin: 32px 0 14px; font-size: 18px; font-weight: 700; text-align: center; color: var(--alabaster); }
+
+/* Reels: horizontal row, scrollable on mobile */
+.reel-row {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 150px; gap: 12px;
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+  padding: 0 var(--gutter) 10px; margin: 0 calc(-1 * var(--gutter));
+  scrollbar-width: thin;
+}
+.reel-row .proof-item { scroll-snap-align: start; }
+.reel-row:focus-visible { outline: 3px solid var(--golden-grass); outline-offset: 2px; }
+
+/* ── Host ────────────────────────────────────────────────────────────── */
+
+.host { display: grid; gap: 20px; justify-items: center; }
+.host__photo { width: 100%; max-width: 260px; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 78%; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); }
+
+/* ── "Check your inbox" page ─────────────────────────────────────────── */
+
+.mc-progress { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; counter-reset: step; }
+.mc-progress li {
+  position: relative; display: grid; justify-items: center; gap: 6px;
+  font-size: 12px; line-height: 1.3; font-weight: 600; text-align: center; color: var(--cedar-muted);
+  counter-increment: step;
+}
+.mc-progress li::before {
+  content: counter(step);
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--white); border: 2px solid #B9AEB1; color: var(--cedar-muted);
+  font-size: 15px; font-weight: 700;
+}
+.mc-progress .is-done::before { content: '\2713'; background: var(--golden-grass); border-color: var(--golden-grass); color: var(--bleached-cedar); }
+.mc-progress .is-active { color: var(--bleached-cedar); font-weight: 700; }
+.mc-progress .is-active::before { background: var(--bleached-cedar); border-color: var(--bleached-cedar); color: var(--golden-grass); box-shadow: 0 0 0 4px var(--golden-grass-tint); }
+
+.mc-email-card { display: grid; gap: 10px; padding: 18px 16px; background: var(--golden-grass-tint); border: 2px solid var(--golden-grass); border-radius: var(--radius-lg); }
+.mc-email-card dl { margin: 0; display: grid; gap: 10px; }
+.mc-email-card dt { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cedar-muted); }
+.mc-email-card dd { margin: 0; font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+.mc-tip { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; }
+.mc-tip__icon { flex: 0 0 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--white); box-shadow: var(--shadow-soft); }
+.mc-small { font-size: 14px; text-align: center; color: var(--cedar-muted); }
+
+/* ── Watch page offer ────────────────────────────────────────────────── */
+
+.mc-offer { display: grid; gap: 12px; text-align: center; }
+.mc-offer__title { margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; }
+.mc-clock { display: flex; justify-content: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.mc-clock__unit { min-width: 58px; padding: 8px 6px; border-radius: var(--radius-sm); background: var(--bleached-cedar); color: var(--alabaster); }
+.mc-clock__num { display: block; font-size: 22px; font-weight: 800; line-height: 1.1; color: var(--golden-grass); }
+.mc-clock__name { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── French confirmation page (with /instagram/style.css) ────────────── */
+
+.pp-top { padding: 16px var(--gutter) 28px; text-align: center; }
+.pp-top__inner { max-width: 640px; margin: 0 auto; display: grid; gap: 12px; }
+.pp-top .hero__logo { margin: 0 auto 4px; }
+.pp-title { margin: 0; font-size: 28px; line-height: 1.18; font-weight: 800; letter-spacing: -0.01em; }
+.pp-sub { font-size: 16px; color: var(--cedar-muted); }
+.pp-join { display: grid; gap: 10px; padding: 16px; background: var(--white); border: 2px solid var(--cabaret); border-radius: var(--radius-lg); }
+.pp-join__title { font-weight: 700; }
+.pp-join .btn { background: var(--cabaret-dark); color: var(--white); box-shadow: none; text-decoration: none; }
+.pp-join .btn:hover { background: #8A1B33; }
+.pp-video { padding: 0 var(--gutter) 8px; }
+.pp-video__inner { max-width: 760px; margin: 0 auto; display: grid; gap: 14px; }
+.pp-video__lead { font-size: 18px; line-height: 1.4; font-weight: 700; text-align: center; }
+.pp-video .player { aspect-ratio: 16 / 9; }
+/* The sticky CTA bar covers the bottom of the page: keep the footer readable above it */
+.pp-page .mc-footer { padding-bottom: calc(84px + 32px + env(safe-area-inset-bottom, 0px)); }
+
+/* ── Tablet and up ───────────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .mc-section { padding: 56px 0; }
+  .mc-h2 { font-size: 30px; margin-bottom: 24px; }
+  .mc-text { font-size: 18px; }
+  .host { grid-template-columns: 260px 1fr; align-items: start; justify-items: start; gap: 32px; }
+  .proof-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .mc-progress li { font-size: 14px; }
+  .pp-title { font-size: 38px; }
+}
+
+/* ── Desktop ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 960px) {
+  .mc-hero { padding: 32px 0 56px; }
+  .mc-hero__inner {
+    grid-template-columns: minmax(0, 1fr) 420px;
+    grid-template-areas: "logo logo" "eyebrow form" "title form" "sub form";
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 56px; row-gap: 18px; align-items: start;
+  }
+  .mc-hero .mc-logo { grid-area: logo; margin: 0 0 12px; }
+  .mc-eyebrow { grid-area: eyebrow; justify-self: start; }
+  .mc-h1 { grid-area: title; font-size: 50px; line-height: 1.08; text-align: left; }
+  .mc-sub { grid-area: sub; font-size: 19px; text-align: left; }
+  .mc-hero .mc-card { grid-area: form; padding: 24px 22px; }
+
+  /* French confirmation page: the /instagram/ hero holds an H2 here, keep it below the H1 size */
+  .pp-page .hero__title { font-size: 32px; line-height: 1.18; }
+
+  .reel-row { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); overflow: visible; margin: 0; padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-btn { transition: none; }
+}
+
+/* ── Layout helpers ──────────────────────────────────────────────────── */
+
+.mc-stack { display: grid; gap: 22px; }
+.mc-stack--video { max-width: 800px; gap: 18px; }
+.mc-logo--center { margin: 0 auto; }
+.mc-btn-wrap { width: 100%; max-width: 420px; margin: 0 auto; }
+.mc-video-lead { text-align: center; font-size: 18px; }
