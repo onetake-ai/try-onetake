@@ -12,7 +12,8 @@ window.MASTERCLASS_CONFIG = {
   urls: {
     register:     '/masterclass/trafic/',
     checkInbox:   '/masterclass/trafic/verifiez-vos-emails/',
-    confirmation: '/masterclass/trafic/confirmation/'
+    confirmation: '/masterclass/trafic/confirmation/',
+    offer:        '/masterclass/trafic/offre/'
   },
 
   // Live session: every Thursday at 20:00, Paris time (see /masterclass/session-date.js)
@@ -37,12 +38,24 @@ window.MASTERCLASS_CONFIG = {
   // Page 2: the confirmation email the visitor should look for
   email: {
     subject: '',        // TODO(placeholder): objet exact de l'email de confirmation Userlist
-    sender: ''          // TODO(placeholder): ex. 'Sébastien Night <hello@onetake.ai>'
+    sender: 'OneTake AI - Sebastien <contact@mail.onetake.ai>'
   },
 
   // Page 3: Passe-Passe video
   passePasseVideo: {
     embedUrl: ''        // TODO(placeholder): OneTake player URL (https://my.onetake.ai/...), 16:9
+  },
+
+  // Offer page (/masterclass/trafic/offre/, masterclass/offer.js): replay at the top, offer visible right away
+  replayVideo: {
+    embedUrl: ''        // TODO(placeholder): OneTake player URL of the live replay (https://my.onetake.ai/...), 16:9
+  },
+  offer: {
+    plans: { yearly: 'scale-yearly-offer', quarterly: 'scale-quarterly-offer' },  // keys in /pricing-data.js
+    defaultPlan: 'yearly',
+    deadline: 'weekly-live',        // Wednesday after the Thursday live (?attends_masterclass_on=), 23:59:59 Paris time
+    revealAfterSeconds: 0,
+    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/'
   },
 
   // Page 1: proof section. Add or remove items freely; an empty image shows a placeholder.

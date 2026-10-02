@@ -198,14 +198,13 @@
             items.push({ priceId: state.planInfo.oneTimeCharge, quantity: 1 });
         }
 
-        var customer = {
-            email: state.formData.email
-        };
+        // No email yet (masterclass offer pages): Paddle asks for it in the checkout
+        var customer = state.formData.email ? { email: state.formData.email } : null;
 
         // Build success URL with query parameters
         var lang = state.currentLanguage || 'en';
         var successParams = new URLSearchParams({
-            email: state.formData.email,
+            email: state.formData.email || '',
             language: getTwoLetterLanguageCode(lang),
             product: state.productId
         });
@@ -249,9 +248,11 @@
         try {
             var checkoutConfig = {
                 settings: settings,
-                items: items,
-                customer: customer
+                items: items
             };
+            if (customer) {
+                checkoutConfig.customer = customer;
+            }
             if (customData) {
                 checkoutConfig.customData = customData;
             }

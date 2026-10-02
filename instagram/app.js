@@ -574,6 +574,21 @@
         els.stickyCta = document.getElementById('stickyCta');
         els.finalCta = document.getElementById('finalCta');
 
+        // The masterclass offer pages reuse this script for its sections only (no signup form):
+        // they set up Paddle, the checkout and the sticky bar themselves (masterclass/offer.js)
+        if (els.form) setupSignup();
+
+        setupVideoSlots();
+        setupFounderPhoto();
+        setupChat();
+        setupDoneList();
+        setupCalculator();
+        renderStaticMoney();
+        watchLanguage();
+        setupFaq();
+    }
+
+    function setupSignup() {
         core.initPaddle(isSandbox, handlePaddleEvent);
         window.localizePrices();
 
@@ -596,14 +611,6 @@
         });
 
         setupStickyCta();
-        setupVideoSlots();
-        setupFounderPhoto();
-        setupChat();
-        setupDoneList();
-        setupCalculator();
-        renderStaticMoney();
-        watchLanguage();
-        setupFaq();
     }
 
     document.addEventListener('DOMContentLoaded', init);

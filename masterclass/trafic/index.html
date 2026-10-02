@@ -60,7 +60,7 @@
 
   <main>
     <section class="mc-section mc-section--white">
-      <div class="mc-container">
+      <div class="mc-container mc-container--wide mc-split">
         <div class="mc-text">
           <p>Notre IA monte des dizaines de milliers de vidéos pour des experts et des leaders dans le monde entier. Nous avons analysé les meilleurs de chaque domaine pour comprendre pourquoi certains coachs cumulent des millions de vues et des revenus hors norme, sans jamais perdre leur temps avec des vidéos «&nbsp;drôles&nbsp;» ou «&nbsp;virales&nbsp;» qui n'ont rien à voir avec leur métier.</p>
           <p class="mc-lead">Dans cette toute nouvelle masterclass, remplie d'exemples concrets, vous découvrirez les 7 règles que tous ces leaders appliquent&nbsp;:</p>
@@ -74,17 +74,15 @@
             <li>Pourquoi publier des vidéos «&nbsp;tendance&nbsp;» ou «&nbsp;drôles&nbsp;» peut attirer le mauvais public, et quoi faire à la place</li>
           </ul>
         </div>
-      </div>
-    </section>
 
-    <section class="mc-section mc-dark" aria-labelledby="proofTitle">
-      <div class="mc-container mc-container--wide">
-        <h2 class="mc-h2" id="proofTitle">Quelques-uns des comptes que nous avons étudiés</h2>
-        <!-- TODO(placeholder): captures de profils Instagram, générées depuis MASTERCLASS_CONFIG.profiles (config.js) -->
-        <div class="proof-grid" id="mcProfiles"></div>
-        <!-- TODO(placeholder): captures de Reels et légendes, générées depuis MASTERCLASS_CONFIG.reels (config.js) -->
-        <p class="proof-sub" id="reelsTitle">Des Reels que nous avons étudiés</p>
-        <div class="reel-row" id="mcReels" tabindex="0" role="region" aria-labelledby="reelsTitle"></div>
+        <aside class="mc-proof-panel" aria-labelledby="proofTitle">
+          <h2 class="mc-h2" id="proofTitle">Quelques-uns des comptes que nous avons étudiés</h2>
+          <!-- TODO(placeholder): captures de profils Instagram, générées depuis MASTERCLASS_CONFIG.profiles (config.js) -->
+          <div class="proof-grid" id="mcProfiles"></div>
+          <!-- TODO(placeholder): captures de Reels et légendes, générées depuis MASTERCLASS_CONFIG.reels (config.js) -->
+          <p class="proof-sub" id="reelsTitle">Des Reels que nous avons étudiés</p>
+          <div class="reel-row" id="mcReels" tabindex="0" role="region" aria-labelledby="reelsTitle"></div>
+        </aside>
       </div>
     </section>
 
@@ -129,6 +127,8 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+      <!-- TODO(confirm): phrase de consentement newsletter, brouillon à confirmer par Sébastien -->
+      <p>En m'inscrivant, j'accepte aussi de recevoir les emails de OneTake AI&nbsp;: conseils vidéo, nouveautés et offres spéciales. Je peux me désinscrire à tout moment en un clic.</p>
       <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
       <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
       <p><strong>Qui a eu cette idée&nbsp;?</strong></p>

@@ -17,6 +17,9 @@
  *           masterclass_slug        e.g. "traffic"; saved on the user and on the event
  *           attends_masterclass_on  ISO 8601 datetime of the live session; saved on the user and on the event
  *
+ * With event=CompleteRegistration, the user property Register_to_a_webinar_on is set to the
+ * current UTC time (ISO 8601) on every registration.
+ *
  * RESPONSE:
  *   Default: 302 redirect to SITE_ORIGIN + redirect, whatever happens with Userlist
  *            (plain HTML forms, e.g. /bootcamps/ehv/access/).
@@ -116,6 +119,9 @@ BunnySDK.net.http.serve(async (req: Request) => {
   if (language)   userProperties.language   = language;
   if (slug)       userProperties.masterclass_slug       = slug;
   if (attendsOn)  userProperties.attends_masterclass_on = attendsOn;
+  // Registration time, set here (not by the browser) so a wrong visitor clock can't skew it.
+  // Overwritten on every new registration.
+  if (event === 'CompleteRegistration') userProperties.Register_to_a_webinar_on = new Date().toISOString();
 
   const eventProperties: Record<string, string> = {};
   if (url)        eventProperties.url = url;

@@ -14,11 +14,11 @@
  *   [data-mc-first-name]         ", Name" from ?first_name= (or the name typed at registration)
  *   #mcProfiles, #mcReels        Proof grids, rendered from config.profiles and config.reels
  *   #mcHostPhoto                 Host photo from config.hostPhoto
- *   #mcOffer                     Watch page offer block (offerRevealSeconds, offer countdown)
  *   #mcJoin                      "Join the live" block, shown just before the session
  *   [data-mc-prefill]            Fills #firstName and #email (checkout form) from the URL or registration
  *
  * masterclass.mountSessionCountdown() is called from <head> on the French confirmation page.
+ * masterclass.lead() returns { first_name, email } from the URL or the registration (used by offer.js).
  */
 (function () {
   'use strict';
@@ -72,6 +72,22 @@
   }
 
   // ── Registration forms ───────────────────────────────────────────────
+
+  // Plausible "CompleteRegistration" goal (same name as the Userlist event), sent once Userlist
+  // has accepted the lead. Waits for Plausible to send it, at most 1 s, before leaving the page.
+  function trackRegistration(next) {
+    var done = false;
+    function go() { if (!done) { done = true; next(); } }
+    setTimeout(go, 1000);
+    if (typeof window.plausible === 'function') {
+      window.plausible(config.registrationEvent, {
+        props: { language: config.language, masterclass_slug: config.slug },
+        callback: go
+      });
+    } else {
+      go();
+    }
+  }
 
   function setupForm(form) {
     var firstName = form.querySelector('[name="first_name"]');
@@ -138,7 +154,7 @@
       }).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         saveLead(lead);
-        window.location.assign(config.urls.checkInbox);
+        trackRegistration(function () { window.location.assign(config.urls.checkInbox); });
       }).catch(function () {
         setLoading(false);
         showError(config.messages.network, null);
@@ -273,42 +289,6 @@
     }
   }
 
-  // ── Watch page offer (English page 3) ────────────────────────────────
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function setupOffer() {
-    var block = document.getElementById('mcOffer');
-    if (!block) return;
-
-    var reveal = parseFloat(config.offerRevealSeconds) || 0;
-    if (reveal > 0) {
-      block.hidden = true;
-      setTimeout(function () { block.hidden = false; }, reveal * 1000);
-    }
-
-    var clock = document.getElementById('mcOfferCountdown');
-    var deadline = Date.parse(config.offerDeadline);
-    if (!clock || !config.offerCountdownEnabled || isNaN(deadline)) return;
-
-    clock.hidden = false;
-    var timer;
-    function tick() {
-      var diff = deadline - Date.now();
-      if (diff <= 0) {
-        clearInterval(timer);
-        block.remove();
-        return;
-      }
-      clock.querySelector('[data-unit="d"]').textContent = Math.floor(diff / 86400000);
-      clock.querySelector('[data-unit="h"]').textContent = pad(Math.floor(diff % 86400000 / 3600000));
-      clock.querySelector('[data-unit="m"]').textContent = pad(Math.floor(diff % 3600000 / 60000));
-      clock.querySelector('[data-unit="s"]').textContent = pad(Math.floor(diff % 60000 / 1000));
-    }
-    tick();
-    timer = setInterval(tick, 1000);
-  }
-
   // ── Live session (French page 3) ─────────────────────────────────────
 
   // Injects /oto/countdown/countdown.js with this week's session as the deadline.
@@ -350,11 +330,20 @@
     bindFirstName();
     prefillCheckout();
     renderProof();
-    setupOffer();
     setupJoin();
   }
 
-  window.masterclass = { mountSessionCountdown: mountSessionCountdown };
+  // First name and email from the URL, or else from the registration saved in this browser
+  function lead() {
+    var saved = savedLead();
+    var clean = function (v) { return v && !/[{}<>]/.test(v) ? v : ''; };
+    return {
+      first_name: clean(param('first_name')) || clean(saved.first_name),
+      email: clean(param('email')) || clean(saved.email)
+    };
+  }
+
+  window.masterclass = { mountSessionCountdown: mountSessionCountdown, lead: lead, param: param };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
