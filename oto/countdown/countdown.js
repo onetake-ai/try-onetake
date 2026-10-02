@@ -10,6 +10,8 @@
  *
  * Optional attributes:
  *   data-label        Label text before the digits (default: "Offer closes in")
+ *   data-label-days   Unit label for days. When set, a days unit is shown (while at least 1 day is left)
+ *                     and hours count from 0 to 23. When not set, hours keep counting past 24.
  *   data-label-hours  Unit label for hours  (default: "hours")
  *   data-label-min    Unit label for minutes (default: "min")
  *   data-label-sec    Unit label for seconds (default: "sec")
@@ -25,6 +27,7 @@
   var deadline   = new Date(s.getAttribute('data-deadline')).getTime();
   var redirectTo = s.getAttribute('data-redirect');
   var label      = s.getAttribute('data-label')        || 'Offer closes in';
+  var labelD     = s.getAttribute('data-label-days');
   var labelH     = s.getAttribute('data-label-hours')  || 'hours';
   var labelM     = s.getAttribute('data-label-min')    || 'min';
   var labelSec   = s.getAttribute('data-label-sec')    || 'sec';
@@ -66,6 +69,8 @@
   bar.innerHTML =
     '<span class="cd-label">' + label + '</span>' +
     '<div class="cd-units">' +
+      (labelD ? '<div class="cd-unit" id="cd-d-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-name">' + labelD + '</span></div>' +
+                '<span class="cd-sep" id="cd-d-sep">:</span>' : '') +
       '<div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-name">' + labelH + '</span></div>' +
       '<span class="cd-sep">:</span>' +
       '<div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-name">' + labelM + '</span></div>' +
@@ -87,7 +92,15 @@
       return;
     }
     bar.style.display = '';
-    bar.querySelector('#cd-h').textContent = pad(Math.floor(diff / 3600000));
+    var hours = Math.floor(diff / 3600000);
+    if (labelD) {
+      var days = Math.floor(hours / 24);
+      bar.querySelector('#cd-d').textContent = pad(days);
+      bar.querySelector('#cd-d-unit').style.display = days ? '' : 'none';
+      bar.querySelector('#cd-d-sep').style.display = days ? '' : 'none';
+      hours = hours % 24;
+    }
+    bar.querySelector('#cd-h').textContent = pad(hours);
     bar.querySelector('#cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
     bar.querySelector('#cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
   }

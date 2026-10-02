@@ -195,6 +195,7 @@ A self-contained sticky countdown bar that injects its own CSS and DOM. Add a si
 | `data-label-min` | `"min"` |
 | `data-label-sec` | `"sec"` |
 | `data-show-within` | Hours before deadline to start showing the bar. Bar is hidden until the deadline is within this window (e.g. `"48"` shows it only during the last 2 days). |
+| `data-label-days` | Unit label for days (no default). When set, a days unit is shown while at least one day is left, and hours count from 0 to 23. When not set, hours keep counting past 24. |
 
 The bar inserts itself as the first child of `<body>` and is `position: sticky; top: 0`, so it scrolls with the page and stays pinned at the top. When the deadline is reached the script calls `location.replace(data-redirect)`.
 
@@ -279,4 +280,22 @@ Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from M
 - Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
 - In the feature cards, premium options (gaze correction, background removal) always carry a "Try once free" label, and anything reserved for higher plans carries "Higher plans". The "Editing complete" checklist has no labels.
 - Comparison and calculator amounts are always marked up as `.money` elements (or `[data-calc]`), never as bare text: `app.js` shows them in dollars, or in euros (same numbers) on the French, Spanish and Italian versions.
+- **`/masterclass/trafic/confirmation/` sells the same offer and shares this page's content.** It loads `instagram/style.css` and `instagram/app.js` directly and repeats this page's sections in French (same IDs, classes and `VIDEO_SLOTS`). When you edit the copy, sections, prices, FAQ or checkout markup of `/instagram/`, update the French confirmation page the same way (and the other way around). The French page leaves out everything about translation and dubbing, and `instagram/app.js` must keep working without Weglot (it falls back to `<html lang>`).
 - `instagram/legacy.html` is an archive: never link to it. It still loads the shared scripts (`tools.js`, `checkout-core.js`...), so changes to those also affect it.
+
+## Masterclass funnels (`/masterclass/`)
+
+Two registration funnels for Sébastien's free masterclass, written by hand (Weglot is disabled with `window.__disable_weglot = true` before `tools.js`):
+
+| | English (prerecorded) | French (live, every Thursday at 20:00 Paris time) |
+|---|---|---|
+| Page 1: registration (indexed) | `/masterclass/traffic/` | `/masterclass/trafic/` |
+| Page 2: check your inbox (`noindex`) | `/masterclass/traffic/check-your-inbox/` (inbox steps, then sales video) | `/masterclass/trafic/verifiez-vos-emails/` (inbox steps only) |
+| Page 3: link in the email (`noindex`) | `/masterclass/traffic/watch/` (masterclass video + offer) | `/masterclass/trafic/confirmation/` (countdown + Passe-Passe page with the trial offer) |
+
+- **Config:** every changeable value (emails, video URLs, offer, proof screenshots, session time) lives in `config.js` in each funnel folder. Never hardcode them in the markup. Missing values show a `.ph` placeholder box; each folder's `PLACEHOLDERS.md` lists what is still missing.
+- **Shared files:** `masterclass.css` (styles), `masterclass.js` (forms, config bindings, proof grid, offer block, join button), `session-date.js` (next French session). Load order on every page: `config.js`, `session-date.js`, `masterclass.js`.
+- **Leads:** forms POST to the Userlist proxy (`edge-scripts/userlist-proxy.ts`) with `Accept: application/json`, `event=CompleteRegistration`, `language`, `masterclass_slug=traffic` and, in French, `attends_masterclass_on` (ISO 8601 UTC of the session). The proxy answers JSON in that mode, so the page can show an inline error; plain HTML forms still get the 302 redirect. Only `Lead` and `CompleteRegistration` events are allowed.
+- **Session date:** always use `masterclassSession.next()` / `formatFr()` from `session-date.js`, never a date computed elsewhere. The cutoff (default Thursday 21:00) is in the config. Tests: open `/masterclass/tests/session-date.test.html` in a browser; all tests must pass.
+- **French page 3 countdown:** `masterclass.mountSessionCountdown()` injects `/oto/countdown/countdown.js` with the session start as `data-deadline` and the live URL as `data-redirect`, so visitors are sent to the live when it starts (or immediately if they open the page during the session).
+- **Copy:** in this funnel only, "our AI" / "notre IA" is allowed. French typography: non-breaking space (`&nbsp;`) before `:`, `;`, `!`, `?` and inside « guillemets ». Highlight key headline words with `<span class="hl">`.
