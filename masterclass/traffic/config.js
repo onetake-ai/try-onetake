@@ -18,30 +18,27 @@ window.MASTERCLASS_CONFIG = {
   // Page 2: the confirmation email the visitor should look for
   email: {
     subject: '',        // TODO(placeholder): exact subject line of the Userlist confirmation email
-    sender: ''          // TODO(placeholder): e.g. 'Sébastien Night <hello@onetake.ai>'
+    sender: 'OneTake AI - Sebastien <contact@mail.onetake.ai>'
   },
 
-  // Page 2: sales video shown while the visitor waits for the email
+  // Page 2: sales video shown while the visitor waits for the email (the trial offer follows, as on /instagram/)
   salesVideo: {
-    embedUrl: '',       // TODO(placeholder): OneTake player URL (https://my.onetake.ai/...), 16:9
-    offerLabel: 'Start my 3-day free trial',
-    offerUrl: 'https://yes.onetake.ai'
+    embedUrl: ''        // TODO(placeholder): OneTake player URL (https://my.onetake.ai/...), 16:9
   },
 
-  // Page 3: the prerecorded masterclass
+  // Page 3: the prerecorded masterclass (about 75 minutes)
   masterclassVideo: {
     embedUrl: ''        // TODO(placeholder): OneTake player URL (https://my.onetake.ai/...), 16:9
   },
 
-  // Page 3: offer block under the video
-  offerHeadline: '',    // TODO(placeholder)
-  offerText: '',        // TODO(placeholder)
-  offerButtonLabel: '', // TODO(placeholder)
-  offerUrl: 'https://yes.onetake.ai',
-  offerRevealSeconds: 0,          // 0 = always visible; otherwise seconds on the page before the offer block appears
-  offerCountdownEnabled: false,   // true shows a countdown in the offer block
-  offerDeadline: '',              // ISO 8601 UTC, e.g. '2026-11-30T22:00:00Z'; the offer block hides after it
-  offerCountdownLabel: 'This offer closes in',
+  // Page 3: the offer under the masterclass (masterclass/offer.js)
+  offer: {
+    plans: { yearly: 'scale-yearly-offer', quarterly: 'scale-quarterly-offer' },  // keys in /pricing-data.js
+    defaultPlan: 'yearly',
+    deadline: 'registration',       // 6 days after registration (?registered_on=), end of day, visitor's time zone
+    revealAfterSeconds: 270,        // sales content appears after 4 min 30 s on the page (0 = right away)
+    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/'
+  },
 
   // Page 1: proof section. Add or remove items freely; an empty image shows a placeholder.
   profiles: [

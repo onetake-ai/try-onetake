@@ -1,71 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Masterclass "traffic", page 3: the prerecorded masterclass, then the offer (revealed after revealAfterSeconds).
+     Built from the /instagram/ sections (style.css and app.js are shared): see CLAUDE.md before editing. -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <title>Your masterclass: The 100M-Follower Masterclass</title>
-  <meta name="description" content="Watch The 100M-Follower Masterclass now: how coaches and experts drive free traffic and customers from Reels and videos.">
+  <title>Your masterclass replay and special offer</title>
+  <meta name="description" content="Watch the 100M-Follower Masterclass and get OneTake with all bonuses.">
   <meta name="theme-color" content="#F8F7F7">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://try.onetake.ai/masterclass/traffic/watch/">
-  <meta property="og:title" content="The 100M-Follower Masterclass">
-  <meta property="og:description" content="How coaches and experts drive free traffic and customers from Reels and videos, without spending their life in front of a camera.">
+  <meta property="og:title" content="Your masterclass replay and special offer">
+  <meta property="og:description" content="Watch the 100M-Follower Masterclass and get OneTake with all bonuses.">
   <!-- TODO(placeholder): upload the 1200x630 OG image to this path -->
   <meta property="og:image" content="https://try.onetake.ai/masterclass/traffic/og-masterclass-traffic-en.jpg">
 
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://my.onetake.ai">
+
+  <!-- masterclass.css comes first so the /instagram/ design tokens win -->
   <link rel="stylesheet" href="../../masterclass.css">
+  <link rel="stylesheet" href="../../../instagram/style.css">
 
   <script>window.__disable_weglot = true;</script>
+  <!-- Tracking: CrazyEgg, Plausible, AnyTrack, FirstPromoter, useBouncer -->
   <script src="../../../tools.js"></script>
+
+  <!-- Config, deadline (redirects at once if the offer is over), reveal, countdowns, checkout -->
+  <script src="../config.js"></script>
+  <script src="../../session-date.js"></script>
+  <script src="../../offer-deadline.js"></script>
+  <script src="../../masterclass.js"></script>
+  <script src="../../offer.js"></script>
+
+  <!-- Paddle Checkout -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
+  <!-- Revue testimonials widget (same as /instagram/) -->
+  <script type="module" src="https://widgets.revue.us/2.0/rw-widget-masonry.js"></script>
 </head>
-<body class="mc-page">
+<body class="pp-page">
+
+  <!-- 1. THE MASTERCLASS -->
+  <header class="pp-top">
+    <div class="pp-top__inner">
+      <img class="hero__logo" src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
+           alt="OneTake AI" width="104" height="28">
+      <h1 class="pp-title">Welcome<span data-mc-first-name></span>! Here’s <span class="hl">your masterclass</span></h1>
+    </div>
+  </header>
+  <section class="pp-video">
+    <div class="pp-video__inner">
+      <!-- TODO(placeholder): MASTERCLASS_CONFIG.masterclassVideo.embedUrl in ../config.js -->
+      <div data-mc-player="masterclassVideo.embedUrl" data-title="The 100M-Follower Masterclass, with Sébastien Night"
+           data-placeholder="masterclass video (about 75 min), OneTake player embed URL, 16:9"></div>
+      <p class="of-note">Grab something to take notes. Sébastien shares a lot of real examples.</p>
+    <p class="of-reveal" id="revealNotice" hidden>Sébastien’s special offer for masterclass viewers appears below in <strong data-reveal-clock>04:30</strong></p>
+    </div>
+  </section>
+
+  <!-- SALES CONTENT: hidden until revealAfterSeconds of time on page (or ?offer=1, or a previous unlock) -->
+  <div class="of-content" id="offerContent">
+
+  <!-- 3. OFFER HERO -->
+  <section class="section section--wide of-hero" id="offerHero">
+    <p class="of-kicker">Special offer for masterclass viewers</p>
+    <h2 class="section__title">Publish like the <span class="hl">100M-follower leaders</span>. Without their team.</h2>
+    <p class="of-hero__text">OneTake edits your videos, cuts your Reels and publishes them for you. You record once; OneTake does the rest.</p>
+    <div data-offer-cta></div>
+  </section>
 
   <main>
-    <section class="mc-section">
-      <div class="mc-container mc-stack mc-stack--video">
-        <img class="mc-logo mc-logo--center" src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
-             alt="OneTake AI" width="104" height="28">
-
-        <h1 class="mc-h1">Welcome<span data-mc-first-name></span>! Here’s <span class="hl">your masterclass</span></h1>
-
-        <!-- TODO(placeholder): MASTERCLASS_CONFIG.masterclassVideo.embedUrl in ../config.js -->
-        <div data-mc-player="masterclassVideo.embedUrl" data-title="The 100M-Follower Masterclass, with Sébastien Night"
-             data-placeholder="masterclass video, OneTake player embed URL, 16:9"></div>
-
-        <p class="mc-sub">Grab something to take notes. Sébastien shares a lot of real examples.</p>
+    <!-- 4. BEFORE / AFTER (same players as /instagram/) -->
+    <section class="section section--wide">
+      <h2 class="section__title">Record your content as raw as you have to. OneTake edits it all for you.</h2>
+      <div class="hero__media of-ba">
+        <div class="ba">
+          <figure class="ba__item">
+            <figcaption class="ba__caption">
+              <span class="ba__label">Raw recording</span>
+              <span class="ba__badge">over 2:30</span>
+            </figcaption>
+            <div class="player">
+              <iframe class="player__frame" title="Raw recording before OneTake"
+                      src="https://my.onetake.ai/b9502ad6/0bcd20d1/?background_color=%23e5295a&autoplay=true&loop=true"
+                      loading="eager" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+          </figure>
+          <figure class="ba__item">
+            <figcaption class="ba__caption">
+              <span class="ba__label">Edited by OneTake</span>
+              <span class="ba__badge ba__badge--after">under 1:00</span>
+            </figcaption>
+            <div class="player">
+              <iframe class="player__frame" title="Same recording edited by OneTake"
+                      src="https://my.onetake.ai/b9502ad6/7893bb44/?background_color=%23ecab00&autoplay=true&loop=true"
+                      loading="eager" allow="autoplay; clipboard-write; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="hero__hint">Turn on the sound in each player to hear the difference.</p>
       </div>
     </section>
 
-    <!-- Offer block: hidden for offerRevealSeconds (time on page), optional countdown (offerCountdownEnabled) -->
-    <section class="mc-section mc-section--white" id="mcOffer" aria-labelledby="offerTitle">
-      <div class="mc-container mc-offer">
-        <!-- TODO(placeholder): offerHeadline, offerText and offerButtonLabel in ../config.js -->
-        <h2 class="mc-offer__title" id="offerTitle" data-mc-text="offerHeadline" data-placeholder="offer headline"></h2>
-        <p class="mc-text" data-mc-text="offerText" data-placeholder="offer text"></p>
+    <!-- 5. THE 4 FORMATS -->
+    <section class="section section--wide section--tint">
+      <h2 class="section__title">The 4 formats the leaders publish, created for you</h2>
+      <div class="of-formats">
+        <article class="of-format">
+          <span class="of-format__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></svg></span>
+          <h3 class="of-format__title">Clips from your long content</h3>
+          <p>OneTake extracts the best moments of your podcasts, lives, interviews and webinars as Shorts.</p>
+        </article>
+        <article class="of-format">
+          <span class="of-format__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
+          <h3 class="of-format__title">Face-to-camera videos</h3>
+          <p>Record one take. OneTake removes the “ums”, silences and noise, and adds captions and B-roll.</p>
+        </article>
+        <article class="of-format">
+          <span class="of-format__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span>
+          <h3 class="of-format__title">Proof videos</h3>
+          <p>Turn a client’s testimonial into a clean, captioned video in one click.</p>
+        </article>
+        <article class="of-format">
+          <span class="of-format__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></span>
+          <h3 class="of-format__title">Long videos and course modules</h3>
+          <p>YouTube videos and course lessons, edited, captioned and ready to publish.</p>
+        </article>
+      </div>
+    </section>
 
-        <div class="mc-clock" id="mcOfferCountdown" role="timer" aria-live="off" hidden>
-          <p class="sr-only" data-mc-text="offerCountdownLabel"></p>
-          <span class="mc-clock__unit"><span class="mc-clock__num" data-unit="d">0</span><span class="mc-clock__name">days</span></span>
-          <span class="mc-clock__unit"><span class="mc-clock__num" data-unit="h">00</span><span class="mc-clock__name">hours</span></span>
-          <span class="mc-clock__unit"><span class="mc-clock__num" data-unit="m">00</span><span class="mc-clock__name">min</span></span>
-          <span class="mc-clock__unit"><span class="mc-clock__num" data-unit="s">00</span><span class="mc-clock__name">sec</span></span>
+    <!-- 6. THE 7 RULES -->
+    <section class="section section--wide">
+      <h2 class="section__title">The 7 rules, handled by OneTake</h2>
+      <ol class="of-rules">
+        <li><strong>More at-bats</strong> <span>Edit a video in one click, so publishing every day becomes realistic.</span></li>
+        <li><strong>Short for reach, long for trust</strong> <span>Every long video gives you Shorts.</span></li>
+        <li><strong>One recording, dozens of videos</strong> <span>Unlimited Shorts from every video.</span></li>
+        <li><strong>The 4 formats</strong> <span>All four, from the same agent.</span></li>
+        <li><strong>Built for the sound-off scroll</strong> <span>Captions and key points on screen, automatically.</span></li>
+        <li><strong>Organic finds the winners</strong> <span>Publish everywhere on schedule, so you can spot your winners faster.</span></li>
+        <li><strong>Clean, not overproduced</strong> <span>Studio-quality sound and clean cuts, without a studio.</span></li>
+      </ol>
+    </section>
+
+    <!-- 7. EVERYTHING ONETAKE DOES (from /instagram/; steps check off in instagram/app.js) -->
+    <section class="section">
+      <h2 class="section__title">Everything OneTake does, all by itself</h2>
+      <div class="done">
+        <div class="done__head">
+          <p class="done__title">Editing complete</p>
+          <p class="done__subtitle">OneTake has finished editing your video!</p>
         </div>
+        <ul class="done__list" id="doneList">
+          <li class="done__step"><p class="done__text">Everything you said, transcribed</p></li>
+          <li class="done__step"><p class="done__text">Studio-quality sound, background noise removed</p></li>
+          <li class="done__step"><p class="done__text">Messy room replaced with a clean backdrop</p></li>
+          <li class="done__step"><p class="done__text">Eyes corrected to look straight into the camera</p></li>
+          <li class="done__step"><p class="done__text">Awkward silences cut out</p></li>
+          <li class="done__step"><p class="done__text">Hesitations, "ums" and retakes removed</p></li>
+          <li class="done__step"><p class="done__text">Subtitles added, so viewers can follow without sound</p></li>
+          <li class="done__step"><p class="done__text">Grammar fixed in your subtitles</p></li>
+          <li class="done__step"><p class="done__text">Your brand names and industry terms spelled correctly</p></li>
+          <li class="done__step"><p class="done__text">Video split into chapters and scenes</p></li>
+          <li class="done__step"><p class="done__text">B-roll footage added to illustrate what you say</p></li>
+          <li class="done__step"><p class="done__text">Royalty-free music composed to match your video</p></li>
+        </ul>
+      </div>
+    </section>
 
-        <div class="mc-btn-wrap">
-          <a class="mc-btn" href="https://yes.onetake.ai" data-mc-href="offerUrl" data-mc-text="offerButtonLabel" data-placeholder="offer button label"></a>
+    <!-- 8. JUST ASK (from /instagram/; chat animation in instagram/app.js) -->
+    <section class="section section--tint">
+      <h2 class="section__title">Want a change? Just ask.</h2>
+      <p class="section__text center">No timeline and no buttons to learn. Tell OneTake what you want, in your own words, like you'd talk to a talented videographer.</p>
+      <div class="talk" data-slot-host>
+        <!-- Chat window: messages stack from the bottom, like a messaging app (animation in app.js) -->
+        <div class="chatbox">
+          <div class="chatbox__head">
+            <span class="chatbox__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+            </span>
+            <div>
+              <p class="chatbox__name">OneTake</p>
+              <p class="chatbox__status">Online</p>
+            </div>
+          </div>
+          <!-- Name and text are separate block elements so Weglot translates each one on its own -->
+          <ol class="chat" id="chat" aria-label="Example conversation with OneTake">
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-raw.jpg" alt="Video attachment: the raw recording" width="622" height="936" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="sr-only">You</p>
+                  <p class="chat__text">Please fix this video!</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-edited.jpg" alt="Video attachment: the edited video, with captions" width="618" height="1106" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">Done. I edited it &amp; fixed the sound as well. Want me to add B-roll or music?</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--you">
+              <div class="chat__inner">
+                <div class="chat__bubble">
+                  <p class="sr-only">You</p>
+                  <p class="chat__text">Yes, add both please.</p>
+                </div>
+              </div>
+            </li>
+            <li class="chat__msg chat__msg--onetake">
+              <div class="chat__inner">
+                <figure class="chat__video">
+                  <img src="../../../instagram/media/chat-broll.jpg" alt="Video attachment: the new version, with B-roll and music" width="620" height="1100" loading="lazy">
+                </figure>
+                <div class="chat__bubble">
+                  <p class="chat__name">OneTake</p>
+                  <p class="chat__text">Here's your new version!</p>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <div class="chatbox__input" aria-hidden="true">
+            <p class="chatbox__placeholder">Tell OneTake what you want...</p>
+            <span class="chatbox__send">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="slot talk__slot" data-slot="just-ask-recording" hidden>
+          <div class="player" data-frame="main" data-title="Screen recording: editing a video by chatting with OneTake"></div>
         </div>
       </div>
+    </section>
+
+    <!-- 9-11. OFFER STACK, SCALE UPGRADE, SWAG BOX -->
+    <section class="section section--wide" id="stack">
+      <h2 class="section__title">Today, you get:</h2>
+      <ol class="of-stack">
+        <li class="of-item">
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">OneTake, Grow plan, 1 year</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="1488">$1,488</span></span>
+            </div>
+            <p>240 editing minutes every month, videos up to 2 hours, unlimited Shorts, direct publishing to YouTube, Instagram, TikTok, Facebook and LinkedIn, unlimited scheduled posts, teleprompter and virtual cameraman, your logo and colors on every video, Full HD exports without watermark, podcast audio export, hosted video pages and embeddable player. Chat with OneTake to refine your edit and generate scripts, summaries, quizzes, lesson outlines and social captions.</p>
+          </div>
+        </li>
+        <li class="of-item has-media">
+          <div class="of-item__media">
+            <!-- TODO(placeholder): Photo of Nicole Burke (@gardenaryco), 16:9 -->
+            <div class="ph" data-placeholder="Photo of Nicole Burke (@gardenaryco), 16:9">[PLACEHOLDER: Photo of Nicole Burke (@gardenaryco), 16:9]</div>
+          </div>
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">Nicole Burke’s Flash Training</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="995">$995</span></span>
+            </div>
+            <p class="of-item__quote">“How I get 500 leads PER DAY from Instagram... with just one daily video!”</p>
+            <p>Nicole’s daily video formula, her social sales system that turns comments into leads and sales without pitching in her posts, and why quantity leads to quality.</p>
+          </div>
+        </li>
+        <li class="of-item has-media">
+          <div class="of-item__media">
+            <!-- TODO(placeholder): Evergreen Waterslide masterclass visual, 16:9 -->
+            <div class="ph" data-placeholder="Evergreen Waterslide masterclass visual, 16:9">[PLACEHOLDER: Evergreen Waterslide masterclass visual, 16:9]</div>
+          </div>
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">The Evergreen Waterslide masterclass</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="995">$995</span></span>
+            </div>
+            <p>How to get customers buying your products every day of the year. 5 modules by Sébastien Night, including sessions recorded for Jeff Walker’s Launch Club, and the Conditional Launch method.</p>
+          </div>
+        </li>
+        <li class="of-item">
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">The OneTake design pack</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="1495">$1,495</span></span>
+            </div>
+            <p>Music composed for every video, professional video styles, and white-label hosting on your own domain.</p>
+          </div>
+        </li>
+        <li class="of-item">
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">“The Real Time” live sessions</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="1497">$1,497</span></span>
+            </div>
+            <p>About twice a month with Sébastien, for every new OneTake update. Ask your questions live and see new features demonstrated.</p>
+          </div>
+        </li>
+        <li class="of-item">
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">Priority support and 1-on-1 Zoom</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="497">$497</span></span>
+            </div>
+            <p>Skip the queue, and book a 1-on-1 Zoom with the team when you need it.</p>
+          </div>
+        </li>
+        <li class="of-item">
+          <div>
+            <div class="of-item__head">
+              <h3 class="of-item__title">“10X your business income” course</h3>
+              <span class="of-item__value">Value <span class="paddle-price money" data-usd="995">$995</span></span>
+            </div>
+            <p>How to multiply your sales, what your next video should be, how to get qualified leads with ads and organic traffic, and how to turn leads into repeat customers.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="of-total">
+        <p class="of-total__value">Total value: <s><span class="paddle-price money" data-usd="7962">$7,962</span></s></p>
+        <p class="of-total__pay">You pay only <span class="paddle-price" data-offer-price="quarterly">299&nbsp;€</span> per quarter, or <span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> for a year</p>
+        <p class="of-tax">(plus tax)</p>
+      </div>
+
+      <div class="of-upgrade">
+        <h3 class="of-upgrade__title">Available for a limited time: a special upgrade to the Scale plan.</h3>
+        <ul class="checks">
+          <li>600 editing minutes every month</li>
+          <li>Videos of unlimited length: full webinars, summits and workshops in one piece.</li>
+        </ul>
+      </div>
+
+      <div class="of-swag">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/2914/6841e427d7a0f_BlackRedMenswearHoodieSocialMediaPost.png"
+             alt="The OneTake AI Swag Box, with a OneTake AI hoodie" width="1080" height="1080" loading="lazy">
+        <div>
+          <h3 class="of-swag__title">Plus: the OneTake AI Swag Box, free (a <span class="paddle-price money" data-usd="100">$100</span> value)</h3>
+          <p>Creator-friendly gear, limited-run OneTake AI merch, and a few things you didn’t know you needed. We ship it to you anywhere in the world as soon as you’ve uploaded your 10th video.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. SAVINGS CALCULATOR (from /instagram/; instagram/app.js recomputes every [data-calc] value) -->
+    <section class="section section--wide section--tint">
+      <div class="compare-block">
+        <h3 class="plan__subtitle center" id="compareTitle">You can finally get rid of...</h3>
+        <p class="compare-block__intro">Move the sliders to match the videos you make. Here's what you no longer pay for every year.</p>
+
+        <!-- Savings calculator: app.js recomputes every [data-calc] value from the two sliders -->
+        <div class="calc" id="calc">
+          <div class="calc__field">
+            <label class="calc__label" for="calcVideos">Videos per month <output class="calc__value" for="calcVideos" id="calcVideosOut">12</output></label>
+            <input class="calc__range" type="range" id="calcVideos" min="1" max="20" step="1" value="12">
+          </div>
+          <div class="calc__field">
+            <label class="calc__label" for="calcMinutes">Minutes per video <output class="calc__value" for="calcMinutes" id="calcMinutesOut">10</output></label>
+            <input class="calc__range" type="range" id="calcMinutes" min="1" max="30" step="1" value="10">
+          </div>
+          <p class="calc__usage">That's <strong data-calc="monthlyMinutes">120</strong> editing minutes a month.</p>
+          <div class="calc__total" aria-live="polite">
+            <p class="calc__total-label">You save every year</p>
+            <p class="calc__total-amount paddle-price" data-calc="total">$39,502</p>
+          </div>
+        </div>
+
+        <!-- Table on desktop, stacked cards on mobile. The .compare__label spans are the mobile labels. -->
+        <table class="compare" aria-labelledby="compareTitle">
+          <thead>
+            <tr>
+              <th scope="col">What you replace</th>
+              <th scope="col">Usual price</th>
+              <th scope="col">What you save per year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Shooting crew</th></tr>
+            <tr><th scope="row">Cameraman</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="500">$500</span> / day</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span class="paddle-price" data-calc="camera">$6,000</span> (<span data-calc="cameraDays">12</span> days)</span></td></tr>
+            <tr><th scope="row">Video editor</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="900">$900</span> / video hour</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span class="paddle-price" data-calc="editor">$21,600</span> (<span data-calc="videoHours">24</span> video hours)</span></td></tr>
+            <tr><th scope="row">Graphic designer</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="300">$300</span> to <span class="paddle-price money" data-usd="600">$600</span> / day</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="compare__val"><span class="paddle-price" data-calc="designer">$1,800</span> (<span data-calc="designerDays">6</span> days)</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Video editing software</th></tr>
+            <tr><th scope="row">Adobe Creative Cloud (Premiere)</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="750">$750</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="750">$750</span></td></tr>
+            <tr><th scope="row">Filmora Business</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="150">$150</span> / year</td><td class="compare__included">Replaced by OneTake</td></tr>
+            <tr><th scope="row">InShot and mobile apps</th><td class="compare__empty"></td><td class="compare__included">Replaced by OneTake</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Transcription</th></tr>
+            <tr><th scope="row">Assistant to transcribe</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="2.00">$2.00</span> / minute</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price" data-calc="transcription">$2,880</span></td></tr>
+            <tr><th scope="row">Freelancer to create subtitles</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="3.00">$3.00</span> / minute</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price" data-calc="subtitles">$4,320</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Transitions, animations, graphics</th></tr>
+            <tr><th scope="row">After Effects</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="300">$300</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="288">$288</span></td></tr>
+            <tr><th scope="row">Canva Pro</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="110">$110</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="110">$110</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Teleprompter</th></tr>
+            <tr><th scope="row">Teleprompter software</th><td class="compare__empty"></td><td class="compare__included">Replaced by OneTake</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Video hosting</th></tr>
+            <tr><th scope="row">YouTube, which shows your competitors' ads and "similar videos" in your video</th><td class="compare__empty"></td><td class="compare__included">Replaced by OneTake</td></tr>
+            <tr><th scope="row">Vimeo Advanced</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="588">$588</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="588">$588</span></td></tr>
+            <tr><th scope="row">Wistia</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="948">$948</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="948">$948</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th colspan="3" scope="rowgroup">Training materials</th></tr>
+            <tr><th scope="row">Microsoft Office 365 (Word, PowerPoint)</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="74">$74</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="74">$74</span></td></tr>
+            <tr><th scope="row">Apple Keynote</th><td class="compare__empty"></td><td class="compare__included">Replaced by OneTake</td></tr>
+            <tr><th scope="row">Google Business Standard (Slides and Docs)</th><td><span class="compare__label">Usual price</span><span class="paddle-price money" data-usd="144">$144</span> / year</td><td class="compare__save"><span class="compare__label">You save per year</span><span class="paddle-price money" data-usd="144">$144</span></td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="3"><span class="paddle-price" data-calc="total">$39,502</span> saved per year.</td></tr>
+          </tfoot>
+        </table>
+
+        <p class="compare-block__outro">With this offer, all of this is included for <span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> a year.</p>
+      </div>
+    </section>
+
+    <!-- 13-14. GUARANTEE, THEN A CTA BLOCK -->
+    <section class="section section--wide">
+      <div class="guarantee of-guarantee">
+        <div class="guarantee__badge" aria-hidden="true">
+          <span class="guarantee__days">14</span>
+          <span class="guarantee__unit">days</span>
+        </div>
+        <div>
+          <h3 class="of-guarantee__title">The 14-day iron-clad satisfaction guarantee</h3>
+          <p>Try OneTake for 14 days. If you’re not satisfied, you get a full refund. I’m so certain about OneTake that even if you leave, you keep the courses and the Swag Box.</p>
+          <p class="founder__sig"><strong>Sébastien Night</strong></p>
+        </div>
+      </div>
+      <div class="section-cta" data-offer-cta></div>
+    </section>
+
+    <!-- 15. SOCIAL PROOF (from /instagram/) -->
+    <section class="section">
+      <h2 class="section__title">What entrepreneurs like you say about OneTake</h2>
+      <div class="capterra">
+        <img src="https://brand-assets.capterra.com/badge/d99f9893-1182-4293-a004-8158134b7e0a.svg"
+             alt="Capterra 2025 Best Ease of Use badge" width="264" height="264" loading="lazy">
+        <p>Rated 4.7/5 on Capterra, and awarded the 2025 Best "Ease of Use" badge in the AI Video Generator and Video Editing category.</p>
+      </div>
+      <div class="reviews">
+        <rw-widget-masonry data-rw-masonry="39663"></rw-widget-masonry>
+      </div>
+      <p class="center"><a class="link" href="https://welove.onetake.ai/" target="_blank" rel="noopener">See all reviews</a></p>
+    </section>
+
+    <!-- 16. WHY I BUILT ONETAKE (from /instagram/; photo shown by instagram/app.js) -->
+    <section class="section section--wide">
+      <h2 class="section__title">Why I built OneTake</h2>
+      <div class="founder" id="founder" data-slot-host>
+        <img class="founder__photo" id="founderPhoto" data-src="https://www.sebastiennight.com/images/press/Sebastien-03-official-sd.jpeg"
+             alt="Sébastien Night, founder and CEO of OneTake AI" width="853" height="1280" loading="lazy" hidden>
+        <div class="founder__text">
+          <p>Since 2010, I've helped more than 300,000 entrepreneurs in 41 countries grow their business through the Free Entrepreneur Movement. I've written 11 books and recorded thousands of videos. And I spent countless hours editing them.</p>
+          <p>Every coach I met had the same problem: expert in their field, stuck at the editing stage. So I built OneTake, so that you can record once and get back to what you do best: teaching and serving your clients.</p>
+          <p>Twice a month, I host "The Real Time", a live demo where I answer your questions. This offer includes it.</p>
+          <p class="founder__sig"><strong>Sébastien Night</strong>, founder and CEO of OneTake AI</p>
+          <div class="slot founder__slot" data-slot="founder-video" hidden>
+            <div class="player" data-frame="main" data-title="A message from Sébastien Night"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. FAQ (one open at a time, handled in instagram/app.js) -->
+    <section class="section">
+      <h2 class="section__title">Questions</h2>
+      <div class="faq" id="faq">
+        <details class="faq__item">
+          <!-- TODO(confirm): how the courses and bonuses are delivered -->
+          <summary>When do I get access?</summary>
+          <p>Right after your payment. You can upload your first video in the next minute. Your courses and bonuses are waiting for you in your OneTake account.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What’s the difference between the two payment options?</summary>
+          <p>It’s the same offer. Pay <span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> once for the year, or <span class="paddle-price" data-offer-price="quarterly">299&nbsp;€</span> every quarter (4 payments over the year).</p>
+        </details>
+        <details class="faq__item">
+          <!-- TODO(confirm): how to request the refund -->
+          <summary>How does the guarantee work?</summary>
+          <p>Try OneTake for 14 days. If you’re not satisfied, you get a full refund, and you keep the courses and the Swag Box. To ask for your refund, just write to our team from your OneTake account.</p>
+        </details>
+        <details class="faq__item">
+          <!-- TODO(confirm): renewal terms and whether the special price is kept -->
+          <summary>What happens after the first year?</summary>
+          <p>Your plan renews at the same special price, unless you cancel before the renewal date. Your videos are always yours: you can download them at any time.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What is the Scale upgrade?</summary>
+          <p>For a limited time, this offer includes a special upgrade to the Scale plan: 600 editing minutes every month, and videos of unlimited length.</p>
+        </details>
+        <details class="faq__item">
+          <summary>When will I receive the Swag Box?</summary>
+          <p>As soon as you’ve uploaded your 10th video. We ship worldwide.</p>
+        </details>
+        <details class="faq__item">
+          <!-- TODO(confirm): tax display -->
+          <summary>Is tax included?</summary>
+          <p>Prices are shown before tax. Paddle adds the VAT or sales tax that applies in your country at checkout.</p>
+        </details>
+        <details class="faq__item">
+          <!-- TODO(confirm): VAT number support -->
+          <summary>Can I get an invoice for my company?</summary>
+          <p>Yes. Paddle sends you an invoice for every payment, and you can add your company’s VAT number at checkout.</p>
+        </details>
+        <details class="faq__item">
+          <summary>I’m not technical at all. Is this for me?</summary>
+          <p>Yes. You upload a video and OneTake edits it. To change something, you just ask in plain words.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Can I use the videos I already recorded?</summary>
+          <p>Yes. Import them from your computer, Zoom, YouTube, Dropbox and more.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Is the payment secure?</summary>
+          <p>Yes. Checkout is handled by Paddle, our payment provider.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What if I need help?</summary>
+          <p>You have priority support, a 1-on-1 Zoom with the team when you need it, and “The Real Time” live sessions with Sébastien about twice a month.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 18. FINAL CTA -->
+    <section class="section section--dark final" id="finalCta">
+      <h2 class="section__title">Your next video could be ready in a single click.</h2>
+      <div data-offer-cta></div>
     </section>
   </main>
+  </div>
 
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+      <!-- TODO(confirm): newsletter consent sentence, draft to be confirmed by Sébastien -->
+      <p>By signing up, I also agree to receive emails from OneTake AI with video tips, news and special offers. I can unsubscribe at any time in one click.</p>
       <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
       <p><strong>What is OneTake?</strong></p>
       <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
@@ -79,8 +559,60 @@
     </div>
   </footer>
 
-  <script src="../config.js"></script>
-  <script src="../../session-date.js"></script>
-  <script src="../../masterclass.js"></script>
+  <!-- STICKY CTA BAR: after the reveal, while no CTA block is on screen (desktop: once past the offer hero) -->
+  <div class="sticky-cta" id="offerSticky" aria-hidden="true">
+    <div class="sticky-cta__inner">
+      <div class="of-sticky__meta">
+        <p class="of-sticky__price"><span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span>/year</p>
+        <p class="of-sticky__clock">Ends in <span data-offer-countdown-compact></span></p>
+      </div>
+      <button class="btn btn--primary sticky-cta__btn" type="button" tabindex="-1">Get everything now</button>
+    </div>
+  </div>
+
+  <!-- CTA block, cloned by offer.js into every [data-offer-cta] -->
+  <template id="offerCtaTemplate">
+    <div class="of-cta">
+      <p class="of-price">
+        <span class="sr-only">Total value: </span><s><span class="paddle-price money" data-usd="7962">$7,962</span></s>
+        <span class="of-price__main"><span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> per year, or <span class="paddle-price" data-offer-price="quarterly">299&nbsp;€</span> per quarter</span>
+        <span class="of-tax">(plus tax)</span>
+      </p>
+      <div class="of-clock" data-offer-countdown role="timer" aria-label="Time left in this offer">
+          <span class="of-clock__unit"><span class="of-clock__num" data-unit="d">0</span><span class="of-clock__name">days</span></span>
+          <span class="of-clock__unit"><span class="of-clock__num" data-unit="h">00</span><span class="of-clock__name">hours</span></span>
+          <span class="of-clock__unit"><span class="of-clock__num" data-unit="m">00</span><span class="of-clock__name">min</span></span>
+          <span class="of-clock__unit"><span class="of-clock__num" data-unit="s">00</span><span class="of-clock__name">sec</span></span>
+        </div>
+      <p class="of-ends" data-offer-end></p>
+      <fieldset class="of-plans">
+        <legend>Choose how you pay</legend>
+        <div class="of-plan">
+          <input type="radio" name="offerPlan" value="yearly">
+          <label for="yearly"><span class="of-plan__name">One payment</span><span class="of-plan__price"><strong class="paddle-price" data-offer-price="yearly">999&nbsp;€</strong> for the year</span></label>
+        </div>
+        <div class="of-plan">
+          <input type="radio" name="offerPlan" value="quarterly">
+          <label for="quarterly"><span class="of-plan__name">Four payments</span><span class="of-plan__price"><strong class="paddle-price" data-offer-price="quarterly">299&nbsp;€</strong> per quarter</span></label>
+        </div>
+      </fieldset>
+      <button class="btn btn--primary js-offer-checkout" type="button">Get everything now</button>
+      <p class="of-micro">14-day money-back guarantee. Secure checkout by Paddle.</p>
+      <p class="of-cta__error" role="alert" hidden></p>
+    </div>
+  </template>
+
+  <div id="offerMessages" hidden>
+    <span data-msg="checkout">We couldn’t open the secure checkout. Check your internet connection and try again.</span>
+  </div>
+
+  <!-- Scripts (same order as /instagram/index.html) -->
+  <script src="../../../pricing-data.js"></script>
+  <script src="../../../translations.js"></script>
+  <script src="../../../tracking-params.js"></script>
+  <script src="../../../cohort.js"></script>
+  <script src="../../../assets/checkout/checkout-core.js"></script>
+  <script src="../../../price-localizer.js"></script>
+  <script src="../../../instagram/app.js"></script>
 </body>
 </html>

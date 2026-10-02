@@ -10,6 +10,7 @@
  *
  *   masterclassSession.next(now, options)  -> Date (the session start, a real instant)
  *   masterclassSession.formatFr(date, options) -> "jeudi 8 octobre à 20h (heure de Paris)"
+ *   masterclassSession.wallClock(ms, timeZone) / fromWallClock(y, m, d, h, min, timeZone, s): time zone helpers
  *
  * options (all optional, defaults below):
  *   weekday   0 = Sunday ... 4 = Thursday
@@ -63,8 +64,8 @@
   }
 
   // Instant matching a wall-clock time in a time zone
-  function fromWallClock(year, month, day, hour, minute, timeZone) {
-    var guess = Date.UTC(year, month - 1, day, hour, minute);
+  function fromWallClock(year, month, day, hour, minute, timeZone, second) {
+    var guess = Date.UTC(year, month - 1, day, hour, minute, second || 0);
     var first = guess - offsetAt(guess, timeZone);
     // The offset can differ on either side of a DST change: check once more at the result
     return guess - offsetAt(first, timeZone);
@@ -98,5 +99,9 @@
     return weekday + ' ' + day + ' ' + month + ' à ' + time + zone;
   }
 
-  root.masterclassSession = { next: next, formatFr: formatFr, DEFAULTS: DEFAULTS };
+  root.masterclassSession = {
+    next: next, formatFr: formatFr, DEFAULTS: DEFAULTS,
+    // Time zone helpers, also used by offer-deadline.js
+    wallClock: wallClock, fromWallClock: fromWallClock, toMinutes: toMinutes
+  };
 })(typeof window !== 'undefined' ? window : globalThis);

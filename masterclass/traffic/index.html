@@ -58,7 +58,7 @@
 
   <main>
     <section class="mc-section mc-section--white">
-      <div class="mc-container">
+      <div class="mc-container mc-container--wide mc-split">
         <div class="mc-text">
           <p>Our AI edits tens of thousands of videos for experts and leaders across the world. We analyzed the top performers in every field to find out why some coaches get millions of views and huge revenue, without ever wasting time on irrelevant “funny” or “viral” content.</p>
           <p class="mc-lead">In this brand new masterclass full of real-world examples, you’ll see the 7 rules these world-class leaders all use:</p>
@@ -72,17 +72,15 @@
             <li>Why posting “trending” or “funny” videos can actually attract the wrong audience, and what to do instead</li>
           </ul>
         </div>
-      </div>
-    </section>
 
-    <section class="mc-section mc-dark" aria-labelledby="proofTitle">
-      <div class="mc-container mc-container--wide">
-        <h2 class="mc-h2" id="proofTitle">Some of the accounts we studied</h2>
-        <!-- TODO(placeholder): Instagram profile screenshots, rendered from MASTERCLASS_CONFIG.profiles (config.js) -->
-        <div class="proof-grid" id="mcProfiles"></div>
-        <!-- TODO(placeholder): Reel screenshots and captions, rendered from MASTERCLASS_CONFIG.reels (config.js) -->
-        <p class="proof-sub" id="reelsTitle">Reels we studied</p>
-        <div class="reel-row" id="mcReels" tabindex="0" role="region" aria-labelledby="reelsTitle"></div>
+        <aside class="mc-proof-panel" aria-labelledby="proofTitle">
+          <h2 class="mc-h2" id="proofTitle">Some of the accounts we studied</h2>
+          <!-- TODO(placeholder): Instagram profile screenshots, rendered from MASTERCLASS_CONFIG.profiles (config.js) -->
+          <div class="proof-grid" id="mcProfiles"></div>
+          <!-- TODO(placeholder): Reel screenshots and captions, rendered from MASTERCLASS_CONFIG.reels (config.js) -->
+          <p class="proof-sub" id="reelsTitle">Reels we studied</p>
+          <div class="reel-row" id="mcReels" tabindex="0" role="region" aria-labelledby="reelsTitle"></div>
+        </aside>
       </div>
     </section>
 
@@ -126,6 +124,8 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+      <!-- TODO(confirm): newsletter consent sentence, draft to be confirmed by Sébastien -->
+      <p>By signing up, I also agree to receive emails from OneTake AI with video tips, news and special offers. I can unsubscribe at any time in one click.</p>
       <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
       <p><strong>What is OneTake?</strong></p>
       <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
