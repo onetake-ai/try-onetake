@@ -18,18 +18,14 @@ All values live in one file: `masterclass/trafic/config.js` (`window.MASTERCLASS
 
 | Config key | What's needed |
 |---|---|
-| `profiles[].image` | One Instagram profile screenshot per creator, follower count visible: Alex Hormozi, Leila Hormozi, Gary Vaynerchuk, Steven Bartlett, Olivier Roland, Erico Rocha, Nicole Burke (@gardenaryco), Fabien Olicard. Portrait crop (3:4). Same files as the English page are fine. Add or remove entries freely. |
-| `profiles[].alt` | Already written in French; adjust if a screenshot shows something else. |
-| `reels[].image` | At least 6 Reel screenshots, 9:16, view count visible. |
-| `reels[].creator`, `reels[].views` | Caption under each Reel, e.g. `creator: 'Alex Hormozi', views: '12 M'` (shown as "Alex Hormozi 12 M vues"). |
-| `reels[].alt` | Alt text in French, e.g. « Reel d'Alex Hormozi avec 12 millions de vues ». |
+| `profiles` | Set: the 8 account screenshots in `/masterclass/images/` (288x640), scrolling under the scan overlay. Add a screenshot there and an entry in `profiles` to show more accounts. |
 | `hostPhoto` | Currently the photo used on `/instagram/` (sebastiennight.com). Replace it if you want a different one (square or 4:5). |
 
 ## Page 2: vérifiez vos emails (`/masterclass/trafic/verifiez-vos-emails/`)
 
 | Config key | What's needed |
 |---|---|
-| `email.subject` | Exact subject line of the Userlist confirmation email. |
+| `email.subject` | Set: `{{ user.first_name | capitalize }}, confirme ta place (Masterclass 100M de followers)`. The page shows the visitor's first name in place of the tag. |
 | `email.sender` | Set: `OneTake AI - Sebastien <contact@mail.onetake.ai>`. |
 
 ## Page 3: confirmation + Passe-Passe (`/masterclass/trafic/confirmation/`)

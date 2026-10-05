@@ -8,18 +8,14 @@ All values live in one file: `masterclass/traffic/config.js` (`window.MASTERCLAS
 
 | Config key | What's needed |
 |---|---|
-| `profiles[].image` | One Instagram profile screenshot per creator, follower count visible: Alex Hormozi, Leila Hormozi, Gary Vaynerchuk, Steven Bartlett, Olivier Roland, Erico Rocha, Nicole Burke (@gardenaryco), Fabien Olicard. Portrait crop (3:4). Add or remove entries freely; the grid takes any number. |
-| `profiles[].alt` | Already written; adjust if a screenshot shows something else. |
-| `reels[].image` | At least 6 Reel screenshots, 9:16, view count visible. Add more entries for more Reels. |
-| `reels[].creator`, `reels[].views` | Caption under each Reel: creator name and view count, e.g. `creator: 'Alex Hormozi', views: '12M'` (shown as "Alex Hormozi 12M views"). |
-| `reels[].alt` | Alt text for each Reel screenshot, e.g. "Reel by Alex Hormozi with 12 million views". |
+| `profiles` | Set: the 8 account screenshots in `/masterclass/images/` (288x640), scrolling under the scan overlay. Add a screenshot there and an entry in `profiles` to show more accounts. |
 | `hostPhoto` | Currently the photo used on `/instagram/` (sebastiennight.com). Replace it if you want a different one (square or 4:5). |
 
 ## Page 2: check your inbox + Passe-Passe (`/masterclass/traffic/check-your-inbox/`)
 
 | Config key | What's needed |
 |---|---|
-| `email.subject` | Exact subject line of the Userlist confirmation email. |
+| `email.subject` | Set: `{{ user.first_name | capitalize }}: The 100M-Follower Masterclass (Access Link)`. The page shows the visitor's first name in place of the tag. |
 | `email.sender` | Set: `OneTake AI - Sebastien <contact@mail.onetake.ai>`. |
 | `salesVideo.embedUrl` | OneTake player URL of the Passe-Passe sales video (16:9), e.g. `https://my.onetake.ai/xxxx/yyyy/`. |
 | `VIDEO_SLOTS` in `instagram/app.js` | The trial offer under the video repeats `/instagram/`: its feature videos are filled there. |
