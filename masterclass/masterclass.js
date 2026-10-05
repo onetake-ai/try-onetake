@@ -12,7 +12,7 @@
  *   [data-mc-player="path"]      OneTake player (16:9) from the config; placeholder when empty
  *   [data-mc-session]            Date of the next live session, in French
  *   [data-mc-first-name]         ", Name" from ?first_name= (or the name typed at registration)
- *   #mcProfiles, #mcReels        Proof grids, rendered from config.profiles and config.reels
+ *   #mcScan                      Account screenshots under a scan overlay, from config.profiles
  *   #mcHostPhoto                 Host photo from config.hostPhoto
  *   #mcJoin                      "Join the live" block, shown just before the session
  *   [data-mc-prefill]            Fills #firstName and #email (checkout form) from the URL or registration
@@ -166,9 +166,20 @@
 
   // ── Config bindings ──────────────────────────────────────────────────
 
+  // The email subject contains the Liquid tag {{ user.first_name | capitalize }}: show the
+  // visitor's first name instead, or drop the tag (and the punctuation after it) when unknown
+  function personalize(text) {
+    var name = savedLead().first_name || '';
+    name = name ? name.charAt(0).toUpperCase() + name.slice(1) : '';
+    if (name) return text.replace(/\{\{\s*user\.first_name[^}]*\}\}/g, name);
+    var rest = text.replace(/\{\{\s*user\.first_name[^}]*\}\}[,:]?\s*/g, '');
+    return rest.charAt(0).toUpperCase() + rest.slice(1);
+  }
+
   function bindText() {
     document.querySelectorAll('[data-mc-text]').forEach(function (el) {
       var value = get(el.getAttribute('data-mc-text'));
+      if (typeof value === 'string') value = personalize(value);
       if (value) {
         el.textContent = value;
       } else {
@@ -232,51 +243,50 @@
 
   // ── Proof section ────────────────────────────────────────────────────
 
-  function figure(item, ratioClass, phLabel, caption) {
-    var fig = document.createElement('figure');
-    fig.className = 'proof-item ' + ratioClass;
-    if (item.image) {
-      var img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.alt || '';
-      img.loading = 'lazy';
-      fig.appendChild(img);
-    } else {
-      fig.appendChild(placeholder(phLabel));
+  // Account screenshots in two rows scrolling in opposite directions, under a scan overlay.
+  // Each row holds the list twice, so translating it by -50% loops seamlessly.
+  function renderScan() {
+    var scan = document.getElementById('mcScan');
+    var accounts = (config.profiles || []).filter(function (p) { return p.image; });
+    if (!scan || !accounts.length) return;
+
+    function track(list, reverse, describe) {
+      var row = document.createElement('div');
+      row.className = 'mc-scan__track' + (reverse ? ' mc-scan__track--reverse' : '');
+      list.concat(list).forEach(function (p, i) {
+        var img = document.createElement('img');
+        img.src = p.image;
+        img.width = 288;
+        img.height = 640;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        // Only the first copy of the first row is described; the rest repeats it
+        img.alt = describe && i < list.length ? (p.alt || p.name) : '';
+        row.appendChild(img);
+      });
+      return row;
     }
-    if (caption) fig.appendChild(caption);
-    return fig;
+
+    var half = Math.ceil(accounts.length / 2);
+    var second = accounts.slice(half).concat(accounts.slice(0, half)).reverse();
+    scan.appendChild(track(accounts, false, true));
+    scan.appendChild(track(second, true, false));
+
+    var overlay = document.createElement('div');
+    overlay.className = 'mc-scan__overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = '<span class="mc-scan__line"></span>' +
+      '<span class="mc-scan__corner mc-scan__corner--tl"></span><span class="mc-scan__corner mc-scan__corner--tr"></span>' +
+      '<span class="mc-scan__corner mc-scan__corner--bl"></span><span class="mc-scan__corner mc-scan__corner--br"></span>';
+    var label = document.createElement('span');
+    label.className = 'mc-scan__label';
+    label.textContent = config.scanLabel || '';
+    overlay.appendChild(label);
+    scan.appendChild(overlay);
   }
 
   function renderProof() {
-    var profiles = document.getElementById('mcProfiles');
-    if (profiles) {
-      (config.profiles || []).forEach(function (p) {
-        var caption = document.createElement('figcaption');
-        caption.className = 'proof-item__caption';
-        caption.textContent = p.name;
-        profiles.appendChild(figure(p, 'proof-item--profile',
-          'Instagram profile screenshot, ' + p.name + ', follower count visible', caption));
-      });
-    }
-
-    var reels = document.getElementById('mcReels');
-    if (reels) {
-      (config.reels || []).forEach(function (r, i) {
-        var caption = document.createElement('figcaption');
-        caption.className = 'proof-item__caption';
-        if (r.creator && r.views) {
-          var name = document.createElement('strong');
-          name.textContent = r.creator;
-          caption.appendChild(name);
-          caption.appendChild(document.createTextNode(' ' + r.views + ' ' + config.viewsSuffix));
-        } else {
-          caption.appendChild(inlinePlaceholder('creator name + view count, Reel ' + (i + 1)));
-        }
-        reels.appendChild(figure(r, 'proof-item--reel',
-          'Reel screenshot ' + (i + 1) + ', 9:16, view count visible', caption));
-      });
-    }
+    renderScan();
 
     var photo = document.getElementById('mcHostPhoto');
     if (photo) {

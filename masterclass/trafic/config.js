@@ -37,7 +37,7 @@ window.MASTERCLASS_CONFIG = {
 
   // Page 2: the confirmation email the visitor should look for
   email: {
-    subject: '',        // TODO(placeholder): objet exact de l'email de confirmation Userlist
+    subject: '{{ user.first_name | capitalize }}, confirme ta place (Masterclass 100M de followers)',
     sender: 'OneTake AI - Sebastien <contact@mail.onetake.ai>'
   },
 
@@ -58,26 +58,18 @@ window.MASTERCLASS_CONFIG = {
     expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/'
   },
 
-  // Page 1: proof section. Add or remove items freely; an empty image shows a placeholder.
+  // Page 1 : comptes qui défilent sous l'effet de scan. Ajoutez ou retirez des comptes librement (captures dans /masterclass/images/, 288x640).
   profiles: [
-    { name: 'Alex Hormozi',      image: '', alt: 'Profil Instagram d’Alex Hormozi, avec son nombre d’abonnés' },
-    { name: 'Leila Hormozi',     image: '', alt: 'Profil Instagram de Leila Hormozi, avec son nombre d’abonnés' },
-    { name: 'Gary Vaynerchuk',   image: '', alt: 'Profil Instagram de Gary Vaynerchuk, avec son nombre d’abonnés' },
-    { name: 'Steven Bartlett',   image: '', alt: 'Profil Instagram de Steven Bartlett, avec son nombre d’abonnés' },
-    { name: 'Olivier Roland',    image: '', alt: 'Profil Instagram d’Olivier Roland, avec son nombre d’abonnés' },
-    { name: 'Erico Rocha',       image: '', alt: 'Profil Instagram d’Erico Rocha, avec son nombre d’abonnés' },
-    { name: 'Nicole Burke (@gardenaryco)', image: '', alt: 'Profil Instagram de Nicole Burke (@gardenaryco), avec son nombre d’abonnés' },
-    { name: 'Fabien Olicard',    image: '', alt: 'Profil Instagram de Fabien Olicard, avec son nombre d’abonnés' }
+    { name: 'Alex Hormozi', image: '/masterclass/images/hormozi-sd.jpeg', alt: 'Profil Instagram d’Alex Hormozi, avec son nombre d’abonnés' },
+    { name: 'Leila Hormozi', image: '/masterclass/images/leilahormozi-sd.jpeg', alt: 'Profil Instagram de Leila Hormozi, avec son nombre d’abonnés' },
+    { name: 'Gary Vaynerchuk', image: '/masterclass/images/garyvee-sd.jpeg', alt: 'Profil Instagram de Gary Vaynerchuk, avec son nombre d’abonnés' },
+    { name: 'Steven Bartlett', image: '/masterclass/images/steven-sd.jpeg', alt: 'Profil Instagram de Steven Bartlett, avec son nombre d’abonnés' },
+    { name: 'Erico Rocha', image: '/masterclass/images/rochaerico-sd.jpeg', alt: 'Profil Instagram d’Erico Rocha, avec son nombre d’abonnés' },
+    { name: 'Fabien Olicard', image: '/masterclass/images/fabienolicard-sd.jpeg', alt: 'Profil Instagram de Fabien Olicard, avec son nombre d’abonnés' },
+    { name: 'Nicole Johnsey Burke (@gardenaryco)', image: '/masterclass/images/gardenaryco-sd.jpeg', alt: 'Profil Instagram de Nicole Johnsey Burke (@gardenaryco), avec son nombre d’abonnés' },
+    { name: 'Nicole Johnsey Burke (@heynicoleburke)', image: '/masterclass/images/heynicoleburke-sd.jpeg', alt: 'Profil Instagram de Nicole Johnsey Burke (@heynicoleburke), avec son nombre d’abonnés' }
   ],
-  reels: [
-    { creator: '', views: '', image: '', alt: '' },
-    { creator: '', views: '', image: '', alt: '' },
-    { creator: '', views: '', image: '', alt: '' },
-    { creator: '', views: '', image: '', alt: '' },
-    { creator: '', views: '', image: '', alt: '' },
-    { creator: '', views: '', image: '', alt: '' }
-  ],
-  viewsSuffix: 'vues',
+  scanLabel: 'Analyse en cours',
 
   // Page 1: host photo (the one used on /instagram/)
   hostPhoto: 'https://www.sebastiennight.com/images/press/Sebastien-03-official-sd.jpeg',
