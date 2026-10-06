@@ -6,7 +6,8 @@
  * (session-date.js). Load order on every page: config.js, session-date.js, masterclass.js.
  *
  * Markup hooks (all optional on a page):
- *   form.mc-form                 Registration form: sends the lead to Userlist, then goes to page 2
+ *   form.mc-form                 Registration form: sends the lead (with ?ref= and UTMs) to Userlist,
+ *                                fires the FirstPromoter referral and the Plausible goal, then goes to page 2
  *   [data-mc-text="path"]        Text from the config (e.g. "email.subject"); placeholder when empty
  *   [data-mc-href="path"]        Link URL from the config
  *   [data-mc-player="path"]      OneTake player (16:9) from the config; hidden while empty
@@ -72,21 +73,66 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
+  // ── Attribution: affiliate (?ref=) and UTMs ─────────────────────────
+
+  // Sent to Userlist as referred_by and utm_* (see edge-scripts/userlist-proxy.ts).
+  // The last link with any of these parameters wins, and is remembered for 30 days in this
+  // browser, so a visitor who comes back later without them is still attributed.
+  var ATTRIBUTION_KEY = 'onetake-masterclass-attribution';
+  var ATTRIBUTION_DAYS = 30;
+  var ATTRIBUTION_FIELDS = { ref: 'referred_by', utm_source: 'utm_source', utm_medium: 'utm_medium',
+    utm_campaign: 'utm_campaign', utm_content: 'utm_content', utm_channel: 'utm_channel' };
+
+  function captureAttribution() {
+    var found = {};
+    Object.keys(ATTRIBUTION_FIELDS).forEach(function (key) {
+      var value = param(key);
+      if (value) found[ATTRIBUTION_FIELDS[key]] = value.slice(0, 200);
+    });
+    if (!Object.keys(found).length) return;
+    try {
+      window.localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify({ values: found, savedAt: Date.now() }));
+    } catch (e) { /* storage unavailable: the URL values are still sent below */ }
+  }
+
+  // Values from the current URL if it has any, otherwise the remembered ones (if under 30 days old)
+  function attribution() {
+    var fromUrl = {};
+    Object.keys(ATTRIBUTION_FIELDS).forEach(function (key) {
+      var value = param(key);
+      if (value) fromUrl[ATTRIBUTION_FIELDS[key]] = value.slice(0, 200);
+    });
+    if (Object.keys(fromUrl).length) return fromUrl;
+    try {
+      var saved = JSON.parse(window.localStorage.getItem(ATTRIBUTION_KEY));
+      if (saved && saved.values && Date.now() - saved.savedAt < ATTRIBUTION_DAYS * 86400000) return saved.values;
+    } catch (e) { /* nothing saved */ }
+    return {};
+  }
+
   // ── Registration forms ───────────────────────────────────────────────
 
-  // Plausible "CompleteRegistration" goal (same name as the Userlist event), sent once Userlist
-  // has accepted the lead. Waits for Plausible to send it, at most 1 s, before leaving the page.
-  function trackRegistration(next) {
+  // Once Userlist has accepted the lead:
+  // - FirstPromoter referral (same call as /instagram/ and the main signup page), so an opt-in
+  //   from an affiliate link (?ref=) counts as that affiliate's lead
+  // - Plausible "CompleteRegistration" goal (same name as the Userlist event)
+  // Leaves the page once Plausible confirms and FirstPromoter had a moment to send (at most 1 s).
+  function trackRegistration(email, next) {
     var done = false;
+    var plausibleSent = false;
+    var minWaitOver = false;
     function go() { if (!done) { done = true; next(); } }
+    function maybeGo() { if (plausibleSent && minWaitOver) go(); }
     setTimeout(go, 1000);
+    setTimeout(function () { minWaitOver = true; maybeGo(); }, 400);
+    if (typeof window.fpr === 'function') window.fpr('referral', { email: email });
     if (typeof window.plausible === 'function') {
       window.plausible(config.registrationEvent, {
         props: { language: config.language, masterclass_slug: config.slug },
-        callback: go
+        callback: function () { plausibleSent = true; maybeGo(); }
       });
     } else {
-      go();
+      plausibleSent = true;
     }
   }
 
@@ -143,6 +189,8 @@
         masterclass_slug: config.slug
       });
       if (config.session) body.set('attends_masterclass_on', nextSession().toISOString());
+      var source = attribution();
+      Object.keys(source).forEach(function (key) { body.set(key, source[key]); });
 
       var controller = 'AbortController' in window ? new AbortController() : null;
       var timeout = setTimeout(function () { if (controller) controller.abort(); }, 15000);
@@ -155,7 +203,7 @@
       }).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         saveLead(lead);
-        trackRegistration(function () { window.location.assign(config.urls.checkInbox); });
+        trackRegistration(lead.email, function () { window.location.assign(config.urls.checkInbox); });
       }).catch(function () {
         setLoading(false);
         showError(config.messages.network, null);
@@ -346,6 +394,7 @@
   // ── Init ─────────────────────────────────────────────────────────────
 
   function init() {
+    captureAttribution();
     document.querySelectorAll('form.mc-form').forEach(setupForm);
     bindConditions();
     bindText();
