@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Offline switch: redirects while MASTERCLASS_CONFIG.live is false (preview with ?preview=1) -->
+  <script src="config.js"></script>
+  <script src="../live-guard.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- Offline for now: remove this noindex tag when MASTERCLASS_CONFIG.live becomes true -->
+  <meta name="robots" content="noindex, nofollow">
   <title>The 100M-Follower Masterclass (free)</title>
   <meta name="description" content="How coaches and experts drive free traffic and customers from Reels and videos, without spending their life in front of a camera.">
   <meta name="theme-color" content="#F8F7F7">
@@ -12,9 +17,7 @@
   <meta property="og:url" content="https://try.onetake.ai/masterclass/traffic/">
   <meta property="og:title" content="The 100M-Follower Masterclass (free)">
   <meta property="og:description" content="How coaches and experts drive free traffic and customers from Reels and videos, without spending their life in front of a camera.">
-  <!-- TODO(placeholder): upload the 1200x630 OG image to this path -->
-  <meta property="og:image" content="https://try.onetake.ai/masterclass/traffic/og-masterclass-traffic-en.jpg">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
 
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -122,8 +125,6 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-      <!-- TODO(confirm): newsletter consent sentence, draft to be confirmed by Sébastien -->
-      <p>By signing up, I also agree to receive emails from OneTake AI with video tips, news and special offers. I can unsubscribe at any time in one click.</p>
       <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
       <p><strong>What is OneTake?</strong></p>
       <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
@@ -137,7 +138,6 @@
     </div>
   </footer>
 
-  <script src="config.js"></script>
   <script src="../session-date.js"></script>
   <script src="../masterclass.js"></script>
 </body>

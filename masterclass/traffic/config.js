@@ -5,6 +5,11 @@ window.MASTERCLASS_CONFIG = {
   language: 'en',
   slug: 'traffic',
 
+  // The English funnel stays offline until the masterclass video is ready (masterclass/live-guard.js).
+  // Set live: true, and remove the noindex tag from /masterclass/traffic/index.html, to launch it.
+  live: false,
+  offlineRedirectUrl: '/instagram/',
+
   // Lead capture (Userlist, through the Bunny edge script in /edge-scripts/userlist-proxy.ts)
   proxyUrl: 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track',
   registrationEvent: 'CompleteRegistration',

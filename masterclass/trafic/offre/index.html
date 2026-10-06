@@ -15,8 +15,6 @@
   <meta property="og:url" content="https://try.onetake.ai/masterclass/trafic/offre/">
   <meta property="og:title" content="Replay de la masterclass et offre spéciale">
   <meta property="og:description" content="Regardez le replay de la masterclass et profitez de l’offre spéciale OneTake avec tous les bonus.">
-  <!-- TODO(placeholder): upload the 1200x630 OG image to this path -->
-  <meta property="og:image" content="https://try.onetake.ai/masterclass/trafic/og-masterclass-trafic-fr.jpg">
 
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -50,10 +48,12 @@
     <div class="pp-top__inner">
       <img class="hero__logo" src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
            alt="OneTake AI" width="104" height="28">
-      <h1 class="pp-title">Voici le <span class="hl">replay</span> de la masterclass<span data-mc-first-name></span></h1>
+      <h1 class="pp-title" data-mc-show-if="replayVideo.embedUrl">Voici le <span class="hl">replay</span> de la masterclass<span data-mc-first-name></span></h1>
+      <!-- Shown while the replay is not ready -->
+      <h1 class="pp-title" data-mc-hide-if="replayVideo.embedUrl">Merci d’avoir participé à la masterclass<span data-mc-first-name></span>&nbsp;! Voici votre <span class="hl">offre spéciale</span></h1>
     </div>
   </header>
-  <section class="pp-video">
+  <section class="pp-video" data-mc-show-if="replayVideo.embedUrl">
     <div class="pp-video__inner">
       <!-- TODO(placeholder): MASTERCLASS_CONFIG.replayVideo.embedUrl in ../config.js -->
       <div data-mc-player="replayVideo.embedUrl" data-title="Replay de la masterclass, avec Sébastien Night"
@@ -255,11 +255,8 @@
             <p>240 minutes de montage chaque mois, des vidéos jusqu’à 2 heures, des Shorts illimités, la publication directe sur YouTube, Instagram, TikTok, Facebook et LinkedIn, des publications programmées illimitées, le téléprompteur et le caméraman virtuel, votre logo et vos couleurs sur chaque vidéo, des exports Full HD sans filigrane, l’export audio pour vos podcasts, des pages vidéo hébergées et un lecteur à intégrer. Discutez avec OneTake pour peaufiner votre montage et générer scripts, résumés, quiz, plans de leçons et textes pour les réseaux sociaux.</p>
           </div>
         </li>
-        <li class="of-item has-media">
-          <div class="of-item__media">
-            <!-- TODO(placeholder): Photo of Nicole Burke (@gardenaryco), 16:9 -->
-            <div class="ph" data-placeholder="Photo of Nicole Burke (@gardenaryco), 16:9">[PLACEHOLDER: Photo of Nicole Burke (@gardenaryco), 16:9]</div>
-          </div>
+        <li class="of-item">
+          <!-- TODO(placeholder): Photo of Nicole Burke (@gardenaryco), 16:9: add <div class="of-item__media"><img ...></div> here and the has-media class on the <li> -->
           <div>
             <div class="of-item__head">
               <h3 class="of-item__title">La formation flash de Nicole Burke</h3>
@@ -269,11 +266,8 @@
             <p>La formule de vidéo quotidienne de Nicole, son système de vente sur les réseaux sociaux qui transforme les commentaires en prospects et en ventes sans jamais vendre dans ses publications, et pourquoi la quantité mène à la qualité.</p>
           </div>
         </li>
-        <li class="of-item has-media">
-          <div class="of-item__media">
-            <!-- TODO(placeholder): Evergreen Waterslide masterclass visual, 16:9 -->
-            <div class="ph" data-placeholder="Evergreen Waterslide masterclass visual, 16:9">[PLACEHOLDER: Evergreen Waterslide masterclass visual, 16:9]</div>
-          </div>
+        <li class="of-item">
+          <!-- TODO(placeholder): Evergreen Waterslide masterclass visual, 16:9: add <div class="of-item__media"><img ...></div> here and the has-media class on the <li> -->
           <div>
             <div class="of-item__head">
               <h3 class="of-item__title">La masterclass Toboggan Evergreen</h3>
@@ -474,23 +468,8 @@
       <h2 class="section__title">Questions fréquentes</h2>
       <div class="faq" id="faq">
         <details class="faq__item">
-          <!-- TODO(confirm): how the courses and bonuses are delivered -->
-          <summary>Quand ai-je accès à tout&nbsp;?</summary>
-          <p>Juste après votre paiement. Vous pouvez importer votre première vidéo dans la minute qui suit. Vos formations et vos bonus vous attendent dans votre compte OneTake.</p>
-        </details>
-        <details class="faq__item">
           <summary>Quelle est la différence entre les deux options de paiement&nbsp;?</summary>
           <p>C’est la même offre. Payez <span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> en une fois pour l’année, ou <span class="paddle-price" data-offer-price="quarterly">299&nbsp;€</span> par trimestre (4 paiements sur l’année).</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): how to request the refund -->
-          <summary>Comment fonctionne la garantie&nbsp;?</summary>
-          <p>Essayez OneTake pendant 14 jours. Si vous n’êtes pas satisfait, vous êtes intégralement remboursé, et vous gardez les formations et la Swag Box. Pour demander votre remboursement, il suffit d’écrire à notre équipe depuis votre compte OneTake.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): renewal terms and whether the special price is kept -->
-          <summary>Que se passe-t-il après la première année&nbsp;?</summary>
-          <p>Votre abonnement se renouvelle au même tarif spécial, sauf si vous l’annulez avant la date de renouvellement. Vos vidéos vous appartiennent toujours&nbsp;: vous pouvez les télécharger à tout moment.</p>
         </details>
         <details class="faq__item">
           <summary>Qu’est-ce que le surclassement Scale&nbsp;?</summary>
@@ -499,16 +478,6 @@
         <details class="faq__item">
           <summary>Quand vais-je recevoir la Swag Box&nbsp;?</summary>
           <p>Dès que vous avez importé votre 10<sup>e</sup>&nbsp;vidéo. Nous livrons dans le monde entier.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): tax display -->
-          <summary>Les taxes sont-elles incluses&nbsp;?</summary>
-          <p>Les prix sont indiqués hors taxes. Paddle ajoute la TVA applicable dans votre pays au moment du paiement.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): VAT number support -->
-          <summary>Puis-je obtenir une facture pour mon entreprise&nbsp;?</summary>
-          <p>Oui. Paddle vous envoie une facture pour chaque paiement, et vous pouvez indiquer le numéro de TVA de votre entreprise au moment du paiement.</p>
         </details>
         <details class="faq__item">
           <summary>Je ne suis pas du tout technique. Est-ce pour moi&nbsp;?</summary>
@@ -540,8 +509,6 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
-      <!-- TODO(confirm): phrase de consentement newsletter, brouillon à confirmer par Sébastien -->
-      <p>En m'inscrivant, j'accepte aussi de recevoir les emails de OneTake AI&nbsp;: conseils vidéo, nouveautés et offres spéciales. Je peux me désinscrire à tout moment en un clic.</p>
       <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
       <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
       <p><strong>Qui a eu cette idée&nbsp;?</strong></p>

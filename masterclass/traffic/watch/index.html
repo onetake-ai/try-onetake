@@ -14,8 +14,6 @@
   <meta property="og:url" content="https://try.onetake.ai/masterclass/traffic/watch/">
   <meta property="og:title" content="Your masterclass replay and special offer">
   <meta property="og:description" content="Watch the 100M-Follower Masterclass and get OneTake with all bonuses.">
-  <!-- TODO(placeholder): upload the 1200x630 OG image to this path -->
-  <meta property="og:image" content="https://try.onetake.ai/masterclass/traffic/og-masterclass-traffic-en.jpg">
 
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -31,6 +29,7 @@
 
   <!-- Config, deadline (redirects at once if the offer is over), reveal, countdowns, checkout -->
   <script src="../config.js"></script>
+  <script src="../../live-guard.js"></script>
   <script src="../../session-date.js"></script>
   <script src="../../offer-deadline.js"></script>
   <script src="../../masterclass.js"></script>
@@ -52,7 +51,7 @@
       <h1 class="pp-title">Welcome<span data-mc-first-name></span>! Here’s <span class="hl">your masterclass</span></h1>
     </div>
   </header>
-  <section class="pp-video">
+  <section class="pp-video" data-mc-show-if="masterclassVideo.embedUrl">
     <div class="pp-video__inner">
       <!-- TODO(placeholder): MASTERCLASS_CONFIG.masterclassVideo.embedUrl in ../config.js -->
       <div data-mc-player="masterclassVideo.embedUrl" data-title="The 100M-Follower Masterclass, with Sébastien Night"
@@ -258,11 +257,8 @@
             <p>240 editing minutes every month, videos up to 2 hours, unlimited Shorts, direct publishing to YouTube, Instagram, TikTok, Facebook and LinkedIn, unlimited scheduled posts, teleprompter and virtual cameraman, your logo and colors on every video, Full HD exports without watermark, podcast audio export, hosted video pages and embeddable player. Chat with OneTake to refine your edit and generate scripts, summaries, quizzes, lesson outlines and social captions.</p>
           </div>
         </li>
-        <li class="of-item has-media">
-          <div class="of-item__media">
-            <!-- TODO(placeholder): Photo of Nicole Burke (@gardenaryco), 16:9 -->
-            <div class="ph" data-placeholder="Photo of Nicole Burke (@gardenaryco), 16:9">[PLACEHOLDER: Photo of Nicole Burke (@gardenaryco), 16:9]</div>
-          </div>
+        <li class="of-item">
+          <!-- TODO(placeholder): Photo of Nicole Burke (@gardenaryco), 16:9: add <div class="of-item__media"><img ...></div> here and the has-media class on the <li> -->
           <div>
             <div class="of-item__head">
               <h3 class="of-item__title">Nicole Burke’s Flash Training</h3>
@@ -272,11 +268,8 @@
             <p>Nicole’s daily video formula, her social sales system that turns comments into leads and sales without pitching in her posts, and why quantity leads to quality.</p>
           </div>
         </li>
-        <li class="of-item has-media">
-          <div class="of-item__media">
-            <!-- TODO(placeholder): Evergreen Waterslide masterclass visual, 16:9 -->
-            <div class="ph" data-placeholder="Evergreen Waterslide masterclass visual, 16:9">[PLACEHOLDER: Evergreen Waterslide masterclass visual, 16:9]</div>
-          </div>
+        <li class="of-item">
+          <!-- TODO(placeholder): Evergreen Waterslide masterclass visual, 16:9: add <div class="of-item__media"><img ...></div> here and the has-media class on the <li> -->
           <div>
             <div class="of-item__head">
               <h3 class="of-item__title">The Evergreen Waterslide masterclass</h3>
@@ -478,23 +471,8 @@
       <h2 class="section__title">Questions</h2>
       <div class="faq" id="faq">
         <details class="faq__item">
-          <!-- TODO(confirm): how the courses and bonuses are delivered -->
-          <summary>When do I get access?</summary>
-          <p>Right after your payment. You can upload your first video in the next minute. Your courses and bonuses are waiting for you in your OneTake account.</p>
-        </details>
-        <details class="faq__item">
           <summary>What’s the difference between the two payment options?</summary>
           <p>It’s the same offer. Pay <span class="paddle-price" data-offer-price="yearly">999&nbsp;€</span> once for the year, or <span class="paddle-price" data-offer-price="quarterly">299&nbsp;€</span> every quarter (4 payments over the year).</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): how to request the refund -->
-          <summary>How does the guarantee work?</summary>
-          <p>Try OneTake for 14 days. If you’re not satisfied, you get a full refund, and you keep the courses and the Swag Box. To ask for your refund, just write to our team from your OneTake account.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): renewal terms and whether the special price is kept -->
-          <summary>What happens after the first year?</summary>
-          <p>Your plan renews at the same special price, unless you cancel before the renewal date. Your videos are always yours: you can download them at any time.</p>
         </details>
         <details class="faq__item">
           <summary>What is the Scale upgrade?</summary>
@@ -503,16 +481,6 @@
         <details class="faq__item">
           <summary>When will I receive the Swag Box?</summary>
           <p>As soon as you’ve uploaded your 10th video. We ship worldwide.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): tax display -->
-          <summary>Is tax included?</summary>
-          <p>Prices are shown before tax. Paddle adds the VAT or sales tax that applies in your country at checkout.</p>
-        </details>
-        <details class="faq__item">
-          <!-- TODO(confirm): VAT number support -->
-          <summary>Can I get an invoice for my company?</summary>
-          <p>Yes. Paddle sends you an invoice for every payment, and you can add your company’s VAT number at checkout.</p>
         </details>
         <details class="faq__item">
           <summary>I’m not technical at all. Is this for me?</summary>
@@ -544,8 +512,6 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-      <!-- TODO(confirm): newsletter consent sentence, draft to be confirmed by Sébastien -->
-      <p>By signing up, I also agree to receive emails from OneTake AI with video tips, news and special offers. I can unsubscribe at any time in one click.</p>
       <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
       <p><strong>What is OneTake?</strong></p>
       <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>

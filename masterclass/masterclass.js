@@ -9,7 +9,8 @@
  *   form.mc-form                 Registration form: sends the lead to Userlist, then goes to page 2
  *   [data-mc-text="path"]        Text from the config (e.g. "email.subject"); placeholder when empty
  *   [data-mc-href="path"]        Link URL from the config
- *   [data-mc-player="path"]      OneTake player (16:9) from the config; placeholder when empty
+ *   [data-mc-player="path"]      OneTake player (16:9) from the config; hidden while empty
+ *   [data-mc-show-if="path"]     Shown only when that config value is set (and [data-mc-hide-if] the opposite)
  *   [data-mc-session]            Date of the next live session, in French
  *   [data-mc-first-name]         ", Name" from ?first_name= (or the name typed at registration)
  *   #mcScan                      Account screenshots under a scan overlay, from config.profiles
@@ -198,7 +199,8 @@
       var url = get(holder.getAttribute('data-mc-player'));
       holder.textContent = '';
       if (!url) {
-        holder.appendChild(placeholder(holder.getAttribute('data-placeholder'), 'ph--video'));
+        // Not ready yet: hide it (and its [data-mc-show-if] section) rather than show a placeholder
+        holder.hidden = true;
         return;
       }
       var player = document.createElement('div');
@@ -211,6 +213,17 @@
       iframe.allowFullscreen = true;
       player.appendChild(iframe);
       holder.appendChild(player);
+    });
+  }
+
+  // Elements that depend on a config value: [data-mc-show-if="path"] shows only once the value is set,
+  // [data-mc-hide-if="path"] hides once it is set (e.g. a fallback headline while a video is missing)
+  function bindConditions() {
+    document.querySelectorAll('[data-mc-show-if]').forEach(function (el) {
+      el.hidden = !get(el.getAttribute('data-mc-show-if'));
+    });
+    document.querySelectorAll('[data-mc-hide-if]').forEach(function (el) {
+      el.hidden = !!get(el.getAttribute('data-mc-hide-if'));
     });
   }
 
@@ -334,6 +347,7 @@
 
   function init() {
     document.querySelectorAll('form.mc-form').forEach(setupForm);
+    bindConditions();
     bindText();
     bindPlayers();
     bindSession();

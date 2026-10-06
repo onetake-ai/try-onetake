@@ -4,6 +4,9 @@
      update both together (see CLAUDE.md). Translation and dubbing are left out on this page. -->
 <head>
   <meta charset="UTF-8">
+  <!-- Offline switch: redirects while MASTERCLASS_CONFIG.live is false (preview with ?preview=1) -->
+  <script src="../config.js"></script>
+  <script src="../../live-guard.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
   <title>One last step: open your inbox</title>
@@ -14,8 +17,6 @@
   <meta property="og:url" content="https://try.onetake.ai/masterclass/traffic/check-your-inbox/">
   <meta property="og:title" content="One last step: open your inbox">
   <meta property="og:description" content="Your access link to The 100M-Follower Masterclass is in your inbox.">
-  <!-- TODO(placeholder): upload the 1200x630 OG image to this path -->
-  <meta property="og:image" content="https://try.onetake.ai/masterclass/traffic/og-masterclass-traffic-en.jpg">
 
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -77,7 +78,7 @@
   </header>
 
   <!-- 2. SALES VIDEO -->
-  <section class="pp-video" aria-labelledby="ppLead">
+  <section class="pp-video" aria-labelledby="ppLead" data-mc-show-if="salesVideo.embedUrl">
     <div class="pp-video__inner">
       <p class="pp-video__lead" id="ppLead">While you wait for the email, watch this short video:</p>
       <!-- TODO(placeholder): MASTERCLASS_CONFIG.salesVideo.embedUrl in ../config.js -->
@@ -721,8 +722,6 @@
   <footer class="mc-footer">
     <div class="footer-inner">
       <p>By signing up, I agree to the <a href="https://www.onetake.ai/terms-of-service" target="_blank">Terms of Service &amp; Refund Policy</a> and the <a href="https://www.onetake.ai/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-      <!-- TODO(confirm): newsletter consent sentence, draft to be confirmed by Sébastien -->
-      <p>By signing up, I also agree to receive emails from OneTake AI with video tips, news and special offers. I can unsubscribe at any time in one click.</p>
       <p>Do you have an audience of entrepreneurs? You can <a href="https://onetake.firstpromoter.com/signup/40830" target="_blank">become an affiliate of OneTake AI and earn recurring commissions</a>.</p>
       <p><strong>What is OneTake?</strong></p>
       <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
@@ -752,7 +751,6 @@
   </div>
 
   <!-- Scripts (same order as /instagram/index.html) -->
-  <script src="../config.js"></script>
   <script src="../../session-date.js"></script>
   <script src="../../masterclass.js"></script>
   <script src="../../../pricing-data.js"></script>

@@ -1,6 +1,11 @@
 # Placeholders: "Les 7 secrets des experts et coachs à 100 millions de followers" (French)
 
-Every value below is still empty or temporary. Until it is filled in, the page shows a Cold Turkey box with a dashed outline and a `[PLACEHOLDER: ...]` or `[CONFIG: ...]` label. In the code, look for `data-placeholder` and `TODO(placeholder)`.
+## Status: live (MVP)
+
+The French funnel is live. Anything not ready is hidden, never shown as a placeholder:
+- An empty video URL hides its section and its lead-in line. Fill in the URL in `config.js` and the section appears by itself.
+- While `replayVideo.embedUrl` is empty, the offer page shows the headline « Merci d'avoir participé à la masterclass ! Voici votre offre spéciale » instead of « Voici le replay de la masterclass ».
+- Unconfirmed texts, the bonus images and the social share images were removed from the pages (see below). In the code, look for `TODO(placeholder)`.
 
 All values live in one file: `masterclass/trafic/config.js` (`window.MASTERCLASS_CONFIG`). The pages only need a change for the OG image.
 
@@ -44,8 +49,8 @@ The headline reads `?first_name=` and the checkout form is pre-filled from `?fir
 |---|---|
 | `replayVideo.embedUrl` | OneTake player URL of the live replay (16:9). |
 | `offer.*` | Set: Scale offer price IDs (999 € par an, 299 € par trimestre), deadline the Wednesday after the live at midnight Paris time, redirect to `/oto/too-late/`. |
-| `offre/index.html`, Nicole Burke card | `[PLACEHOLDER: Photo of Nicole Burke (@gardenaryco), 16:9]`: replace the `.ph` box with an `<img>`. |
-| `offre/index.html`, Toboggan Evergreen card | `[PLACEHOLDER: Evergreen Waterslide masterclass visual, 16:9]`: replace the `.ph` box with an `<img>`. |
+| `offre/index.html`, Nicole Burke card | Photo of Nicole Burke (16:9). The card shows without an image for now: add `<div class="of-item__media"><img ...></div>` at the `TODO(placeholder)` comment and the `has-media` class on its `<li>`. |
+| `offre/index.html`, Toboggan Evergreen card | Visual of the masterclass (16:9), same as above. |
 
 Link to send attendees after the live (check the exact Liquid syntax for custom properties in Userlist):
 `https://try.onetake.ai/masterclass/trafic/offre/?first_name={{ user.first_name | capitalize }}&email={{ user.email | url_encode }}&attends_masterclass_on={{ user.properties.attends_masterclass_on | url_encode }}`
@@ -53,16 +58,16 @@ Link to send attendees after the live (check the exact Liquid syntax for custom 
 - With `attends_masterclass_on`, the offer ends the Wednesday after that session. Without it, it follows the weekly cycle: open from Thursday 20:00 to Wednesday 23:59:59 (Paris time); on Thursday before 20:00 the page redirects to `/oto/too-late/`.
 - `?unlockfor=1` previews the page outside the offer window, without the redirect.
 
-## To confirm (drafts already on the page, marked `TODO(confirm)` in the code)
+## To confirm (removed from the pages until confirmed)
 
-Same five FAQ answers as the English watch page (access to the bonuses, refund request, renewal, taxes, VAT number), plus the newsletter consent sentence in the footer of every page:
+The same five FAQ answers as on the English watch page (drafts listed in `masterclass/traffic/PLACEHOLDERS.md`: access to the bonuses, refund request, renewal, taxes, VAT number), to translate and add back to the offer page's FAQ once confirmed, plus the newsletter consent sentence for the footer of every page:
 « En m'inscrivant, j'accepte aussi de recevoir les emails de OneTake AI : conseils vidéo, nouveautés et offres spéciales. Je peux me désinscrire à tout moment en un clic. »
 
 ## Social share image (all pages)
 
 | File | What's needed |
 |---|---|
-| `masterclass/trafic/og-masterclass-trafic-fr.jpg` | 1200x630 Open Graph image. The `og:image` tag already points to it on every page. |
+| `masterclass/trafic/og-masterclass-trafic-fr.jpg` | 1200x630 Open Graph image. Then add `<meta property="og:image" content="https://try.onetake.ai/masterclass/trafic/og-masterclass-trafic-fr.jpg">` to each page (and set `twitter:card` back to `summary_large_image` on page 1). |
 
 ## Userlist (configured outside this repo)
 
