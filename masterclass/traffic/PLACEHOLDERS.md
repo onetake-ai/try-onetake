@@ -65,3 +65,4 @@ Link to use in the Userlist email (check the exact Liquid syntax for custom prop
 
 - Campaign triggered by the `CompleteRegistration` event, with the user property `masterclass_slug` = `traffic` and `language` = `en`. It sends the email with the link to page 3.
 - Every registration also sets the user property `Register_to_a_webinar_on` (UTC time of the registration, set by the edge script).
+- Registrations from an affiliate or campaign link also set `referred_by` (from `?ref=`) and `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_channel` on the user and on the `CompleteRegistration` event, and fire the FirstPromoter referral.

@@ -73,3 +73,4 @@ The same five FAQ answers as on the English watch page (drafts listed in `master
 
 - Campaign triggered by the `CompleteRegistration` event, with `language` = `fr`. The user property `attends_masterclass_on` holds the session start (ISO 8601, UTC, e.g. `2026-10-08T18:00:00.000Z` for Thursday 8 October at 20:00 Paris time). It sends the email with the link to page 3.
 - Every registration also sets the user property `Register_to_a_webinar_on` (UTC time of the registration, set by the edge script).
+- Registrations from an affiliate or campaign link also set `referred_by` (from `?ref=`) and `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_channel` on the user and on the `CompleteRegistration` event, and fire the FirstPromoter referral.

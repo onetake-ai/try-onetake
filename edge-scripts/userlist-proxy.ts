@@ -17,6 +17,10 @@
  *           masterclass_slug        e.g. "traffic"; saved on the user and on the event
  *           attends_masterclass_on  ISO 8601 datetime of the live session; saved on the user and on the event
  *
+ *           referred_by, utm_source, utm_medium, utm_campaign, utm_content, utm_channel
+ *                                   affiliate (?ref=) and campaign of the visit; saved on the user
+ *                                   (last touch: an empty value never erases a stored one) and on the event
+ *
  * With event=CompleteRegistration, the user property Register_to_a_webinar_on is set to the
  * current UTC time (ISO 8601) on every registration.
  *
@@ -34,6 +38,7 @@ import process from "node:process";
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const SITE_ORIGIN        = 'https://try.onetake.ai';
 const ALLOWED_EVENTS     = ['Lead', 'CompleteRegistration'];
+const ATTRIBUTION_FIELDS = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_channel'];
 
 const corsHeaders = () => ({
   'Access-Control-Allow-Origin':  '*',
@@ -60,6 +65,12 @@ function isValidEmail(email: string): boolean {
 
 function isValidSlug(slug: string): boolean {
   return /^[a-z0-9-]{1,64}$/.test(slug);
+}
+
+// Trimmed, without control characters, at most 200 characters ('' when not a usable string)
+function cleanText(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 200);
 }
 
 function isValidIsoDate(value: string): boolean {
@@ -102,6 +113,13 @@ BunnySDK.net.http.serve(async (req: Request) => {
   const slug       = isValidSlug(fields.masterclass_slug || '') ? fields.masterclass_slug : '';
   const attendsOn  = isValidIsoDate(fields.attends_masterclass_on || '') ? fields.attends_masterclass_on : '';
 
+  // Affiliate and campaign attribution: only these keys, as short plain strings
+  const attribution: Record<string, string> = {};
+  for (const key of ATTRIBUTION_FIELDS) {
+    const value = cleanText(fields[key]);
+    if (value) attribution[key] = value;
+  }
+
   if (!isValidRedirectPath(redirect)) redirect = '/';
 
   const redirectResponse = () =>
@@ -119,6 +137,8 @@ BunnySDK.net.http.serve(async (req: Request) => {
   if (language)   userProperties.language   = language;
   if (slug)       userProperties.masterclass_slug       = slug;
   if (attendsOn)  userProperties.attends_masterclass_on = attendsOn;
+  // Last touch: a new value replaces the stored one; an empty value never erases it
+  Object.assign(userProperties, attribution);
   // Registration time, set here (not by the browser) so a wrong visitor clock can't skew it.
   // Overwritten on every new registration.
   if (event === 'CompleteRegistration') userProperties.Register_to_a_webinar_on = new Date().toISOString();
@@ -127,6 +147,7 @@ BunnySDK.net.http.serve(async (req: Request) => {
   if (url)        eventProperties.url = url;
   if (slug)       eventProperties.masterclass_slug       = slug;
   if (attendsOn)  eventProperties.attends_masterclass_on = attendsOn;
+  Object.assign(eventProperties, attribution);   // history of each registration's source
 
   let accepted = false;
   try {
