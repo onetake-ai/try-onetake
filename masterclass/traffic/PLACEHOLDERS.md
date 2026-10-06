@@ -1,6 +1,15 @@
 # Placeholders: "The 100M-Follower Masterclass" (English)
 
-Every value below is still empty or temporary. Until it is filled in, the page shows a Cold Turkey box with a dashed outline and a `[PLACEHOLDER: ...]` or `[CONFIG: ...]` label. In the code, look for `data-placeholder` and `TODO(placeholder)`.
+## Status: offline
+
+The English funnel is **offline** until the masterclass video is ready: every page redirects to `/instagram/` (`live: false` in `config.js`, handled by `masterclass/live-guard.js`). Preview any page with `?preview=1`.
+
+To launch it:
+1. Fill in `masterclassVideo.embedUrl` (and ideally `salesVideo.embedUrl`) in `config.js`.
+2. Set `live: true` in `config.js`.
+3. Remove the `noindex` tag at the top of `/masterclass/traffic/index.html`.
+
+Anything not ready is hidden, never shown as a placeholder: an empty video URL hides its section (and its lead-in line), and the items below were removed from the pages until they are confirmed. In the code, look for `TODO(placeholder)`.
 
 All values live in one file: `masterclass/traffic/config.js` (`window.MASTERCLASS_CONFIG`). The pages only need a change for the OG image.
 
@@ -26,8 +35,8 @@ All values live in one file: `masterclass/traffic/config.js` (`window.MASTERCLAS
 |---|---|
 | `masterclassVideo.embedUrl` | OneTake player URL of the prerecorded masterclass (about 75 minutes, 16:9). |
 | `offer.*` | Set: Scale offer price IDs (999 a year, 299 a quarter), reveal after 270 s, redirect to `/oto/too-late/`. |
-| `watch/index.html`, Nicole Burke card | `[PLACEHOLDER: Photo of Nicole Burke (@gardenaryco), 16:9]`: replace the `.ph` box with an `<img>`. |
-| `watch/index.html`, Evergreen Waterslide card | `[PLACEHOLDER: Evergreen Waterslide masterclass visual, 16:9]`: replace the `.ph` box with an `<img>`. |
+| `watch/index.html`, Nicole Burke card | Photo of Nicole Burke (16:9). The card shows without an image for now: add `<div class="of-item__media"><img ...></div>` at the `TODO(placeholder)` comment and the `has-media` class on its `<li>`. |
+| `watch/index.html`, Evergreen Waterslide card | Visual of the masterclass (16:9), same as above. |
 
 Link to use in the Userlist email (check the exact Liquid syntax for custom properties in Userlist):
 `https://try.onetake.ai/masterclass/traffic/watch/?first_name={{ user.first_name | capitalize }}&email={{ user.email | url_encode }}&registered_on={{ user.properties.Register_to_a_webinar_on | url_encode }}`
@@ -35,9 +44,9 @@ Link to use in the Userlist email (check the exact Liquid syntax for custom prop
 - `registered_on` sets the deadline: 6 days after that date, at midnight in the visitor's time zone. Without it, the first visit counts as the registration.
 - `?offer=1` shows the offer right away (no 4 min 30 s wait). `?unlockfor=1` previews the page after its deadline, without the redirect.
 
-## To confirm (drafts already on the page, marked `TODO(confirm)` in the code)
+## To confirm (removed from the pages until confirmed; drafts below)
 
-| Where | Draft to confirm |
+| Where | Draft to confirm and add back |
 |---|---|
 | Watch page FAQ, "When do I get access?" | Courses and bonuses are "waiting for you in your OneTake account". How are they delivered: account, email, or both? |
 | Watch page FAQ, "How does the guarantee work?" | "Write to our team from your OneTake account." How is the refund requested? |
@@ -50,7 +59,7 @@ Link to use in the Userlist email (check the exact Liquid syntax for custom prop
 
 | File | What's needed |
 |---|---|
-| `masterclass/traffic/og-masterclass-traffic-en.jpg` | 1200x630 Open Graph image. The `og:image` tag already points to it on every page. |
+| `masterclass/traffic/og-masterclass-traffic-en.jpg` | 1200x630 Open Graph image. Then add `<meta property="og:image" content="https://try.onetake.ai/masterclass/traffic/og-masterclass-traffic-en.jpg">` to each page (and set `twitter:card` back to `summary_large_image` on page 1). |
 
 ## Userlist (configured outside this repo)
 
