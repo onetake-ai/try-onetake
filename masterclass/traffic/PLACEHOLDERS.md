@@ -41,6 +41,7 @@ All values live in one file: `masterclass/traffic/config.js` (`window.MASTERCLAS
 Link to use in the Userlist email (check the exact Liquid syntax for custom properties in Userlist):
 `https://try.onetake.ai/masterclass/traffic/watch/?first_name={{ user.first_name | capitalize }}&email={{ user.email | url_encode }}&registered_on={{ user.properties.Register_to_a_webinar_on | url_encode }}`
 
+- Userlist writes the date as `2026-10-05 08:00:00 UTC`: the page accepts this format as well as ISO 8601.
 - `registered_on` sets the deadline: 6 days after that date, at midnight in the visitor's time zone. Without it, the first visit counts as the registration.
 - `?offer=1` shows the offer right away (no 4 min 30 s wait). `?unlockfor=1` previews the page after its deadline, without the redirect.
 

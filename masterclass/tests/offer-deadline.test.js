@@ -48,6 +48,13 @@
       iso(o.resolveRegisteredOn('not-a-date', '2026-10-04T08:00:00Z', now)), '2026-10-04T08:00:00Z');
     check('EN: unrendered Liquid tag ignored, first visit time used',
       iso(o.resolveRegisteredOn('{{ user.properties.Register_to_a_webinar_on }}', null, now)), '2026-10-08T12:00:00Z');
+    check('EN: Userlist format (space, UTC suffix)',
+      iso(o.resolveRegisteredOn('2026-10-05 08:00:00 UTC', null, now)), '2026-10-05T08:00:00Z');
+    check('Userlist format, URL-decoded', iso(o.parseIso(new URLSearchParams('d=2026-10-08+18%3A00%3A00+UTC').get('d'))), '2026-10-08T18:00:00Z');
+    check('ISO with offset', iso(o.parseIso('2026-10-08T20:00:00+02:00')), '2026-10-08T18:00:00Z');
+    check('Offset without colon', iso(o.parseIso('2026-10-08 20:00:00 +0200')), '2026-10-08T18:00:00Z');
+    check('No zone means UTC', iso(o.parseIso('2026-10-08 18:00')), '2026-10-08T18:00:00Z');
+    check('Trailing text ignored', o.parseIso('2026-10-08 18:00:00 UTC; drop'), null);
     check('EN: date without time ignored', iso(o.resolveRegisteredOn('2026-10-05', 'garbage', now)), '2026-10-08T12:00:00Z');
     check('EN: impossible date ignored', iso(o.resolveRegisteredOn('2026-13-45T99:00:00Z', null, now)), '2026-10-08T12:00:00Z');
 
@@ -71,6 +78,8 @@
       iso(o.frenchDeadline(Date.parse('2026-10-23T12:00:00Z'), '2026-10-22T18:00:00.000Z')), '2026-10-28T22:59:59Z');
     check('FR: DST start (live Thu 25 Mar 2027 CET, ends Wed 31 Mar CEST)',
       iso(o.frenchDeadline(Date.parse('2027-03-28T12:00:00Z'))), '2027-03-31T21:59:59Z');
+    check('FR: Userlist format, before the live on Thursday, still open',
+      iso(o.frenchDeadline(Date.parse('2026-10-08T10:00:00Z'), '2026-10-08 18:00:00 UTC')), '2026-10-14T21:59:59Z');
     check('FR format', o.formatFrenchEnd(Date.parse('2026-10-14T21:59:59Z')), 'mercredi 14 octobre à minuit (heure de Paris)');
 
     return results;
