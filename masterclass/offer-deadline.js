@@ -23,10 +23,18 @@
   var DAYS_AFTER_REGISTRATION = 6;
   var DAYS_AFTER_LIVE = 6; // Thursday + 6 = Wednesday
 
-  // ISO 8601 datetime only (e.g. "2026-10-05T10:00:00Z" or with an offset); anything else is ignored
+  // A date with a time, in UTC unless an offset is given. Accepts ISO 8601 ("2026-10-08T18:00:00.000Z",
+  // "2026-10-08T20:00:00+02:00") and the format Userlist uses in emails ("2026-10-08 18:00:00 UTC",
+  // also after URL decoding of "2026-10-08+18%3A00%3A00+UTC"). Anything else (date only, Liquid tag...) is ignored.
+  var DATE_TIME = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?)\s*(Z|UTC|GMT|[+-]\d{2}:?\d{2})?$/i;
   function parseIso(value) {
-    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value.trim())) return null;
-    var t = Date.parse(value.trim());
+    if (typeof value !== 'string') return null;
+    var m = DATE_TIME.exec(value.trim());
+    if (!m) return null;
+    var zone = !m[3] || /^(Z|UTC|GMT)$/i.test(m[3]) ? 'Z'
+      : m[3].length === 5 ? m[3].slice(0, 3) + ':' + m[3].slice(3) : m[3];
+    var time = m[2].length === 5 ? m[2] + ':00' : m[2];
+    var t = Date.parse(m[1] + 'T' + time + zone);
     return isNaN(t) ? null : t;
   }
 

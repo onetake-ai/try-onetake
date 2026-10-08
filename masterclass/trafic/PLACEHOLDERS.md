@@ -55,6 +55,7 @@ The headline reads `?first_name=` and the checkout form is pre-filled from `?fir
 Link to send attendees after the live (check the exact Liquid syntax for custom properties in Userlist):
 `https://try.onetake.ai/masterclass/trafic/offre/?first_name={{ user.first_name | capitalize }}&email={{ user.email | url_encode }}&attends_masterclass_on={{ user.properties.attends_masterclass_on | url_encode }}`
 
+- Userlist writes the date as `2026-10-08 18:00:00 UTC` (`2026-10-08+18%3A00%3A00+UTC` in the link): the page accepts this format as well as ISO 8601.
 - With `attends_masterclass_on`, the offer ends the Wednesday after that session. Without it, it follows the weekly cycle: open from Thursday 20:00 to Wednesday 23:59:59 (Paris time); on Thursday before 20:00 the page redirects to `/oto/too-late/`.
 - `?unlockfor=1` previews the page outside the offer window, without the redirect.
 
