@@ -48,7 +48,8 @@ window.MASTERCLASS_CONFIG = {
 
   // Offer page (/masterclass/trafic/offre/, masterclass/offer.js): replay at the top, offer visible right away
   replayVideo: {
-    embedUrl: ''        // TODO(placeholder): OneTake player URL of the live replay (https://my.onetake.ai/...), 16:9
+    embedUrl: 'https://my.onetake.ai/b9502ad6/80da4289/?hide_controls=true&t=400',
+    days: [0, 1]        // shown on Sunday and Monday only (Paris time); other days the page shows the offer alone
   },
   offer: {
     plans: { yearly: 'scale-yearly-offer', quarterly: 'scale-quarterly-offer' },  // keys in /pricing-data.js
