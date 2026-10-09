@@ -4,7 +4,7 @@
 
 The French funnel is live. Anything not ready is hidden, never shown as a placeholder:
 - An empty video URL hides its section and its lead-in line. Fill in the URL in `config.js` and the section appears by itself.
-- While `replayVideo.embedUrl` is empty, the offer page shows the headline « Merci d'avoir participé à la masterclass ! Voici votre offre spéciale » instead of « Voici le replay de la masterclass ».
+- The replay is shown on Sundays and Mondays only, Paris time (`replayVideo.days` in `config.js`). On other days, or while `replayVideo.embedUrl` is empty, the offer page shows the headline « Merci d'avoir participé à la masterclass ! Voici votre offre spéciale » instead of « Voici le replay de la masterclass ».
 - Unconfirmed texts, the bonus images and the social share images were removed from the pages (see below). In the code, look for `TODO(placeholder)`.
 
 All values live in one file: `masterclass/trafic/config.js` (`window.MASTERCLASS_CONFIG`). The pages only need a change for the OG image.
@@ -47,7 +47,7 @@ The headline reads `?first_name=` and the checkout form is pre-filled from `?fir
 
 | Config key / file | What's needed |
 |---|---|
-| `replayVideo.embedUrl` | OneTake player URL of the live replay (16:9). |
+| `replayVideo.embedUrl`, `replayVideo.days` | Set: replay player URL, shown on Sunday (`0`) and Monday (`1`), Paris time. Remove `days` to show it every day. |
 | `offer.*` | Set: Scale offer price IDs (999 € par an, 299 € par trimestre), deadline the Wednesday after the live at midnight Paris time, redirect to `/oto/too-late/`. |
 | `offre/index.html`, Nicole Burke card | Photo of Nicole Burke (16:9). The card shows without an image for now: add `<div class="of-item__media"><img ...></div>` at the `TODO(placeholder)` comment and the `has-media` class on its `<li>`. |
 | `offre/index.html`, Toboggan Evergreen card | Visual of the masterclass (16:9), same as above. |

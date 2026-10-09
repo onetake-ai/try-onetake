@@ -10,7 +10,8 @@
  *                                fires the FirstPromoter referral and the Plausible goal, then goes to page 2
  *   [data-mc-text="path"]        Text from the config (e.g. "email.subject"); placeholder when empty
  *   [data-mc-href="path"]        Link URL from the config
- *   [data-mc-player="path"]      OneTake player (16:9) from the config; hidden while empty
+ *   [data-mc-player="path"]      OneTake player (16:9) from the config; hidden while empty, or outside
+ *                                its `days` (e.g. replayVideo.days: [0, 1], Sunday and Monday in the session time zone)
  *   [data-mc-show-if="path"]     Shown only when that config value is set (and [data-mc-hide-if] the opposite)
  *   [data-mc-session]            Date of the next live session, in French
  *   [data-mc-first-name]         ", Name" from ?first_name= (or the name typed at registration)
@@ -391,9 +392,24 @@
     check();
   }
 
+  // A video with `days` (0 = Sunday ... 6 = Saturday) is only shown on those days, in the session
+  // time zone (Paris for the French funnel). On other days its URL counts as empty, so the player
+  // and its [data-mc-show-if] elements hide and the [data-mc-hide-if] fallbacks show.
+  function applyVideoDays() {
+    var timeZone = (config.session && config.session.timeZone) || 'Europe/Paris';
+    var today = window.masterclassSession.wallClock(Date.now(), timeZone).weekday;
+    Object.keys(config).forEach(function (key) {
+      var video = config[key];
+      if (video && video.embedUrl && Array.isArray(video.days) && video.days.indexOf(today) === -1) {
+        video.embedUrl = '';
+      }
+    });
+  }
+
   // ── Init ─────────────────────────────────────────────────────────────
 
   function init() {
+    applyVideoDays();
     captureAttribution();
     document.querySelectorAll('form.mc-form').forEach(setupForm);
     bindConditions();
