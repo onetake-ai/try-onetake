@@ -145,7 +145,7 @@
   </main>
 
   <!-- Étape 2 (facultative) : affichée par masterclass.js à la place du formulaire, une fois l'inscription enregistrée.
-       Les valeurs des choix sont des slugs en anglais, enregistrés tels quels dans Userlist (liste dans edge-scripts/userlist-proxy.ts). -->
+       Les valeurs des choix (slugs en anglais, ou nombres) sont enregistrées telles quelles dans Userlist (liste dans edge-scripts/userlist-proxy.ts). -->
   <template id="mcStep2Template">
     <div class="mc-step2">
       <h2 class="mc-step2__title" tabindex="-1">C'est noté&nbsp;! Encore une minute&nbsp;?</h2>
@@ -177,18 +177,24 @@
 
         <fieldset class="mc-choices">
           <legend class="mc-label">Votre audience sur les réseaux sociaux</legend>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="under-1k"><span>Moins de 1&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="1k-10k"><span>De 1&nbsp;000 à 10&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="10k-100k"><span>De 10&nbsp;000 à 100&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="over-100k"><span>Plus de 100&nbsp;000</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="0"><span>Aucune</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="100"><span>De 1 à 100</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="1000"><span>De 101 à 1&nbsp;000</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="10000"><span>De 1&nbsp;001 à 10&nbsp;000</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="100000"><span>De 10&nbsp;001 à 100&nbsp;000</span></label>
+          <label class="mc-choice"><input type="radio" name="audience_size" value="1000000"><span>Plus de 100&nbsp;000</span></label>
         </fieldset>
 
+        <!-- Même champ et mêmes valeurs (vidéos par an) que la question de fréquence du formulaire d'inscription (/index.html) -->
         <fieldset class="mc-choices">
-          <legend class="mc-label">Vidéos publiées par semaine en ce moment</legend>
-          <label class="mc-choice"><input type="radio" name="videos_per_week" value="none"><span>Aucune</span></label>
-          <label class="mc-choice"><input type="radio" name="videos_per_week" value="1-2"><span>1 ou 2</span></label>
-          <label class="mc-choice"><input type="radio" name="videos_per_week" value="3-5"><span>3 à 5</span></label>
-          <label class="mc-choice"><input type="radio" name="videos_per_week" value="over-5"><span>Plus de 5</span></label>
+          <legend class="mc-label">À quelle fréquence enregistrez-vous des vidéos&nbsp;?</legend>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="365"><span>Quotidiennement</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="150"><span>Plusieurs fois par semaine</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="50"><span>Une fois par semaine</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="25"><span>Quelques fois par mois</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="10"><span>Très rarement</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="1"><span>Je ne fais pas encore de vidéos mais je veux</span></label>
+          <label class="mc-choice"><input type="radio" name="estimated_volume" value="0"><span>Jamais</span></label>
         </fieldset>
 
         <fieldset class="mc-choices">
