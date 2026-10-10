@@ -145,77 +145,93 @@
   </main>
 
   <!-- Étape 2 (facultative) : affichée par masterclass.js à la place du formulaire, une fois l'inscription enregistrée.
-       Les valeurs des choix (slugs en anglais, ou nombres) sont enregistrées telles quelles dans Userlist (liste dans edge-scripts/userlist-proxy.ts). -->
+       Les valeurs des choix (slugs en anglais, ou nombres) sont enregistrées telles quelles dans Userlist
+       (valeurs autorisées : QUALIFICATION_CHOICES dans edge-scripts/userlist-proxy.ts). -->
   <template id="mcStep2Template">
     <div class="mc-step2">
+      <a class="mc-step2__close mc-step2__skip" href="/masterclass/trafic/verifiez-vos-emails/" aria-label="Passer cette étape">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </a>
       <h2 class="mc-step2__title" tabindex="-1">C'est noté&nbsp;! Encore une minute&nbsp;?</h2>
       <p class="mc-step2__intro">Dites-nous en un peu plus sur vous avant la session. Toutes les questions sont facultatives.</p>
       <form class="mc-step2__form" novalidate>
-        <fieldset class="mc-choices">
-          <legend class="mc-label">Vous êtes…</legend>
-          <label class="mc-choice"><input type="radio" name="profession" value="coach"><span>Coach</span></label>
-          <label class="mc-choice"><input type="radio" name="profession" value="online-trainer"><span>Formateur en ligne</span></label>
-          <label class="mc-choice"><input type="radio" name="profession" value="consultant"><span>Consultant</span></label>
-          <label class="mc-choice"><input type="radio" name="profession" value="therapist"><span>Thérapeute ou praticien</span></label>
-          <label class="mc-choice"><input type="radio" name="profession" value="other"><span>Autre</span></label>
-        </fieldset>
-
+        <div class="mc-field">
+          <label class="mc-label" for="mcProfession">Vous êtes…</label>
+          <select class="mc-input mc-select" id="mcProfession" name="profession">
+            <option value="">Choisissez…</option>
+            <option value="coach">Coach</option>
+            <option value="online-trainer">Formateur en ligne</option>
+            <option value="consultant">Consultant</option>
+            <option value="therapist">Thérapeute ou praticien</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
         <div class="mc-field">
           <label class="mc-label" for="mcExpertise">Votre domaine ou votre secteur</label>
           <input class="mc-input" type="text" id="mcExpertise" name="expertise" maxlength="200" placeholder="Par exemple&nbsp;: nutrition, coaching de dirigeants">
         </div>
-
-        <fieldset class="mc-choices">
-          <legend class="mc-label">Ce que vous vendez aujourd'hui <span class="mc-hint">(plusieurs choix possibles)</span></legend>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="one-on-one-coaching"><span>Accompagnement individuel</span></label>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="group-program"><span>Programme de groupe</span></label>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="online-course"><span>Formation en ligne</span></label>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="in-person-events"><span>Ateliers ou conférences en présentiel</span></label>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="book"><span>Livre</span></label>
-          <label class="mc-choice"><input type="checkbox" name="current_offers" value="nothing-yet"><span>Rien pour l'instant</span></label>
-        </fieldset>
-
-        <fieldset class="mc-choices">
-          <legend class="mc-label">Votre audience sur les réseaux sociaux</legend>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="0"><span>Aucune</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="100"><span>De 1 à 100</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="1000"><span>De 101 à 1&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="10000"><span>De 1&nbsp;001 à 10&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="100000"><span>De 10&nbsp;001 à 100&nbsp;000</span></label>
-          <label class="mc-choice"><input type="radio" name="audience_size" value="1000000"><span>Plus de 100&nbsp;000</span></label>
-        </fieldset>
-
-        <!-- Même champ et mêmes valeurs (vidéos par an) que la question de fréquence du formulaire d'inscription (/index.html) -->
-        <fieldset class="mc-choices">
-          <legend class="mc-label">À quelle fréquence enregistrez-vous des vidéos&nbsp;?</legend>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="365"><span>Quotidiennement</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="150"><span>Plusieurs fois par semaine</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="50"><span>Une fois par semaine</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="25"><span>Quelques fois par mois</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="10"><span>Très rarement</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="1"><span>Je ne fais pas encore de vidéos mais je veux</span></label>
-          <label class="mc-choice"><input type="radio" name="estimated_volume" value="0"><span>Jamais</span></label>
-        </fieldset>
-
-        <fieldset class="mc-choices">
-          <legend class="mc-label">Ce qui vous freine le plus avec la vidéo</legend>
-          <label class="mc-choice"><input type="radio" name="video_blocker" value="no-time"><span>Le temps</span></label>
-          <label class="mc-choice"><input type="radio" name="video_blocker" value="editing"><span>Le montage</span></label>
-          <label class="mc-choice"><input type="radio" name="video_blocker" value="on-camera"><span>Être à l'aise face caméra</span></label>
-          <label class="mc-choice"><input type="radio" name="video_blocker" value="what-to-say"><span>Savoir quoi dire</span></label>
-          <label class="mc-choice"><input type="radio" name="video_blocker" value="no-clients"><span>Des vidéos qui ne rapportent pas de clients</span></label>
-        </fieldset>
-
+        <!-- Choix multiple, en liste déroulante de cases à cocher (comme les cas d'usage du formulaire d'inscription) -->
         <div class="mc-field">
+          <span class="mc-label" id="mcOffersLabel">Ce que vous vendez aujourd'hui</span>
+          <details class="mc-multi">
+            <summary class="mc-input mc-select mc-multi__summary" aria-describedby="mcOffersLabel"><span class="mc-multi__value" data-empty="Plusieurs choix possibles">Plusieurs choix possibles</span></summary>
+            <div class="mc-multi__menu" role="group" aria-labelledby="mcOffersLabel">
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="one-on-one-coaching"><span>Accompagnement individuel</span></label>
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="group-program"><span>Programme de groupe</span></label>
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="online-course"><span>Formation en ligne</span></label>
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="in-person-events"><span>Ateliers ou conférences en présentiel</span></label>
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="book"><span>Livre</span></label>
+            <label class="mc-multi__option"><input type="checkbox" name="current_offers" value="nothing-yet"><span>Rien pour l'instant</span></label>
+            </div>
+          </details>
+        </div>
+        <div class="mc-field">
+          <label class="mc-label" for="mcAudience">Votre audience sur les réseaux sociaux</label>
+          <select class="mc-input mc-select" id="mcAudience" name="audience_size">
+            <option value="">Choisissez…</option>
+            <option value="0">Aucune</option>
+            <option value="100">De 1 à 100</option>
+            <option value="1000">De 101 à 1&nbsp;000</option>
+            <option value="10000">De 1&nbsp;001 à 10&nbsp;000</option>
+            <option value="100000">De 10&nbsp;001 à 100&nbsp;000</option>
+            <option value="1000000">Plus de 100&nbsp;000</option>
+          </select>
+        </div>
+        <!-- Même champ et mêmes valeurs (vidéos par an) que la question de fréquence du formulaire d'inscription (/index.html) -->
+        <div class="mc-field">
+          <label class="mc-label" for="mcVolume">À quelle fréquence enregistrez-vous des vidéos&nbsp;?</label>
+          <select class="mc-input mc-select" id="mcVolume" name="estimated_volume">
+            <option value="">Choisissez…</option>
+            <option value="365">Quotidiennement</option>
+            <option value="150">Plusieurs fois par semaine</option>
+            <option value="50">Une fois par semaine</option>
+            <option value="25">Quelques fois par mois</option>
+            <option value="10">Très rarement</option>
+            <option value="1">Je ne fais pas encore de vidéos mais je veux</option>
+            <option value="0">Jamais</option>
+          </select>
+        </div>
+        <div class="mc-field">
+          <label class="mc-label" for="mcBlocker">Ce qui vous freine le plus avec la vidéo</label>
+          <select class="mc-input mc-select" id="mcBlocker" name="video_blocker">
+            <option value="">Choisissez…</option>
+            <option value="no-time">Le temps</option>
+            <option value="editing">Le montage</option>
+            <option value="on-camera">Être à l'aise face caméra</option>
+            <option value="what-to-say">Savoir quoi dire</option>
+            <option value="no-clients">Des vidéos qui ne rapportent pas de clients</option>
+          </select>
+        </div>
+        <div class="mc-field mc-field--full">
           <label class="mc-label" for="mcGoal">Qu'aimeriez-vous obtenir grâce à cette masterclass&nbsp;?</label>
-          <textarea class="mc-input mc-textarea" id="mcGoal" name="masterclass_goal" rows="3" maxlength="500"></textarea>
+          <textarea class="mc-input mc-textarea" id="mcGoal" name="masterclass_goal" rows="2" maxlength="500"></textarea>
         </div>
 
         <button class="mc-btn" type="submit">
           <span class="btn__label">Envoyer mes réponses</span>
           <span class="btn__loading" hidden>Un instant, s'il vous plaît</span>
         </button>
-        <a class="mc-link mc-step2__skip" href="/masterclass/trafic/verifiez-vos-emails/">Passer cette étape</a>
+        <a class="mc-link mc-step2__skip mc-step2__skip-link" href="/masterclass/trafic/verifiez-vos-emails/">Passer cette étape</a>
       </form>
     </div>
   </template>

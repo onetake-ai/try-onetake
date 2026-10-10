@@ -231,7 +231,12 @@
     var step = template.content.firstElementChild.cloneNode(true);
     form.hidden = true;
     form.parentNode.insertBefore(step, form.nextSibling);
-    step.querySelector('.mc-step2__skip').href = config.urls.checkInbox;
+    // Wider card on desktop (two columns of questions); in the hero, it takes the headline's place
+    form.parentNode.classList.add('is-step2');
+    var hero = form.closest('.mc-hero__inner');
+    if (hero) hero.classList.add('has-step2');
+    step.querySelectorAll('.mc-step2__skip').forEach(function (link) { link.href = config.urls.checkInbox; });
+    step.querySelectorAll('details.mc-multi').forEach(setupMulti);
     var title = step.querySelector('.mc-step2__title');
     title.focus({ preventScroll: true });
     step.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -287,6 +292,28 @@
             callback: finish
           });
         });
+    });
+  }
+
+  // Multiple choice dropdown (<details class="mc-multi"> holding checkboxes): the summary lists the
+  // checked labels; closes on Escape or a click outside
+  function setupMulti(details) {
+    var value = details.querySelector('.mc-multi__value');
+    var boxes = details.querySelectorAll('input[type="checkbox"]');
+    details.addEventListener('change', function () {
+      var labels = Array.prototype.filter.call(boxes, function (box) { return box.checked; })
+        .map(function (box) { return box.nextElementSibling.textContent; });
+      value.textContent = labels.length ? labels.join(', ') : value.getAttribute('data-empty');
+      value.classList.toggle('is-set', labels.length > 0);
+    });
+    document.addEventListener('click', function (event) {
+      if (details.open && !details.contains(event.target)) details.open = false;
+    });
+    details.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && details.open) {
+        details.open = false;
+        details.querySelector('summary').focus();
+      }
     });
   }
 
