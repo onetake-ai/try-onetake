@@ -179,6 +179,27 @@
 .mc-form__error { font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--cabaret-dark); }
 .mc-form__micro { font-size: 13px; line-height: 1.4; color: var(--cedar-muted); text-align: center; }
 
+/* Step 2 (/masterclass/trafic/recherche/): optional questions after registration */
+.mc-step2 { display: grid; gap: 12px; }
+.mc-step2__title { margin: 0; font-size: 21px; line-height: 1.25; font-weight: 800; text-align: center; }
+.mc-step2__title:focus { outline: none; }
+.mc-step2__intro { font-size: 15px; color: var(--cedar-muted); text-align: center; }
+.mc-step2__form { display: grid; gap: 18px; }
+.mc-step2__skip { justify-self: center; font-size: 14px; }
+.mc-hint { font-weight: 500; color: var(--cedar-muted); }
+.mc-choices { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.mc-choices legend { width: 100%; margin-bottom: 8px; padding: 0; }
+.mc-choice { position: relative; }
+.mc-choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.mc-choice span {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px;
+  border: 1.5px solid #B9AEB1; border-radius: 999px; background: var(--white);
+  font-size: 15px; line-height: 1.3; font-weight: 600; cursor: pointer;
+}
+.mc-choice input:checked + span { border-color: var(--golden-grass-dark); background: var(--golden-grass-tint); box-shadow: inset 0 0 0 1px var(--golden-grass-dark); }
+.mc-choice input:focus-visible + span { outline: 3px solid var(--bleached-cedar); outline-offset: 2px; }
+.mc-textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+
 /* ── Sections ────────────────────────────────────────────────────────── */
 
 .mc-section { padding: 40px 0; }

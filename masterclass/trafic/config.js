@@ -8,9 +8,10 @@ window.MASTERCLASS_CONFIG = {
   // Lead capture (Userlist, through the Bunny edge script in /edge-scripts/userlist-proxy.ts)
   proxyUrl: 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track',
   registrationEvent: 'CompleteRegistration',
+  qualificationEvent: 'CompleteQualification',   // optional step 2 questions (/masterclass/trafic/recherche/)
 
   urls: {
-    register:     '/masterclass/trafic/',
+    register:     '/masterclass/trafic/',           // variant: /masterclass/trafic/recherche/ (same funnel)
     checkInbox:   '/masterclass/trafic/verifiez-vos-emails/',
     confirmation: '/masterclass/trafic/confirmation/',
     offer:        '/masterclass/trafic/offre/'
