@@ -21,6 +21,13 @@
  *                                   affiliate (?ref=) and campaign of the visit; saved on the user
  *                                   (last touch: an empty value never erases a stored one) and on the event
  *
+ *           Step 2 answers (optional questions on /masterclass/trafic/recherche/, sent with
+ *           event=FormSubmit): saved on the user and on the event, see QUALIFICATION_CHOICES and
+ *           QUALIFICATION_TEXTS below. Choices are English slugs, or numbers (audience_size: top of
+ *           the range; estimated_volume: videos per year, same values as the signup form). Multiple
+ *           choices are sent and saved as comma-separated slugs (e.g. "online-course,book").
+ *           Unknown values are dropped.
+ *
  * With event=CompleteRegistration, the user property Register_to_a_webinar_on is set to the
  * current UTC time (ISO 8601) on every registration.
  *
@@ -37,8 +44,20 @@ import process from "node:process";
 
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const SITE_ORIGIN        = 'https://try.onetake.ai';
-const ALLOWED_EVENTS     = ['Lead', 'CompleteRegistration'];
+const ALLOWED_EVENTS     = ['Lead', 'CompleteRegistration', 'FormSubmit'];
 const ATTRIBUTION_FIELDS = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_channel'];
+
+// Step 2 answers: allowed values for each choice question (multiple: comma-separated list;
+// numeric: saved as a number, so Userlist can filter with greater than / less than)
+const QUALIFICATION_CHOICES: Record<string, { values: string[]; multiple?: boolean; numeric?: boolean }> = {
+  profession:       { values: ['coach', 'online-trainer', 'consultant', 'therapist', 'other'] },
+  current_offers:   { values: ['one-on-one-coaching', 'group-program', 'online-course', 'in-person-events', 'book', 'nothing-yet'], multiple: true },
+  audience_size:    { values: ['0', '100', '1000', '10000', '100000', '1000000'], numeric: true },   // top of each range
+  estimated_volume: { values: ['365', '150', '50', '25', '10', '1', '0'], numeric: true },           // videos per year, as in the signup form
+  video_blocker:    { values: ['no-time', 'editing', 'on-camera', 'what-to-say', 'no-clients'] },
+};
+// Step 2 answers: free text questions, with their maximum length
+const QUALIFICATION_TEXTS: Record<string, number> = { expertise: 200, masterclass_goal: 500 };
 
 const corsHeaders = () => ({
   'Access-Control-Allow-Origin':  '*',
@@ -67,10 +86,17 @@ function isValidSlug(slug: string): boolean {
   return /^[a-z0-9-]{1,64}$/.test(slug);
 }
 
-// Trimmed, without control characters, at most 200 characters ('' when not a usable string)
-function cleanText(value: unknown): string {
+// Trimmed, without control characters, at most `max` characters ('' when not a usable string)
+function cleanText(value: unknown, max = 200): string {
   if (typeof value !== 'string') return '';
-  return value.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 200);
+  return value.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
+}
+
+// Only the allowed slugs, without duplicates ('' when none is allowed)
+function cleanChoice(value: unknown, allowed: string[], multiple: boolean): string {
+  if (typeof value !== 'string') return '';
+  const picked = value.split(',').map((v) => v.trim()).filter((v) => allowed.includes(v));
+  return [...new Set(multiple ? picked : picked.slice(0, 1))].join(',');
 }
 
 function isValidIsoDate(value: string): boolean {
@@ -120,6 +146,16 @@ BunnySDK.net.http.serve(async (req: Request) => {
     if (value) attribution[key] = value;
   }
 
+  const qualification: Record<string, string | number> = {};
+  for (const [key, choice] of Object.entries(QUALIFICATION_CHOICES)) {
+    const value = cleanChoice(fields[key], choice.values, !!choice.multiple);
+    if (value) qualification[key] = choice.numeric ? Number(value) : value;
+  }
+  for (const [key, max] of Object.entries(QUALIFICATION_TEXTS)) {
+    const value = cleanText(fields[key], max);
+    if (value) qualification[key] = value;
+  }
+
   if (!isValidRedirectPath(redirect)) redirect = '/';
 
   const redirectResponse = () =>
@@ -132,22 +168,24 @@ BunnySDK.net.http.serve(async (req: Request) => {
   const pushKey = process.env.USERLIST_PUSH_KEY;
   if (!pushKey) return wantsJson ? err('Server not configured', 500) : redirectResponse();
 
-  const userProperties: Record<string, string> = {  };
+  const userProperties: Record<string, string | number> = {  };
   if (first_name) userProperties.first_name = first_name;
   if (language)   userProperties.language   = language;
   if (slug)       userProperties.masterclass_slug       = slug;
   if (attendsOn)  userProperties.attends_masterclass_on = attendsOn;
   // Last touch: a new value replaces the stored one; an empty value never erases it
   Object.assign(userProperties, attribution);
+  Object.assign(userProperties, qualification);
   // Registration time, set here (not by the browser) so a wrong visitor clock can't skew it.
   // Overwritten on every new registration.
   if (event === 'CompleteRegistration') userProperties.Register_to_a_webinar_on = new Date().toISOString();
 
-  const eventProperties: Record<string, string> = {};
+  const eventProperties: Record<string, string | number> = {};
   if (url)        eventProperties.url = url;
   if (slug)       eventProperties.masterclass_slug       = slug;
   if (attendsOn)  eventProperties.attends_masterclass_on = attendsOn;
   Object.assign(eventProperties, attribution);   // history of each registration's source
+  Object.assign(eventProperties, qualification);
 
   let accepted = false;
   try {

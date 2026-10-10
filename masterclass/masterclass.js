@@ -8,6 +8,8 @@
  * Markup hooks (all optional on a page):
  *   form.mc-form                 Registration form: sends the lead (with ?ref= and UTMs) to Userlist,
  *                                fires the FirstPromoter referral and the Plausible goal, then goes to page 2
+ *   #mcStep2Template             Optional questions shown in place of the form after registration, before
+ *                                page 2 (answers saved on the Userlist user, event config.qualificationEvent)
  *   [data-mc-text="path"]        Text from the config (e.g. "email.subject"); placeholder when empty
  *   [data-mc-href="path"]        Link URL from the config
  *   [data-mc-player="path"]      OneTake player (16:9) from the config; hidden while empty, or outside
@@ -204,13 +206,87 @@
       }).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         saveLead(lead);
-        trackRegistration(lead.email, function () { window.location.assign(config.urls.checkInbox); });
+        var step2 = document.getElementById('mcStep2Template');
+        trackRegistration(lead.email, function () {
+          if (step2) showStep2(form, step2, lead);
+          else window.location.assign(config.urls.checkInbox);
+        });
       }).catch(function () {
         setLoading(false);
         showError(config.messages.network, null);
       }).then(function () {
         clearTimeout(timeout);
       });
+    });
+  }
+
+  // ── Step 2: optional questions (/masterclass/trafic/recherche/) ──────
+
+  // Replaces the registration form that was just sent with <template id="mcStep2Template">.
+  // Answers go to Userlist as user properties, through the same proxy, with the event
+  // config.qualificationEvent (FormSubmit), and the Plausible goal config.qualificationGoal (formSubmit,
+  // as on the signup form). Multiple choices are sent as comma-separated slugs.
+  // Whatever happens (no answer, error, timeout), the visitor goes on to page 2.
+  function showStep2(form, template, lead) {
+    var step = template.content.firstElementChild.cloneNode(true);
+    form.hidden = true;
+    form.parentNode.insertBefore(step, form.nextSibling);
+    step.querySelector('.mc-step2__skip').href = config.urls.checkInbox;
+    var title = step.querySelector('.mc-step2__title');
+    title.focus({ preventScroll: true });
+    step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    var answers = step.querySelector('form');
+    var button = answers.querySelector('button[type="submit"]');
+    var sending = false;
+
+    function next() { window.location.assign(config.urls.checkInbox); }
+
+    answers.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (sending) return;
+
+      var values = {};
+      Array.prototype.forEach.call(answers.elements, function (input) {
+        if (!input.name) return;
+        if ((input.type === 'radio' || input.type === 'checkbox') && !input.checked) return;
+        var value = input.value.trim();
+        if (!value) return;
+        values[input.name] = values[input.name] ? values[input.name] + ',' + value : value;
+      });
+      if (!Object.keys(values).length) return next();
+
+      sending = true;
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+      button.querySelector('.btn__label').hidden = true;
+      button.querySelector('.btn__loading').hidden = false;
+
+      var body = new URLSearchParams({
+        email: lead.email,
+        language: config.language,
+        event: config.qualificationEvent,
+        masterclass_slug: config.slug
+      });
+      Object.keys(values).forEach(function (key) { body.set(key, values[key]); });
+
+      var done = false;
+      function finish() { if (!done) { done = true; next(); } }
+      setTimeout(finish, 8000);
+
+      fetch(config.proxyUrl, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body })
+        .catch(function () { /* answers are optional: never block the visitor */ })
+        .then(function () {
+          if (typeof window.plausible !== 'function') return finish();
+          setTimeout(finish, 1000);
+          // Same Plausible goal as the signup form (checkout-core.js), with its estimated_volume prop
+          var props = { language: config.language, masterclass_slug: config.slug };
+          if (values.estimated_volume) props.estimated_volume = values.estimated_volume;
+          window.plausible(config.qualificationGoal, {
+            props: props,
+            callback: finish
+          });
+        });
     });
   }
 
