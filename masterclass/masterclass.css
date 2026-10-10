@@ -180,25 +180,56 @@
 .mc-form__micro { font-size: 13px; line-height: 1.4; color: var(--cedar-muted); text-align: center; }
 
 /* Step 2 (/masterclass/trafic/recherche/): optional questions after registration */
-.mc-step2 { display: grid; gap: 12px; }
-.mc-step2__title { margin: 0; font-size: 21px; line-height: 1.25; font-weight: 800; text-align: center; }
+.mc-step2 { position: relative; display: grid; gap: 10px; }
+.mc-step2__close {
+  position: absolute; top: -8px; right: -6px;
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  color: var(--cedar-muted); text-decoration: none;
+}
+.mc-step2__close:hover { background: var(--alabaster); color: var(--bleached-cedar); }
+.mc-step2__close:focus-visible { outline: 3px solid var(--golden-grass); outline-offset: 0; }
+.mc-step2__title { margin: 0; padding: 0 36px; font-size: 21px; line-height: 1.25; font-weight: 800; text-align: center; }
 .mc-step2__title:focus { outline: none; }
 .mc-step2__intro { font-size: 15px; color: var(--cedar-muted); text-align: center; }
-.mc-step2__form { display: grid; gap: 18px; }
-.mc-step2__skip { justify-self: center; font-size: 14px; }
-.mc-hint { font-weight: 500; color: var(--cedar-muted); }
-.mc-choices { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
-.mc-choices legend { width: 100%; margin-bottom: 8px; padding: 0; }
-.mc-choice { position: relative; }
-.mc-choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.mc-choice span {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px;
-  border: 1.5px solid #B9AEB1; border-radius: 999px; background: var(--white);
-  font-size: 15px; line-height: 1.3; font-weight: 600; cursor: pointer;
+.mc-step2__form { display: grid; gap: 12px; }
+.mc-step2__skip-link { justify-self: center; font-size: 14px; }
+.mc-step2 .mc-input { min-height: 46px; padding: 10px 14px; }
+
+/* Two columns of questions from 768px; in the hero (960px and up) the card spans the whole width */
+@media (min-width: 768px) {
+  .mc-step2__form { grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 14px; }
+  .mc-step2__form .mc-field { align-content: end; }
+  .mc-step2__form .mc-field--full, .mc-step2__form .mc-btn, .mc-step2__skip-link { grid-column: 1 / -1; }
+  .mc-step2__form .mc-btn { justify-self: center; max-width: 420px; }
 }
-.mc-choice input:checked + span { border-color: var(--golden-grass-dark); background: var(--golden-grass-tint); box-shadow: inset 0 0 0 1px var(--golden-grass-dark); }
-.mc-choice input:focus-visible + span { outline: 3px solid var(--bleached-cedar); outline-offset: 2px; }
-.mc-textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+@media (min-width: 960px) {
+  .mc-hero__inner.has-step2 > .mc-eyebrow, .mc-hero__inner.has-step2 > .mc-h1, .mc-hero__inner.has-step2 > .mc-sub { display: none; }
+  .mc-hero .mc-card.is-step2 { grid-area: 2 / 1 / -1 / -1; max-width: 860px; width: 100%; justify-self: center; padding: 28px 32px; }
+}
+
+/* Dropdowns, like the signup form (/index.html) */
+.mc-select {
+  padding-right: 42px !important; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23241826' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+.mc-textarea { min-height: 72px; resize: vertical; line-height: 1.45; }
+
+/* Multiple choice dropdown: <details> holding checkboxes */
+.mc-multi { position: relative; }
+.mc-multi__summary { display: flex; align-items: center; list-style: none; }
+.mc-multi__summary::-webkit-details-marker { display: none; }
+.mc-multi[open] .mc-multi__summary { border-color: var(--bleached-cedar); box-shadow: var(--shadow-focus); }
+.mc-multi__value { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #776B7A; }
+.mc-multi__value.is-set { color: var(--bleached-cedar); }
+.mc-multi__menu {
+  position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; right: 0;
+  display: grid; padding: 6px; background: var(--white);
+  border: 1.5px solid #B9AEB1; border-radius: var(--radius-md); box-shadow: var(--shadow-soft);
+}
+.mc-multi__option { display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 15px; cursor: pointer; }
+.mc-multi__option:hover { background: var(--alabaster); }
+.mc-multi__option input { width: 18px; height: 18px; margin: 0; flex: 0 0 auto; accent-color: var(--golden-grass-dark); }
 
 /* ── Sections ────────────────────────────────────────────────────────── */
 
