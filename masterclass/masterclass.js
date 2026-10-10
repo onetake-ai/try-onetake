@@ -224,8 +224,8 @@
 
   // Replaces the registration form that was just sent with <template id="mcStep2Template">.
   // Answers go to Userlist as user properties, through the same proxy, with the event
-  // config.qualificationEvent (FormSubmit), and the Plausible goal config.qualificationGoal (formSubmit,
-  // as on the signup form). Multiple choices are sent as comma-separated slugs.
+  // config.qualificationEvent, and the Plausible goal config.qualificationGoal (both Lead).
+  // Multiple choices are sent as comma-separated slugs.
   // Whatever happens (no answer, error, timeout), the visitor goes on to page 2.
   function showStep2(form, template, lead) {
     var step = template.content.firstElementChild.cloneNode(true);
@@ -284,7 +284,6 @@
         .then(function () {
           if (typeof window.plausible !== 'function') return finish();
           setTimeout(finish, 1000);
-          // Same Plausible goal as the signup form (checkout-core.js), with its estimated_volume prop
           var props = { language: config.language, masterclass_slug: config.slug };
           if (values.estimated_volume) props.estimated_volume = values.estimated_volume;
           window.plausible(config.qualificationGoal, {

@@ -9,8 +9,8 @@ window.MASTERCLASS_CONFIG = {
   proxyUrl: 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track',
   registrationEvent: 'CompleteRegistration',
   // Optional step 2 questions (/masterclass/trafic/recherche/)
-  qualificationEvent: 'FormSubmit',   // Userlist event
-  qualificationGoal: 'formSubmit',    // Plausible goal, same as the signup form
+  qualificationEvent: 'Lead',   // Userlist event
+  qualificationGoal: 'Lead',    // Plausible goal
 
   urls: {
     register:     '/masterclass/trafic/',           // variant: /masterclass/trafic/recherche/ (same funnel)

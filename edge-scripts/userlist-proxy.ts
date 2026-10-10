@@ -22,7 +22,7 @@
  *                                   (last touch: an empty value never erases a stored one) and on the event
  *
  *           Step 2 answers (optional questions on /masterclass/trafic/recherche/, sent with
- *           event=FormSubmit): saved on the user and on the event, see QUALIFICATION_CHOICES and
+ *           event=Lead): saved on the user and on the event, see QUALIFICATION_CHOICES and
  *           QUALIFICATION_TEXTS below. Choices are English slugs, or numbers (audience_size: top of
  *           the range; estimated_volume: videos per year, same values as the signup form). Multiple
  *           choices are sent and saved as comma-separated slugs (e.g. "online-course,book").
@@ -44,7 +44,7 @@ import process from "node:process";
 
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const SITE_ORIGIN        = 'https://try.onetake.ai';
-const ALLOWED_EVENTS     = ['Lead', 'CompleteRegistration', 'FormSubmit'];
+const ALLOWED_EVENTS     = ['Lead', 'CompleteRegistration'];
 const ATTRIBUTION_FIELDS = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_channel'];
 
 // Step 2 answers: allowed values for each choice question (multiple: comma-separated list;
