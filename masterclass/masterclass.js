@@ -119,8 +119,11 @@
   // - FirstPromoter referral (same call as /instagram/ and the main signup page), so an opt-in
   //   from an affiliate link (?ref=) counts as that affiliate's lead
   // - Plausible "CompleteRegistration" goal (same name as the Userlist event)
-  // Leaves the page once Plausible confirms and FirstPromoter had a moment to send (at most 1 s).
-  function trackRegistration(email, next) {
+  // - AnyTrack "CompleteRegistration" event, which AnyTrack forwards to Facebook; email and first
+  //   name improve Facebook's match quality
+  // Leaves the page once Plausible confirms and the others had a moment to send (at most 1 s).
+  function trackRegistration(lead, next) {
+    var email = lead.email;
     var done = false;
     var plausibleSent = false;
     var minWaitOver = false;
@@ -129,6 +132,14 @@
     setTimeout(go, 1000);
     setTimeout(function () { minWaitOver = true; maybeGo(); }, 400);
     if (typeof window.fpr === 'function') window.fpr('referral', { email: email });
+    if (typeof window.AnyTrack === 'function') {
+      window.AnyTrack('trigger', config.registrationEvent, {
+        email: email,
+        firstName: lead.first_name,
+        language: config.language,
+        masterclass_slug: config.slug
+      });
+    }
     if (typeof window.plausible === 'function') {
       window.plausible(config.registrationEvent, {
         props: { language: config.language, masterclass_slug: config.slug },
@@ -207,7 +218,7 @@
         if (!res.ok) throw new Error('HTTP ' + res.status);
         saveLead(lead);
         var step2 = document.getElementById('mcStep2Template');
-        trackRegistration(lead.email, function () {
+        trackRegistration(lead, function () {
           if (step2) showStep2(form, step2, lead);
           else window.location.assign(config.urls.checkInbox);
         });
