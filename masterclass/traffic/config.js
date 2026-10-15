@@ -13,6 +13,7 @@ window.MASTERCLASS_CONFIG = {
   // Lead capture (Userlist, through the Bunny edge script in /edge-scripts/userlist-proxy.ts)
   proxyUrl: 'https://userlist-proxy-for-tryonetakeai-84nhl.bunny.run/track',
   registrationEvent: 'CompleteRegistration',
+  crazyEggGoal: '0c8e57bc-8dd9-49cb-b0e4-da4973b4f483',  // CrazyEgg conversion goal for CompleteRegistration
 
   urls: {
     register:   '/masterclass/traffic/',

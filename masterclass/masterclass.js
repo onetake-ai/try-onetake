@@ -121,6 +121,7 @@
   // - Plausible "CompleteRegistration" goal (same name as the Userlist event)
   // - AnyTrack "CompleteRegistration" event, which AnyTrack forwards to Facebook; email and first
   //   name improve Facebook's match quality
+  // - CrazyEgg conversion goal (config.crazyEggGoal), queued in CE_API until CrazyEgg has loaded
   // Leaves the page once Plausible confirms and the others had a moment to send (at most 1 s).
   function trackRegistration(lead, next) {
     var email = lead.email;
@@ -138,6 +139,11 @@
         firstName: lead.first_name,
         language: config.language,
         masterclass_slug: config.slug
+      });
+    }
+    if (config.crazyEggGoal) {
+      (window.CE_API || (window.CE_API = [])).push(function () {
+        window.CE2.converted(config.crazyEggGoal);
       });
     }
     if (typeof window.plausible === 'function') {
@@ -206,29 +212,66 @@
       var source = attribution();
       Object.keys(source).forEach(function (key) { body.set(key, source[key]); });
 
-      var controller = 'AbortController' in window ? new AbortController() : null;
-      var timeout = setTimeout(function () { if (controller) controller.abort(); }, 15000);
-
-      fetch(config.proxyUrl, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: body,
-        signal: controller ? controller.signal : undefined
-      }).then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        saveLead(lead);
-        var step2 = document.getElementById('mcStep2Template');
-        trackRegistration(lead, function () {
-          if (step2) showStep2(form, step2, lead);
-          else window.location.assign(config.urls.checkInbox);
-        });
-      }).catch(function () {
+      // One automatic retry when the proxy didn't answer or failed (5xx). If it still didn't
+      // answer (blocked by an extension or a firewall, or a bad connection), the form is posted
+      // as a regular page instead: the proxy then saves the lead and redirects to page 2.
+      sendLead(body).then(function (status) {
+        return status === 0 || status >= 500 ? sendLead(body) : status;
+      }).then(function (status) {
+        if (status >= 200 && status < 300) return registered(lead, body, false);
+        if (status === 0) return registered(lead, body, true);
         setLoading(false);
-        showError(config.messages.network, null);
-      }).then(function () {
-        clearTimeout(timeout);
+        if (status === 400) showError(config.messages.email, email);
+        else showError(config.messages.network, null);
       });
     });
+
+    // Once the lead is sent (or about to be, as a page): tracking, then step 2 or page 2.
+    // Nothing in here can show the error message.
+    function registered(lead, body, postAsPage) {
+      saveLead(lead);
+      var step2 = document.getElementById('mcStep2Template');
+      trackRegistration(lead, function () {
+        if (postAsPage) postLeadAsPage(body);
+        else if (step2) showStep2(form, step2, lead);
+        else window.location.assign(config.urls.checkInbox);
+      });
+    }
+  }
+
+  // Sends the registration to the proxy in the background. Resolves with the HTTP status, or 0
+  // when there was no answer (request blocked, offline, or nothing within 10 s).
+  function sendLead(body) {
+    var controller = 'AbortController' in window ? new AbortController() : null;
+    var timeout = setTimeout(function () { if (controller) controller.abort(); }, 10000);
+    return fetch(config.proxyUrl, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: body,
+      signal: controller ? controller.signal : undefined
+    }).then(function (res) { return res.status; }, function () { return 0; }).then(function (status) {
+      clearTimeout(timeout);
+      return status;
+    });
+  }
+
+  // Fallback: the same fields as a plain HTML form post, which the proxy answers with a redirect
+  // to page 2 (see edge-scripts/userlist-proxy.ts)
+  function postLeadAsPage(body) {
+    var page = document.createElement('form');
+    page.method = 'POST';
+    page.action = config.proxyUrl;
+    page.hidden = true;
+    body.set('redirect', config.urls.checkInbox);
+    body.forEach(function (value, key) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      page.appendChild(input);
+    });
+    document.body.appendChild(page);
+    page.submit();
   }
 
   // ── Step 2: optional questions (/masterclass/trafic/recherche/) ──────
