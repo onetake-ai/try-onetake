@@ -121,6 +121,7 @@
   // - Plausible "CompleteRegistration" goal (same name as the Userlist event)
   // - AnyTrack "CompleteRegistration" event, which AnyTrack forwards to Facebook; email and first
   //   name improve Facebook's match quality
+  // - CrazyEgg conversion goal (config.crazyEggGoal), queued in CE_API until CrazyEgg has loaded
   // Leaves the page once Plausible confirms and the others had a moment to send (at most 1 s).
   function trackRegistration(lead, next) {
     var email = lead.email;
@@ -138,6 +139,11 @@
         firstName: lead.first_name,
         language: config.language,
         masterclass_slug: config.slug
+      });
+    }
+    if (config.crazyEggGoal) {
+      (window.CE_API || (window.CE_API = [])).push(function () {
+        window.CE2.converted(config.crazyEggGoal);
       });
     }
     if (typeof window.plausible === 'function') {
