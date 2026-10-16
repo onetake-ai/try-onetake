@@ -107,6 +107,16 @@
         }
     }
 
+    // FirstPromoter tracking ID: fpr.js exposes it on window.FPROM; otherwise read the cookie
+    // (_fprom_tid on current accounts, _fprom_track on accounts created before April 2021).
+    function getFirstPromoterTid() {
+        if (window.FPROM && window.FPROM.data && window.FPROM.data.tid) {
+            return window.FPROM.data.tid;
+        }
+        var match = document.cookie.match(/(?:^|;\s*)_fprom_(?:tid|track)=([^;]+)/);
+        return match ? decodeURIComponent(match[1]) : null;
+    }
+
     // Assemble custom metadata sent to Paddle with each checkout.
     // Includes user, plan, tracking, and cohort data so the backend can forward it via Paddle webhooks.
     function buildCheckoutCustomData(state, presets) {
@@ -146,10 +156,13 @@
             }
         }
 
-        // Include FirstPromoter affiliate tracking ID
-        var fpMatch = document.cookie.match(/_fprom_track=([^;]+)/);
-        if (fpMatch) {
-            data.fp_tid = decodeURIComponent(fpMatch[1]);
+        // FirstPromoter matches Paddle webhooks to referrals by fp_tid, then by email
+        var fpTid = getFirstPromoterTid();
+        if (fpTid) {
+            data.fp_tid = fpTid;
+        }
+        if (state.formData.email) {
+            data.email = state.formData.email;
         }
 
         // Include UTM tracking params via tracking module
@@ -306,7 +319,8 @@
         }
     }
 
-    // Fire purchase analytics across three providers (AnyTrack, CrazyEgg, Plausible).
+    // Fire purchase analytics across three providers (AnyTrack, CrazyEgg, Plausible),
+    // then link the Paddle customer to the FirstPromoter referral.
     // For trials, uses expectedValue (conversionRate × firstPayment) instead of actual charge.
     function trackPurchase(state, paddleData, isSandbox) {
         var isTrial = state.hasTrial;
@@ -372,6 +386,13 @@
             }
             plausible('Purchase', plausibleOptions);
             console.log('Plausible Purchase event fired with options:', plausibleOptions);
+        }
+
+        // FirstPromoter referral with the Paddle customer ID, so webhooks match the lead
+        var customer = (paddleData.data && paddleData.data.customer) || {};
+        if (!isSandbox && window.fpr && customer.id) {
+            window.fpr('referral', { email: customer.email || state.formData.email, uid: customer.id });
+            console.log('FirstPromoter referral sent with Paddle customer ID:', customer.id);
         }
     }
 
