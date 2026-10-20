@@ -592,6 +592,7 @@
         core.initPaddle(isSandbox, handlePaddleEvent);
         window.localizePrices();
 
+        prefillFromUrl();
         els.form.addEventListener('submit', handleSubmit);
         els.reopenBtn.addEventListener('click', openCheckout);
         // "Next" on the first name keyboard moves to email instead of submitting
@@ -611,6 +612,15 @@
         });
 
         setupStickyCta();
+    }
+
+    // Prefill from ?first_name= and ?email=; a literal unrendered Liquid tag is ignored
+    function prefillFromUrl() {
+        var params = new URLSearchParams(window.location.search);
+        [[els.firstName, params.get('first_name')], [els.email, params.get('email')]].forEach(function(pair) {
+            var value = (pair[1] || '').trim();
+            if (value && !/[{}<>]/.test(value) && !pair[0].value) pair[0].value = value;
+        });
     }
 
     document.addEventListener('DOMContentLoaded', init);
