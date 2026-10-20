@@ -275,6 +275,7 @@ Pages that use `translations.js` (e.g. `/onboarding/`) read the same text from t
 
 Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from Manychat DMs on Instagram. Written in English and translated by Weglot.
 
+- The signup form is prefilled from `?first_name=` and `?email=` (`prefillFromUrl()` in `app.js`); a value still holding an unrendered Liquid tag is ignored.
 - Never write new checkout logic: every CTA outside the form uses `.js-go-to-form`, which sends the visitor to the existing form.
 - The videos are OneTake player iframes, which handle autoplay, loop and sound themselves. Never add sound controls or drive the iframes from JS.
 - Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
