@@ -7,7 +7,8 @@
  *
  * Markup hooks (all optional on a page):
  *   form.mc-form                 Registration form: sends the lead (with ?ref= and UTMs) to Userlist,
- *                                fires the FirstPromoter referral and the Plausible goal, then goes to page 2
+ *                                fires the FirstPromoter referral and the Plausible goal, then goes to page 2.
+ *                                Prefilled from ?first_name= and ?email=
  *   #mcStep2Template             Optional questions shown in place of the form after registration, before
  *                                page 2 (answers saved on the Userlist user, event config.qualificationEvent)
  *   [data-mc-text="path"]        Text from the config (e.g. "email.subject"); placeholder when empty
@@ -162,6 +163,11 @@
     var error = form.querySelector('.mc-form__error');
     var button = form.querySelector('button[type="submit"]');
     var sending = false;
+
+    // Prefill from ?first_name= and ?email=; a literal unrendered Liquid tag is ignored
+    [[firstName, param('first_name')], [email, param('email')]].forEach(function (pair) {
+      if (pair[1] && !/[{}<>]/.test(pair[1]) && !pair[0].value) pair[0].value = pair[1];
+    });
 
     function showError(text, field) {
       error.textContent = text;
