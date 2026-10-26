@@ -4,6 +4,8 @@
 
 **Rule: every product price shown to a visitor must be localized.** Never display a bare hardcoded price string. Use the `data-paddle-price-id` attribute so `price-localizer.js` can replace it with the visitor's local currency at runtime.
 
+**Exception:** plans sold through Airwallex (see "Airwallex checkout" below) are shown in EUR excl. VAT as plain text (`999 € HT / an`), because the Paddle localizer can't convert them.
+
 ### How it works
 
 1. Load `paddle.js` from the CDN, then `price-localizer.js` (relative path from the page to the repo root).
@@ -51,6 +53,32 @@ The value can be either a root-relative path (e.g. `/onboarding/ehv/`) or a full
 
 
 `pricing-table.js` handles price localization internally — it generates `paddle-price` elements and calls `window.localizePrices()` after rendering. No extra setup needed on pages that embed the pricing table. See `/pricing-table/CLAUDE.md` for the full component docs.
+
+## Airwallex checkout
+
+**Files:** `/airwallex-data.js`, `/assets/airwallex/airwallex-checkout.js`, `/assets/airwallex/airwallex-checkout.css`, `/edge-scripts/airwallex-checkout.ts`
+
+Card payments through Airwallex Hosted Billing Checkout (subscriptions), used instead of Paddle on `/4dcm/le-challenge/`. Never send a raw price ID or URL from the browser: pages only use plan keys.
+
+- **Plans:** declared twice by the same key. `/airwallex-data.js` holds what the page shows and tracks (label, value, wire transfer reference prefix, bank details, edge script URL). `PLANS` in `edge-scripts/airwallex-checkout.ts` holds the allowlist: Airwallex price ID, sales window (`opensAt`, `closesAt`, ISO 8601 UTC) and the success and back pages. To sell a new plan, add it to both.
+- **Markup:** `<button data-airwallex-plan="challenge-yearly">` opens a popup asking first name and email, then redirects to a checkout created on the spot (it expires after 1 hour, never create one in advance). `<button data-airwallex-wire="challenge-yearly">` opens the wire transfer form (only plans with a `wire` entry), then shows the bank details and the reference (`PREFIX LASTNAME Firstname`) with copy buttons. Load `airwallex-data.js`, then `airwallex-checkout.js`, plus the CSS.
+- **Success page:** call `oneTakeAirwallex.confirmPurchase()`. It asks the edge script whether the checkout started in this browser is `COMPLETED`, then fires `Purchase` once. OneTake accounts are not created automatically: the success page says credentials arrive by email within the same business day, and the team creates them from the Userlist `Purchase` event.
+- **Events:** `AddToCart` when the email is entered (AnyTrack, Plausible, Userlist), `InitiateCheckout` when the wire form is sent (AnyTrack, Plausible, Userlist with the user property `pledged_wire_payment_on`), `Purchase` on the success page (AnyTrack, Plausible with revenue, Userlist). No `InitiateCheckout` for card payments: the hosted checkout gives no signal back. No affiliate (FirstPromoter) tracking.
+- **Edge script** (Bunny script 99045, deployed by `.github/workflows/deploy-airwallex-checkout.yml`): endpoints `/checkout`, `/wire`, `/purchase`; CORS limited to `https://try.onetake.ai`; refuses checkouts outside the plan's window with `NOT_OPEN_YET` or `OFFER_CLOSED` (the page then redirects to `/oto/too-late/`). Secrets, set in the Bunny dashboard: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY` (scoped key: Billing customers and Billing checkouts, write), `AIRWALLEX_LEGAL_ENTITY_ID`, `AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID`, `AIRWALLEX_LOGIN_AS` (optional, only for a key linked to several accounts), `USERLIST_PUSH_KEY`.
+- **Attribution:** `?ref=` and `utm_*` (last visit with any, kept 30 days) and the AnyTrack click ID go to Userlist and to the metadata of the Airwallex customer and checkout.
+
+## Info bubbles
+
+**Files:** `/assets/info-bubbles/info-bubbles.js`, `/assets/info-bubbles/info-bubbles.css`
+
+Accessible tooltips without dependencies: open on hover and keyboard focus, tap toggles, Escape and outside tap close, one open at a time, kept inside the viewport. `oneTakeInfoBubbles.renderGroups(container, families, items)` renders groups of chips from data (see the skills in `/4dcm/le-challenge/app.js`); `oneTakeInfoBubbles.bind(root)` binds triggers written in HTML (`<button data-info-bubble="ID" aria-describedby="ID">` + an element `#ID` with the text).
+
+## Le Challenge des Experts à Haute Valeur (`/4dcm/le-challenge/`)
+
+French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/` (its `style.css` is a copy plus the page's components). Card payments through Airwallex, wire transfer for the annual plan, success page `/4dcm/le-challenge/merci/`.
+
+- **Dates (Europe/Paris):** annual plan only until Wed Oct 28, 23:59:59; quarterly plan shown from Thu Oct 29, 00:00; closed after Mon Nov 2, 23:59:59 (the countdown bar redirects to `/oto/too-late/`). The same dates live in three places, keep them in sync: `CONFIG` in `app.js`, `data-deadline` in `index.html`, `PLANS` in `edge-scripts/airwallex-checkout.ts`.
+- **Preview:** `?preview_state=launch` or `?preview_state=quarterly` changes the display only (the edge script still follows the real dates); `?unlockfor=1` disables the countdown redirect.
 
 ## Embeddable checkout snippet
 

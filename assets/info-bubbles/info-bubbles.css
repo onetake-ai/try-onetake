@@ -1,0 +1,95 @@
+/* /assets/info-bubbles/info-bubbles.css
+   Info bubbles of info-bubbles.js. Classes are prefixed with ib-. Colors and fonts come from the
+   page's CSS variables when it defines them (--bg-deep, --ink, --accent...), with fallbacks. */
+
+.ib-group { margin-top: 40px; }
+.ib-group-title { margin: 0 0 16px; font-family: var(--sans, system-ui, sans-serif); line-height: 1.35; }
+.ib-group-title .ib-family {
+  display: block;
+  font-family: var(--serif, Georgia, serif);
+  font-weight: 400;
+  font-size: 26px;
+  color: var(--ink, #1A1814);
+}
+.ib-group-title .ib-intro::first-letter { text-transform: uppercase; }
+.ib-group-title .ib-intro { display: block; font-size: 16px; font-weight: 400; color: var(--ink-soft, #4A453E); margin-top: 2px; }
+
+.ib-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ib-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 16px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--ink, #1A1814);
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.ib-trigger:hover, .ib-trigger.is-open { border-color: var(--accent, #b5603a); background: var(--accent-tint, #f6ebe4); }
+.ib-trigger:focus-visible { outline: 2px solid var(--accent, #b5603a); outline-offset: 2px; }
+
+.ib-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif, Georgia, serif);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--accent-2, #9a4a2a);
+  border: 1px solid currentColor;
+}
+.ib-trigger.is-open .ib-icon { background: var(--accent-2, #9a4a2a); color: #fff; border-color: var(--accent-2, #9a4a2a); }
+
+.ib-bubble {
+  position: fixed;
+  z-index: 1500;
+  box-sizing: border-box;
+  max-width: 280px;
+  padding: 14px 16px;
+  font-family: var(--sans, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #F4EFE6;
+  background: var(--bg-deep, #1A1814);
+  border-radius: 6px;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+.ib-bubble[hidden] { display: none; }
+.ib-bubble::after {
+  content: "";
+  position: absolute;
+  left: var(--ib-arrow-x, 50%);
+  top: 100%;
+  width: 0;
+  height: 0;
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-top-color: var(--bg-deep, #1A1814);
+}
+.ib-bubble.ib-below::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: var(--bg-deep, #1A1814);
+}
