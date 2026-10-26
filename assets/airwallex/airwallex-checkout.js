@@ -119,6 +119,7 @@
         if (!res.ok) {
           var error = new Error(data.error || 'HTTP ' + res.status);
           error.code = data.code || '';
+          error.detail = data;
           throw error;
         }
         return data;
@@ -183,9 +184,11 @@
   function field(name, label, type, value, required, autocomplete) {
     var id = 'awx-' + name;
     var input = el('input', { id: id, name: name, type: type, autocomplete: autocomplete });
+    // useBouncer (tools.js) checks email fields and shows its message under them: see .awx-field--email
+    if (type === 'email') input.className = 'bouncer';
     input.value = value || '';
     if (required) input.required = true;
-    return el('div', { 'class': 'awx-field' }, [el('label', { 'for': id, text: label }), input]);
+    return el('div', { 'class': 'awx-field' + (type === 'email' ? ' awx-field--email' : '') }, [el('label', { 'for': id, text: label }), input]);
   }
 
   function setLoading(button, loading, text) {
@@ -235,7 +238,7 @@
         })
         .catch(function (err) {
           if (handleClosed(err)) return;
-          console.error('Airwallex checkout failed', err);
+          console.error('Airwallex checkout failed', err, err && err.detail);
           setLoading(submit, false, 'Continuer vers le paiement');
           if (trigger) trigger.classList.remove('is-loading');
           error.textContent = ERROR_TEXT;

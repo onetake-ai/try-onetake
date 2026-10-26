@@ -38,7 +38,7 @@
  * ERRORS: { error, code } with code one of
  *   UNKNOWN_PLAN (400), INVALID_EMAIL (400), INVALID_NAME (400), NOT_OPEN_YET (403),
  *   OFFER_CLOSED (410: the page redirects to /oto/too-late/), NOT_CONFIGURED (500),
- *   AIRWALLEX_ERROR (502), USERLIST_ERROR (502), FORBIDDEN_ORIGIN (403), NOT_FOUND (404).
+ *   AIRWALLEX_ERROR (502, with step, status, airwallex_code, airwallex_message: the failed call), USERLIST_ERROR (502), FORBIDDEN_ORIGIN (403), NOT_FOUND (404).
  */
 
 import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
@@ -106,6 +106,36 @@ const json = (body: Record<string, unknown>, status = 200) =>
   });
 
 const fail = (code: string, status: number, error = code) => json({ error, code }, status);
+
+// Airwallex failure: which call failed and what Airwallex answered (no secrets), so the browser
+// console shows the cause; the Bunny logs have the full response too
+class AirwallexError extends Error {
+  step: string;
+  status: number;
+  detail: Record<string, unknown>;
+  constructor(step: string, status: number, detail: Record<string, unknown>) {
+    super(`${step} failed (${status})`);
+    this.step = step;
+    this.status = status;
+    this.detail = detail;
+  }
+}
+
+function airwallexFailure(e: unknown): Response {
+  if (e instanceof AirwallexError) {
+    return json({
+      error: 'AIRWALLEX_ERROR',
+      code: 'AIRWALLEX_ERROR',
+      step: e.step,
+      status: e.status,
+      airwallex_code: typeof e.detail.code === 'string' ? e.detail.code : '',
+      airwallex_message: typeof e.detail.message === 'string' ? e.detail.message : '',
+      airwallex_source: typeof e.detail.source === 'string' ? e.detail.source : '',
+    }, 502);
+  }
+  console.error('Airwallex call failed', String(e));
+  return json({ error: 'AIRWALLEX_ERROR', code: 'AIRWALLEX_ERROR', step: 'network', airwallex_message: String(e) }, 502);
+}
 
 // ── Input cleaning ───────────────────────────────────────────────────────────
 
@@ -186,7 +216,7 @@ async function getAccessToken(): Promise<string> {
   const data = await res.json().catch(() => ({})) as { token?: string; expires_at?: string };
   if (!res.ok || !data.token) {
     console.error('Airwallex login failed', res.status, JSON.stringify(data));
-    throw new Error('login');
+    throw new AirwallexError('login', res.status, data as Record<string, unknown>);
   }
   const expiresAt = Date.parse(data.expires_at || '') || Date.now() + 25 * 60_000;
   cachedToken = { token: data.token, expiresAt };
@@ -208,7 +238,7 @@ async function airwallex(method: 'GET' | 'POST', path: string, body?: Record<str
   const data = await res.json().catch(() => ({})) as Record<string, unknown>;
   if (!res.ok) {
     console.error(`Airwallex ${method} ${path} failed`, res.status, JSON.stringify(data));
-    throw new Error('airwallex');
+    throw new AirwallexError(`${method} ${path.replace(/\/(bc|bcus)_[^/]+/, '/{id}')}`, res.status, data);
   }
   return data;
 }
@@ -268,7 +298,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       back_url:                  SITE_ORIGIN + plan.backPath,
       line_items:                [{ price_id: plan.priceId, quantity: 1 }],
     });
-    if (typeof checkout.url !== 'string') throw new Error('no url');
+    if (typeof checkout.url !== 'string') throw new AirwallexError('checkout url', 200, { message: 'No url in the checkout response' });
 
     // Links the checkout to the page and campaign; a failure here must not block the sale
     await airwallex('POST', `/api/v1/billing/billing_checkouts/${checkout.id}/update`, {
@@ -277,8 +307,8 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
     }).catch(() => {});
 
     return json({ url: checkout.url, checkout_id: checkout.id });
-  } catch {
-    return fail('AIRWALLEX_ERROR', 502);
+  } catch (e) {
+    return airwallexFailure(e);
   }
 }
 
@@ -348,8 +378,8 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
     }
 
     return json({ completed: true, plan: planKey, value: plan.value, currency: plan.currency, email, first_name: firstName });
-  } catch {
-    return fail('AIRWALLEX_ERROR', 502);
+  } catch (e) {
+    return airwallexFailure(e);
   }
 }
 
