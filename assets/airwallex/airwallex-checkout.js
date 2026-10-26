@@ -284,7 +284,7 @@
     var reference = plan.wire.referencePrefix + ' ' + values.last_name.toUpperCase() + ' ' + values.first_name;
     var list = el('dl', { 'class': 'awx-bank' });
     [].concat(
-      bankRow('Titulaire', bank.holder),
+      bankRow('Titulaire', bank.holder, bank.holder),
       bankRow('IBAN', bank.iban, bank.iban.replace(/\s+/g, '')),
       bankRow('BIC', bank.bic, bank.bic),
       bankRow('Banque', bank.address),
