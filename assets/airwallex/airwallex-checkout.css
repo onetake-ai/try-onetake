@@ -70,6 +70,9 @@ html.awx-open { overflow: hidden; }
 @media (max-width: 420px) { .awx-row { grid-template-columns: 1fr; gap: 0; } }
 
 .awx-field { margin-bottom: 14px; }
+/* Leaves room under the email field for the useBouncer validation message (about 44px),
+   so it never covers the next field or the button */
+.awx-field--email { margin-bottom: 50px; }
 .awx-field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
 .awx-field input {
   width: 100%;

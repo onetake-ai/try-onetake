@@ -14,7 +14,7 @@ window.AIRWALLEX_CONFIG = {
 
     // Shown after the wire transfer form (plans with a `wire` entry)
     bank: {
-        holder:  'Onetake Pte. Ltd.',
+        holder:  'OneTake Pte Ltd',
         iban:    'BE23 9051 2536 1591',
         bic:     'TRWIBEB1XXX',
         address: 'Wise, Rue du Trône 100, 3rd floor, 1050 Brussels, Belgique'

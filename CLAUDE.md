@@ -259,6 +259,10 @@ The script initializes all `.youtube-player` elements on `DOMContentLoaded`. For
 <div class="youtube-player" data-id="VIDEO_ID" data-list="PLAYLIST_ID" data-index="1"></div>
 ```
 
+## Email fields and useBouncer
+
+`tools.js` loads useBouncer, which checks every email field on the page and shows its validation message (about 44 px tall) right under the field. Every email field must leave at least 50 px of free space below it, so the message never covers the next field or the submit button: give the field a bottom margin of 50 px, or put a short text label in that space (as on `/instagram/`: the "Now tap here:" label above the button). Also give the input the `bouncer` class, like the other forms. Examples: `.awx-field--email` in `/assets/airwallex/airwallex-checkout.css`, `.mc-field--email` in `/masterclass/masterclass.css`, `.signup__cta-label` in `/instagram/style.css`.
+
 ## Standard footer
 
 Every landing page ends with this footer. Copy the version matching the page language. Copy rules apply: OneTake is "an AI agent" (never a tool, software or platform), no em dashes, no separator lines. The Meta/Google disclaimer is required on every page, since traffic comes from Instagram, Facebook, Google and YouTube ads and links.
