@@ -8,7 +8,7 @@
 
 window.AIRWALLEX_CONFIG = {
     // Public URL of Bunny Edge Script 99045 (edge-scripts/airwallex-checkout.ts)
-    endpoint: 'https://airwallex-checkout-REPLACE.bunny.run',
+    endpoint: 'https://airwallex-hosted-checkout-n08o8.bunny.run',
 
     supportEmail: 'contact@goodvibes.onetake.ai',
 
