@@ -51,6 +51,7 @@ const ATTRIBUTION_FIELDS  = ['referred_by', 'utm_source', 'utm_medium', 'utm_cam
 
 type Plan = {
   priceId:     string;
+  bonusPriceIds?: string[];   // 0 € prices listed under the plan on the checkout (same billing cycle)
   label:       string;   // Shown in Userlist and in the Airwallex metadata
   value:       number;   // Price excl. VAT, for conversion tracking
   currency:    string;
@@ -70,6 +71,7 @@ const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 const PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: ['pri_sgpdlsksvhnl1euoxcj'],   // Les Skills IA de l'Expert à Haute Valeur (yearly)
     label:       'Le Challenge des Experts à Haute Valeur (annuel)',
     value:       999,
     currency:    'EUR',
@@ -81,6 +83,7 @@ const PLANS: Record<string, Plan> = {
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: ['pri_sgpdd4ck6hnl1ffdwsk'],   // Les Skills IA de l'Expert à Haute Valeur (quarterly)
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
@@ -299,7 +302,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       billing_customer_id:       customer.id,
       success_url:               SITE_ORIGIN + plan.successPath,
       back_url:                  SITE_ORIGIN + plan.backPath,
-      line_items:                [{ price_id: plan.priceId, quantity: 1 }],
+      line_items:                [plan.priceId, ...(plan.bonusPriceIds || [])].map((id) => ({ price_id: id, quantity: 1 })),
       subscription_data:         { duration: plan.duration },   // Required in SUBSCRIPTION mode
     });
     if (typeof checkout.url !== 'string') throw new AirwallexError('checkout url', 200, { message: 'No url in the checkout response' });
