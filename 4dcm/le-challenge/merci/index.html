@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Bienvenue dans le Challenge · Sébastien Night</title>
+
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link href="https://fonts.bunny.net/css?family=instrument-serif:400,400i&family=geist:300,400,500,600,700&family=geist-mono:400,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+<style>
+  .welcome { min-height: 70vh; display: flex; align-items: center; }
+  .welcome .card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 56px 48px;
+    text-align: center;
+  }
+  .welcome h1 { font-size: clamp(40px, 6vw, 64px); margin: 24px 0; }
+  .welcome .lead { margin-bottom: 32px; }
+  .welcome .next {
+    text-align: left;
+    background: var(--bg-warm);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 0 0 24px;
+  }
+  .welcome .next h2 { font-size: 26px; margin-bottom: 12px; }
+  .welcome .next p { margin: 0; color: var(--ink-soft); }
+  @media (max-width: 600px) {
+    .welcome .card { padding: 40px 20px; }
+    .welcome .next { padding: 24px 20px; }
+  }
+</style>
+<script>window.__disable_weglot = true;</script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="mark">S</div>
+      <span>Sébastien Night</span>
+    </div>
+    <div class="meta">Le Challenge des Experts à Haute Valeur</div>
+  </div>
+</header>
+
+<section class="welcome">
+  <div class="wrap">
+    <div class="card">
+      <div class="eyebrow" style="justify-content: center;">Bienvenue dans le Challenge</div>
+      <h1>Merci&nbsp;! <span class="italic" style="color: var(--accent-2);">Ton paiement est confirmé.</span></h1>
+      <p class="lead">Ton compte OneTake est en cours de création&nbsp;: tu recevras tes identifiants par email dans la journée (jour ouvré).</p>
+
+      <div class="next">
+        <h2>Rendez-vous le mardi 3 novembre</h2>
+        <p>On se retrouve en direct pour la Cérémonie de Bienvenue&nbsp;: on fait le point sur ton projet, l'offre que tu vas prévendre et ta préparation pour le 1er décembre.</p>
+      </div>
+
+      <p class="small">Une question&nbsp;? Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai">contact@goodvibes.onetake.ai</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+    <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
+    <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
+    <p><strong>Qui a eu cette idée&nbsp;?</strong></p>
+    <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui a aidé depuis 2010 plus de 300&nbsp;000 entrepreneurs dans 41 pays à développer leur activité. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un agent IA à la fois incroyablement puissant et d'une simplicité d'utilisation absolue&nbsp;: OneTake.</strong></p>
+    <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    <p class="footer-disclaimer">Ce site ne fait pas partie des sites Facebook, Instagram ou Google, et n'est en aucun cas approuvé par Meta Platforms, Inc. ou Alphabet Inc. Facebook et Instagram sont des marques de Meta Platforms, Inc. Google et YouTube sont des marques de Google LLC.</p>
+  </div>
+</footer>
+
+<script src="/airwallex-data.js"></script>
+<script src="/assets/airwallex/airwallex-checkout.js"></script>
+<script src="/tools.js"></script>
+<script>
+  // Purchase (AnyTrack, Plausible, Userlist): only once Airwallex confirms the checkout started
+  // in this browser is paid, and only once per checkout
+  if (window.oneTakeAirwallex) window.oneTakeAirwallex.confirmPurchase();
+</script>
+</body>
+</html>
