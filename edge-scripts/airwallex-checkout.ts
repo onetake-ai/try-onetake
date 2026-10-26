@@ -84,7 +84,7 @@ const PLANS: Record<string, Plan> = {
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
-    duration:    { period: 3, period_unit: 'MONTH' },
+    duration:    { period: 90, period_unit: 'DAY' },
     opensAt:     '2026-10-28T23:00:00Z',
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
