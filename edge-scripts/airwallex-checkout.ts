@@ -71,7 +71,8 @@ const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 const PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
-    bonusPriceIds: ['pri_sgpdlsksvhnl1euoxcj'],   // Les Skills IA de l'Expert à Haute Valeur (yearly)
+    // 0 € yearly prices: Le Challenge, Les Skills IA de l'Expert à Haute Valeur, Groupe privé VIP
+    bonusPriceIds: ['pri_sgpdd4ck6hnl1q5hn8e', 'pri_sgpdlsksvhnl1euoxcj', 'pri_sgpdd4ck6hnl1ni1dzc'],
     label:       'Le Challenge des Experts à Haute Valeur (annuel)',
     value:       999,
     currency:    'EUR',
@@ -83,7 +84,8 @@ const PLANS: Record<string, Plan> = {
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
-    bonusPriceIds: ['pri_sgpdd4ck6hnl1ffdwsk'],   // Les Skills IA de l'Expert à Haute Valeur (quarterly)
+    // 0 € prices every 90 days: Le Challenge, Les Skills IA de l'Expert à Haute Valeur, Groupe privé VIP
+    bonusPriceIds: ['pri_sgpdd4ck6hnl1qv8bkn', 'pri_sgpdd4ck6hnl1ffdwsk', 'pri_sgpd7k7qvhnl1ob13hn'],
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
