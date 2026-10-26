@@ -54,6 +54,7 @@ type Plan = {
   label:       string;   // Shown in Userlist and in the Airwallex metadata
   value:       number;   // Price excl. VAT, for conversion tracking
   currency:    string;
+  duration:    { period: number; period_unit: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' };   // Billing cycle, same as the price's
   opensAt?:    string;   // ISO 8601 UTC; checkouts refused before
   closesAt:    string;   // ISO 8601 UTC; checkouts refused from this instant
   successPath: string;   // Root-relative
@@ -72,6 +73,7 @@ const PLANS: Record<string, Plan> = {
     label:       'Le Challenge des Experts à Haute Valeur (annuel)',
     value:       999,
     currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
     backPath:    '/4dcm/le-challenge/#prix',
@@ -82,6 +84,7 @@ const PLANS: Record<string, Plan> = {
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
+    duration:    { period: 3, period_unit: 'MONTH' },
     opensAt:     '2026-10-28T23:00:00Z',
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
@@ -297,6 +300,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       success_url:               SITE_ORIGIN + plan.successPath,
       back_url:                  SITE_ORIGIN + plan.backPath,
       line_items:                [{ price_id: plan.priceId, quantity: 1 }],
+      subscription_data:         { duration: plan.duration },   // Required in SUBSCRIPTION mode
     });
     if (typeof checkout.url !== 'string') throw new AirwallexError('checkout url', 200, { message: 'No url in the checkout response' });
 
