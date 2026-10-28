@@ -77,7 +77,7 @@ Accessible tooltips without dependencies: open on hover and keyboard focus, tap 
 
 French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/` (its `style.css` is a copy plus the page's components). Card payments through Airwallex, wire transfer for the annual plan, success page `/4dcm/le-challenge/merci/`.
 
-- **Dates (Europe/Paris):** annual plan only until Wed Oct 28, 23:59:59; quarterly plan shown from Thu Oct 29, 00:00; closed after Mon Nov 2, 23:59:59 (the countdown bar redirects to `/oto/too-late/`). The same dates live in three places, keep them in sync: `CONFIG` in `app.js`, `data-deadline` in `index.html`, `PLANS` in `edge-scripts/airwallex-checkout.ts`.
+- **Dates (Europe/Paris):** annual plan only, until Wed Oct 28, 23:59:59; from Thu Oct 29, 00:00, annual and quarterly (wire transfer stays annual only); closed after Mon Nov 2, 23:59:59 (the countdown bar redirects to `/oto/too-late/`). The same dates live in three places, keep them in sync: `CONFIG` in `app.js`, `data-deadline` in `index.html`, `PLANS` in `edge-scripts/airwallex-checkout.ts`.
 - **Preview:** `?preview_state=launch` or `?preview_state=quarterly` changes the display only (the edge script still follows the real dates); `?unlockfor=1` disables the countdown redirect.
 
 ## Embeddable checkout snippet
