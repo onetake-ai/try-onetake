@@ -71,7 +71,11 @@ const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 const PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
-    bonusPriceIds: ['pri_sgpdlsksvhnl1euoxcj'],   // Les Skills IA de l'Expert à Haute Valeur (yearly)
+    bonusPriceIds: [   // Yearly 0 € prices, in the order shown on the checkout
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+    ],
     label:       'Le Challenge des Experts à Haute Valeur (annuel)',
     value:       999,
     currency:    'EUR',
@@ -83,7 +87,11 @@ const PLANS: Record<string, Plan> = {
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
-    bonusPriceIds: ['pri_sgpdd4ck6hnl1ffdwsk'],   // Les Skills IA de l'Expert à Haute Valeur (quarterly)
+    bonusPriceIds: [   // Quarterly 0 € prices, in the order shown on the checkout
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+    ],
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
@@ -254,6 +262,12 @@ function airwallexConfigured(): boolean {
     && process.env.AIRWALLEX_LEGAL_ENTITY_ID && process.env.AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID);
 }
 
+// Full metadata, else without the attribution (the part Airwallex may refuse); never throws
+async function attachMetadata(path: string, metadata: Record<string, string>, fallback: Record<string, string>) {
+  const update = (m: Record<string, string>) => airwallex('POST', path, { request_id: crypto.randomUUID(), metadata: m });
+  await update(metadata).catch(() => update(fallback)).catch(() => {});
+}
+
 // ── Handlers ─────────────────────────────────────────────────────────────────
 
 async function handleCheckout(fields: Record<string, unknown>): Promise<Response> {
@@ -278,10 +292,12 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
     plan: planKey, value: plan.value, currency: plan.currency, page, payment_method: 'card', ...attribution,
   });
 
-  // Airwallex metadata values are short strings
-  const metadata: Record<string, string> = { plan: planKey, email, ...attribution };
-  if (page)      metadata.page = page;
-  if (firstName) metadata.first_name = firstName;
+  // Airwallex metadata values are short strings. Attached after creation, never at creation:
+  // metadata Airwallex refuses (e.g. a long utm value) must not block the sale
+  const baseMetadata: Record<string, string> = { plan: planKey, email };
+  if (page)      baseMetadata.page = page;
+  if (firstName) baseMetadata.first_name = firstName;
+  const metadata: Record<string, string> = { ...baseMetadata, ...attribution };
 
   try {
     const customer = await airwallex('POST', '/api/v1/billing/billing_customers/create', {
@@ -291,7 +307,6 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       type:                     'INDIVIDUAL',
       default_billing_currency: plan.currency,
       default_legal_entity_id:  process.env.AIRWALLEX_LEGAL_ENTITY_ID,
-      metadata,
     });
 
     const checkout = await airwallex('POST', '/api/v1/billing/billing_checkouts/create', {
@@ -307,11 +322,11 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
     });
     if (typeof checkout.url !== 'string') throw new AirwallexError('checkout url', 200, { message: 'No url in the checkout response' });
 
-    // Links the checkout to the page and campaign; a failure here must not block the sale
-    await airwallex('POST', `/api/v1/billing/billing_checkouts/${checkout.id}/update`, {
-      request_id: crypto.randomUUID(),
-      metadata,
-    }).catch(() => {});
+    // Links the customer and checkout to the page and campaign; a failure here must not block the sale
+    await Promise.all([
+      attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, metadata, baseMetadata),
+      attachMetadata(`/api/v1/billing/billing_checkouts/${checkout.id}/update`, metadata, baseMetadata),
+    ]);
 
     return json({ url: checkout.url, checkout_id: checkout.id });
   } catch (e) {
