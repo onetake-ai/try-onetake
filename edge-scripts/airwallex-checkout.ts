@@ -407,24 +407,44 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
 
 // ── Router ───────────────────────────────────────────────────────────────────
 
+// Every refused request goes to the Bunny logs (Edge Scripts → 99045 → Logs), so a visitor's
+// error code can be matched to its cause; Airwallex failures also log the full response above
+function logRefusal(req: Request, path: string, res: Response, code: string, fields: Record<string, unknown> = {}) {
+  console.warn(`Refused ${req.method} ${path || '/'}: ${code} (${res.status})`, JSON.stringify({
+    origin: req.headers.get('origin') || '',
+    plan:   cleanText(fields.plan, 64),
+    email:  cleanText(fields.email, 254).toLowerCase(),
+  }));
+  return res;
+}
+
 BunnySDK.net.http.serve(async (req: Request) => {
+  const path = new URL(req.url).pathname.replace(/\/+$/, '');
+  const refuse = (code: string, status: number) => logRefusal(req, path, fail(code, status), code);
+
   const origin = req.headers.get('origin');
-  if (origin !== SITE_ORIGIN) return fail('FORBIDDEN_ORIGIN', 403);
+  if (origin !== SITE_ORIGIN) return refuse('FORBIDDEN_ORIGIN', 403);
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
-  if (req.method !== 'POST') return fail('METHOD_NOT_ALLOWED', 405);
+  if (req.method !== 'POST') return refuse('METHOD_NOT_ALLOWED', 405);
 
   let fields: Record<string, unknown>;
   try {
     fields = await req.json() as Record<string, unknown>;
     if (!fields || typeof fields !== 'object') throw new Error('body');
   } catch {
-    return fail('INVALID_BODY', 400);
+    return refuse('INVALID_BODY', 400);
   }
 
-  const path = new URL(req.url).pathname.replace(/\/+$/, '');
-  if (path === '/checkout') return handleCheckout(fields);
-  if (path === '/wire')     return handleWire(fields);
-  if (path === '/purchase') return handlePurchase(fields);
-  return fail('NOT_FOUND', 404);
+  let res: Response;
+  if (path === '/checkout')      res = await handleCheckout(fields);
+  else if (path === '/wire')     res = await handleWire(fields);
+  else if (path === '/purchase') res = await handlePurchase(fields);
+  else return refuse('NOT_FOUND', 404);
+
+  if (!res.ok) {
+    const body = await res.clone().json().catch(() => ({})) as Record<string, unknown>;
+    logRefusal(req, path, res, cleanText(body.code, 64) || 'UNKNOWN', fields);
+  }
+  return res;
 });

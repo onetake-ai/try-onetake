@@ -37,6 +37,12 @@
   var ERROR_TEXT = 'Oups, la page de paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant ou écris-nous à ' + config.supportEmail + '.';
   var WIRE_ERROR_TEXT = 'Oups, ton formulaire n\'a pas pu être envoyé. Réessaie dans un instant ou écris-nous à ' + config.supportEmail + '.';
 
+  // Error message followed by the code, so a visitor's screenshot tells us the cause
+  function errorText(text, err) {
+    var code = (err && err.code) || 'UNKNOWN';
+    return text.replace(/\.$/, ' (code\u00a0: ' + code + ').');
+  }
+
   // ── Storage (may be unavailable: private mode, blocked cookies) ─────────────
 
   function read(storage, key) {
@@ -118,12 +124,17 @@
       return res.json().catch(function () { return {}; }).then(function (data) {
         if (!res.ok) {
           var error = new Error(data.error || 'HTTP ' + res.status);
-          error.code = data.code || '';
+          error.code = data.code || 'HTTP_' + res.status;
           error.detail = data;
           throw error;
         }
         return data;
       });
+    }, function () {
+      // Never reached the edge script: offline, or blocked by an ad blocker, antivirus or network filter
+      var error = new Error('Network error');
+      error.code = 'NETWORK';
+      throw error;
     });
   }
 
@@ -241,7 +252,7 @@
           console.error('Airwallex checkout failed', err, err && err.detail);
           setLoading(submit, false, 'Continuer vers le paiement');
           if (trigger) trigger.classList.remove('is-loading');
-          error.textContent = ERROR_TEXT;
+          error.textContent = errorText(ERROR_TEXT, err);
         });
     });
 
@@ -352,7 +363,7 @@
           if (handleClosed(err)) return;
           console.error('Wire transfer form failed', err);
           setLoading(submit, false, 'Afficher les coordonnées bancaires');
-          error.textContent = WIRE_ERROR_TEXT;
+          error.textContent = errorText(WIRE_ERROR_TEXT, err);
         });
     });
 
