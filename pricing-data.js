@@ -343,6 +343,16 @@ const planPresets = {
         freeToPaidConversionRate: 1
     },
 
+    // Grow plans — trial
+    'grow-monthly-trial': {
+        tier: 'Grow',
+        recurrence: 'monthly',
+        trial: 30,
+        product: 'pri_01m5yy5zj7vs30fwt1aekemk6q',
+        firstExpectedPayment: 99.99,
+        freeToPaidConversionRate: 0.30
+    },
+
     // Grow plans — no trial
     'grow-monthly': {
         tier: 'Grow',
@@ -454,6 +464,7 @@ const downsellMap = {
     'scale-monthly':                    'grow-monthly',
     'grow-yearly-offer':                'grow-monthly-offer',
     'grow-yearly':                      'grow-monthly',
+    'grow-monthly-trial':               'launch-monthly-trial',
     'grow-monthly-offer':               'launch-monthly-trial',
     'grow-monthly':                     'launch-monthly-trial',
     'launch-yearly-trial':              'launch-monthly-trial',
