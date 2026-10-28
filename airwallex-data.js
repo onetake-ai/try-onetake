@@ -7,8 +7,9 @@
 // Prices are in EUR excl. VAT and are not localized (Paddle's localizer can't convert them).
 
 window.AIRWALLEX_CONFIG = {
-    // Public URL of Bunny Edge Script 99045 (edge-scripts/airwallex-checkout.ts)
-    endpoint: 'https://airwallex-hosted-checkout-n08o8.bunny.run',
+    // Public URL of Bunny Edge Script 99045 (edge-scripts/airwallex-checkout.ts), on our own
+    // domain: filters block *.bunny.run more often
+    endpoint: 'https://directpayments.onetake.ai',
 
     supportEmail: 'contact@goodvibes.onetake.ai',
 

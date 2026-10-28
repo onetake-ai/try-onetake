@@ -71,7 +71,11 @@ const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 const PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
-    bonusPriceIds: ['pri_sgpdlsksvhnl1euoxcj'],   // Les Skills IA de l'Expert à Haute Valeur (yearly)
+    bonusPriceIds: [   // Yearly 0 € prices, in the order shown on the checkout
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+    ],
     label:       'Le Challenge des Experts à Haute Valeur (annuel)',
     value:       999,
     currency:    'EUR',
@@ -83,7 +87,11 @@ const PLANS: Record<string, Plan> = {
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
-    bonusPriceIds: ['pri_sgpdd4ck6hnl1ffdwsk'],   // Les Skills IA de l'Expert à Haute Valeur (quarterly)
+    bonusPriceIds: [   // Quarterly 0 € prices, in the order shown on the checkout
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+    ],
     label:       'Le Challenge des Experts à Haute Valeur (trimestriel)',
     value:       299,
     currency:    'EUR',
@@ -254,6 +262,12 @@ function airwallexConfigured(): boolean {
     && process.env.AIRWALLEX_LEGAL_ENTITY_ID && process.env.AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID);
 }
 
+// Full metadata, else without the attribution (the part Airwallex may refuse); never throws
+async function attachMetadata(path: string, metadata: Record<string, string>, fallback: Record<string, string>) {
+  const update = (m: Record<string, string>) => airwallex('POST', path, { request_id: crypto.randomUUID(), metadata: m });
+  await update(metadata).catch(() => update(fallback)).catch(() => {});
+}
+
 // ── Handlers ─────────────────────────────────────────────────────────────────
 
 async function handleCheckout(fields: Record<string, unknown>): Promise<Response> {
@@ -278,10 +292,12 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
     plan: planKey, value: plan.value, currency: plan.currency, page, payment_method: 'card', ...attribution,
   });
 
-  // Airwallex metadata values are short strings
-  const metadata: Record<string, string> = { plan: planKey, email, ...attribution };
-  if (page)      metadata.page = page;
-  if (firstName) metadata.first_name = firstName;
+  // Airwallex metadata values are short strings. Attached after creation, never at creation:
+  // metadata Airwallex refuses (e.g. a long utm value) must not block the sale
+  const baseMetadata: Record<string, string> = { plan: planKey, email };
+  if (page)      baseMetadata.page = page;
+  if (firstName) baseMetadata.first_name = firstName;
+  const metadata: Record<string, string> = { ...baseMetadata, ...attribution };
 
   try {
     const customer = await airwallex('POST', '/api/v1/billing/billing_customers/create', {
@@ -291,7 +307,6 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       type:                     'INDIVIDUAL',
       default_billing_currency: plan.currency,
       default_legal_entity_id:  process.env.AIRWALLEX_LEGAL_ENTITY_ID,
-      metadata,
     });
 
     const checkout = await airwallex('POST', '/api/v1/billing/billing_checkouts/create', {
@@ -307,11 +322,11 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
     });
     if (typeof checkout.url !== 'string') throw new AirwallexError('checkout url', 200, { message: 'No url in the checkout response' });
 
-    // Links the checkout to the page and campaign; a failure here must not block the sale
-    await airwallex('POST', `/api/v1/billing/billing_checkouts/${checkout.id}/update`, {
-      request_id: crypto.randomUUID(),
-      metadata,
-    }).catch(() => {});
+    // Links the customer and checkout to the page and campaign; a failure here must not block the sale
+    await Promise.all([
+      attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, metadata, baseMetadata),
+      attachMetadata(`/api/v1/billing/billing_checkouts/${checkout.id}/update`, metadata, baseMetadata),
+    ]);
 
     return json({ url: checkout.url, checkout_id: checkout.id });
   } catch (e) {
@@ -392,24 +407,44 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
 
 // ── Router ───────────────────────────────────────────────────────────────────
 
+// Every refused request goes to the Bunny logs (Edge Scripts → 99045 → Logs), so a visitor's
+// error code can be matched to its cause; Airwallex failures also log the full response above
+function logRefusal(req: Request, path: string, res: Response, code: string, fields: Record<string, unknown> = {}) {
+  console.warn(`Refused ${req.method} ${path || '/'}: ${code} (${res.status})`, JSON.stringify({
+    origin: req.headers.get('origin') || '',
+    plan:   cleanText(fields.plan, 64),
+    email:  cleanText(fields.email, 254).toLowerCase(),
+  }));
+  return res;
+}
+
 BunnySDK.net.http.serve(async (req: Request) => {
+  const path = new URL(req.url).pathname.replace(/\/+$/, '');
+  const refuse = (code: string, status: number) => logRefusal(req, path, fail(code, status), code);
+
   const origin = req.headers.get('origin');
-  if (origin !== SITE_ORIGIN) return fail('FORBIDDEN_ORIGIN', 403);
+  if (origin !== SITE_ORIGIN) return refuse('FORBIDDEN_ORIGIN', 403);
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
-  if (req.method !== 'POST') return fail('METHOD_NOT_ALLOWED', 405);
+  if (req.method !== 'POST') return refuse('METHOD_NOT_ALLOWED', 405);
 
   let fields: Record<string, unknown>;
   try {
     fields = await req.json() as Record<string, unknown>;
     if (!fields || typeof fields !== 'object') throw new Error('body');
   } catch {
-    return fail('INVALID_BODY', 400);
+    return refuse('INVALID_BODY', 400);
   }
 
-  const path = new URL(req.url).pathname.replace(/\/+$/, '');
-  if (path === '/checkout') return handleCheckout(fields);
-  if (path === '/wire')     return handleWire(fields);
-  if (path === '/purchase') return handlePurchase(fields);
-  return fail('NOT_FOUND', 404);
+  let res: Response;
+  if (path === '/checkout')      res = await handleCheckout(fields);
+  else if (path === '/wire')     res = await handleWire(fields);
+  else if (path === '/purchase') res = await handlePurchase(fields);
+  else return refuse('NOT_FOUND', 404);
+
+  if (!res.ok) {
+    const body = await res.clone().json().catch(() => ({})) as Record<string, unknown>;
+    logRefusal(req, path, res, cleanText(body.code, 64) || 'UNKNOWN', fields);
+  }
+  return res;
 });
