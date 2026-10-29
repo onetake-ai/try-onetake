@@ -67,6 +67,18 @@ Card payments through Airwallex Hosted Billing Checkout (subscriptions), used in
 - **Edge script** (Bunny script 99045 at `https://directpayments.onetake.ai`, our own domain because filters block `*.bunny.run` more often; deployed by `.github/workflows/deploy-airwallex-checkout.yml`): endpoints `/checkout`, `/wire`, `/purchase`; CORS limited to `https://try.onetake.ai`; refuses checkouts outside the plan's window with `NOT_OPEN_YET` or `OFFER_CLOSED` (the page then redirects to `/oto/too-late/`). Every refused request is logged (`Refused POST /checkout: CODE (status)` with origin, plan and email) in the Bunny logs. The popups show the error code after the error message, e.g. `(code : NOT_OPEN_YET)`; `NETWORK` means the request never got an answer the browser could read (offline, blocked by a filter, or refused by CORS), so nothing is logged and Userlist gets no `AddToCart`. Secrets, set in the Bunny dashboard: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY` (scoped key: Billing customers and Billing checkouts, write), `AIRWALLEX_LEGAL_ENTITY_ID`, `AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID`, `AIRWALLEX_LOGIN_AS` (optional, only for a key linked to several accounts), `USERLIST_PUSH_KEY`.
 - **Attribution:** `?ref=` and `utm_*` (last visit with any, kept 30 days) and the AnyTrack click ID go to Userlist and to the metadata of the Airwallex customer and checkout. The metadata is attached by update calls after creation, never at creation, and is retried without the attribution if Airwallex refuses it: metadata must never block a sale.
 
+## Calendar page (`/tools/calendar/`)
+
+**Files:** `/tools/calendar/index.html`, `app.js`, `style.css`, `/edge-scripts/calendar-proxy.ts`
+
+Public schedule of any shared Proton calendar, for clients and stakeholders: preview of the dates (next event banner, upcoming list, month grid), time zone picker (the visitor's own by default, saved in `localStorage`), one-click subscribe buttons (Google, Apple `webcal://`, Outlook.com, Microsoft 365) with manual steps for each app plus Proton, and per event a Join button (lights up 15 minutes before the start) and "add only this date" (Google link or `.ics` download). English, translated by Weglot; `noindex`.
+
+- **Link:** in a Proton share link, replace `https://calendar.proton.me` with `https://try.onetake.ai/tools/calendar/?`. `?id=<calendar ID>&key=<CacheKey>` also works. No calendar ID is ever stored in the repo (it is public).
+- **Relay:** Proton sends no CORS header, so the preview reads the `.ics` through Bunny Edge Script `calendar-proxy.ts` (`PROXY_URL` in `app.js`, `https://calendarfeed.onetake.ai`). It only fetches Proton shared calendar links, answers CORS for `https://try.onetake.ai` only, and caches 5 minutes. Deployed by `.github/workflows/deploy-calendar-proxy.yml` once the repository variable `CALENDAR_PROXY_SCRIPT_ID` is set. Subscribe buttons point at Proton directly, never at the relay.
+- **Parsing:** `ical.js` 2.2.1 (ES module from jsDelivr) expands recurring events, exceptions and cancellations, from 120 days back to 400 days ahead. ical.js drops the time zone of expanded occurrences, so times are converted with `Intl` from each event's own `TZID` (`icalToMs()` in `app.js`).
+- **Weglot:** UI text and messages (`#messages`) are translated; calendar content (titles, descriptions, dates) carries `data-wg-notranslate`. Dates are formatted with `Intl` in the Weglot language.
+- **Plausible events:** `CalendarSubscribe` (prop `app`), `CalendarJoin`, `CalendarAddEvent` (prop `app`), `CalendarCopyLink` (prop `link`: `calendar` or `page`).
+
 ## Info bubbles
 
 **Files:** `/assets/info-bubbles/info-bubbles.js`, `/assets/info-bubbles/info-bubbles.css`

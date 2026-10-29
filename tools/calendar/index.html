@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Public schedule of a Proton calendar: preview + subscribe instructions. See CLAUDE.md ("Calendar page").
+  Link: replace "https://calendar.proton.me" in a Proton share link with "https://try.onetake.ai/tools/calendar/?"
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Upcoming live calls</title>
+  <meta name="description" content="See the upcoming live calls and events, and add them to your calendar.">
+  <meta name="theme-color" content="#F8F7F7">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Tracking: CrazyEgg, Plausible, AnyTrack, Weglot, FirstPromoter, useBouncer -->
+  <script src="../../tools.js"></script>
+
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap top__inner">
+      <img class="top__logo"
+           src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
+           alt="OneTake AI" width="104" height="28">
+      <button type="button" class="btn btn--ghost btn--small" id="copyPageLink" hidden>Copy the link to this page</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="intro">
+      <p class="intro__eyebrow">Schedule</p>
+      <h1 class="intro__title" id="calTitle" data-wg-notranslate>Upcoming live calls</h1>
+      <p class="intro__text" id="calDescription" data-wg-notranslate hidden></p>
+    </section>
+
+    <!-- Missing or broken link -->
+    <section class="notice" id="linkError" hidden>
+      <h2 class="notice__title">This calendar link is incomplete</h2>
+      <p>Please ask the person who sent it to you for the full link.</p>
+    </section>
+
+    <!-- Calendar no longer shared -->
+    <section class="notice" id="notFoundError" hidden>
+      <h2 class="notice__title">This calendar is no longer shared</h2>
+      <p>Please ask the person who sent you this link for a new one.</p>
+    </section>
+
+    <div id="content" hidden>
+
+      <!-- Next event (filled by app.js) -->
+      <section class="next" id="nextEvent" aria-live="polite" data-wg-notranslate hidden></section>
+
+      <!-- Preview -->
+      <section class="schedule" aria-labelledby="scheduleTitle">
+        <div class="schedule__head">
+          <h2 class="section-title" id="scheduleTitle">Upcoming dates</h2>
+          <div class="views" role="group" aria-label="View">
+            <button type="button" class="views__btn" data-view="list" aria-pressed="true">List</button>
+            <button type="button" class="views__btn" data-view="month" aria-pressed="false">Month</button>
+          </div>
+        </div>
+
+        <p class="tz">
+          <label for="tzSelect">Times are shown in</label>
+          <select id="tzSelect" class="tz__select" data-wg-notranslate></select>
+          <span class="tz__name" id="tzName" data-wg-notranslate></span>
+        </p>
+
+        <div class="loading" id="loading">Loading the dates…</div>
+
+        <div class="notice notice--soft" id="loadError" hidden>
+          <p>We couldn't load the dates right now. You can still subscribe below: your calendar will get them directly.</p>
+          <button type="button" class="btn btn--ghost btn--small" id="retry">Try again</button>
+        </div>
+
+        <div class="schedule__body" id="scheduleBody" hidden>
+          <div class="month" id="monthView" data-wg-notranslate>
+            <div class="month__nav">
+              <button type="button" class="month__arrow" id="prevMonth" aria-label="Previous month">‹</button>
+              <h3 class="month__label" id="monthLabel" aria-live="polite"></h3>
+              <button type="button" class="month__arrow" id="nextMonth" aria-label="Next month">›</button>
+              <button type="button" class="btn btn--ghost btn--small month__today" id="todayBtn"></button>
+            </div>
+            <div class="month__grid" id="monthGrid"></div>
+          </div>
+
+          <div class="agenda" id="listView" data-wg-notranslate></div>
+        </div>
+      </section>
+
+      <!-- Subscribe -->
+      <section class="subscribe" id="subscribe" aria-labelledby="subscribeTitle">
+        <h2 class="section-title" id="subscribeTitle">Get every date in your calendar</h2>
+        <p class="subscribe__intro"><strong>Subscribe once, and every new date, change or cancellation shows up in your calendar by itself.</strong> Choose the calendar you use below. It takes less than a minute.</p>
+
+        <div class="apps" id="apps">
+
+          <article class="app" data-app="google">
+            <p class="app__badge" hidden>Recommended for your device</p>
+            <h3 class="app__name">Google Calendar</h3>
+            <p class="app__text">Opens Google Calendar with this calendar ready to add: just confirm with "Add".</p>
+            <a class="btn btn--primary app__cta" data-sub="google" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+            <p class="app__note">Google can take up to 24 hours to show new or changed dates. Check this page for last-minute changes.</p>
+            <details class="steps">
+              <summary>It didn't work? Add it by hand</summary>
+              <ol>
+                <li>On a computer, open <a href="https://calendar.google.com" target="_blank" rel="noopener">calendar.google.com</a>.</li>
+                <li>In the left column, next to "Other calendars", click <strong>+</strong>, then <strong>From URL</strong>.</li>
+                <li>Paste the calendar link below and click <strong>Add calendar</strong>.</li>
+              </ol>
+              <div class="copy-slot"></div>
+              <p>On your phone, the calendar then appears in the Google Calendar app. If you don't see it, open the app's settings, tap the calendar's name and turn on <strong>Sync</strong>.</p>
+            </details>
+          </article>
+
+          <article class="app" data-app="apple">
+            <p class="app__badge" hidden>Recommended for your device</p>
+            <h3 class="app__name">Apple Calendar (iPhone, iPad, Mac)</h3>
+            <p class="app__text">Opens your Calendar app, which asks you to confirm the subscription.</p>
+            <a class="btn btn--primary app__cta" data-sub="apple" href="#">Subscribe in Apple Calendar</a>
+            <details class="steps">
+              <summary>It didn't work? Add it by hand</summary>
+              <p><strong>On iPhone or iPad:</strong></p>
+              <ol>
+                <li>Open <strong>Settings</strong>, then <strong>Apps</strong>, <strong>Calendar</strong> (on older versions: <strong>Settings</strong>, <strong>Calendar</strong>).</li>
+                <li>Tap <strong>Calendar Accounts</strong> (or <strong>Accounts</strong>), <strong>Add Account</strong>, <strong>Other</strong>, then <strong>Add Subscribed Calendar</strong>.</li>
+                <li>Paste the calendar link below, tap <strong>Next</strong>, then <strong>Save</strong>.</li>
+              </ol>
+              <p><strong>On a Mac:</strong></p>
+              <ol>
+                <li>Open the <strong>Calendar</strong> app, then the <strong>File</strong> menu, <strong>New Calendar Subscription</strong>.</li>
+                <li>Paste the calendar link below and click <strong>Subscribe</strong>.</li>
+                <li>Set <strong>Auto-refresh</strong> to <strong>Every hour</strong>, then click <strong>OK</strong>.</li>
+              </ol>
+              <div class="copy-slot"></div>
+            </details>
+          </article>
+
+          <article class="app" data-app="outlook">
+            <p class="app__badge" hidden>Recommended for your device</p>
+            <h3 class="app__name">Outlook</h3>
+            <p class="app__text">Pick the account you use with Outlook. The calendar then appears in Outlook on all your devices.</p>
+            <div class="app__ctas">
+              <a class="btn btn--primary app__cta" data-sub="outlook" href="#" target="_blank" rel="noopener">Personal account (Outlook.com, Hotmail)</a>
+              <a class="btn btn--primary app__cta" data-sub="office365" href="#" target="_blank" rel="noopener">Work or school account (Microsoft 365)</a>
+            </div>
+            <details class="steps">
+              <summary>It didn't work? Add it by hand</summary>
+              <p><strong>In Outlook on the web or the new Outlook:</strong></p>
+              <ol>
+                <li>Open the calendar, then click <strong>Add calendar</strong>.</li>
+                <li>Choose <strong>Subscribe from web</strong>, paste the calendar link below and click <strong>Import</strong>.</li>
+              </ol>
+              <p><strong>In classic Outlook for Windows:</strong></p>
+              <ol>
+                <li>Open the calendar. In the <strong>Home</strong> tab, click <strong>Add Calendar</strong>, then <strong>From Internet</strong>.</li>
+                <li>Paste the calendar link below, click <strong>OK</strong>, then <strong>Yes</strong>.</li>
+              </ol>
+              <div class="copy-slot"></div>
+            </details>
+          </article>
+
+          <article class="app" data-app="proton">
+            <p class="app__badge" hidden>Recommended for your device</p>
+            <h3 class="app__name">Proton Calendar</h3>
+            <p class="app__text">Proton Calendar has no one-click button: copy the link, then add it in three steps.</p>
+            <ol>
+              <li>Open <a href="https://calendar.proton.me" target="_blank" rel="noopener">calendar.proton.me</a> on a computer.</li>
+              <li>In the left column, click <strong>+</strong> next to your calendars, then <strong>Add calendar from URL</strong>.</li>
+              <li>Paste the calendar link below and click <strong>Add calendar</strong>.</li>
+            </ol>
+            <div class="copy-slot"></div>
+          </article>
+
+          <article class="app" data-app="other">
+            <h3 class="app__name">Another calendar app</h3>
+            <p class="app__text">Look for "Subscribe", "Add calendar from URL" or "From Internet" in your app, and paste this link. Avoid "Import": it copies today's dates only, and you would miss every change.</p>
+            <div class="copy-slot"></div>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Event details -->
+  <dialog class="dialog" id="eventDialog" aria-labelledby="dialogTitle">
+    <div class="dialog__card">
+      <button type="button" class="dialog__close" id="dialogClose" aria-label="Close">×</button>
+      <div id="dialogBody" data-wg-notranslate></div>
+    </div>
+  </dialog>
+
+  <!-- Copy widget, cloned into every .copy-slot -->
+  <template id="copyTemplate">
+    <div class="copy">
+      <input class="copy__input" type="text" readonly aria-label="Calendar link" data-wg-notranslate>
+      <button type="button" class="btn btn--dark btn--small copy__btn" data-copy="feed">Copy</button>
+    </div>
+  </template>
+
+  <!-- Messages live in the HTML so Weglot translates them -->
+  <div id="messages" hidden>
+    <span data-msg="next">Next</span>
+    <span data-msg="liveNow">Happening now</span>
+    <span data-msg="join">Join</span>
+    <span data-msg="details">Details</span>
+    <span data-msg="allDay">All day</span>
+    <span data-msg="today">Today</span>
+    <span data-msg="more">+{n} more</span>
+    <span data-msg="noUpcoming">No upcoming dates for now. New dates will appear here as soon as they are scheduled.</span>
+    <span data-msg="recurring">This event repeats. Subscribe to the calendar to get every date.</span>
+    <span data-msg="joinEarly">The Join button lights up 15 minutes before the start.</span>
+    <span data-msg="addThis">Add only this date</span>
+    <span data-msg="addGoogle">Google Calendar</span>
+    <span data-msg="addIcs">Apple, Outlook, other (.ics)</span>
+    <span data-msg="location">Where</span>
+    <span data-msg="copy">Copy</span>
+    <span data-msg="copied">Copied!</span>
+    <span data-msg="copyFailed">Select the link and copy it by hand.</span>
+    <span data-msg="eventsOn">Events on {date}</span>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p><strong>What is OneTake?</strong></p>
+      <p><strong>OneTake AI turns raw videos into professional presentations.</strong> To help experts, trainers, coaches and authors create and publish their video content, we've created <a href="https://www.onetake.ai" target="_blank">OneTake, the first AI video editing agent</a>.</p>
+      <p>Useful links: <a href="https://www.onetake.ai/blog" target="_blank">OneTake's Blog</a> · <a href="https://welove.onetake.ai/" target="_blank">Wall of Love (reviews)</a> · <a href="https://docs.onetake.ai/en/" target="_blank">FAQ &amp; Docs</a></p>
+      <p class="footer__disclaimer">This site is not part of the Facebook, Instagram or Google websites, and is not endorsed by Meta Platforms, Inc. or Alphabet Inc. in any way. Facebook and Instagram are trademarks of Meta Platforms, Inc. Google and YouTube are trademarks of Google LLC.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
