@@ -2,8 +2,8 @@
  * Le Challenge des Experts à Haute Valeur: sales page script
  *
  * Display states (all dates Europe/Paris; Paris is UTC+1 from Oct 25, 2026):
- *   launch     until Wed Oct 28 23:59:59      annual plan only (+ wire transfer)
- *   quarterly  Thu Oct 29 00:00 to Nov 2       annual + quarterly; wire transfer stays annual only
+ *   launch     until Fri Oct 30 23:59:59      annual plan only (+ wire transfer)
+ *   quarterly  Sat Oct 31 00:00 to Nov 2       annual + quarterly; wire transfer stays annual only
  *   closed     from Tue Nov 3 00:00           the countdown bar in <head> redirects to /oto/too-late/
  * The edge script (edge-scripts/airwallex-checkout.ts, PLANS) enforces the same dates server side.
  *
@@ -15,7 +15,7 @@
 
   var CONFIG = {
     timeZone:         'Europe/Paris',
-    quarterlyOpensAt: '2026-10-28T23:00:00Z',   // Thu Oct 29, 00:00 Paris
+    quarterlyOpensAt: '2026-10-30T23:00:00Z',   // Sat Oct 31, 00:00 Paris
     closesAt:         '2026-11-02T23:00:00Z'    // Mon Nov 2, 23:59:59 Paris (exclusive end)
   };
 

@@ -64,7 +64,7 @@ type Plan = {
 };
 
 // Le Challenge des Experts à Haute Valeur: dates in Europe/Paris (CET, UTC+1 after Oct 25).
-// Quarterly from Thu Oct 29 00:00 Paris; everything closes after Mon Nov 2 23:59:59 Paris.
+// Quarterly from Sat Oct 31 00:00 Paris; everything closes after Mon Nov 2 23:59:59 Paris.
 // Keep in sync with CONFIG in /4dcm/le-challenge/app.js and data-deadline in its index.html.
 const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 
@@ -96,7 +96,7 @@ const PLANS: Record<string, Plan> = {
     value:       299,
     currency:    'EUR',
     duration:    { period: 90, period_unit: 'DAY' },
-    opensAt:     '2026-10-28T23:00:00Z',
+    opensAt:     '2026-10-30T23:00:00Z',
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
     backPath:    '/4dcm/le-challenge/#prix',
