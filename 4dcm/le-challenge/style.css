@@ -903,9 +903,8 @@ footer a { color: #C8C2B4; }
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "eyebrow" "title" "video" "cta" "sub";
+  grid-template-areas: "title" "video" "cta" "sub";
 }
-.hero-grid > .eyebrow { grid-area: eyebrow; margin-bottom: 20px; }
 .hero-grid > h1 { grid-area: title; font-size: clamp(38px, 6vw, 64px); margin-bottom: 24px; }
 .hero-grid > .video-shell { grid-area: video; margin-top: 0; }
 .hero-grid > .cta-row { grid-area: cta; margin-top: 24px; }
@@ -913,8 +912,8 @@ footer a { color: #C8C2B4; }
 @media (min-width: 960px) {
   .hero-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-    grid-template-areas: "eyebrow video" "title video" "sub video" "cta video";
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "title video" "sub video" "cta video";
+    grid-template-rows: auto auto 1fr;
     column-gap: 56px;
   }
   .hero-grid > h1 { font-size: clamp(38px, 3.6vw, 54px); margin-bottom: 20px; }
@@ -923,10 +922,8 @@ footer a { color: #C8C2B4; }
   .hero-grid > .cta-row { margin-top: 24px; }
 }
 @media (max-width: 600px) {
-  .nav { padding-top: 20px; }
-  .nav .meta { display: none; }
+  .nav { display: none; }
   .hero { padding-top: 24px; }
-  .hero-grid > .eyebrow { margin-bottom: 14px; }
   .hero .hero-grid > h1 { font-size: clamp(30px, 8.4vw, 40px); margin-bottom: 18px; }
   .hero-grid > .cta-row { margin-top: 18px; }
   .hero-grid > .cta-row .btn { width: 100%; }
