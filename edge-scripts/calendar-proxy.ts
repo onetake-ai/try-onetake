@@ -6,14 +6,10 @@
  * It only ever fetches Proton shared calendar links: never an arbitrary URL.
  * Subscriptions don't go through this script: the page's subscribe buttons point at Proton.
  *
- * DEPLOYMENT:
- *   1. BunnyCDN Dashboard → Edge Scripts → Create Edge Script (no secret needed)
- *   2. Add the custom hostname calendarfeed.onetake.ai (our own domain: filters block
- *      *.bunny.run more often). If you pick another hostname, update PROXY_URL in
- *      /tools/calendar/app.js.
- *   3. Set the GitHub repository variable CALENDAR_PROXY_SCRIPT_ID to the script's numeric ID
- *      (dash.bunny.net/edge-script/12345 → 12345): .github/workflows/deploy-calendar-proxy.yml
- *      then deploys every change to this file pushed to main.
+ * DEPLOYMENT: Bunny script 100436 at https://calendar.fluffybunny.onetake.ai (our own domain:
+ *   filters block *.bunny.run more often), no secret needed. Deployed by
+ *   .github/workflows/deploy-calendar-proxy.yml on every change to this file pushed to main.
+ *   If the hostname changes, update PROXY_URL in /tools/calendar/link.js.
  *
  * ENDPOINT: GET /?id=<calendar ID>&key=<CacheKey>
  *   The two parts of a Proton link:

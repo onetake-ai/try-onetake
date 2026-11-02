@@ -1,9 +1,8 @@
 /**
  * Calendar page (/tools/calendar/): preview of a shared Proton calendar + subscribe buttons.
  *
- * Link: a Proton share link with "https://calendar.proton.me" replaced by this page, e.g.
- *   /tools/calendar/?/api/calendar/v1/url/<calendar ID>/calendar.ics?CacheKey=<key>
- * (also accepted: ?id=<calendar ID>&key=<key>, or the full Proton link after the "?").
+ * Link: /tools/calendar/?id=<calendar ID>&key=<key>, made by the generator /tools/calendar/create/
+ * (also accepted: a Proton share link with "https://calendar.proton.me" replaced by this page). See link.js.
  *
  * Proton sends no CORS header, so the preview reads the calendar through our Bunny relay
  * (edge-scripts/calendar-proxy.ts). Subscriptions point straight at Proton.
@@ -11,9 +10,9 @@
  * picked by the visitor (their own by default).
  */
 
-const PROXY_URL      = 'https://calendarfeed.onetake.ai';   // Bunny script edge-scripts/calendar-proxy.ts
+import { readPageLink } from './link.js';
+
 const ICAL_URL       = 'https://cdn.jsdelivr.net/npm/ical.js@2.2.1/dist/ical.min.js';
-const PROTON_BASE    = 'https://calendar.proton.me/api/calendar/v1/url/';
 const JOIN_EARLY_MS  = 15 * 60 * 1000;   // the Join button lights up 15 minutes before the start
 const PAST_DAYS      = 120;              // expansion window of recurring events
 const FUTURE_DAYS    = 400;
@@ -22,16 +21,12 @@ const MAX_LIST_ITEMS = 100;
 const TZ_STORAGE_KEY = 'onetakeCalendarTz';
 const DAY_MS         = 86400000;
 
-// Same patterns as the relay
-const ID_PATTERN  = /^[A-Za-z0-9_-]{20,200}={0,2}$/;
-const KEY_PATTERN = /^[A-Za-z0-9+/_-]{8,100}={0,2}$/;
-
 // Video call links, preferred over any other link as the Join button
 const MEETING_PATTERN = /(zoom\.us|meet\.google\.com|teams\.microsoft\.com|teams\.live\.com|whereby\.com|webex\.com|meet\.jit\.si|meet\.proton\.me|onetake\.ai|livestorm\.co|streamyard\.com|riverside\.fm|youtube\.com\/live|youtu\.be|gotomeeting\.com|zoho\.com\/meeting)/i;
 const URL_PATTERN = /https?:\/\/[^\s<>"]+/g;
 
 const state = {
-  link: null,          // { id, key, feed, webcal }
+  link: null,          // { id, key, feed, webcal, page, relay }, see link.js
   name: '',
   events: [],          // occurrences, sorted by start
   tz: '',
@@ -40,32 +35,6 @@ const state = {
 };
 
 const $ = (id) => document.getElementById(id);
-
-// ==========================================
-// LINK
-// ==========================================
-
-function readLink() {
-  const params = new URLSearchParams(location.search);
-  let id  = params.get('id');
-  let key = params.get('key');
-
-  if (!id || !key) {
-    let raw = location.search.slice(1);
-    try { raw = decodeURIComponent(raw); } catch (e) { /* keep it encoded */ }
-    const idMatch  = raw.match(/\/url\/([A-Za-z0-9_-]+={0,2})\/calendar\.ics/);
-    const keyMatch = raw.match(/CacheKey=([A-Za-z0-9+/_-]+={0,2})/);
-    id  = idMatch && idMatch[1];
-    key = keyMatch && keyMatch[1];
-  }
-
-  if (!id || !key) return null;
-  key = key.replace(/ /g, '+');   // URLSearchParams turns "+" into a space
-  if (!ID_PATTERN.test(id) || !KEY_PATTERN.test(key)) return null;
-
-  const feed = PROTON_BASE + id + '/calendar.ics?CacheKey=' + encodeURIComponent(key);
-  return { id, key, feed, webcal: feed.replace(/^https:/, 'webcal:') };
-}
 
 // ==========================================
 // LANGUAGE AND MESSAGES
@@ -282,7 +251,7 @@ function loadIcal() {
 }
 
 async function fetchCalendar() {
-  const res = await fetch(PROXY_URL + '/?id=' + encodeURIComponent(state.link.id) + '&key=' + encodeURIComponent(state.link.key));
+  const res = await fetch(state.link.relay);
   if (res.status === 404) {
     const error = new Error('Calendar not found');
     error.code = 'NOT_FOUND';
@@ -386,9 +355,11 @@ function parseCalendar(ICAL, text) {
   });
   events.sort((a, b) => a.sortKey - b.sortKey || a.title.localeCompare(b.title));
 
+  // ical.js leaves the text escapes of X- properties in place
+  const unescape = (text) => text.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1');
   return {
-    name: textProp(calendar, 'x-wr-calname'),
-    description: textProp(calendar, 'x-wr-caldesc'),
+    name: unescape(textProp(calendar, 'x-wr-calname')),
+    description: unescape(textProp(calendar, 'x-wr-caldesc')),
     events,
   };
 }
@@ -868,7 +839,7 @@ function setupInteractions() {
   const pageButton = $('copyPageLink');
   pageButton.hidden = false;
   pageButton.addEventListener('click', () => {
-    copyText(location.href, pageButton, null).then((ok) => { if (ok) track('CalendarCopyLink', { link: 'page' }); });
+    copyText(state.link.page, pageButton, null).then((ok) => { if (ok) track('CalendarCopyLink', { link: 'page' }); });
   });
 
   $('retry').addEventListener('click', load);
@@ -936,7 +907,7 @@ async function load() {
 }
 
 function init() {
-  state.link = readLink();
+  state.link = readPageLink();
   if (!state.link) {
     $('linkError').hidden = false;
     return;

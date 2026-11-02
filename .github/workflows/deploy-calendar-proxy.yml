@@ -1,8 +1,6 @@
 name: Deploy Calendar Proxy Edge Script
 
-# Set the repository variable CALENDAR_PROXY_SCRIPT_ID (Settings → Secrets and variables →
-# Actions → Variables) to the Bunny script's numeric ID: until then, this workflow is skipped.
-# See the header of edge-scripts/calendar-proxy.ts.
+# Bunny script 100436 (https://calendar.fluffybunny.onetake.ai), no secret needed.
 
 on:
   push:
@@ -18,7 +16,6 @@ permissions:
 jobs:
   update-script:
     runs-on: ubuntu-latest
-    if: ${{ vars.CALENDAR_PROXY_SCRIPT_ID != '' }}
 
     steps:
       - uses: actions/checkout@v3
@@ -40,5 +37,5 @@ jobs:
       - name: Publish the script to Bunny
         uses: "BunnyWay/actions/deploy-script@main"
         with:
-          script_id: ${{ vars.CALENDAR_PROXY_SCRIPT_ID }}
+          script_id: 100436
           file: "edge-scripts/calendar-proxy.ts"
