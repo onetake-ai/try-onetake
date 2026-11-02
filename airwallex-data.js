@@ -42,6 +42,13 @@ window.AIRWALLEX_CONFIG = {
             currency: 'EUR',
             priceLabel: '999\u00a0€ HT / an',
             wire: { amountLabel: '999\u00a0€\u00a0HT', referencePrefix: 'CHALLENGE' }
+        },
+        // Shown on /4dcm/acces-challenge/ only with ?plan=quarterly. Card only
+        'challenge-access-quarterly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre'
         }
     }
 };

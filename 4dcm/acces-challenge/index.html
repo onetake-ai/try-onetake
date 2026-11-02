@@ -20,6 +20,20 @@
 <link rel="stylesheet" href="/assets/info-bubbles/info-bubbles.css" />
 <link rel="stylesheet" href="/assets/airwallex/airwallex-checkout.css" />
 <script>window.__disable_weglot = true;</script>
+<script>
+  // ?plan=quarterly also shows the quarterly plan (default: annual only). Remembered for the
+  // browser session, so it survives the "back" link of the Airwallex checkout (no parameter).
+  // Set in <head> so the plans don't flicker; the CSS lives in /4dcm/le-challenge/style.css.
+  (function () {
+    var KEY = 'oneTakeAccesChallengePlan';
+    var quarterly = new URLSearchParams(window.location.search).get('plan') === 'quarterly';
+    try {
+      if (quarterly) sessionStorage.setItem(KEY, 'quarterly');
+      else quarterly = sessionStorage.getItem(KEY) === 'quarterly';
+    } catch (e) {}
+    if (quarterly) document.documentElement.setAttribute('data-offer-state', 'quarterly');
+  })();
+</script>
 </head>
 <body>
 
@@ -418,7 +432,7 @@
     </div>
 
     <div class="pricing">
-      <!-- Annual plan only. Plan key declared in /airwallex-data.js and PLANS in edge-scripts/airwallex-checkout.ts (no closing date) -->
+      <!-- ANNUAL PLAN (always). Plan key declared in /airwallex-data.js and PLANS in edge-scripts/airwallex-checkout.ts (no closing date) -->
       <div class="plan featured">
         <div class="ribbon">Accès clients OneTake</div>
         <div class="plan-name">Abonnement annuel</div>
@@ -437,6 +451,25 @@
             <span>Je rejoins le Challenge</span><span class="arrow">→</span>
           </button>
           <button type="button" class="wire-link" data-airwallex-wire="challenge-access-yearly">Je préfère payer par virement</button>
+        </div>
+      </div>
+
+      <!-- QUARTERLY PLAN: only with ?plan=quarterly (see the script in <head>). Card only -->
+      <div class="plan" data-show-state="quarterly">
+        <div class="plan-name">Abonnement trimestriel</div>
+        <div class="price">
+          <span class="amount">299&nbsp;€</span>
+          <span class="per">HT / trimestre</span>
+        </div>
+        <p class="tagline">Le même accès complet, payé tous les trois mois</p>
+        <ul class="feats">
+          <li>Client actif&nbsp;: les jours restants de ton abonnement actuel sont ajoutés, au prorata</li>
+          <li>Garantie inconditionnelle de 14 jours</li>
+        </ul>
+        <div class="cta-area">
+          <button type="button" class="btn btn-ghost btn-block btn-large" data-airwallex-plan="challenge-access-quarterly">
+            <span>Je choisis le paiement trimestriel</span><span class="arrow">→</span>
+          </button>
         </div>
       </div>
     </div>
