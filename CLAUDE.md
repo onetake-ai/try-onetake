@@ -344,7 +344,6 @@ Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from M
 
 - The signup form is prefilled from `?first_name=`, `?email=` and `?telephone=` (`prefillFromUrl()` in `app.js`); a value still holding an unrendered Liquid tag is ignored. The optional WhatsApp field (see "Phone field") has its error message in `#messages`.
 - Never write new checkout logic: every CTA outside the form uses `.js-go-to-form`, which sends the visitor to the existing form.
-- The videos are OneTake player iframes, which handle autoplay, loop and sound themselves.
 - Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
 - In the feature cards, premium options (gaze correction, background removal) always carry a "Try once free" label, and anything reserved for higher plans carries "Higher plans". The "Editing complete" checklist has no labels.
 - Comparison and calculator amounts are always marked up as `.money` elements (or `[data-calc]`), never as bare text: `app.js` shows them in dollars, or in euros (same numbers) on the French, Spanish and Italian versions.
