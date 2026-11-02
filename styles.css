@@ -322,6 +322,20 @@ body {
     background: rgba(211, 62, 93, 0.03);
 }
 
+/* WhatsApp field (optional) */
+.form-label-optional {
+    margin-left: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-normal);
+    color: rgba(36, 24, 38, 0.5);
+}
+
+/* useBouncer shows its message (about 44px) under the email field: keep 50px free below the input
+   (margin + form gap = 50px). The other fields don't need it. */
+.form-group--email {
+    margin-bottom: calc(50px - var(--spacing-sm));
+}
+
 /* Custom Dropdown */
 .custom-dropdown {
     position: relative;
@@ -538,10 +552,14 @@ body {
     font-size: 0.8125rem;
     color: var(--color-accent);
     font-weight: var(--font-weight-medium);
-    min-height: 1.25rem;
     display: block;
     opacity: 0;
     transition: opacity var(--transition-fast);
+}
+
+/* Takes no room until there is an error to show */
+.error-message:empty {
+    display: none;
 }
 
 .error-message:not(:empty) {

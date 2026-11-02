@@ -134,7 +134,12 @@
 
             <label class="sr-only" for="email">Email</label>
             <input class="signup__input bouncer" type="email" id="email" name="email"
-                   placeholder="Email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+                   placeholder="Email" autocomplete="email" inputmode="email" enterkeyhint="next" required>
+
+            <!-- WhatsApp number. Optional. Its label also leaves room under the email field for the Bouncer validation overlay -->
+            <label class="signup__phone-label" for="telephone">WhatsApp number (or mobile number), optional:</label>
+            <input class="signup__input" type="tel" id="telephone" name="telephone"
+                   placeholder="WhatsApp or mobile number" autocomplete="tel" inputmode="tel" enterkeyhint="go">
 
             <p class="signup__error" id="formError" role="alert" hidden></p>
 
@@ -747,6 +752,7 @@
   <div id="messages" hidden>
     <span data-msg="firstName">Please enter your first name.</span>
     <span data-msg="email">Please enter a valid email address, like name@example.com.</span>
+    <span data-msg="telephone">Please enter a valid WhatsApp or mobile number, with its country code, or leave the field empty.</span>
     <span data-msg="checkout">We couldn't open the secure checkout. Check your internet connection and try again.</span>
   </div>
 
@@ -758,6 +764,7 @@
   <script src="../../../tracking-params.js"></script>
   <script src="../../../cohort.js"></script>
   <script src="../../../assets/checkout/checkout-core.js"></script>
+  <script src="../../../assets/phone-field/phone-field.js"></script>
   <script src="../../../price-localizer.js"></script>
   <script src="../../../instagram/app.js"></script>
 </body>

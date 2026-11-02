@@ -57,6 +57,7 @@
         formData: {
             firstName: '',
             email: '',
+            telephone: '',
             useCases: [],
             estimatedVolume: ''
         },
@@ -122,6 +123,7 @@
             siteRoot + 'cohort.js',
             siteRoot + 'tools.js',
             baseUrl + 'checkout-core.js',
+            siteRoot + 'assets/phone-field/phone-field.js',
             'https://cdn.paddle.com/paddle/v2/paddle.js'
         ];
 
@@ -295,6 +297,11 @@
             '<label class="otc-label" for="otcEmail">' + t('label.email') + '</label>' +
             '<input class="otc-input" type="email" id="otcEmail" placeholder="' + t('placeholder.email') + '" autocomplete="email">' +
             '<span class="otc-error-msg" id="otcEmailError"></span>' +
+            '</div>' +
+            '<div class="otc-group otc-group--phone">' +
+            '<label class="otc-label" for="otcTelephone">' + t('label.whatsapp') + ' <span class="otc-label-optional">' + t('label.optional') + '</span></label>' +
+            '<input class="otc-input" type="tel" id="otcTelephone" autocomplete="tel">' +
+            '<span class="otc-error-msg" id="otcTelephoneError"></span>' +
             '</div>';
 
         if (multiPlan) {
@@ -380,6 +387,18 @@
     function bindStep1Events() {
         var cta1 = container.querySelector('#otcCta1');
         if (cta1) cta1.addEventListener('click', handleStep1Submit);
+
+        // WhatsApp number (optional), prefilled from ?telephone=
+        var phoneInput = container.querySelector('#otcTelephone');
+        if (phoneInput && window.oneTakePhoneField) {
+            var phonePrefill = window.oneTakePhoneField.fromUrl();
+            if (phonePrefill) phoneInput.value = phonePrefill;
+            window.oneTakePhoneField.attach(phoneInput, { lang: state.currentLanguage });
+            phoneInput.addEventListener('input', function() {
+                phoneInput.classList.remove('otc-error');
+                container.querySelector('#otcTelephoneError').textContent = '';
+            });
+        }
 
         var planOptions = container.querySelectorAll('.otc-plan-option');
         planOptions.forEach(function(opt) {
@@ -501,6 +520,11 @@
         var emailInput = container.querySelector('#otcEmail');
         var firstNameError = container.querySelector('#otcFirstNameError');
         var emailError = container.querySelector('#otcEmailError');
+        var phoneInput = container.querySelector('#otcTelephone');
+        var phoneError = container.querySelector('#otcTelephoneError');
+        var phone = (phoneInput && window.oneTakePhoneField)
+            ? window.oneTakePhoneField.read(phoneInput)
+            : { value: '', valid: true };
         var valid = true;
 
         var firstName = (firstNameInput.value || '').trim();
@@ -528,10 +552,22 @@
             emailError.textContent = '';
         }
 
+        if (phoneInput) {
+            if (!phone.valid) {
+                phoneInput.classList.add('otc-error');
+                phoneError.textContent = t('error.phone');
+                valid = false;
+            } else {
+                phoneInput.classList.remove('otc-error');
+                phoneError.textContent = '';
+            }
+        }
+
         if (!valid) return;
 
         state.formData.firstName = firstName;
         state.formData.email = email;
+        state.formData.telephone = phone.value;
 
         var step1 = container.querySelector('#otcStep1');
         var step2 = container.querySelector('#otcStep2');
