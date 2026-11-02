@@ -19,6 +19,32 @@
 <link rel="stylesheet" href="/4dcm/le-challenge/style.css" />
 <link rel="stylesheet" href="/assets/info-bubbles/info-bubbles.css" />
 <link rel="stylesheet" href="/assets/airwallex/airwallex-checkout.css" />
+<style>
+  /* Prorata example in the "Ton compte OneTake" box (page-only: style.css is shared with le-challenge) */
+  .prorata-example {
+    margin: 8px 0 28px;
+    padding: 28px 28px 24px;
+    background: var(--bg-warm);
+    border-radius: 6px;
+  }
+  .prorata-example .eyebrow { margin-bottom: 14px; }
+  .prorata-steps { list-style: none; margin: 20px 0 0; padding: 0; }
+  .prorata-steps li {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .prorata-steps .t { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; color: var(--accent); padding-top: 2px; }
+  .prorata-steps li.is-next .t, .prorata-steps li.is-next strong { color: var(--ink); }
+  html[data-offer-state="quarterly"] p[data-show-state="quarterly"] { display: block; }
+  @media (max-width: 600px) {
+    .prorata-example { padding: 22px 18px 18px; }
+    .prorata-steps li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
 <script>window.__disable_weglot = true;</script>
 <script>
   // ?plan=quarterly also shows the quarterly plan (default: annual only). Remembered for the
@@ -443,7 +469,7 @@
         <div class="save">Soit moins de 84&nbsp;€&nbsp;HT par mois</div>
         <ul class="feats">
           <li>Accès immédiat à la Préparation, aux Ateliers et à OneTake Scale</li>
-          <li>Client actif&nbsp;: les jours restants de ton abonnement actuel sont ajoutés, au prorata</li>
+          <li>Client actif&nbsp;: le temps restant sur ton abonnement actuel s'ajoute à ton accès (<a href="#ton-compte">voir l'exemple</a>)</li>
           <li>Garantie inconditionnelle de 14 jours</li>
         </ul>
         <div class="cta-area">
@@ -463,7 +489,7 @@
         </div>
         <p class="tagline">Le même accès complet, payé tous les trois mois</p>
         <ul class="feats">
-          <li>Client actif&nbsp;: les jours restants de ton abonnement actuel sont ajoutés, au prorata</li>
+          <li>Client actif&nbsp;: le temps restant sur ton abonnement actuel s'ajoute à ton accès (<a href="#ton-compte">voir l'exemple</a>)</li>
           <li>Garantie inconditionnelle de 14 jours</li>
         </ul>
         <div class="cta-area">
@@ -482,12 +508,25 @@
 </section>
 
 <!-- ==================== 11. DÉJÀ CLIENT ==================== -->
-<section data-screen-label="11 Ton compte OneTake">
+<section id="ton-compte" data-screen-label="11 Ton compte OneTake">
   <div class="wrap">
     <div class="clients-box">
       <div class="eyebrow">Ton compte OneTake</div>
       <h2 class="mt-2">Ce qui se passe pour ton compte OneTake</h2>
-      <p><strong>Ton abonnement OneTake est actif&nbsp;:</strong> inscris-toi normalement. On ajoutera les jours restants de ton abonnement actuel, au prorata, comme cela tu gagnes à 100&nbsp;% au change, quel que soit ton niveau d'abonnement actuel. Notre équipe ajuste ton compte après ton inscription.</p>
+      <p><strong>Ton abonnement OneTake est actif&nbsp;:</strong> inscris-toi normalement, tu ne perds rien de ce que tu as déjà payé. Ta nouvelle année ne commence pas le jour de ton inscription, mais à la fin de ton abonnement actuel. Notre équipe ajuste ton compte après ton inscription.</p>
+
+      <div class="prorata-example">
+        <div class="eyebrow">Un exemple</div>
+        <p>Tu paies déjà 999&nbsp;€&nbsp;HT par an pour OneTake, le même montant que le Challenge. Ton dernier paiement date du 1er janvier 2026&nbsp;: ton abonnement est donc payé jusqu'au 1er janvier 2027.</p>
+        <ol class="prorata-steps">
+          <li><span class="t">1er nov. 2026</span><span>Tu rejoins le Challenge et tu paies 999&nbsp;€&nbsp;HT. Il te reste encore 2 mois sur ton abonnement actuel&nbsp;: tu les gardes.</span></li>
+          <li><span class="t">1er janv. 2027</span><span>Aucun paiement. Ton abonnement actuel se termine, et ta nouvelle année commence.</span></li>
+          <li class="is-next"><span class="t">1er janv. 2028</span><span><strong>Ton prochain paiement.</strong> Ni le 1er janvier 2027, ni le 1er novembre 2027.</span></li>
+        </ol>
+      </div>
+
+      <p><strong>Tu paies un autre montant</strong> (abonnement mensuel, ou un autre niveau de OneTake)&nbsp;: on calcule la valeur de ce qu'il te reste sur ton abonnement actuel, et on la transforme en temps supplémentaire au tarif du Challenge. Par exemple, s'il te reste l'équivalent de 100&nbsp;€&nbsp;HT, ton accès est prolongé d'environ 5 semaines. Notre équipe fait le calcul et ajuste ton compte après ton inscription.</p>
+      <p data-show-state="quarterly">Avec l'abonnement trimestriel, c'est le même principe&nbsp;: ton premier trimestre commence à la fin de ton abonnement actuel.</p>
       <p><strong>Tu as été client OneTake&nbsp;:</strong> inscris-toi normalement. Notre équipe réactive ton accès à OneTake au niveau Scale après ton inscription, et tu reçois un email de confirmation dans la journée (jour ouvré).</p>
     </div>
   </div>
@@ -540,7 +579,7 @@
       </details>
       <details>
         <summary>Mon abonnement OneTake est actif. Est-ce que je paie deux fois&nbsp;?</summary>
-        <p>Non. On ajoutera les jours restants de ton abonnement actuel, au prorata, comme cela tu gagnes à 100&nbsp;% au change, quel que soit ton niveau d'abonnement actuel. Notre équipe ajuste ton compte après ton inscription.</p>
+        <p>Non. Ce qu'il te reste sur ton abonnement actuel s'ajoute à ton accès&nbsp;: ta nouvelle année commence à la fin de ton abonnement actuel, et pas le jour de ton inscription. Tu trouveras un exemple détaillé dans la section <a href="#ton-compte">«&nbsp;Ton compte OneTake&nbsp;»</a>.</p>
       </details>
       <details>
         <summary>J'ai arrêté mon abonnement OneTake. Comment je retrouve mon accès&nbsp;?</summary>
