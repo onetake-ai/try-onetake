@@ -93,11 +93,11 @@ Accessible tooltips without dependencies: open on hover and keyboard focus, tap 
 
 Every form that captures a buyer or a lead asks for an optional "WhatsApp number (or mobile number)", with a country picker. The value always leaves the page in E.164 format (`+33612345678`) and ends up in the Userlist user property `telephone`.
 
-- **Library:** intl-tel-input, self-hosted (never load it from a CDN). Version, source and file hashes are in `/assets/vendor/intl-tel-input/README.md`, with the upgrade steps. Country names come from the browser in the page language; the picker's own strings for our 8 languages are in `UI_TRANSLATIONS` in `phone-field.js`.
+- **Library:** intl-tel-input, self-hosted. Version, source and file hashes are in `/assets/vendor/intl-tel-input/README.md`, with the upgrade steps. Country names come from the browser in the page language; the picker's own strings for our 8 languages are in `UI_TRANSLATIONS` in `phone-field.js`.
 - **Markup:** load `phone-field.js` (it adds both stylesheets itself), then put an `<input type="tel" name="telephone" autocomplete="tel">` with its own label after the email field. Keep the 50 px under the email field for useBouncer: the phone label may sit in that space (see `.signup__phone-label` in `/instagram/style.css`), the input never does.
 - **API:** `oneTakePhoneField.attach(input, { lang })` turns the input into the picker (initial country from the browser locale, else the page language); `read(input)` returns `{ value, valid }` (empty is valid, `value` is E.164 or `''`); `setValue(input, number)` prefills; `fromUrl()` reads `?telephone=` (an unencoded `+` is read correctly, a Liquid tag is ignored).
 - **Optional, never blocking:** an invalid number shows an error until it is fixed or erased. If the library cannot load, the field stays a plain input and only a well-formed international number is kept.
-- **Where it goes:** Paddle flows put it in `customData.telephone` (`checkout-core.js`), and the Paddle webhook sync writes it to Userlist. Airwallex (`/checkout`, `/wire`, then `Purchase` from the checkout metadata) and the masterclass forms (`userlist-proxy.ts`) set the Userlist property directly. Both edge scripts drop a malformed number silently and never erase a stored one.
+- **Where it goes:** Paddle flows put it in `customData.telephone` (`checkout-core.js`), and the Paddle webhook sync writes it to Userlist. Airwallex (`/checkout`, `/wire`, then `Purchase` from the checkout metadata) and the masterclass forms (`userlist-proxy.ts`) set the Userlist property directly.
 
 ## Le Challenge des Experts à Haute Valeur (`/4dcm/le-challenge/`)
 
@@ -112,7 +112,7 @@ French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/
 Version of the Challenge page for current and former OneTake customers, sent by link (`noindex`). Copy rewritten for two cases: customers whose videos don't sell enough, and customers who never made their videos because they didn't know what to present or sell. Keeps the 2026 dates (Welcome Ceremony on Nov 3, then its replay; Challenge from Dec 1 to Dec 20) but has no countdown and never closes.
 
 - **Plans:** annual by default, Airwallex plan key `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, wire transfer allowed, no `closesAt`). `?plan=quarterly` also shows the quarterly plan `challenge-access-quarterly` (same price and bonuses as `challenge-quarterly`, card only, no window), through `data-offer-state="quarterly"` on `<html>` set by the inline script in `<head>`; it is remembered in `sessionStorage` for the browser session, so the checkout's back link (no parameter) keeps it. Both plans redirect to `/4dcm/acces-challenge/merci/`.
-- **Customers:** active subscribers get the remaining days of their subscription added, prorated; former customers get OneTake reactivated at the Scale level. The team does both by hand from the Userlist `Purchase` event.
+- **Customers:** active subscribers get access to everything at signup; the time left on their current subscription is added to their first year (or quarter), so only their next payment date moves. Same yearly amount, e.g. last paid Jan 1, 2026, joined Nov 1, 2026, next payment Jan 1, 2028. Other amounts (monthly, other tier): the value left is turned into extra time at the Challenge price (100 € HT left pushes the next payment back about 5 weeks). The worked example sits in the "Ton compte OneTake" box (`#ton-compte`). Former customers get OneTake reactivated at the Scale level. The team does all of it by hand from the Userlist `Purchase` event.
 - **Shared files:** `/4dcm/le-challenge/style.css` and `/4dcm/challenge-skills.js`. It does not load `le-challenge/app.js` (offer dates).
 
 ## Embeddable checkout snippet
@@ -344,7 +344,6 @@ Mobile-first free trial page (`launch-monthly-trial`) for visitors coming from M
 
 - The signup form is prefilled from `?first_name=`, `?email=` and `?telephone=` (`prefillFromUrl()` in `app.js`); a value still holding an unrendered Liquid tag is ignored. The optional WhatsApp field (see "Phone field") has its error message in `#messages`.
 - Never write new checkout logic: every CTA outside the form uses `.js-go-to-form`, which sends the visitor to the existing form.
-- The videos are OneTake player iframes, which handle autoplay, loop and sound themselves. Never add sound controls or drive the iframes from JS.
 - Weglot translates each block element as one sentence and moves inline tags around in the translation. Never put a label (a name, a screen-reader prefix) inline inside a translated sentence; give it its own block element.
 - In the feature cards, premium options (gaze correction, background removal) always carry a "Try once free" label, and anything reserved for higher plans carries "Higher plans". The "Editing complete" checklist has no labels.
 - Comparison and calculator amounts are always marked up as `.money` elements (or `[data-calc]`), never as bare text: `app.js` shows them in dollars, or in euros (same numbers) on the French, Spanish and Italian versions.
