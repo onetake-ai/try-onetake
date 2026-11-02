@@ -177,6 +177,26 @@
 /* Leaves room under the email field for the useBouncer validation overlay (about 44px) */
 .mc-field--email { margin-bottom: 26px; }
 .mc-label__optional { margin-left: 4px; font-weight: 400; opacity: 0.7; }
+
+/* Offer pages: buyer popup before Paddle (built by offer.js), same look as .mv-modal */
+.of-modal {
+  width: calc(100% - 32px); max-width: 460px; max-height: calc(100% - 32px);
+  margin: auto; padding: 28px 20px 22px;
+  border: 0; border-radius: 12px;
+  background: var(--white); color: var(--bleached-cedar);
+  font-family: inherit;
+  overflow-y: auto;
+}
+.of-modal::backdrop { background: rgba(36, 24, 38, 0.72); }
+.of-modal__close {
+  position: absolute; top: 6px; right: 6px;
+  width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 50%; background: transparent; color: var(--bleached-cedar);
+  font-size: 28px; line-height: 1; cursor: pointer;
+}
+.of-modal__close:focus-visible { outline: 3px solid var(--golden-grass); }
+.of-modal__title { margin: 0 32px 8px 0; font-size: 22px; line-height: 1.25; font-weight: 800; }
+.of-modal__text { margin: 0 0 16px; font-size: 15px; line-height: 1.45; }
 .mc-form__error { font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--cabaret-dark); }
 .mc-form__micro { font-size: 13px; line-height: 1.4; color: var(--cedar-muted); text-align: center; }
 

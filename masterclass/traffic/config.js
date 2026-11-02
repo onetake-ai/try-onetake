@@ -43,7 +43,22 @@ window.MASTERCLASS_CONFIG = {
     defaultPlan: 'yearly',
     deadline: 'registration',       // 6 days after registration (?registered_on=), end of day, visitor's time zone
     revealAfterSeconds: 270,        // sales content appears after 4 min 30 s on the page (0 = right away)
-    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/'
+    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/',
+    // Popup shown by every checkout button, before Paddle
+    form: {
+      title: 'Last step before checkout',
+      intro: 'Enter your details: your access will be sent to this email address.',
+      firstNameLabel: 'First name',
+      emailLabel: 'Email',
+      phoneLabel: 'WhatsApp number (or mobile number)',
+      optional: 'optional',
+      button: 'Continue to checkout',
+      note: 'Secure checkout by Paddle.',
+      close: 'Close',
+      errorFirstName: 'Please enter your first name.',
+      errorEmail: 'Please enter a valid email address, like name@example.com.',
+      errorPhone: 'Please enter a valid WhatsApp or mobile number, with its country code, or leave the field empty.'
+    }
   },
 
   // Page 1: accounts scrolling under the scan overlay. Add or remove accounts freely (screenshots in /masterclass/images/, 288x640).

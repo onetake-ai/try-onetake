@@ -60,7 +60,22 @@ window.MASTERCLASS_CONFIG = {
     defaultPlan: 'yearly',
     deadline: 'weekly-live',        // Wednesday after the Thursday live (?attends_masterclass_on=), 23:59:59 Paris time
     revealAfterSeconds: 0,
-    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/'
+    expiredRedirectUrl: 'https://try.onetake.ai/oto/too-late/',
+    // Popup shown by every checkout button, before Paddle (\u00a0 = non-breaking space)
+    form: {
+      title: 'Dernière étape avant le paiement',
+      intro: 'Indiquez vos coordonnées\u00a0: c’est à cette adresse email que vous recevrez vos accès.',
+      firstNameLabel: 'Prénom',
+      emailLabel: 'Email',
+      phoneLabel: 'Numéro WhatsApp (ou numéro de mobile)',
+      optional: 'facultatif',
+      button: 'Continuer vers le paiement',
+      note: 'Paiement sécurisé par Paddle.',
+      close: 'Fermer',
+      errorFirstName: 'Merci d’indiquer votre prénom.',
+      errorEmail: 'Merci d’indiquer une adresse email valide, par exemple nom@exemple.com.',
+      errorPhone: 'Merci d’indiquer un numéro WhatsApp ou mobile valide, avec l’indicatif du pays, ou de laisser le champ vide.'
+    }
   },
 
   // Page 1 : comptes qui défilent sous l'effet de scan. Ajoutez ou retirez des comptes librement (captures dans /masterclass/images/, 288x640).
