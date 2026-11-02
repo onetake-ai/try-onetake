@@ -117,6 +117,21 @@ const PLANS: Record<string, Plan> = {
     backPath:    '/4dcm/acces-challenge/#prix',
     wire:        true,
   },
+  // Shown on /4dcm/acces-challenge/ only with ?plan=quarterly: no sales window, card only
+  'challenge-access-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (accès clients, trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    successPath: '/4dcm/acces-challenge/merci/',
+    backPath:    '/4dcm/acces-challenge/#prix',
+  },
 };
 
 // ── Responses ────────────────────────────────────────────────────────────────

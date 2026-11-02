@@ -85,7 +85,7 @@ Public schedule of any shared Proton calendar, for clients and stakeholders: pre
 
 **Files:** `/assets/info-bubbles/info-bubbles.js`, `/assets/info-bubbles/info-bubbles.css`
 
-Accessible tooltips without dependencies: open on hover and keyboard focus, tap toggles, Escape and outside tap close, one open at a time, kept inside the viewport. `oneTakeInfoBubbles.renderGroups(container, families, items)` renders groups of chips from data (see the skills in `/4dcm/le-challenge/app.js`); `oneTakeInfoBubbles.bind(root)` binds triggers written in HTML (`<button data-info-bubble="ID" aria-describedby="ID">` + an element `#ID` with the text).
+Accessible tooltips without dependencies: open on hover and keyboard focus, tap toggles, Escape and outside tap close, one open at a time, kept inside the viewport. `oneTakeInfoBubbles.renderGroups(container, families, items)` renders groups of chips from data (see `/4dcm/challenge-skills.js`); `oneTakeInfoBubbles.bind(root)` binds triggers written in HTML (`<button data-info-bubble="ID" aria-describedby="ID">` + an element `#ID` with the text).
 
 ## Phone field (WhatsApp number)
 
@@ -111,7 +111,7 @@ French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/
 
 Version of the Challenge page for current and former OneTake customers, sent by link (`noindex`). Copy rewritten for two cases: customers whose videos don't sell enough, and customers who never made their videos because they didn't know what to present or sell. Keeps the 2026 dates (Welcome Ceremony on Nov 3, then its replay; Challenge from Dec 1 to Dec 20) but has no countdown and never closes.
 
-- **Plan:** annual only, Airwallex plan key `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, wire transfer allowed, no `closesAt`), success page `/4dcm/acces-challenge/merci/`.
+- **Plans:** annual by default, Airwallex plan key `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, wire transfer allowed, no `closesAt`). `?plan=quarterly` also shows the quarterly plan `challenge-access-quarterly` (same price and bonuses as `challenge-quarterly`, card only, no window), through `data-offer-state="quarterly"` on `<html>` set by the inline script in `<head>`; it is remembered in `sessionStorage` for the browser session, so the checkout's back link (no parameter) keeps it. Both plans redirect to `/4dcm/acces-challenge/merci/`.
 - **Customers:** active subscribers get the remaining days of their subscription added, prorated; former customers get OneTake reactivated at the Scale level. The team does both by hand from the Userlist `Purchase` event.
 - **Shared files:** `/4dcm/le-challenge/style.css` and `/4dcm/challenge-skills.js`. It does not load `le-challenge/app.js` (offer dates).
 
