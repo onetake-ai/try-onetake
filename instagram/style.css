@@ -160,6 +160,14 @@ figure { margin: 0; }
   font-size: 14px; font-weight: 600; line-height: 1.3; text-align: left;
 }
 
+/* WhatsApp field label. The Bouncer overlay (about 44px) under the email field may cover it, like
+   .signup__cta-label: gap + padding-top + label + gap = 8 + 16 + 18 + 8 = 50px */
+.signup__phone-label {
+  padding-top: 16px;
+  font-size: 14px; font-weight: 600; line-height: 1.3; text-align: left;
+}
+.signup__form .iti.otp-phone { --iti-border-color: #E2DCDD; }
+
 .signup__error {
   font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--cabaret); text-align: left;
 }

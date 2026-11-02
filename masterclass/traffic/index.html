@@ -46,7 +46,11 @@
           </div>
           <div class="mc-field mc-field--email">
             <label class="mc-label" for="email1">Email</label>
-            <input class="mc-input bouncer" type="email" id="email1" name="email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+            <input class="mc-input bouncer" type="email" id="email1" name="email" autocomplete="email" inputmode="email" enterkeyhint="next" required>
+          </div>
+          <div class="mc-field mc-field--phone">
+            <label class="mc-label" for="telephone1">WhatsApp number (or mobile number) <span class="mc-label__optional">optional</span></label>
+            <input class="mc-input" type="tel" id="telephone1" name="telephone" autocomplete="tel" inputmode="tel" enterkeyhint="go">
           </div>
           <p class="mc-form__error" role="alert" hidden></p>
           <button class="mc-btn" type="submit">
@@ -108,7 +112,11 @@
             </div>
             <div class="mc-field mc-field--email">
               <label class="mc-label" for="email2">Email</label>
-              <input class="mc-input bouncer" type="email" id="email2" name="email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+              <input class="mc-input bouncer" type="email" id="email2" name="email" autocomplete="email" inputmode="email" enterkeyhint="next" required>
+            </div>
+            <div class="mc-field mc-field--phone">
+              <label class="mc-label" for="telephone2">WhatsApp number (or mobile number) <span class="mc-label__optional">optional</span></label>
+              <input class="mc-input" type="tel" id="telephone2" name="telephone" autocomplete="tel" inputmode="tel" enterkeyhint="go">
             </div>
             <p class="mc-form__error" role="alert" hidden></p>
             <button class="mc-btn" type="submit">
@@ -139,6 +147,7 @@
   </footer>
 
   <script src="../session-date.js"></script>
+  <script src="../../assets/phone-field/phone-field.js"></script>
   <script src="../masterclass.js"></script>
 </body>
 </html>

@@ -163,7 +163,11 @@
       </div>
       <div class="mc-field mc-field--email">
         <label class="mc-label" for="emailM">Email</label>
-        <input class="mc-input bouncer" type="email" id="emailM" name="email" autocomplete="email" inputmode="email" enterkeyhint="go" required>
+        <input class="mc-input bouncer" type="email" id="emailM" name="email" autocomplete="email" inputmode="email" enterkeyhint="next" required>
+      </div>
+      <div class="mc-field mc-field--phone">
+        <label class="mc-label" for="telephoneM">Numéro WhatsApp (ou numéro de mobile) <span class="mc-label__optional">facultatif</span></label>
+        <input class="mc-input" type="tel" id="telephoneM" name="telephone" autocomplete="tel" inputmode="tel" enterkeyhint="go">
       </div>
       <p class="mc-form__error" role="alert" hidden></p>
       <button class="mc-btn" type="submit">
@@ -176,6 +180,7 @@
 
   <script src="../config.js"></script>
   <script src="../../session-date.js"></script>
+  <script src="../../../assets/phone-field/phone-field.js"></script>
   <script src="../../masterclass.js"></script>
   <script src="../../variants.js"></script>
 </body>

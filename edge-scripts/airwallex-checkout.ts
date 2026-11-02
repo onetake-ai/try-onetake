@@ -163,6 +163,14 @@ function cleanText(value: unknown, max = 200): string {
   return value.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
 }
 
+// WhatsApp number (optional) in E.164, e.g. +33612345678; '' when absent or malformed (never refuses a sale)
+function cleanPhone(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  let phone = value.replace(/[\s.\-()\/]/g, '');
+  if (phone.startsWith('00')) phone = '+' + phone.slice(2);
+  return /^\+[1-9]\d{6,14}$/.test(phone) ? phone : '';
+}
+
 function cleanSlug(value: unknown): string {
   return typeof value === 'string' && /^[a-z0-9/_-]{1,100}$/.test(value) ? value : '';
 }
@@ -280,6 +288,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   const email = cleanText(fields.email, 254).toLowerCase();
   if (!isValidEmail(email)) return fail('INVALID_EMAIL', 400);
   const firstName   = cleanText(fields.first_name, 100);
+  const telephone   = cleanPhone(fields.telephone);
   const page        = cleanSlug(fields.page);
   const attribution = cleanAttribution(fields.attribution);
 
@@ -288,6 +297,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   // Abandoned cart follow-up; never blocks the checkout
   const userProperties: Record<string, string> = { ...attribution };
   if (firstName) userProperties.first_name = firstName;
+  if (telephone) userProperties.telephone = telephone;
   await pushUserlist('AddToCart', email, userProperties, {
     plan: planKey, value: plan.value, currency: plan.currency, page, payment_method: 'card', ...attribution,
   });
@@ -297,6 +307,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   const baseMetadata: Record<string, string> = { plan: planKey, email };
   if (page)      baseMetadata.page = page;
   if (firstName) baseMetadata.first_name = firstName;
+  if (telephone) baseMetadata.telephone = telephone;   // Repeated on the Purchase event
   const metadata: Record<string, string> = { ...baseMetadata, ...attribution };
 
   try {
@@ -347,6 +358,7 @@ async function handleWire(fields: Record<string, unknown>): Promise<Response> {
   const lastName  = cleanText(fields.last_name, 100);
   if (!firstName || !lastName) return fail('INVALID_NAME', 400);
   const company     = cleanText(fields.company, 200);
+  const telephone   = cleanPhone(fields.telephone);
   const page        = cleanSlug(fields.page);
   const attribution = cleanAttribution(fields.attribution);
 
@@ -358,6 +370,7 @@ async function handleWire(fields: Record<string, unknown>): Promise<Response> {
     pledged_wire_payment_on: new Date().toISOString(),
   };
   if (company) userProperties.company = company;
+  if (telephone) userProperties.telephone = telephone;
 
   const accepted = await pushUserlist('InitiateCheckout', email, userProperties, {
     plan: planKey, value: plan.value, currency: plan.currency, page, payment_method: 'wire', ...attribution,
@@ -387,9 +400,13 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
       : {} as Record<string, unknown>;
     const email = cleanText(customer.email || metadata.email, 254).toLowerCase();
     const firstName = cleanText(metadata.first_name, 100);
+    const telephone = cleanPhone(metadata.telephone);
 
     if (isValidEmail(email)) {
-      await pushUserlist('Purchase', email, firstName ? { first_name: firstName } : {}, {
+      const userProperties: Record<string, string> = {};
+      if (firstName) userProperties.first_name = firstName;
+      if (telephone) userProperties.telephone = telephone;
+      await pushUserlist('Purchase', email, userProperties, {
         plan: planKey,
         value: plan.value,
         currency: plan.currency,

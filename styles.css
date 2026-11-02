@@ -322,6 +322,19 @@ body {
     background: rgba(211, 62, 93, 0.03);
 }
 
+/* WhatsApp field (optional) */
+.form-label-optional {
+    margin-left: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-normal);
+    color: rgba(36, 24, 38, 0.5);
+}
+
+/* useBouncer shows its message under the email field: keep 50px free before the WhatsApp field */
+.form-group:has(+ .form-group--phone) {
+    margin-bottom: 0.75rem;
+}
+
 /* Custom Dropdown */
 .custom-dropdown {
     position: relative;

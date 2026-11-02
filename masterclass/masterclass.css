@@ -176,6 +176,7 @@
 .mc-input[aria-invalid="true"] { border-color: var(--cabaret-dark); }
 /* Leaves room under the email field for the useBouncer validation overlay (about 44px) */
 .mc-field--email { margin-bottom: 26px; }
+.mc-label__optional { margin-left: 4px; font-weight: 400; opacity: 0.7; }
 .mc-form__error { font-size: 14px; line-height: 1.4; font-weight: 600; color: var(--cabaret-dark); }
 .mc-form__micro { font-size: 13px; line-height: 1.4; color: var(--cedar-muted); text-align: center; }
 

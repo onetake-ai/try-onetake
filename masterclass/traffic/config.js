@@ -65,6 +65,7 @@ window.MASTERCLASS_CONFIG = {
   messages: {
     firstName: 'Please enter your first name.',
     email: 'Please enter a valid email address, like name@example.com.',
+    telephone: 'Please enter a valid WhatsApp or mobile number, with its country code, or leave the field empty.',
     network: 'We couldn\'t save your registration. Check your internet connection and try again.'
   }
 };

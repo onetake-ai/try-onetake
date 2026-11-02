@@ -42,7 +42,7 @@
 
     // State shape expected by checkout-core.js (same as app.js)
     var state = {
-        formData: { firstName: '', email: '', useCases: [], estimatedVolume: '' },
+        formData: { firstName: '', email: '', telephone: '', useCases: [], estimatedVolume: '' },
         currentLanguage: 'en',
         planKey: PLAN_KEY,
         planInfo: plan,
@@ -94,8 +94,8 @@
     function showError(text, field) {
         els.formError.textContent = text;
         els.formError.hidden = false;
-        [els.firstName, els.email].forEach(function(input) {
-            input.setAttribute('aria-invalid', String(input === field));
+        [els.firstName, els.email, els.telephone].forEach(function(input) {
+            if (input) input.setAttribute('aria-invalid', String(input === field));
         });
         if (field) field.focus();
     }
@@ -105,6 +105,7 @@
         els.formError.textContent = '';
         els.firstName.removeAttribute('aria-invalid');
         els.email.removeAttribute('aria-invalid');
+        if (els.telephone) els.telephone.removeAttribute('aria-invalid');
     }
 
     function setLoading(isLoading) {
@@ -128,10 +129,19 @@
             showError(message('email'), els.email);
             return;
         }
+        // WhatsApp number: optional, but must be valid when filled in
+        var phone = (els.telephone && window.oneTakePhoneField)
+            ? window.oneTakePhoneField.read(els.telephone)
+            : { value: '', valid: true };
+        if (!phone.valid) {
+            showError(message('telephone'), els.telephone);
+            return;
+        }
         clearError();
 
         state.formData.firstName = firstName;
         state.formData.email = email;
+        state.formData.telephone = phone.value;
         state.isSubmitting = true;
         setLoading(true);
 
@@ -567,6 +577,7 @@
         els.form = document.getElementById('signupForm');
         els.firstName = document.getElementById('firstName');
         els.email = document.getElementById('email');
+        els.telephone = document.getElementById('telephone');
         els.formError = document.getElementById('formError');
         els.submitBtn = document.getElementById('submitBtn');
         els.oneStep = document.getElementById('oneStep');
@@ -602,7 +613,20 @@
                 els.email.focus();
             }
         });
-        [els.firstName, els.email].forEach(function(input) {
+        // "Next" on the email keyboard moves to the WhatsApp field
+        if (els.telephone) {
+            els.email.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    els.telephone.focus();
+                }
+            });
+            if (window.oneTakePhoneField) {
+                window.oneTakePhoneField.attach(els.telephone, { lang: getPageLanguage() });
+            }
+        }
+        [els.firstName, els.email, els.telephone].forEach(function(input) {
+            if (!input) return;
             input.addEventListener('input', function() {
                 if (!els.formError.hidden) clearError();
             });
@@ -614,13 +638,16 @@
         setupStickyCta();
     }
 
-    // Prefill from ?first_name= and ?email=; a literal unrendered Liquid tag is ignored
+    // Prefill from ?first_name=, ?email= and ?telephone=; a literal unrendered Liquid tag is ignored
     function prefillFromUrl() {
         var params = new URLSearchParams(window.location.search);
         [[els.firstName, params.get('first_name')], [els.email, params.get('email')]].forEach(function(pair) {
             var value = (pair[1] || '').trim();
             if (value && !/[{}<>]/.test(value) && !pair[0].value) pair[0].value = value;
         });
+        if (els.telephone && window.oneTakePhoneField && !els.telephone.value) {
+            els.telephone.value = window.oneTakePhoneField.fromUrl();
+        }
     }
 
     document.addEventListener('DOMContentLoaded', init);

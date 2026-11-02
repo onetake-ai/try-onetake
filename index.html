@@ -139,6 +139,18 @@
                                 placeholder="your@email.com">
                             <span class="error-message" id="emailError"></span>
                         </div>
+
+                        <!-- WhatsApp Field (optional) -->
+                        <div class="form-group form-group--phone">
+                            <label for="telephone" class="form-label"><span data-i18n="label.whatsapp">WhatsApp number (or mobile number)</span> <span class="form-label-optional" data-i18n="label.optional">Optional</span></label>
+                            <input
+                                type="tel"
+                                id="telephone"
+                                name="telephone"
+                                class="form-input"
+                                autocomplete="tel">
+                            <span class="error-message" id="telephoneError"></span>
+                        </div>
                         
                         <!-- Use Cases Custom Dropdown -->
                         <div class="form-group" id="useCasesGroup">
@@ -252,6 +264,7 @@
     <script src="tracking-params.js"></script>
     <script src="cohort.js"></script>
     <script src="/assets/checkout/checkout-core.js"></script>
+    <script src="/assets/phone-field/phone-field.js"></script>
     <script src="app.js"></script>
     <script src="special-offer.js"></script>
 </body>
