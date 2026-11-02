@@ -324,6 +324,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
 .maker__check--ok { color: #1E7B45; }
 .maker__check--bad { color: var(--cabaret); }
 .maker__check--unknown { color: var(--cedar-muted); }
+.maker__warning { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--golden-grass-tint); font-size: 14px; }
 .maker__tip { font-size: 14px; color: var(--cedar-muted); }
 
 /* ── Footer ──────────────────────────────────────────────────────────── */

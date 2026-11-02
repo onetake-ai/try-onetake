@@ -44,7 +44,7 @@
         <li>Choose <strong>Full view</strong>. With "Limited view", people only see when you're busy, without the event names or the links to join.</li>
         <li>Click <strong>Copy link</strong>, and paste it below.</li>
       </ol>
-      <p>The link starts with <code>https://calendar.proton.me/api/calendar/v1/url/</code>.</p>
+      <p>The link starts with <code>https://calendar.proton.me/api/calendar/v1/url/</code>. A "Full view" link ends with <code>&amp;PassphraseKey=…</code>: copy it in full.</p>
       <p><strong>One link per group:</strong> Proton allows up to 5 links per calendar. Create one for each group of clients and name it (<strong>Actions</strong>, <strong>Edit label</strong>). To stop sharing with one group, delete its link (<strong>Actions</strong>, <strong>Delete link</strong>): the other groups keep theirs.</p>
       <p><strong>A client's calendar stopped updating?</strong> Some calendar apps stop refreshing Proton links after a while. Create a new link here, send the new page link, and ask them to remove the old calendar and subscribe again.</p>
     </details>
@@ -60,6 +60,7 @@
     <section class="maker__result" id="makerResult" aria-live="polite" hidden>
       <h2 class="section-title">Your link is ready</h2>
       <p class="maker__check" id="makerCheck"></p>
+      <p class="maker__warning" id="limitedWarning" hidden><strong>This is a "Limited view" link:</strong> the page will only show when you're busy, without the event names, descriptions or links to join. To show them, create a "Full view" link in Proton (see "Where do I find the Proton share link?" above) and paste it here instead.</p>
       <div class="copy">
         <input class="copy__input" id="pageLink" type="text" readonly aria-label="Link to the calendar page">
         <button type="button" class="btn btn--dark btn--small" id="copyLink">Copy</button>

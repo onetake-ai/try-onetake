@@ -11,9 +11,11 @@
  *   .github/workflows/deploy-calendar-proxy.yml on every change to this file pushed to main.
  *   If the hostname changes, update PROXY_URL in /tools/calendar/link.js.
  *
- * ENDPOINT: GET /?id=<calendar ID>&key=<CacheKey>
- *   The two parts of a Proton link:
- *   https://calendar.proton.me/api/calendar/v1/url/<calendar ID>/calendar.ics?CacheKey=<CacheKey>
+ * ENDPOINT: GET /?id=<calendar ID>&key=<CacheKey>&pass=<PassphraseKey>
+ *   The parts of a Proton link:
+ *   https://calendar.proton.me/api/calendar/v1/url/<calendar ID>/calendar.ics?CacheKey=<CacheKey>&PassphraseKey=<PassphraseKey>
+ *   PassphraseKey only exists in "Full view" links (it decrypts the event details): pass is optional.
+ *   Never log it: whoever has it can read the calendar.
  *
  * RESPONSE:
  *   200 text/calendar   the calendar, cached 5 minutes
@@ -30,7 +32,8 @@ const MAX_BYTES      = 5 * 1024 * 1024;
 
 // Proton IDs and keys are URL-safe base64, optionally padded
 const ID_PATTERN  = /^[A-Za-z0-9_-]{20,200}={0,2}$/;
-const KEY_PATTERN = /^[A-Za-z0-9+/_-]{8,100}={0,2}$/;
+const KEY_PATTERN  = /^[A-Za-z0-9+/_-]{8,100}={0,2}$/;
+const PASS_PATTERN = /^[A-Za-z0-9+/_-]{16,200}={0,2}$/;
 
 const corsHeaders = () => ({
   'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,
@@ -55,13 +58,15 @@ BunnySDK.net.http.serve(async (req: Request) => {
 
   const params = new URL(req.url).searchParams;
   const id  = (params.get('id')  || '').trim();
-  const key = (params.get('key') || '').trim();
-  if (!ID_PATTERN.test(id) || !KEY_PATTERN.test(key)) {
+  const key  = (params.get('key')  || '').trim();
+  const pass = (params.get('pass') || '').trim();
+  if (!ID_PATTERN.test(id) || !KEY_PATTERN.test(key) || (pass && !PASS_PATTERN.test(pass))) {
     console.log(`Refused GET: INVALID_LINK (origin ${req.headers.get('origin') || '-'})`);
     return err('INVALID_LINK', 400);
   }
 
-  const upstreamUrl = PROTON_BASE + id + '/calendar.ics?CacheKey=' + encodeURIComponent(key);
+  const upstreamUrl = PROTON_BASE + id + '/calendar.ics?CacheKey=' + encodeURIComponent(key)
+    + (pass ? '&PassphraseKey=' + encodeURIComponent(pass) : '');
 
   let upstream: Response;
   try {
