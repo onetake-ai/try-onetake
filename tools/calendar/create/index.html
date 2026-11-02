@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Internal tool: turns a Proton calendar share link into a link to /tools/calendar/. See CLAUDE.md ("Calendar page"). -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Create a calendar page link</title>
+  <meta name="theme-color" content="#F8F7F7">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=montserrat:400,500,600,700" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../style.css">
+
+  <script type="module" src="create.js"></script>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap top__inner">
+      <img class="top__logo"
+           src="https://cdn.prod.website-files.com/64ede1cef2e95d85ddeadb1b/6752cc7dcbedac2dfdaa5cb2_logo.svg"
+           alt="OneTake AI" width="104" height="28">
+    </div>
+  </header>
+
+  <main class="wrap maker">
+
+    <section class="intro">
+      <p class="intro__eyebrow">Team tool</p>
+      <h1 class="intro__title">Create a calendar page link</h1>
+      <p class="intro__text">Paste the share link of a Proton calendar. You get a link to a page where anyone can see the upcoming dates and add them to their own calendar, in one click.</p>
+    </section>
+
+    <details class="steps maker__help">
+      <summary>Where do I find the Proton share link?</summary>
+      <ol>
+        <li>Open <a href="https://calendar.proton.me" target="_blank" rel="noopener">calendar.proton.me</a> in your web browser (sharing isn't possible from the Proton mobile apps).</li>
+        <li>Click <strong>Settings</strong> (⚙️), <strong>All settings</strong>, <strong>Calendars</strong>, then select the calendar you want to share. Shortcut: click the settings icon next to the calendar in the left column.</li>
+        <li>Scroll to <strong>Share with anyone</strong> and click <strong>Create link</strong>.</li>
+        <li>Choose <strong>Full view</strong>. With "Limited view", people only see when you're busy, without the event names or the links to join.</li>
+        <li>Click <strong>Copy link</strong>, and paste it below.</li>
+      </ol>
+      <p>The link starts with <code>https://calendar.proton.me/api/calendar/v1/url/</code>.</p>
+      <p><strong>One link per group:</strong> Proton allows up to 5 links per calendar. Create one for each group of clients and name it (<strong>Actions</strong>, <strong>Edit label</strong>). To stop sharing with one group, delete its link (<strong>Actions</strong>, <strong>Delete link</strong>): the other groups keep theirs.</p>
+      <p><strong>A client's calendar stopped updating?</strong> Some calendar apps stop refreshing Proton links after a while. Create a new link here, send the new page link, and ask them to remove the old calendar and subscribe again.</p>
+    </details>
+
+    <form class="maker__form" id="makerForm" novalidate>
+      <label class="maker__label" for="protonLink">Proton share link</label>
+      <input class="maker__input" id="protonLink" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+             placeholder="https://calendar.proton.me/api/calendar/v1/url/…" aria-describedby="makerError">
+      <p class="maker__error" id="makerError" role="alert" hidden></p>
+      <button type="submit" class="btn btn--primary">Create the link</button>
+    </form>
+
+    <section class="maker__result" id="makerResult" aria-live="polite" hidden>
+      <h2 class="section-title">Your link is ready</h2>
+      <p class="maker__check" id="makerCheck"></p>
+      <div class="copy">
+        <input class="copy__input" id="pageLink" type="text" readonly aria-label="Link to the calendar page">
+        <button type="button" class="btn btn--dark btn--small" id="copyLink">Copy</button>
+      </div>
+      <a class="btn btn--ghost" id="openLink" href="#" target="_blank" rel="noopener">Open the page</a>
+      <p class="maker__tip">Send this link by email or message. Anyone who has it can see the calendar's events, so only share it with the people the calendar is meant for. Changes you make in Proton can take up to 8 hours to reach the page and your guests' calendars.</p>
+    </section>
+
+  </main>
+
+  <!-- Messages -->
+  <div id="messages" hidden>
+    <span data-msg="empty">Paste the Proton share link first.</span>
+    <span data-msg="incomplete">This link looks cut off. Copy it again from Proton, in full, and paste it here.</span>
+    <span data-msg="notShareLink">This is a Proton address, but not a calendar share link. Use the link from "Share with anyone" in the calendar's settings (see "Where do I find the Proton share link?" above).</span>
+    <span data-msg="notProton">This isn't a Proton calendar share link. It should start with https://calendar.proton.me/api/calendar/v1/url/</span>
+    <span data-msg="checking">Checking the calendar…</span>
+    <span data-msg="works">✓ It works: "{name}", {count} events.</span>
+    <span data-msg="worksNoName">✓ It works: {count} events.</span>
+    <span data-msg="empty_calendar">✓ The link works, but the calendar has no events yet. That's fine: new events will show up on the page.</span>
+    <span data-msg="notFound">⚠ Proton doesn't recognize this link: the calendar may no longer be shared. Create a new share link in Proton and paste it here.</span>
+    <span data-msg="unchecked">We couldn't check the calendar right now. The link may still work: open the page to see.</span>
+    <span data-msg="copied">Copied!</span>
+    <span data-msg="copyFailed">Select the link and copy it by hand.</span>
+  </div>
+
+</body>
+</html>
