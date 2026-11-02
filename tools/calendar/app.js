@@ -273,8 +273,8 @@ function tzidOf(component, name) {
 
 function findJoinLink(location, url, description) {
   const links = [location, url, description].join(' ').match(URL_PATTERN) || [];
-  const cleaned = links.map((link) => link.replace(/[).,;:!?'\]]+$/, ''));
-  return cleaned.find((link) => MEETING_PATTERN.test(link)) || (url && url.match(/^https?:\/\//) ? url : '') || '';
+  const cleaned = links.map((link) => unwrapLink(trimUrl(link)));
+  return cleaned.find((link) => MEETING_PATTERN.test(link)) || (url && url.match(/^https?:\/\//) ? unwrapLink(url) : '') || '';
 }
 
 function toOccurrence(item, startTime, endTime, recurring) {
@@ -282,14 +282,15 @@ function toOccurrence(item, startTime, endTime, recurring) {
   const title = item.summary ? item.summary.trim() : '';
   const location = textProp(component, 'location');
   const url = textProp(component, 'url');
-  const description = textProp(component, 'description');
+  const description = parseDescription(textProp(component, 'description'));
   const ev = {
     uid: item.uid || '',
     title,
     location,
-    description,
+    description: description.text,         // plain text, for the .ics file and Google
+    descriptionHtml: description.html,     // sanitized, for the event popup
     recurring,
-    join: findJoinLink(location, url, description),
+    join: findJoinLink(location, url, description.text),
     allDay: startTime.isDate,
   };
 
@@ -359,7 +360,7 @@ function parseCalendar(ICAL, text) {
   const unescape = (text) => text.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1');
   return {
     name: unescape(textProp(calendar, 'x-wr-calname')),
-    description: unescape(textProp(calendar, 'x-wr-caldesc')),
+    description: parseDescription(unescape(textProp(calendar, 'x-wr-caldesc'))).text,
     events,
   };
 }
@@ -377,13 +378,134 @@ function linkify(text) {
   let html = '';
   let last = 0;
   text.replace(URL_PATTERN, (match, offset) => {
-    const url = match.replace(/[).,;:!?'\]]+$/, '');
+    const url = trimUrl(match);
+    const link = unwrapLink(url);
     html += escapeHtml(text.slice(last, offset));
-    html += '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener nofollow">' + escapeHtml(url) + '</a>';
+    html += '<a href="' + escapeHtml(link) + '" target="_blank" rel="noopener nofollow">' + escapeHtml(link) + '</a>';
     last = offset + url.length;
     return match;
   });
   return html + escapeHtml(text.slice(last));
+}
+
+// ==========================================
+// EVENT DESCRIPTIONS
+// ==========================================
+
+// Proton keeps the HTML of descriptions written in Google Calendar (or pasted from it)
+const HTML_PATTERN  = /<\/?(a|br|p|div|span|b|strong|i|em|u|ul|ol|li|h[1-6]|font)\b[^>]*>/i;
+const SKIPPED_TAGS  = /^(SCRIPT|STYLE|HEAD|TITLE|IFRAME|OBJECT|EMBED|TEMPLATE|IMG|SVG)$/;
+const BLOCK_TAGS    = /^(P|DIV|H[1-6]|UL|OL|TABLE|TR|BLOCKQUOTE)$/;
+const INLINE_TAGS   = { B: 'strong', STRONG: 'strong', I: 'em', EM: 'em', U: 'u' };
+const URL_ONLY      = /^\s*https?:\/\/\S+\s*$/i;
+
+const trimUrl = (url) => url.replace(/[).,;:!?'\]]+$/, '');
+
+// Google Calendar wraps links in a redirect (https://www.google.com/url?q=<link>&sa=D&...): keep the real link
+function unwrapLink(url) {
+  for (let i = 0; i < 3; i++) {
+    let parsed;
+    try { parsed = new URL(url); } catch (e) { return url; }
+    if (!/(^|\.)google\.[a-z.]+$/i.test(parsed.hostname) || parsed.pathname !== '/url') return url;
+    const target = parsed.searchParams.get('q') || parsed.searchParams.get('url');
+    if (!target || !/^https?:\/\//i.test(target)) return url;
+    url = target;
+  }
+  return url;
+}
+
+function unwrapLinksInText(text) {
+  return text.replace(URL_PATTERN, (match) => {
+    const url = trimUrl(match);
+    return unwrapLink(url) + match.slice(url.length);
+  });
+}
+
+// Only web and email links are kept
+function safeHref(href) {
+  const link = unwrapLink((href || '').trim());
+  return /^(https?:\/\/|mailto:)/i.test(link) ? link : '';
+}
+
+// Rebuilds the HTML with basic formatting and links only: everything else is dropped or unwrapped
+function nodeToHtml(node, inLink) {
+  let html = '';
+  node.childNodes.forEach((child) => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      const text = child.nodeValue.replace(/\s+/g, ' ');
+      html += inLink ? escapeHtml(text) : linkify(text);
+      return;
+    }
+    if (child.nodeType !== Node.ELEMENT_NODE || SKIPPED_TAGS.test(child.tagName)) return;
+    const tag = child.tagName;
+    if (tag === 'BR') { html += '<br>'; return; }
+    const inner = nodeToHtml(child, inLink || tag === 'A');
+    if (tag === 'A') {
+      const href = safeHref(child.getAttribute('href'));
+      if (!href || inLink) { html += inner; return; }
+      const label = !child.textContent.trim() || URL_ONLY.test(child.textContent) ? escapeHtml(href) : inner;
+      html += '<a href="' + escapeHtml(href) + '" target="_blank" rel="noopener nofollow">' + label + '</a>';
+    } else if (tag === 'LI') {
+      html += '• ' + inner + '<br>';
+    } else if (INLINE_TAGS[tag]) {
+      html += '<' + INLINE_TAGS[tag] + '>' + inner + '</' + INLINE_TAGS[tag] + '>';
+    } else if (BLOCK_TAGS.test(tag)) {
+      html += '<br>' + inner + '<br>';
+    } else {
+      html += inner;
+    }
+  });
+  return html;
+}
+
+// Same walk, as plain text: links written "label (link)" unless the label is the link itself
+function nodeToText(node) {
+  let text = '';
+  node.childNodes.forEach((child) => {
+    if (child.nodeType === Node.TEXT_NODE) { text += unwrapLinksInText(child.nodeValue.replace(/\s+/g, ' ')); return; }
+    if (child.nodeType !== Node.ELEMENT_NODE || SKIPPED_TAGS.test(child.tagName)) return;
+    const tag = child.tagName;
+    if (tag === 'BR') { text += '\n'; return; }
+    const inner = nodeToText(child);
+    if (tag === 'A') {
+      const href = safeHref(child.getAttribute('href'));
+      const label = inner.trim();
+      text += !href ? inner : (!label || URL_ONLY.test(label) || label === href ? href : label + ' (' + href + ')');
+    } else if (tag === 'LI') {
+      text += '• ' + inner + '\n';
+    } else if (BLOCK_TAGS.test(tag)) {
+      text += '\n' + inner + '\n';
+    } else {
+      text += inner;
+    }
+  });
+  return text;
+}
+
+const descriptions = new Map();   // recurring events repeat the same description
+
+// A description as sanitized HTML (event popup) and plain text (.ics file, Google link, Join button)
+function parseDescription(raw) {
+  if (!raw) return { html: '', text: '' };
+  if (descriptions.has(raw)) return descriptions.get(raw);
+
+  let html;
+  let text;
+  if (HTML_PATTERN.test(raw)) {
+    // DOMParser builds an inert document: no script runs, nothing loads, and only rebuilt markup reaches the page
+    const body = new DOMParser().parseFromString(raw, 'text/html').body;
+    html = nodeToHtml(body, false);
+    text = nodeToText(body);
+  } else {
+    html = linkify(raw).replace(/\r?\n/g, '<br>');
+    text = unwrapLinksInText(raw);
+  }
+  const result = {
+    html: html.replace(/(\s*<br>\s*){3,}/g, '<br><br>').replace(/^(\s*<br>\s*)+|(\s*<br>\s*)+$/g, '').trim(),
+    text: text.replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim(),
+  };
+  descriptions.set(raw, result);
+  return result;
 }
 
 function track(name, props) {
@@ -594,7 +716,7 @@ function openEvent(index) {
   if (ev.location && !locationIsJoin) {
     html += '<div><p class="ev__label">' + escapeHtml(message('location')) + '</p><p class="ev__text">' + linkify(ev.location) + '</p></div>';
   }
-  if (ev.description) html += '<p class="ev__text">' + linkify(ev.description) + '</p>';
+  if (ev.descriptionHtml) html += '<p class="ev__rich">' + ev.descriptionHtml + '</p>';
   if (ev.recurring) html += '<p class="ev__note">' + escapeHtml(message('recurring')) + '</p>';
 
   if (endMs(ev) > Date.now()) {

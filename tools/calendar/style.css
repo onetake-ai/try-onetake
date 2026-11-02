@@ -255,6 +255,8 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
 .ev__when strong { color: var(--bleached-cedar); }
 .ev__label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--cedar-muted); }
 .ev__text { white-space: pre-line; overflow-wrap: anywhere; font-size: 15px; }
+.ev__rich { overflow-wrap: anywhere; font-size: 15px; }
+.ev__rich a { color: var(--bleached-cedar); }
 .ev__hint { font-size: 13px; color: var(--cedar-muted); }
 .ev__note { padding: 10px 12px; border-radius: var(--radius-sm); background: var(--golden-grass-tint); font-size: 14px; }
 .ev__add { display: flex; flex-wrap: wrap; gap: 8px; }
