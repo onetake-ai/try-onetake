@@ -82,6 +82,7 @@ window.MASTERCLASS_CONFIG = {
   messages: {
     firstName: 'Merci d’indiquer votre prénom.',
     email: 'Merci d’indiquer une adresse email valide, par exemple nom@exemple.com.',
+    telephone: 'Merci d’indiquer un numéro WhatsApp ou mobile valide, avec l’indicatif du pays, ou de laisser le champ vide.',
     network: 'Votre inscription n’a pas pu être enregistrée. Vérifiez votre connexion Internet et réessayez.'
   }
 };

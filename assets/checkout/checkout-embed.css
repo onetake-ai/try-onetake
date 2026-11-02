@@ -65,6 +65,18 @@
     letter-spacing: 0.01em;
 }
 
+.otc-label-optional {
+    margin-left: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: rgba(36, 24, 38, 0.5);
+}
+
+/* useBouncer shows its message under the email field: keep 50px free before the WhatsApp field */
+.otc-group:has(+ .otc-group--phone) {
+    margin-bottom: 0.75rem;
+}
+
 .otc-input {
     width: 100%;
     padding: 0.875rem 1rem;

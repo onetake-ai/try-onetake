@@ -65,7 +65,8 @@
       first_name: urlValue('first_name') || lead.first_name || '',
       last_name:  lead.last_name || '',
       email:      urlValue('email') || lead.email || '',
-      company:    lead.company || ''
+      company:    lead.company || '',
+      telephone:  (window.oneTakePhoneField && window.oneTakePhoneField.fromUrl()) || lead.telephone || ''
     };
   }
 
@@ -202,6 +203,20 @@
     return el('div', { 'class': 'awx-field' + (type === 'email' ? ' awx-field--email' : '') }, [el('label', { 'for': id, text: label }), input]);
   }
 
+  // WhatsApp number (optional): country picker from /assets/phone-field/phone-field.js
+  var PHONE_LABEL = 'Numéro WhatsApp (ou numéro de mobile, facultatif)';
+  var PHONE_ERROR = 'Indique un numéro WhatsApp ou mobile valide, avec l\'indicatif du pays, ou laisse le champ vide.';
+
+  function attachPhone(form) {
+    if (form.telephone && window.oneTakePhoneField) window.oneTakePhoneField.attach(form.telephone, { lang: 'fr' });
+  }
+
+  // { value, valid }: value is E.164 or ''
+  function readPhone(form) {
+    if (!form.telephone || !window.oneTakePhoneField) return { value: '', valid: true };
+    return window.oneTakePhoneField.read(form.telephone);
+  }
+
   function setLoading(button, loading, text) {
     button.disabled = loading;
     button.classList.toggle('is-loading', loading);
@@ -223,6 +238,7 @@
       el('p', { 'class': 'awx-intro', text: 'Indique ton prénom et ton email\u00a0: c\'est là que tu recevras tes accès.' }),
       field('first_name', 'Prénom', 'text', lead.first_name, true, 'given-name'),
       field('email', 'Email', 'email', lead.email, true, 'email'),
+      field('telephone', PHONE_LABEL, 'tel', lead.telephone, false, 'tel'),
       error,
       submit,
       el('p', { 'class': 'awx-note', text: 'Paiement sécurisé par carte sur la page de notre partenaire Airwallex. Garantie inconditionnelle de 14 jours.' })
@@ -235,13 +251,15 @@
       error.textContent = '';
       if (!firstName) { error.textContent = 'Indique ton prénom.'; form.first_name.focus(); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { error.textContent = 'Indique une adresse email valide.'; form.email.focus(); return; }
+      var phone = readPhone(form);
+      if (!phone.valid) { error.textContent = PHONE_ERROR; form.telephone.focus(); return; }
 
-      saveLead({ first_name: firstName, email: email });
+      saveLead({ first_name: firstName, email: email, telephone: phone.value });
       track('AddToCart', plan, { planKey: planKey, email: email, firstName: firstName });
       setLoading(submit, true, 'Ouverture du paiement…');
       if (trigger) trigger.classList.add('is-loading');
 
-      post('/checkout', { plan: planKey, page: pageSlug(), email: email, first_name: firstName, attribution: attribution() })
+      post('/checkout', { plan: planKey, page: pageSlug(), email: email, first_name: firstName, telephone: phone.value, attribution: attribution() })
         .then(function (data) {
           write('sessionStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey });
           write('localStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey, at: Date.now() });
@@ -257,6 +275,7 @@
     });
 
     openModal(form, 'awx-title');
+    attachPhone(form);
   }
 
   // ── Wire transfer ────────────────────────────────────────────────────────────
@@ -330,6 +349,7 @@
         field('last_name', 'Nom', 'text', lead.last_name, true, 'family-name')
       ]),
       field('email', 'Email', 'email', lead.email, true, 'email'),
+      field('telephone', PHONE_LABEL, 'tel', lead.telephone, false, 'tel'),
       field('company', 'Entreprise (facultatif)', 'text', lead.company, false, 'organization'),
       error,
       submit
@@ -342,18 +362,22 @@
         first_name: form.first_name.value.trim(),
         last_name:  form.last_name.value.trim(),
         email:      form.email.value.trim(),
-        company:    form.company.value.trim()
+        company:    form.company.value.trim(),
+        telephone:  ''
       };
       error.textContent = '';
       if (!values.first_name) { error.textContent = 'Indique ton prénom.'; form.first_name.focus(); return; }
       if (!values.last_name) { error.textContent = 'Indique ton nom.'; form.last_name.focus(); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) { error.textContent = 'Indique une adresse email valide.'; form.email.focus(); return; }
+      var phone = readPhone(form);
+      if (!phone.valid) { error.textContent = PHONE_ERROR; form.telephone.focus(); return; }
+      values.telephone = phone.value;
 
       saveLead(values);
       setLoading(submit, true, 'Envoi…');
       post('/wire', {
         plan: planKey, page: pageSlug(), first_name: values.first_name, last_name: values.last_name,
-        email: values.email, company: values.company, attribution: attribution()
+        email: values.email, company: values.company, telephone: values.telephone, attribution: attribution()
       })
         .then(function () {
           track('InitiateCheckout', plan, { planKey: planKey, paymentMethod: 'wire', email: values.email, firstName: values.first_name });
@@ -368,6 +392,7 @@
     });
 
     openModal(container, 'awx-title');
+    attachPhone(form);
   }
 
   // ── Success page ─────────────────────────────────────────────────────────────

@@ -19,6 +19,7 @@
         formData: {
             firstName: '',
             email: '',
+            telephone: '',
             useCases: [],
             estimatedVolume: ''
         },
@@ -54,6 +55,7 @@
         updateButtonText();
         displayPlanInfo();
         setupEmailFieldListener();
+        setupPhoneField();
         attachEventListeners();
         console.log('OneTake Express Signup initialized' + (isSandbox ? ' [SANDBOX MODE]' : ''));
     }
@@ -447,6 +449,18 @@
         }
     }
 
+    // WhatsApp number (optional): country picker, prefilled from ?telephone=
+    function setupPhoneField() {
+        const input = document.getElementById('telephone');
+        if (!input || !window.oneTakePhoneField) return;
+        const prefill = window.oneTakePhoneField.fromUrl();
+        if (prefill) input.value = prefill;
+        window.oneTakePhoneField.attach(input, { lang: state.currentLanguage });
+        input.addEventListener('blur', () => validateField('telephone'));
+        input.addEventListener('input', () => clearError('telephone'));
+        input.addEventListener('countrychange', () => clearError('telephone'));
+    }
+
     // Validate individual field
     function validateField(fieldName) {
         const input = document.getElementById(fieldName);
@@ -469,6 +483,11 @@
             } else if (!core.isValidEmail(input.value)) {
                 isValid = false;
                 errorMessage = getTranslation('error.email');
+            }
+        } else if (fieldName === 'telephone') {
+            if (window.oneTakePhoneField && !window.oneTakePhoneField.read(input).valid) {
+                isValid = false;
+                errorMessage = getTranslation('error.phone');
             }
         }
 
@@ -518,6 +537,10 @@
         }
 
         if (!validateField('email')) {
+            isValid = false;
+        }
+
+        if (!validateField('telephone')) {
             isValid = false;
         }
 
@@ -586,6 +609,10 @@
         // Collect form data
         state.formData.firstName = document.getElementById('firstName').value.trim();
         state.formData.email = document.getElementById('email').value.trim();
+        const telephoneInput = document.getElementById('telephone');
+        state.formData.telephone = telephoneInput && window.oneTakePhoneField
+            ? window.oneTakePhoneField.read(telephoneInput).value
+            : '';
         state.formData.useCases = getSelectedUseCases();
         state.formData.estimatedVolume = document.getElementById('usageFrequency').value;
 

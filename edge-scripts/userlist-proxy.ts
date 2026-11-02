@@ -99,6 +99,14 @@ function cleanChoice(value: unknown, allowed: string[], multiple: boolean): stri
   return [...new Set(multiple ? picked : picked.slice(0, 1))].join(',');
 }
 
+// WhatsApp number (optional) in E.164, e.g. +33612345678; '' when absent or malformed
+function cleanPhone(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  let phone = value.replace(/[\s.\-()\/]/g, '');
+  if (phone.startsWith('00')) phone = '+' + phone.slice(2);
+  return /^\+[1-9]\d{6,14}$/.test(phone) ? phone : '';
+}
+
 function isValidIsoDate(value: string): boolean {
   return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value) && !isNaN(Date.parse(value));
 }
@@ -138,6 +146,7 @@ BunnySDK.net.http.serve(async (req: Request) => {
   const event      = ALLOWED_EVENTS.includes(fields.event) ? fields.event : 'Lead';
   const slug       = isValidSlug(fields.masterclass_slug || '') ? fields.masterclass_slug : '';
   const attendsOn  = isValidIsoDate(fields.attends_masterclass_on || '') ? fields.attends_masterclass_on : '';
+  const telephone  = cleanPhone(fields.telephone);
 
   // Affiliate and campaign attribution: only these keys, as short plain strings
   const attribution: Record<string, string> = {};
@@ -173,6 +182,7 @@ BunnySDK.net.http.serve(async (req: Request) => {
   if (language)   userProperties.language   = language;
   if (slug)       userProperties.masterclass_slug       = slug;
   if (attendsOn)  userProperties.attends_masterclass_on = attendsOn;
+  if (telephone)  userProperties.telephone = telephone;   // an empty value never erases it
   // Last touch: a new value replaces the stored one; an empty value never erases it
   Object.assign(userProperties, attribution);
   Object.assign(userProperties, qualification);

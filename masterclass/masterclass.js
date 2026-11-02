@@ -160,6 +160,8 @@
   function setupForm(form) {
     var firstName = form.querySelector('[name="first_name"]');
     var email = form.querySelector('[name="email"]');
+    var phone = form.querySelector('[name="telephone"]'); // WhatsApp number, optional
+    var phoneField = window.oneTakePhoneField;
     var error = form.querySelector('.mc-form__error');
     var button = form.querySelector('button[type="submit"]');
     var sending = false;
@@ -168,12 +170,16 @@
     [[firstName, param('first_name')], [email, param('email')]].forEach(function (pair) {
       if (pair[1] && !/[{}<>]/.test(pair[1]) && !pair[0].value) pair[0].value = pair[1];
     });
+    if (phone && phoneField) {
+      if (!phone.value) phone.value = phoneField.fromUrl();
+      phoneField.attach(phone, { lang: config.language });
+    }
 
     function showError(text, field) {
       error.textContent = text;
       error.hidden = false;
-      [firstName, email].forEach(function (input) {
-        input.setAttribute('aria-invalid', String(input === field));
+      [firstName, email, phone].forEach(function (input) {
+        if (input) input.setAttribute('aria-invalid', String(input === field));
       });
       if (field) field.focus();
     }
@@ -183,6 +189,7 @@
       error.textContent = '';
       firstName.removeAttribute('aria-invalid');
       email.removeAttribute('aria-invalid');
+      if (phone) phone.removeAttribute('aria-invalid');
     }
 
     function setLoading(isLoading) {
@@ -193,8 +200,8 @@
       button.querySelector('.btn__loading').hidden = !isLoading;
     }
 
-    [firstName, email].forEach(function (input) {
-      input.addEventListener('input', function () { if (!error.hidden) clearError(); });
+    [firstName, email, phone].forEach(function (input) {
+      if (input) input.addEventListener('input', function () { if (!error.hidden) clearError(); });
     });
 
     form.addEventListener('submit', function (event) {
@@ -204,6 +211,9 @@
       var lead = { first_name: firstName.value.trim(), email: email.value.trim() };
       if (!lead.first_name) return showError(config.messages.firstName, firstName);
       if (!isValidEmail(lead.email)) return showError(config.messages.email, email);
+      var phoneValue = phone && phoneField ? phoneField.read(phone) : { value: '', valid: true };
+      if (!phoneValue.valid) return showError(config.messages.telephone, phone);
+      if (phoneValue.value) lead.telephone = phoneValue.value;
       clearError();
       setLoading(true);
 
@@ -214,6 +224,7 @@
         event: config.registrationEvent,
         masterclass_slug: config.slug
       });
+      if (lead.telephone) body.set('telephone', lead.telephone);
       if (config.session) body.set('attends_masterclass_on', nextSession().toISOString());
       var source = attribution();
       Object.keys(source).forEach(function (key) { body.set(key, source[key]); });
@@ -464,6 +475,12 @@
       var value = values[id];
       if (input && value && !/[{}<>]/.test(value) && !input.value) input.value = value;
     });
+    // WhatsApp number given at registration (instagram/app.js turns the field into the picker)
+    var phone = document.getElementById('telephone');
+    var phoneValue = (window.oneTakePhoneField && window.oneTakePhoneField.fromUrl()) || lead.telephone;
+    if (phone && phoneValue && !/[{}<>]/.test(phoneValue) && !phone.value && window.oneTakePhoneField) {
+      window.oneTakePhoneField.setValue(phone, phoneValue);
+    }
   }
 
   // ── Proof section ────────────────────────────────────────────────────
@@ -586,12 +603,20 @@
   }
 
   // First name and email from the URL, or else from the registration saved in this browser
+  // ?telephone= as E.164 ('' if absent or malformed). An unencoded "+" in a query string reads as a space.
+  function urlTelephone() {
+    var raw = (new URLSearchParams(window.location.search).get('telephone') || '').replace(/^ (?=\d)/, '+');
+    var cleaned = raw.replace(/[\s.\-()\/]/g, '');
+    return /^\+[1-9]\d{6,14}$/.test(cleaned) ? cleaned : '';
+  }
+
   function lead() {
     var saved = savedLead();
     var clean = function (v) { return v && !/[{}<>]/.test(v) ? v : ''; };
     return {
       first_name: clean(param('first_name')) || clean(saved.first_name),
-      email: clean(param('email')) || clean(saved.email)
+      email: clean(param('email')) || clean(saved.email),
+      telephone: urlTelephone() || clean(saved.telephone)
     };
   }
 

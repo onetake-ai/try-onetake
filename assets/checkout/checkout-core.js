@@ -164,6 +164,10 @@
         if (state.formData.email) {
             data.email = state.formData.email;
         }
+        // WhatsApp number (E.164), optional; the Paddle webhook sync stores it in Userlist `telephone`
+        if (state.formData.telephone) {
+            data.telephone = state.formData.telephone;
+        }
 
         // Include UTM tracking params via tracking module
         if (window.oneTakeTracking) {

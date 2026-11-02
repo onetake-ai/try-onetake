@@ -153,7 +153,7 @@
     var plan = presets()[planKey] || livePresets()[planKey];
     var lead = window.masterclass.lead();
     return {
-      formData: { firstName: lead.first_name, email: lead.email, useCases: [], estimatedVolume: '' },
+      formData: { firstName: lead.first_name, email: lead.email, telephone: lead.telephone || '', useCases: [], estimatedVolume: '' },
       currentLanguage: config.language,
       planKey: planKey,
       planInfo: plan,

@@ -1,0 +1,30 @@
+/* Phone field (intl-tel-input wrapper). Loaded by phone-field.js after the library's CSS. */
+
+.iti.otp-phone {
+  display: block;
+  width: 100%;
+  --iti-border-color: rgba(0, 0, 0, 0.15);
+  --iti-hover-color: rgba(0, 0, 0, 0.05);
+  --iti-icon-color: currentColor;
+}
+
+.iti.otp-phone .iti__country-list,
+.iti.otp-phone .iti__search-input {
+  font-family: inherit;
+  font-size: 0.9375rem;
+}
+
+.iti.otp-phone .iti__country-list {
+  color: #241826;
+}
+
+/* Our inputs animate "all": the dial code width set by the library must apply at once, never slide in */
+.iti.otp-phone .iti__tel-input {
+  transition-property: border-color, box-shadow, background-color, color;
+}
+
+/* Above the Airwallex popups (2000) and the checkout embed lightbox (99999). */
+.iti--detached-country-selector,
+.iti--fullscreen-popup {
+  z-index: 100001;
+}

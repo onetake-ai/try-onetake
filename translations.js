@@ -35,6 +35,9 @@ const translations = {
         'footer.privacy': "By signing up, I agree to the <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Terms of Service & Refund Policy</a> and the <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Privacy Policy</a>.",
         'error.required': 'This field is required',
         'error.email': 'Please enter a valid email address',
+        'label.whatsapp': 'WhatsApp number (or mobile number)',
+        'label.optional': 'Optional',
+        'error.phone': 'Please enter a valid number, including the country code',
         'error.useCases': 'Please select at least one use case',
         'error.network': 'Connection error. Please try again.',
         // Use cases
@@ -89,6 +92,9 @@ const translations = {
         'footer.privacy': "En m'inscrivant, j'accepte les <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Conditions d'utilisation et Politique de remboursement</a> et la <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Politique de confidentialité</a>.",
         'error.required': 'Ce champ est requis',
         'error.email': 'Merci d\'entrer une adresse e-mail valide',
+        'label.whatsapp': 'Numéro WhatsApp (ou numéro de mobile)',
+        'label.optional': 'Facultatif',
+        'error.phone': 'Merci d\'entrer un numéro valide, avec l\'indicatif du pays',
         'error.useCases': 'Sélectionnez au moins un usage',
         'error.network': 'Erreur de connexion. Réessayez.',
         // Use cases
@@ -143,6 +149,9 @@ const translations = {
         'footer.privacy': "Al registrarme, acepto los <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Términos de servicio y Política de reembolso</a> y la <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Política de privacidad</a>.",
         'error.required': 'Este campo es obligatorio',
         'error.email': 'Por favor ingresa un correo válido',
+        'label.whatsapp': 'Número de WhatsApp (o número de móvil)',
+        'label.optional': 'Opcional',
+        'error.phone': 'Por favor ingresa un número válido, con el código de país',
         'error.useCases': 'Selecciona al menos un caso de uso',
         'error.network': 'Error de conexión. Inténtalo de nuevo.',
         // Use cases
@@ -197,6 +206,9 @@ const translations = {
         'footer.privacy': "Ao me inscrever, concordo com os <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Termos de serviço e Política de reembolso</a> e a <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Política de privacidade</a>.",
         'error.required': 'Este campo é obrigatório',
         'error.email': 'Por favor, insira um e-mail válido',
+        'label.whatsapp': 'Número de WhatsApp (ou número de celular)',
+        'label.optional': 'Opcional',
+        'error.phone': 'Por favor, insira um número válido, com o código do país',
         'error.useCases': 'Selecione pelo menos um caso de uso',
         'error.network': 'Erro de conexão. Tente novamente.',
         // Use cases
@@ -251,6 +263,9 @@ const translations = {
         'footer.privacy': "Registrandomi, accetto i <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Termini di servizio e Politica di rimborso</a> e la <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Politica sulla privacy</a>.",
         'error.required': 'Questo campo è obbligatorio',
         'error.email': 'Inserisci un indirizzo e-mail valido',
+        'label.whatsapp': 'Numero WhatsApp (o numero di cellulare)',
+        'label.optional': 'Facoltativo',
+        'error.phone': 'Inserisci un numero valido, con il prefisso internazionale',
         'error.useCases': 'Seleziona almeno un caso d\'uso',
         'error.network': 'Errore di connessione. Riprova.',
         // Use cases
@@ -305,6 +320,9 @@ const translations = {
         'footer.privacy': "登録することで、<a href='https://www.onetake.ai/terms-of-service' target='_blank'>利用規約と返金ポリシー</a>および<a href='https://www.onetake.ai/privacy-policy' target='_blank'>プライバシーポリシー</a>に同意します。",
         'error.required': 'この項目は必須です',
         'error.email': '有効なメールアドレスを入力してください',
+        'label.whatsapp': 'WhatsApp番号（または携帯電話番号）',
+        'label.optional': '任意',
+        'error.phone': '国番号を含む有効な番号を入力してください',
         'error.useCases': '少なくとも1つのユースケースを選択してください',
         'error.network': '接続エラー。もう一度お試しください。',
         // Use cases
@@ -359,6 +377,9 @@ const translations = {
         'footer.privacy': "Регистрируясь, я принимаю <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Условия использования и Политику возврата</a> и <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Политику конфиденциальности</a>.",
         'error.required': 'Это поле обязательно',
         'error.email': 'Пожалуйста, введи действительный адрес электронной почты',
+        'label.whatsapp': 'Номер WhatsApp (или номер мобильного)',
+        'label.optional': 'Необязательно',
+        'error.phone': 'Пожалуйста, введи действительный номер с кодом страны',
         'error.useCases': 'Выбери хотя бы один вариант использования',
         'error.network': 'Ошибка соединения. Попробуй снова.',
         // Use cases
@@ -413,6 +434,9 @@ const translations = {
         'footer.privacy': "Mit der Anmeldung akzeptiere ich die <a href='https://www.onetake.ai/terms-of-service' target='_blank'>Nutzungsbedingungen und Rückerstattungsrichtlinie</a> und die <a href='https://www.onetake.ai/privacy-policy' target='_blank'>Datenschutzrichtlinie</a>.",
         'error.required': 'Dieses Feld ist erforderlich',
         'error.email': 'Bitte gib eine gültige E-Mail-Adresse ein',
+        'label.whatsapp': 'WhatsApp-Nummer (oder Handynummer)',
+        'label.optional': 'Optional',
+        'error.phone': 'Bitte gib eine gültige Nummer mit Ländervorwahl ein',
         'error.useCases': 'Wähle mindestens einen Anwendungsfall',
         'error.network': 'Verbindungsfehler. Bitte versuche es erneut.',
         // Use cases
