@@ -72,6 +72,7 @@ function create() {
   clearError();
   $('pageLink').value = link.page;
   $('openLink').href = link.page;
+  $('limitedWarning').hidden = !link.limited;
   $('makerResult').hidden = false;
   check(link);
 }
