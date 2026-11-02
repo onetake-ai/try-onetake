@@ -57,7 +57,7 @@ type Plan = {
   currency:    string;
   duration:    { period: number; period_unit: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' };   // Billing cycle, same as the price's
   opensAt?:    string;   // ISO 8601 UTC; checkouts refused before
-  closesAt:    string;   // ISO 8601 UTC; checkouts refused from this instant
+  closesAt?:   string;   // ISO 8601 UTC; checkouts refused from this instant (omit: always open)
   successPath: string;   // Root-relative
   backPath:    string;   // Root-relative, anchored at the pricing section
   wire?:       boolean;  // Bank transfer allowed
@@ -100,6 +100,22 @@ const PLANS: Record<string, Plan> = {
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
     backPath:    '/4dcm/le-challenge/#prix',
+  },
+  // Same offer for current and former OneTake customers (/4dcm/acces-challenge/): no sales window
+  'challenge-access-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (accès clients, annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    successPath: '/4dcm/acces-challenge/merci/',
+    backPath:    '/4dcm/acces-challenge/#prix',
+    wire:        true,
   },
 };
 
@@ -188,7 +204,7 @@ function cleanAttribution(value: unknown): Record<string, string> {
 // null when the plan can be sold now, else the error response
 function checkWindow(plan: Plan): Response | null {
   const now = Date.now();
-  if (now >= Date.parse(plan.closesAt)) return fail('OFFER_CLOSED', 410);
+  if (plan.closesAt && now >= Date.parse(plan.closesAt)) return fail('OFFER_CLOSED', 410);
   if (plan.opensAt && now < Date.parse(plan.opensAt)) return fail('NOT_OPEN_YET', 403);
   return null;
 }
