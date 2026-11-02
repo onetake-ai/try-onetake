@@ -58,9 +58,9 @@ The value can be either a root-relative path (e.g. `/onboarding/ehv/`) or a full
 
 **Files:** `/airwallex-data.js`, `/assets/airwallex/airwallex-checkout.js`, `/assets/airwallex/airwallex-checkout.css`, `/edge-scripts/airwallex-checkout.ts`
 
-Card payments through Airwallex Hosted Billing Checkout (subscriptions), used instead of Paddle on `/4dcm/le-challenge/`. Never send a raw price ID or URL from the browser: pages only use plan keys.
+Card payments through Airwallex Hosted Billing Checkout (subscriptions), used instead of Paddle on `/4dcm/le-challenge/` and `/4dcm/acces-challenge/`. Never send a raw price ID or URL from the browser: pages only use plan keys.
 
-- **Plans:** declared twice by the same key. `/airwallex-data.js` holds what the page shows and tracks (label, value, wire transfer reference prefix, bank details, edge script URL). `PLANS` in `edge-scripts/airwallex-checkout.ts` holds the allowlist: Airwallex price ID, optional `bonusPriceIds` (0 € prices with the same billing cycle, listed under the plan on the checkout page as included bonuses without changing the total), sales window (`opensAt`, `closesAt`, ISO 8601 UTC) and the success and back pages. To sell a new plan, add it to both.
+- **Plans:** declared twice by the same key. `/airwallex-data.js` holds what the page shows and tracks (label, value, wire transfer reference prefix, bank details, edge script URL). `PLANS` in `edge-scripts/airwallex-checkout.ts` holds the allowlist: Airwallex price ID, optional `bonusPriceIds` (0 € prices with the same billing cycle, listed under the plan on the checkout page as included bonuses without changing the total), sales window (`opensAt`, `closesAt`, ISO 8601 UTC, both optional) and the success and back pages. To sell a new plan, add it to both.
 - **Markup:** `<button data-airwallex-plan="challenge-yearly">` opens a popup asking first name, email and the optional WhatsApp number (see "Phone field"), then redirects to a checkout created on the spot (it expires after 1 hour, never create one in advance). `<button data-airwallex-wire="challenge-yearly">` opens the wire transfer form (only plans with a `wire` entry), then shows the bank details and the reference (`PREFIX LASTNAME Firstname`) with copy buttons. Load `airwallex-data.js`, then `airwallex-checkout.js`, plus the CSS.
 - **Success page:** call `oneTakeAirwallex.confirmPurchase()`. It asks the edge script whether the checkout started in this browser is `COMPLETED`, then fires `Purchase` once. OneTake accounts are not created automatically: the success page says credentials arrive by email within the same business day, and the team creates them from the Userlist `Purchase` event.
 - **Events:** `AddToCart` when the email is entered (AnyTrack, Plausible, Userlist), `InitiateCheckout` when the wire form is sent (AnyTrack, Plausible, Userlist with the user property `pledged_wire_payment_on`), `Purchase` on the success page (AnyTrack, Plausible with revenue, Userlist). No `InitiateCheckout` for card payments: the hosted checkout gives no signal back. No affiliate (FirstPromoter) tracking.
@@ -105,6 +105,15 @@ French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/
 
 - **Dates (Europe/Paris):** annual plan only, until Fri Oct 30, 23:59:59; from Sat Oct 31, 00:00, annual and quarterly (wire transfer stays annual only); closed after Mon Nov 2, 23:59:59 (the countdown bar redirects to `/oto/too-late/`). The same dates live in three places, keep them in sync: `CONFIG` in `app.js`, `data-deadline` in `index.html`, `PLANS` in `edge-scripts/airwallex-checkout.ts`.
 - **Preview:** `?preview_state=launch` or `?preview_state=quarterly` changes the display only (the edge script still follows the real dates); `?unlockfor=1` disables the countdown redirect.
+- **Skills:** the 31 skills of section 6 live in `/4dcm/challenge-skills.js`, shared with `/4dcm/acces-challenge/`. `app.js` only handles the offer dates.
+
+## Accès Challenge for OneTake customers (`/4dcm/acces-challenge/`)
+
+Version of the Challenge page for current and former OneTake customers, sent by link (`noindex`). Copy rewritten for two cases: customers whose videos don't sell enough, and customers who never made their videos because they didn't know what to present or sell. Keeps the 2026 dates (Welcome Ceremony on Nov 3, then its replay; Challenge from Dec 1 to Dec 20) but has no countdown and never closes.
+
+- **Plan:** annual only, Airwallex plan key `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, wire transfer allowed, no `closesAt`), success page `/4dcm/acces-challenge/merci/`.
+- **Customers:** active subscribers get the remaining days of their subscription added, prorated; former customers get OneTake reactivated at the Scale level. The team does both by hand from the Userlist `Purchase` event.
+- **Shared files:** `/4dcm/le-challenge/style.css` and `/4dcm/challenge-skills.js`. It does not load `le-challenge/app.js` (offer dates).
 
 ## Embeddable checkout snippet
 

@@ -34,6 +34,14 @@ window.AIRWALLEX_CONFIG = {
             value: 299,
             currency: 'EUR',
             priceLabel: '299\u00a0€ HT / trimestre'
+        },
+        // Current and former OneTake customers (/4dcm/acces-challenge/): same offer, no deadline
+        'challenge-access-yearly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an',
+            wire: { amountLabel: '999\u00a0€\u00a0HT', referencePrefix: 'CHALLENGE' }
         }
     }
 };
