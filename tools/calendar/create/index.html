@@ -38,12 +38,15 @@
     <details class="steps maker__help">
       <summary>Where do I find the Proton share link?</summary>
       <ol>
-        <li>Open <a href="https://calendar.proton.me" target="_blank" rel="noopener">calendar.proton.me</a>, then <strong>Settings</strong> (⚙️), <strong>All settings</strong>, <strong>Calendars</strong>.</li>
-        <li>Under <strong>My calendars</strong>, open the settings of the calendar you want to share.</li>
-        <li>In <strong>Share with anyone</strong>, click <strong>Create link</strong>, choose <strong>Full view</strong> (so people see the event names and details), then <strong>Create</strong>.</li>
-        <li>Click <strong>Copy</strong> next to the new link, and paste it below.</li>
+        <li>Open <a href="https://calendar.proton.me" target="_blank" rel="noopener">calendar.proton.me</a> in your web browser (sharing isn't possible from the Proton mobile apps).</li>
+        <li>Click <strong>Settings</strong> (⚙️), <strong>All settings</strong>, <strong>Calendars</strong>, then select the calendar you want to share. Shortcut: click the settings icon next to the calendar in the left column.</li>
+        <li>Scroll to <strong>Share with anyone</strong> and click <strong>Create link</strong>.</li>
+        <li>Choose <strong>Full view</strong>. With "Limited view", people only see when you're busy, without the event names or the links to join.</li>
+        <li>Click <strong>Copy link</strong>, and paste it below.</li>
       </ol>
       <p>The link starts with <code>https://calendar.proton.me/api/calendar/v1/url/</code>.</p>
+      <p><strong>One link per group:</strong> Proton allows up to 5 links per calendar. Create one for each group of clients and name it (<strong>Actions</strong>, <strong>Edit label</strong>). To stop sharing with one group, delete its link (<strong>Actions</strong>, <strong>Delete link</strong>): the other groups keep theirs.</p>
+      <p><strong>A client's calendar stopped updating?</strong> Some calendar apps stop refreshing Proton links after a while. Create a new link here, send the new page link, and ask them to remove the old calendar and subscribe again.</p>
     </details>
 
     <form class="maker__form" id="makerForm" novalidate>
@@ -62,7 +65,7 @@
         <button type="button" class="btn btn--dark btn--small" id="copyLink">Copy</button>
       </div>
       <a class="btn btn--ghost" id="openLink" href="#" target="_blank" rel="noopener">Open the page</a>
-      <p class="maker__tip">Send this link by email or message. Anyone who has it can see the calendar's events, so only share it with the people the calendar is meant for.</p>
+      <p class="maker__tip">Send this link by email or message. Anyone who has it can see the calendar's events, so only share it with the people the calendar is meant for. Changes you make in Proton can take up to 8 hours to reach the page and your guests' calendars.</p>
     </section>
 
   </main>
