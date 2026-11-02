@@ -14,8 +14,12 @@
  *                       or 'weekly-live' (French: the Wednesday after the Thursday live, Paris time)
  *   revealAfterSeconds  0 = sales content visible right away; otherwise seconds of time on page
  *   expiredRedirectUrl  where to send visitors once the offer is over
+ *   form                strings of the buyer popup shown before Paddle (title, intro, labels, button, errors)
  *
- * URL parameters: first_name, email, registered_on (English), attends_masterclass_on (French),
+ * Every checkout button first opens the buyer popup (first name, email, optional WhatsApp number),
+ * prefilled from the URL or the registration saved in the browser, so an abandoned checkout carries the buyer.
+ *
+ * URL parameters: first_name, email, telephone, registered_on (English), attends_masterclass_on (French),
  *   offer=1 (show the sales content right away), unlockfor=<anything> (preview: no deadline redirect),
  *   environment=sandbox (Paddle sandbox, as on /instagram/).
  *
@@ -126,7 +130,7 @@
     });
 
     document.querySelectorAll('[data-offer-cta] .js-offer-checkout').forEach(function (button) {
-      button.addEventListener('click', function () { openCheckout(button); });
+      button.addEventListener('click', function () { openBuyerPopup(button); });
     });
   }
 
@@ -148,10 +152,10 @@
     return isSandbox && typeof sandboxPlanPresets !== 'undefined' ? sandboxPlanPresets : livePresets();
   }
 
-  function buildState(planKey) {
+  function buildState(planKey, buyer) {
     // Sandbox presets don't list every plan; fall back to the live preset (same as instagram/app.js)
     var plan = presets()[planKey] || livePresets()[planKey];
-    var lead = window.masterclass.lead();
+    var lead = buyer || window.masterclass.lead();
     return {
       formData: { firstName: lead.first_name, email: lead.email, telephone: lead.telephone || '', useCases: [], estimatedVolume: '' },
       currentLanguage: config.language,
@@ -169,11 +173,138 @@
     };
   }
 
-  function openCheckout(button) {
+  // ── Buyer popup: first name, email and WhatsApp number before Paddle ──
+
+  var popup = null;
+  var popupButton = null;   // the CTA that opened the popup: checkout errors show in its block
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function buildBuyerPopup() {
+    var text = offer.form || {};
+    var dialog = document.createElement('dialog');
+    dialog.className = 'of-modal';
+    dialog.setAttribute('aria-labelledby', 'ofModalTitle');
+    dialog.innerHTML =
+      '<button type="button" class="of-modal__close" aria-label="' + (text.close || 'Close') + '">&times;</button>' +
+      '<h2 class="of-modal__title" id="ofModalTitle"></h2>' +
+      '<p class="of-modal__text"></p>' +
+      '<form class="mc-form" novalidate>' +
+        '<div class="mc-field">' +
+          '<label class="mc-label" for="ofFirstName"></label>' +
+          '<input class="mc-input" type="text" id="ofFirstName" name="first_name" autocomplete="given-name" enterkeyhint="next" required>' +
+        '</div>' +
+        '<div class="mc-field mc-field--email">' +
+          '<label class="mc-label" for="ofEmail"></label>' +
+          '<input class="mc-input bouncer" type="email" id="ofEmail" name="email" autocomplete="email" inputmode="email" enterkeyhint="next" required>' +
+        '</div>' +
+        '<div class="mc-field mc-field--phone">' +
+          '<label class="mc-label" for="ofTelephone"><span data-of-phone-label></span> <span class="mc-label__optional"></span></label>' +
+          '<input class="mc-input" type="tel" id="ofTelephone" name="telephone" autocomplete="tel" inputmode="tel" enterkeyhint="go">' +
+        '</div>' +
+        '<p class="mc-form__error" role="alert" hidden></p>' +
+        '<button class="mc-btn" type="submit"></button>' +
+        '<p class="mc-form__micro"></p>' +
+      '</form>';
+    // Strings set as text, never as HTML
+    dialog.querySelector('.of-modal__title').textContent = text.title || '';
+    dialog.querySelector('.of-modal__text').textContent = text.intro || '';
+    dialog.querySelector('label[for="ofFirstName"]').textContent = text.firstNameLabel || '';
+    dialog.querySelector('label[for="ofEmail"]').textContent = text.emailLabel || '';
+    dialog.querySelector('[data-of-phone-label]').textContent = text.phoneLabel || '';
+    dialog.querySelector('.mc-label__optional').textContent = text.optional || '';
+    dialog.querySelector('.mc-btn').textContent = text.button || '';
+    dialog.querySelector('.mc-form__micro').textContent = text.note || '';
+    if (!text.intro) dialog.querySelector('.of-modal__text').remove();
+    if (!text.note) dialog.querySelector('.mc-form__micro').remove();
+    document.body.appendChild(dialog);
+
+    var form = dialog.querySelector('form');
+    var fields = { firstName: form.first_name, email: form.email, telephone: form.telephone };
+    var error = form.querySelector('.mc-form__error');
+
+    function showError(textKey, field) {
+      error.textContent = text[textKey] || '';
+      error.hidden = false;
+      Object.keys(fields).forEach(function (k) { fields[k].setAttribute('aria-invalid', String(fields[k] === field)); });
+      if (field) field.focus();
+    }
+    function clearError() {
+      error.hidden = true;
+      error.textContent = '';
+      Object.keys(fields).forEach(function (k) { fields[k].removeAttribute('aria-invalid'); });
+    }
+    Object.keys(fields).forEach(function (k) {
+      fields[k].addEventListener('input', function () { if (!error.hidden) clearError(); });
+    });
+    // "Next" on the first name keyboard moves to email instead of submitting
+    fields.firstName.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') { event.preventDefault(); fields.email.focus(); }
+    });
+    fields.email.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') { event.preventDefault(); fields.telephone.focus(); }
+    });
+
+    var phoneField = window.oneTakePhoneField;
+    if (phoneField) phoneField.attach(fields.telephone, { lang: config.language });
+
+    dialog.querySelector('.of-modal__close').addEventListener('click', function () { closePopup(); });
+    // Click on the backdrop closes the popup
+    dialog.addEventListener('click', function (event) { if (event.target === dialog) closePopup(); });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var buyer = { first_name: fields.firstName.value.trim(), email: fields.email.value.trim(), telephone: '' };
+      if (!buyer.first_name) return showError('errorFirstName', fields.firstName);
+      if (!isValidEmail(buyer.email)) return showError('errorEmail', fields.email);
+      var phone = phoneField ? phoneField.read(fields.telephone) : { value: '', valid: true };
+      if (!phone.valid) return showError('errorPhone', fields.telephone);
+      buyer.telephone = phone.value;
+      clearError();
+
+      if (window.masterclass && window.masterclass.saveLead) window.masterclass.saveLead(buyer);
+      if (window.fpr) window.fpr('referral', { email: buyer.email });
+      closePopup();
+      openCheckout(popupButton, buyer);
+    });
+
+    return { dialog: dialog, fields: fields, clearError: clearError };
+  }
+
+  function openBuyerPopup(button) {
+    if (!popup) popup = buildBuyerPopup();
+    popupButton = button;
+    popup.clearError();
+
+    // Prefilled every time from the URL, else the registration or purchase saved in the browser
+    var lead = window.masterclass ? window.masterclass.lead() : {};
+    if (!popup.fields.firstName.value && lead.first_name) popup.fields.firstName.value = lead.first_name;
+    if (!popup.fields.email.value && lead.email) popup.fields.email.value = lead.email;
+    if (!popup.fields.telephone.value && lead.telephone && window.oneTakePhoneField) {
+      window.oneTakePhoneField.setValue(popup.fields.telephone, lead.telephone);
+    }
+
+    var dialog = popup.dialog;
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+    var firstEmpty = [popup.fields.firstName, popup.fields.email].filter(function (f) { return !f.value; })[0];
+    (firstEmpty || dialog.querySelector('.mc-btn')).focus();
+  }
+
+  function closePopup() {
+    if (!popup) return;
+    var dialog = popup.dialog;
+    if (typeof dialog.close === 'function' && dialog.open) dialog.close();
+    else dialog.removeAttribute('open');
+  }
+
+  function openCheckout(button, buyer) {
     var block = button.closest('[data-offer-cta]');
     var error = block.querySelector('.of-cta__error');
     error.hidden = true;
-    state = buildState(offer.plans[selectedPlan]);
+    state = buildState(offer.plans[selectedPlan], buyer);
     window.oneTakeState = state;
     window.oneTakeCheckout.openCheckout(state, presets(), {
       onError: function () {

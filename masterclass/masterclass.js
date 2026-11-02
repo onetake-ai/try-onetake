@@ -620,7 +620,7 @@
     };
   }
 
-  window.masterclass = { mountSessionCountdown: mountSessionCountdown, lead: lead, param: param };
+  window.masterclass = { mountSessionCountdown: mountSessionCountdown, lead: lead, saveLead: saveLead, param: param };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
