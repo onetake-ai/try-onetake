@@ -115,6 +115,15 @@ Version of the Challenge page for current and former OneTake customers, sent by 
 - **Customers:** active subscribers get access to everything at signup; the time left on their current subscription is added to their first year (or quarter), so only their next payment date moves. Same yearly amount, e.g. last paid Jan 1, 2026, joined Nov 1, 2026, next payment Jan 1, 2028. Other amounts (monthly, other tier): the value left is turned into extra time at the Challenge price (100 € HT left pushes the next payment back about 5 weeks). The worked example sits in the "Ton compte OneTake" box (`#ton-compte`). Former customers get OneTake reactivated at the Scale level. The team does all of it by hand from the Userlist `Purchase` event.
 - **Shared files:** `/4dcm/le-challenge/style.css` and `/4dcm/challenge-skills.js`. It does not load `le-challenge/app.js` (offer dates).
 
+## Didacs mockups (`/masterclass/didacs/`)
+
+Three redesign mockups of the Didacs Center masterclass page (a client example, French, `noindex, nofollow`), each copying one layout: `/masterclass/didacs/` (layout of `/masterclass/trafic/`), `/didacs/1/` (`/trafic/1/`), `/didacs/2/` (`/trafic/2/`). No tracking and no real form: `didacs.js` checks the fields, then shows "Maquette : ce formulaire n'envoie rien.". Each folder has a `changements.md`: the step-by-step list of changes from the original page, in marketing terms and in animation order.
+
+- **Styles:** `masterclass.css` (and `variants.css` on `/1/` and `/2/`), then `didacs/didacs.css`, which swaps the color tokens for the Didacs palette. Changes to the shared masterclass files also change these mockups.
+- **Images** stay on the Didacs servers (LeadConnector URLs in the pages and in `TESTIMONIALS` in `didacs.js`): never copy them into the repo.
+- **Date:** every Saturday at 11:00 Paris time, computed with `session-date.js` (`[data-dd-session]`, `[data-dd-session-day]`).
+- **Form:** parent first name, parent email, required mobile number (phone field), consent as small print. `/1/` and `/2/` reuse `variants.js` for the popup, the scroll button and the exit intent.
+
 ## Embeddable checkout snippet
 
 **Files:** `/assets/checkout/checkout-embed.js`, `/assets/checkout/checkout-embed.css`, `/assets/checkout/checkout-core.js`

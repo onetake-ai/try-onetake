@@ -1,0 +1,146 @@
+/* Didacs mockups (/masterclass/didacs/, /1/ and /2/): the Didacs Center masterclass page redesigned
+   with the layouts of /masterclass/trafic/, /trafic/1/ and /trafic/2/.
+   Loaded after masterclass.css (and variants.css on /1/ and /2/): it swaps the OneTake colors for
+   the Didacs ones (blue, yellow, red, navy) and adds the few Didacs-only blocks (rating, testimonials,
+   method slide, badges). Mobile first. */
+
+:root {
+  /* Didacs palette (taken from their page), mapped onto the masterclass tokens */
+  --golden-grass: #FFCB03;        /* Didacs yellow: CTAs and highlights */
+  --golden-grass-dark: #E6B600;
+  --golden-grass-tint: #FFF6D6;   /* Didacs cream */
+  --bleached-cedar: #1D2B3A;      /* navy, close to their #2C3345 text */
+  --cedar-muted: #4F5D6C;
+  --alabaster: #FAFAF6;
+  --cabaret: #CD0912;             /* Didacs red */
+  --cabaret-dark: #A8070F;
+  --cold-turkey: #EAF8FD;         /* Didacs light blue */
+  --shadow-soft: 0 4px 20px rgba(29, 43, 58, 0.08);
+  --shadow-focus: 0 0 0 4px rgba(0, 177, 237, 0.35);
+
+  --dd-blue: #00B1ED;             /* Didacs blue */
+  --dd-blue-dark: #0A78A8;
+  --dd-green: #4FB053;
+
+  /* variants.css */
+  --mv-black: #14202C;
+  --mv-dark-input: #2A3A4B;
+}
+
+/* ── Shared overrides ────────────────────────────────────────────────── */
+
+.hl {
+  background-image: linear-gradient(100deg, rgba(255, 203, 3, 0) 0.4%, rgba(255, 203, 3, 0.85) 2.5%, rgba(255, 203, 3, 0.65) 95%, rgba(255, 203, 3, 0) 99.6%);
+}
+.mc-btn, .mv-cta { box-shadow: 0 6px 18px rgba(255, 203, 3, 0.4); }
+.dd-page .host__photo { object-position: 50% 30%; }
+
+/* Text stand-in for the Didacs logo (their page shows none) */
+.dd-wordmark {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bleached-cedar);
+}
+.dd-wordmark::before {
+  content: ''; width: 14px; height: 14px; border-radius: 3px;
+  background: linear-gradient(135deg, var(--dd-blue) 50%, var(--cabaret) 50%);
+}
+.dd-wordmark--light { color: var(--white); }
+
+/* Form: required phone, consent as small print */
+.dd-consent { font-size: 12px; line-height: 1.45; color: var(--cedar-muted); text-align: center; }
+.mv2-form-card .dd-consent { color: #C5CED8; }
+.mc-form__error.is-mock { color: var(--dd-blue-dark); }
+.mv2-form-card .mc-form__error.is-mock { color: var(--dd-blue); }
+
+/* Google rating */
+.dd-rating { display: grid; gap: 2px; justify-items: center; text-align: center; }
+.dd-rating__stars { color: var(--golden-grass); font-size: 22px; letter-spacing: 2px; line-height: 1; }
+.dd-rating__score { font-size: 18px; font-weight: 800; }
+.dd-rating__count { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.8; }
+
+/* Testimonials: two rows scrolling in opposite directions (replaces the accounts scanner) */
+.dd-marquee {
+  display: grid; gap: 12px; padding: 6px 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.dd-marquee__track { display: flex; width: max-content; animation: mc-marquee 60s linear infinite; }
+.dd-marquee__track--reverse { animation-direction: reverse; animation-duration: 70s; }
+.dd-marquee:hover .dd-marquee__track { animation-play-state: paused; }
+.dd-marquee img {
+  flex: 0 0 auto; width: auto !important; height: 150px; margin-right: 12px;
+  border-radius: 10px; background: var(--white); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Testimonials wall (masonry with CSS columns) */
+.dd-grid { columns: 1; column-gap: 16px; text-align: left; }
+.dd-grid img {
+  width: 100%; margin: 0 0 16px; break-inside: avoid;
+  border-radius: 12px; border: 1px solid #E3E8EE; box-shadow: var(--shadow-soft); background: var(--white);
+}
+
+/* Method slide */
+.dd-method { width: 100%; max-width: 760px; margin: 0 auto; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+
+/* Credentials chips */
+.dd-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.dd-badges li {
+  padding: 6px 12px; border-radius: 999px; background: var(--cold-turkey); color: var(--dd-blue-dark);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+}
+
+/* Footer (Didacs, not OneTake) */
+.dd-footer-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+/* ── /masterclass/didacs/ (layout of /trafic/) ───────────────────────── */
+
+.dd-page .mc-hero .dd-wordmark { justify-self: center; margin-bottom: 2px; }
+.dd-page .mc-proof-panel { background: var(--bleached-cedar); }
+.dd-page .mc-proof-panel .mc-h2 { color: var(--white); margin-bottom: 6px; }
+.dd-proof-panel__sub { padding: 0 var(--gutter); margin-bottom: 14px !important; font-size: 15px; text-align: center; color: #C5CED8; }
+.dd-page .mc-proof-panel .dd-rating { margin-bottom: 14px; color: var(--white); }
+.dd-host-badges { margin-top: 4px; }
+.dd-session-note { font-size: 15px; text-align: center; color: var(--cedar-muted); margin-bottom: 18px !important; }
+
+/* ── /1/ ─────────────────────────────────────────────────────────────── */
+
+.mv1-h1__gold, .mv1-h2 em { color: var(--dd-blue-dark); }
+.mv1-features i { color: var(--dd-blue); }
+.mv1-host__portrait { background: radial-gradient(closest-side, rgba(0, 177, 237, 0.85), rgba(0, 177, 237, 0.2) 72%, rgba(0, 177, 237, 0)); }
+.mv1-band { background: linear-gradient(90deg, var(--dd-blue-dark) 50%, var(--mv-black) 50%); }
+.mv1-band__logo span { background: transparent; padding: 0; }
+
+.dd-proofbar { padding: 8px 0 44px; text-align: center; }
+.dd-proofbar__list { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; max-width: 760px; }
+.dd-proofbar__list li {
+  padding: 8px 14px; border-radius: 3px;
+  background: var(--cold-turkey); color: var(--bleached-cedar);
+  font-size: 15px; line-height: 1.2; font-weight: 700;
+}
+.dd-proofbar__list .dd-proofbar__stars { color: #D9A800; letter-spacing: 1px; }
+
+.mv1-proof .dd-method { margin-top: 4px; }
+.mv-page .mv-modal { border-color: var(--dd-blue); }
+
+/* ── /2/ ─────────────────────────────────────────────────────────────── */
+
+.mv2-proof .dd-marquee { padding: 12px 0; border-radius: 12px; background: var(--bleached-cedar); }
+.mv2-proof .dd-marquee img { height: 120px; }
+.mv2-dark .mv2-red { color: var(--golden-grass); }
+.mv2-join .dd-rating { margin-bottom: 4px; }
+
+/* ── Larger screens ──────────────────────────────────────────────────── */
+
+@media (min-width: 640px) {
+  .dd-grid { columns: 2; }
+}
+@media (min-width: 960px) {
+  .dd-grid { columns: 3; }
+  .dd-page .mc-hero .dd-wordmark { grid-area: logo; justify-self: start; margin: 0 0 12px; }
+  .dd-marquee img { height: 170px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd-marquee__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; row-gap: 12px; }
+  .dd-marquee__track > img[aria-hidden="true"], .dd-marquee__track--reverse { display: none; }
+}
