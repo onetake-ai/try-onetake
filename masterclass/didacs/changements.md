@@ -11,7 +11,7 @@ Les étapes suivent l'ordre d'une animation, du haut de la page vers le bas.
 
 1. **Retirer le grand bandeau bleu « Masterclass en ligne, objectif 16/20 en maths ».** Il occupe l'endroit le plus visible de la page sans rien demander au visiteur.
 2. **Ajouter le nom « Didacs Center » en petit, tout en haut.** Le visiteur sait tout de suite qui lui parle, sans que le nom vole l'attention.
-3. **Regrouper l'essentiel dans une étiquette au-dessus du titre : « Masterclass gratuite en direct, samedi … à 11h ».** Gratuit, en direct et la date se lisent en une seconde.
+3. **Regrouper l'essentiel dans une étiquette bien lisible au-dessus du titre, sur deux lignes : « Masterclass gratuite en direct », puis « samedi … à 11h (heure de Paris) ».** Gratuit, en direct et la date se lisent en une seconde.
 4. **Remplacer le titre en forme de question (« Ton ado se contente du minimum… ») par la promesse : « Aide ton ado à dépasser 16/20 en maths ».** Une promesse chiffrée attire plus qu'une question qui met le parent mal à l'aise.
 5. **Surligner « 16/20 en maths » en jaune.** L'œil va directement sur le résultat promis.
 6. **Garder la phrase d'explication sous le titre.** C'est leur meilleure phrase : la méthode, l'orientation, sans pression.
@@ -31,19 +31,20 @@ Les étapes suivent l'ordre d'une animation, du haut de la page vers le bas.
 
 15. **Fusionner les quatre paragraphes et les deux encadrés « problème » en un seul paragraphe d'accroche, avec la phrase clé en gras : « Il a les capacités. On ne lui a simplement jamais appris à les utiliser. »** Le parent se reconnaît en quelques lignes au lieu d'un long texte.
 16. **Transformer les trois cartes « Ce que tu vas découvrir » en une liste de 8 bénéfices cochés.** Chaque puce est une raison de plus de s'inscrire, et la liste se parcourt d'un coup d'œil.
-17. **Remonter les avis à côté de la liste, dans un panneau sombre : titre « Ils étaient bloqués eux aussi », note Google 4,7/5, 48 avis.** La preuve arrive au même moment que la promesse.
-18. **Remplacer le carrousel à flèches par deux rangées de témoignages qui défilent seules.** Le visiteur voit tous les résultats (4/20 → 16/20…) sans avoir à cliquer.
-19. **Retirer les boutons intermédiaires et leurs phrases de relance.** Les deux formulaires suffisent : moins de répétitions, une page plus courte.
+17. **Mettre en gras les 5 formules les plus fortes de la liste** (« celui qui bloque vraiment ton ado », « traiter le symptôme, jamais la cause », « je sais faire les exos en contrôle », « la méthode en 4 étapes pour dépasser 16/20 », « sans qu'il y passe toutes ses soirées »). Le lecteur pressé saisit l'essentiel en survolant les mots en gras.
+18. **Remonter les avis à côté de la liste, dans un panneau sombre : titre « Ils étaient bloqués eux aussi », note Google 4,7/5, 48 avis.** La preuve arrive au même moment que la promesse.
+19. **Remplacer le carrousel à flèches par une rangée de grandes cartes de témoignages qui défilent lentement (pause au survol).** Les cartes sont assez grandes pour être lues, et le visiteur voit tous les résultats (4/20 → 16/20…) sans avoir à cliquer.
+20. **Retirer les boutons intermédiaires et leurs phrases de relance.** Les deux formulaires suffisent : moins de répétitions, une page plus courte.
 
 ## Hôte
 
-20. **Remplacer la grande vignette « méthode en 4 étapes » par un bloc hôte compact : photo de Steve, bio courte, deux pastilles « Accompagnement scolaire depuis 2012 » et « Centre de Réussite Scolaire ».** L'expert est présenté en quelques secondes, et les pastilles apportent la crédibilité.
-21. **Ajouter « il reste en direct pour répondre à tes questions » dans la bio.** On reprend ici un argument de la FAQ.
+21. **Remplacer la grande vignette « méthode en 4 étapes » par un bloc hôte compact : nouvelle photo de Steve, bio courte, deux pastilles « Accompagnement scolaire depuis 2012 » et « Centre de Réussite Scolaire ».** L'expert est présenté en quelques secondes, et les pastilles apportent la crédibilité.
+22. **Ajouter « il reste en direct pour répondre à tes questions » dans la bio.** On reprend ici un argument de la FAQ.
 
 ## Bas de page
 
-22. **Retirer la FAQ et répartir ses réponses les plus rassurantes dans la page :** gratuit, 100 % en ligne, de la 5e à la Terminale, ado bienvenu, replay réservé au direct. Les objections sont levées sans que le visiteur ait à ouvrir neuf questions.
-23. **Remplacer le bandeau bleu final par un second formulaire complet : « Réserve ta place pour samedi ».** Le visiteur convaincu en bas de page s'inscrit sur place, sans remonter.
-24. **Ajouter au-dessus de ce formulaire : « Ton ado peut assister avec toi : c'est vraiment mieux. Replay réservé aux participants en direct. »** Inviter l'ado engage toute la famille, et le replay limité donne une raison de venir en direct.
-25. **Retirer le bouton flottant « Clique pour réserver ! Samedi 11h ».** Le formulaire est déjà là : le bouton flottant faisait doublon et cachait le contenu sur mobile.
-26. **Alléger le pied de page.** Il garde les mentions légales sur fond clair.
+23. **Retirer la FAQ et répartir ses réponses les plus rassurantes dans la page :** gratuit, 100 % en ligne, de la 5e à la Terminale, ado bienvenu, replay réservé au direct. Les objections sont levées sans que le visiteur ait à ouvrir neuf questions.
+24. **Remplacer le bandeau bleu final par un second formulaire complet : « Réserve ta place pour samedi ».** Le visiteur convaincu en bas de page s'inscrit sur place, sans remonter.
+25. **Ajouter au-dessus de ce formulaire : « Ton ado peut assister avec toi : c'est vraiment mieux. Replay réservé aux participants en direct. »** Inviter l'ado engage toute la famille, et le replay limité donne une raison de venir en direct.
+26. **Retirer le bouton flottant « Clique pour réserver ! Samedi 11h ».** Le formulaire est déjà là : le bouton flottant faisait doublon et cachait le contenu sur mobile.
+27. **Alléger le pied de page.** Il garde les mentions légales sur fond clair.

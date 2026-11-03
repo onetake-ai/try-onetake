@@ -28,9 +28,9 @@ Les étapes suivent l'ordre d'une animation, du haut de la page vers le bas.
 ## Bénéfices et avis (même carte que la promesse)
 
 13. **Ajouter sous la promesse « Dans cette masterclass en direct avec Steve Anthony, cofondateur de Didacs Center, tu vas découvrir : ».** L'expert est nommé sans prendre de place.
-14. **Transformer les trois cartes « Ce que tu vas découvrir » en une liste de 8 bénéfices cochés.** Chaque puce est une raison de plus de s'inscrire.
+14. **Transformer les trois cartes « Ce que tu vas découvrir » en une liste de 8 bénéfices cochés, avec les 5 formules les plus fortes en gras.** Chaque puce est une raison de plus de s'inscrire, et le lecteur pressé saisit l'essentiel en survolant les mots en gras.
 15. **Ajouter la note « ★★★★★ 4,7/5 sur Google, 48 avis de parents et d'élèves » sous la liste.** La preuve suit immédiatement la promesse.
-16. **Remplacer le carrousel à flèches par deux rangées de témoignages qui défilent seules, dans la même carte.** Les résultats (4/20 → 16/20…) sont vus sans clic ni défilement.
+16. **Remplacer le carrousel à flèches par une rangée de grandes cartes de témoignages qui défilent lentement (pause au survol), dans la même carte.** Les cartes sont assez grandes pour être lues, et les résultats (4/20 → 16/20…) se voient sans clic.
 
 ## Problème
 
@@ -44,7 +44,7 @@ Les étapes suivent l'ordre d'une animation, du haut de la page vers le bas.
 21. **Ajouter une section « Comment participer à cette masterclass en direct ? », précédée de la note Google.** Elle répète la preuve juste avant l'action.
 22. **Expliquer l'inscription en une phrase : prénom, email, mobile, 100 % en ligne, rien à installer, ado bienvenu.** Les réponses clés de la FAQ sont reprises ici.
 23. **Ajouter un grand bouton jaune « Clique ici pour t'inscrire gratuitement » qui remonte au formulaire.** Le visiteur convaincu en bas de page est ramené au formulaire en un clic.
-24. **Terminer par la signature de Steve : photo, nom, « Cofondateur de Didacs Center, accompagnement scolaire depuis 2012 », bio courte.** La page se conclut comme une lettre personnelle : un visage et une crédibilité.
+24. **Terminer par la signature de Steve : nouvelle photo, nom, « Cofondateur de Didacs Center, accompagnement scolaire depuis 2012 », bio courte.** La page se conclut comme une lettre personnelle : un visage et une crédibilité.
 
 ## Ce qui disparaît
 
