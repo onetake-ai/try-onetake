@@ -120,7 +120,7 @@ Version of the Challenge page for current and former OneTake customers, sent by 
 Three redesign mockups of the Didacs Center masterclass page (a client example, French, `noindex, nofollow`), each copying one layout: `/masterclass/didacs/` (layout of `/masterclass/trafic/`), `/didacs/1/` (`/trafic/1/`), `/didacs/2/` (`/trafic/2/`). No tracking and no real form: `didacs.js` checks the fields, then shows "Maquette : ce formulaire n'envoie rien.". Each folder has a `changements.md`: the step-by-step list of changes from the original page, in marketing terms and in animation order.
 
 - **Styles:** `masterclass.css` (and `variants.css` on `/1/` and `/2/`), then `didacs/didacs.css`, which swaps the color tokens for the Didacs palette. Changes to the shared masterclass files also change these mockups.
-- **Images** stay on the Didacs servers (LeadConnector URLs in the pages and in `TESTIMONIALS` in `didacs.js`): never copy them into the repo.
+- **Images** stay remote (Steve's photo on `cdn.pikzels.com`, the rest on the Didacs LeadConnector servers, testimonials in `TESTIMONIALS` in `didacs.js`): never copy them into the repo. Testimonials hold a lot of text: keep them large (one scrolling row of wide cards, a two-column wall on `/1/`) and never wider than their own width.
 - **Date:** every Saturday at 11:00 Paris time, computed with `session-date.js` (`[data-dd-session]`, `[data-dd-session-day]`).
 - **Form:** parent first name, parent email, required mobile number (phone field), consent as small print. `/1/` and `/2/` reuse `variants.js` for the popup, the scroll button and the exit intent.
 

@@ -20,14 +20,14 @@ Les étapes suivent l'ordre d'une animation, du haut de la page vers le bas.
 ## Hôte et bénéfices
 
 8. **Ouvrir une section sombre titrée « Pour les parents de collégiens et de lycéens », avec « avec Steve Anthony, cofondateur de Didacs Center ».** Le parent sait tout de suite que la page lui parle.
-9. **Mettre Steve en grand portrait, sur un halo bleu, suivi d'un bandeau « Masterclass en direct | Didacs ».** L'hôte prend un visage, et l'événement fait plus « émission ».
-10. **Transformer les trois cartes « Ce que tu vas découvrir » en 8 bénéfices courts, sur une grille de quatre colonnes.** Chaque bénéfice est une raison de s'inscrire, et la grille se lit d'un coup d'œil.
+9. **Mettre Steve en grand portrait (nouvelle photo), sur un halo bleu, suivi d'un bandeau « Masterclass en direct | Didacs ».** L'hôte prend un visage, et l'événement fait plus « émission ».
+10. **Transformer les trois cartes « Ce que tu vas découvrir » en 8 bénéfices courts, sur une grille de quatre colonnes, avec les 5 formules les plus fortes en gras jaune.** Chaque bénéfice est une raison de s'inscrire, et les mots en gras résument la promesse pour le lecteur pressé.
 11. **Ajouter un bouton jaune juste après les bénéfices.** Le visiteur convaincu clique sans faire défiler.
 12. **Fusionner les paragraphes et les encadrés « problème ».** Leur message clé est repris dans la section méthode, plus bas.
 
 ## Témoignages
 
-13. **Remplacer le carrousel à flèches par un mur de témoignages : tous les résultats sont visibles en même temps.** Un témoignage caché derrière une flèche n'est presque jamais vu.
+13. **Remplacer le carrousel à flèches par un mur de témoignages en grand, sur deux larges colonnes : tous les résultats sont visibles et lisibles en même temps.** Un témoignage caché derrière une flèche n'est presque jamais vu, et un témoignage trop petit n'est pas lu.
 14. **Garder le titre « Ils étaient bloqués eux aussi. Puis quelque chose a changé. », avec « changé » en bleu.** C'est l'avant/après en une phrase.
 15. **Ajouter un bouton jaune sous le mur.** La preuve sociale est le meilleur moment pour proposer l'inscription.
 

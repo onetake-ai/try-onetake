@@ -7,7 +7,7 @@
  *
  *   [data-dd-session]          Filled with the next session: every Saturday at 11:00, Paris time
  *   [data-dd-session-day]      Filled with the weekday only ("samedi")
- *   [data-dd-testimonials]     "marquee" (two scrolling rows) or "grid" (masonry wall)
+ *   [data-dd-testimonials]     "marquee" (one scrolling row of large cards) or "grid" (masonry wall)
  *   form.mc-form               Checks the fields, then says it is a mockup (nothing is sent)
  *
  * Testimonial images stay on the Didacs servers (LeadConnector): never copy them into the repo.
@@ -31,7 +31,18 @@
     if (!api) return;
     var date = api.next(Date.now(), SESSION);
     var label = api.formatFr(date, SESSION);
-    document.querySelectorAll('[data-dd-session]').forEach(function (el) { el.textContent = label; });
+    // "(heure de Paris)" wraps as one unit, so the pre-header never breaks inside it
+    var zone = ' (heure de Paris)';
+    var main = label.slice(0, label.length - (label.slice(-zone.length) === zone ? zone.length : 0));
+    document.querySelectorAll('[data-dd-session]').forEach(function (el) {
+      el.textContent = main;
+      if (main !== label) {
+        var span = document.createElement('span');
+        span.className = 'dd-nowrap';
+        span.textContent = zone.trim();
+        el.append(' ', span);
+      }
+    });
     document.querySelectorAll('[data-dd-session-day]').forEach(function (el) { el.textContent = label.split(' ')[0]; });
   }
 
@@ -44,15 +55,17 @@
     img.loading = eager ? 'eager' : 'lazy';
     img.decoding = 'async';
     img.alt = hidden ? '' : item.alt;
+    // Never enlarge an image past its own width: the small Google reviews would get blurry
+    img.style.maxWidth = item.width + 'px';
     if (hidden) img.setAttribute('aria-hidden', 'true');
     return img;
   }
 
-  function track(items, reverse) {
+  function track(items) {
     var row = document.createElement('div');
-    row.className = 'dd-marquee__track' + (reverse ? ' dd-marquee__track--reverse' : '');
+    row.className = 'dd-marquee__track';
     // Two copies for a seamless loop (the animation moves the track by half its width)
-    items.forEach(function (item) { row.appendChild(image(item, reverse, true)); });
+    items.forEach(function (item) { row.appendChild(image(item, false, true)); });
     items.forEach(function (item) { row.appendChild(image(item, true, true)); });
     return row;
   }
@@ -65,9 +78,9 @@
         TESTIMONIALS.forEach(function (item) { box.appendChild(image(item, false)); });
         return;
       }
+      // One row of large cards: the testimonials hold a lot of text and must stay legible
       box.classList.add('dd-marquee');
-      box.appendChild(track(TESTIMONIALS, false));
-      box.appendChild(track(TESTIMONIALS.slice().reverse(), true));
+      box.appendChild(track(TESTIMONIALS));
     });
   }
 

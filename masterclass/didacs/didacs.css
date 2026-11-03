@@ -35,6 +35,9 @@
 .mc-btn, .mv-cta { box-shadow: 0 6px 18px rgba(255, 203, 3, 0.4); }
 .dd-page .host__photo { object-position: 50% 30%; }
 
+/* Keeps "(heure de Paris)" on one line (set by didacs.js) */
+.dd-nowrap { white-space: nowrap; }
+
 /* Text stand-in for the Didacs logo (their page shows none) */
 .dd-wordmark {
   display: inline-flex; align-items: center; gap: 8px;
@@ -58,24 +61,24 @@
 .dd-rating__score { font-size: 18px; font-weight: 800; }
 .dd-rating__count { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.8; }
 
-/* Testimonials: two rows scrolling in opposite directions (replaces the accounts scanner) */
+/* Testimonials: one row of large cards scrolling slowly (replaces the accounts scanner).
+   The cards hold a lot of text: keep them as wide as the space allows, never under ~85% of the screen */
 .dd-marquee {
-  display: grid; gap: 12px; padding: 6px 0; overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  padding: 6px 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
-.dd-marquee__track { display: flex; width: max-content; animation: mc-marquee 60s linear infinite; }
-.dd-marquee__track--reverse { animation-direction: reverse; animation-duration: 70s; }
+.dd-marquee__track { display: flex; align-items: center; width: max-content; animation: mc-marquee 90s linear infinite; }
 .dd-marquee:hover .dd-marquee__track { animation-play-state: paused; }
 .dd-marquee img {
-  flex: 0 0 auto; width: auto !important; height: 150px; margin-right: 12px;
-  border-radius: 10px; background: var(--white); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  flex: 0 0 auto; width: min(560px, 86vw); height: auto; margin-right: 16px;
+  border-radius: 12px; background: var(--white); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* Testimonials wall (masonry with CSS columns) */
-.dd-grid { columns: 1; column-gap: 16px; text-align: left; }
+/* Testimonials wall (masonry with CSS columns): two wide columns at most, so every card is legible */
+.dd-grid { columns: 1; column-gap: 20px; text-align: left; }
 .dd-grid img {
-  width: 100%; margin: 0 0 16px; break-inside: avoid;
+  display: block; width: 100%; margin: 0 auto 20px; break-inside: avoid;
   border-radius: 12px; border: 1px solid #E3E8EE; box-shadow: var(--shadow-soft); background: var(--white);
 }
 
@@ -95,6 +98,10 @@
 /* ── /masterclass/didacs/ (layout of /trafic/) ───────────────────────── */
 
 .dd-page .mc-hero .dd-wordmark { justify-self: center; margin-bottom: 2px; }
+.dd-page .mc-hero .mc-eyebrow { padding: 9px 20px; border-radius: 18px; font-size: 15px; line-height: 1.4; }
+/* Bold phrases in the bullet lists */
+.mc-checks strong, .mv-checks strong { font-weight: 800; }
+.mv1-points strong { color: var(--golden-grass); }
 .dd-page .mc-proof-panel { background: var(--bleached-cedar); }
 .dd-page .mc-proof-panel .mc-h2 { color: var(--white); margin-bottom: 6px; }
 .dd-proof-panel__sub { padding: 0 var(--gutter); margin-bottom: 14px !important; font-size: 15px; text-align: center; color: #C5CED8; }
@@ -124,23 +131,25 @@
 
 /* ── /2/ ─────────────────────────────────────────────────────────────── */
 
-.mv2-proof .dd-marquee { padding: 12px 0; border-radius: 12px; background: var(--bleached-cedar); }
-.mv2-proof .dd-marquee img { height: 120px; }
+.mv2-proof .dd-marquee { padding: 14px 0; border-radius: 12px; background: var(--bleached-cedar); }
+.mv2-proof .dd-marquee img { width: min(480px, 80vw); }
 .mv2-dark .mv2-red { color: var(--golden-grass); }
 .mv2-join .dd-rating { margin-bottom: 4px; }
 
 /* ── Larger screens ──────────────────────────────────────────────────── */
 
-@media (min-width: 640px) {
+@media (min-width: 720px) {
   .dd-grid { columns: 2; }
 }
 @media (min-width: 960px) {
-  .dd-grid { columns: 3; }
   .dd-page .mc-hero .dd-wordmark { grid-area: logo; justify-self: start; margin: 0 0 12px; }
-  .dd-marquee img { height: 170px; }
+  .dd-page .mc-hero .mc-eyebrow { font-size: 17px; padding: 10px 22px; }
+  /* The proof panel is half the page: let the cards fill it */
+  .dd-page .mc-proof-panel .dd-marquee img { width: 440px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dd-marquee__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; row-gap: 12px; }
-  .dd-marquee__track > img[aria-hidden="true"], .dd-marquee__track--reverse { display: none; }
+  .dd-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .dd-marquee__track { animation: none; }
+  .dd-marquee__track > img[aria-hidden="true"] { display: none; }
 }
