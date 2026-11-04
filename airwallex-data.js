@@ -49,6 +49,28 @@ window.AIRWALLEX_CONFIG = {
             value: 299,
             currency: 'EUR',
             priceLabel: '299\u00a0€ HT / trimestre'
+        },
+        // Customers who cancelled OneTake in the past (/4dcm/comeagain-challenge/): same offer.
+        // checkoutIntro and wire.intro replace the popup intros: the same email reactivates the old account
+        'challenge-comeback-yearly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an',
+            checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.',
+            wire: {
+                amountLabel: '999\u00a0€\u00a0HT',
+                referencePrefix: 'CHALLENGE',
+                intro: 'Indique tes coordonnées, avec la même adresse email que ton ancien compte OneTake pour retrouver tes vidéos.'
+            }
+        },
+        // Shown on /4dcm/comeagain-challenge/ only with ?plan=quarterly. Card only
+        'challenge-comeback-quarterly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre',
+            checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.'
         }
     }
 };

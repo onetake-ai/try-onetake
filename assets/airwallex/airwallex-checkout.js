@@ -235,7 +235,8 @@
     var form = el('form', { 'class': 'awx-form', novalidate: '' }, [
       el('p', { 'class': 'awx-eyebrow', text: plan.priceLabel }),
       el('h2', { id: 'awx-title', text: 'Dernière étape avant le paiement' }),
-      el('p', { 'class': 'awx-intro', text: 'Indique ton prénom et ton email\u00a0: c\'est là que tu recevras tes accès.' }),
+      // plan.checkoutIntro (airwallex-data.js) replaces the default intro, e.g. on the comeback page
+      el('p', { 'class': 'awx-intro', text: plan.checkoutIntro || 'Indique ton prénom et ton email\u00a0: c\'est là que tu recevras tes accès.' }),
       field('first_name', 'Prénom', 'text', lead.first_name, true, 'given-name'),
       field('email', 'Email', 'email', lead.email, true, 'email'),
       field('telephone', PHONE_LABEL, 'tel', lead.telephone, false, 'tel'),
@@ -343,7 +344,7 @@
     var form = el('form', { 'class': 'awx-form', novalidate: '' }, [
       el('p', { 'class': 'awx-eyebrow', text: 'Paiement par virement' }),
       el('h2', { id: 'awx-title', text: 'Tu préfères payer l\'abonnement annuel par virement\u00a0?' }),
-      el('p', { 'class': 'awx-intro', text: 'Indique-nous tes coordonnées pour afficher les informations bancaires.' }),
+      el('p', { 'class': 'awx-intro', text: plan.wire.intro || 'Indique-nous tes coordonnées pour afficher les informations bancaires.' }),
       el('div', { 'class': 'awx-row' }, [
         field('first_name', 'Prénom', 'text', lead.first_name, true, 'given-name'),
         field('last_name', 'Nom', 'text', lead.last_name, true, 'family-name')
