@@ -14,7 +14,9 @@
  *
  * Prefill: ?first_name= and ?email= (values still holding a Liquid tag are ignored), then the
  * last values typed on this browser. Attribution: ?ref= and utm_* of the last visit that had any,
- * kept 30 days, plus the AnyTrack click ID.
+ * kept 30 days, plus the AnyTrack click ID. FirstPromoter tid and ref_id (from tools.js) go to the
+ * checkout metadata for the webhook handler; the success page registers the FirstPromoter lead
+ * with the Airwallex customer ID as uid.
  * On the OFFER_CLOSED error the visitor is sent to /oto/too-late/.
  */
 (function () {
@@ -253,7 +255,9 @@
       setLoading(submit, true, 'Ouverture du paiement…');
       if (trigger) trigger.classList.add('is-loading');
 
-      post('/checkout', { plan: planKey, page: pageSlug(), email: email, first_name: firstName, telephone: phone.value, attribution: attribution() })
+      var fp = window.oneTakeFirstPromoter;
+      post('/checkout', { plan: planKey, page: pageSlug(), email: email, first_name: firstName, telephone: phone.value, attribution: attribution(),
+        tid: fp ? fp.tid() : '', ref_id: fp ? fp.refId() : '' })
         .then(function (data) {
           write('sessionStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey });
           write('localStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey, at: Date.now() });
@@ -293,6 +297,10 @@
       if (!data) return null;
       var plan = config.plans[data.plan] || { value: data.value, currency: data.currency };
       track('Purchase', plan, { planKey: data.plan, transactionId: started.id, email: data.email, firstName: data.first_name });
+      // FirstPromoter lead with the Airwallex customer ID as uid, so the webhook handler can match sales by uid
+      if (typeof window.fpr === 'function' && data.email && data.customer_id) {
+        window.fpr('referral', { email: data.email, uid: data.customer_id });
+      }
       write('localStorage', firedKey, data);
       return data;
     }).catch(function (err) {
