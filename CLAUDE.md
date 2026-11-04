@@ -69,7 +69,7 @@ Card payments through Airwallex Hosted Billing Checkout (subscriptions), used in
 
 ## Owner SMS notifications
 
-**Files:** `/edge-scripts/owner-notify.ts`, `.github/workflows/deploy-owner-notify.yml` (script ID in the repository variable `OWNER_NOTIFY_SCRIPT_ID`)
+**Files:** `/edge-scripts/owner-notify.ts`, `.github/workflows/deploy-owner-notify.yml` (Bunny script 100963)
 
 Texts Sébastien through the Free Mobile API (it only texts the account owner) a WhatsApp link to the buyer or lead, with his message already typed. Only when the person gave a phone number. The messages live in `MESSAGES` and `PADDLE_WELCOME` (8 languages).
 

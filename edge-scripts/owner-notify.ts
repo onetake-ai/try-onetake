@@ -19,7 +19,9 @@
  *               masterclass  French masterclass registration (edge-scripts/userlist-proxy.ts)
  *             200 { sent: true|false }.
  *
- * ENVIRONMENT (Bunny dashboard → Edge Scripts → this script → Env, as secrets):
+ * Bunny script 100963, deployed by .github/workflows/deploy-owner-notify.yml.
+ *
+ * ENVIRONMENT (Bunny dashboard → Edge Scripts → 100963 → Env, as secrets):
  *   FREE_MOBILE_USER       Free Mobile login (Espace Abonné → Mes Options → Notifications par SMS)
  *   FREE_MOBILE_PASS       Free Mobile identification key
  *   PADDLE_WEBHOOK_SECRET  Secret key of the Paddle notification destination (pdl_ntfset_...)
