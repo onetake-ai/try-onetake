@@ -1,0 +1,38 @@
+name: Deploy Owner Notify Edge Script
+
+# Script ID: repository variable OWNER_NOTIFY_SCRIPT_ID (GitHub → Settings → Secrets and
+# variables → Actions → Variables). The job is skipped until it is set.
+# Secrets are set in the Bunny dashboard: see the header of edge-scripts/owner-notify.ts.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'edge-scripts/owner-notify.ts'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  update-script:
+    if: ${{ vars.OWNER_NOTIFY_SCRIPT_ID != '' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Publish the script to Bunny
+        uses: "BunnyWay/actions/deploy-script@main"
+        with:
+          script_id: ${{ vars.OWNER_NOTIFY_SCRIPT_ID }}
+          file: "edge-scripts/owner-notify.ts"

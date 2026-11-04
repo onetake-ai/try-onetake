@@ -15,6 +15,9 @@
  *     AIRWALLEX_LOGIN_AS                   Optional: account ID for x-login-as, only when the key
  *                                          is linked to several accounts
  *     USERLIST_PUSH_KEY                    Userlist Push API key (same as userlist-proxy.ts)
+ *     OWNER_NOTIFY_URL                     Optional: URL of edge-scripts/owner-notify.ts (SMS to Sébastien
+ *                                          on each Challenge purchase with a phone number)
+ *     OWNER_NOTIFY_SECRET                  Optional: same value as in owner-notify.ts
  *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
  *
@@ -248,6 +251,26 @@ function checkWindow(plan: Plan): Response | null {
 
 // ── Userlist ─────────────────────────────────────────────────────────────────
 
+// SMS to Sébastien through edge-scripts/owner-notify.ts (WhatsApp link to the person). Only with
+// a phone number; skipped when OWNER_NOTIFY_URL or OWNER_NOTIFY_SECRET is missing. Never fails the
+// request.
+async function notifyOwner(kind: string, firstName: string, telephone: string): Promise<void> {
+  const url = process.env.OWNER_NOTIFY_URL;
+  const secret = process.env.OWNER_NOTIFY_SECRET;
+  if (!url || !secret || !telephone) return;
+  try {
+    await fetch(url.replace(/\/+$/, '') + '/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
+      body: JSON.stringify({ kind, first_name: firstName, telephone }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch (e) {
+    console.error('Owner SMS request failed:', e instanceof Error ? e.message : e);
+  }
+}
+
+
 async function pushUserlist(
   name: string,
   email: string,
@@ -435,6 +458,7 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
         subscription_id: cleanText(checkout.subscription_id, 100),
       });
     }
+    await notifyOwner('challenge', firstName, telephone);
 
     return json({ completed: true, plan: planKey, value: plan.value, currency: plan.currency, email, first_name: firstName });
   } catch (e) {
