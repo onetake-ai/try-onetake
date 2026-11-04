@@ -54,6 +54,38 @@ fpr("click");
   document.head.appendChild(s);
 }());
 
+// Values the checkouts send to Paddle (customData) and Airwallex (metadata) as `tid` and `ref_id`,
+// so the webhook handler can pass them to the FirstPromoter sale API.
+// tid: visitor tracking ID (fpr.js, else the _fprom_tid cookie, _fprom_track on old accounts).
+// refId: the last ?ref= seen in this browser in the past 30 days, for when the cookie is missing
+// (ad blocker stopping fpr.js, cookies cleared...).
+window.oneTakeFirstPromoter = (function () {
+  var REF_KEY = 'onetake-fp-ref';
+  var REF_DAYS = 30;
+
+  function tid() {
+    if (window.FPROM && window.FPROM.data && window.FPROM.data.tid) return String(window.FPROM.data.tid);
+    var match = document.cookie.match(/(?:^|;\s*)_fprom_(?:tid|track)=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  function refId() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(REF_KEY));
+      if (saved && saved.value && Date.now() - saved.savedAt < REF_DAYS * 86400000) return saved.value;
+    } catch (e) { /* storage unavailable */ }
+    return '';
+  }
+
+  // Last touch: a new ?ref= replaces the saved one (a value still holding a Liquid tag is ignored)
+  var ref = (new URLSearchParams(window.location.search).get('ref') || '').trim();
+  if (ref && !/\{\{|\{%/.test(ref)) {
+    try { localStorage.setItem(REF_KEY, JSON.stringify({ value: ref.slice(0, 100), savedAt: Date.now() })); } catch (e) { /* storage unavailable */ }
+  }
+
+  return { tid: tid, refId: refId };
+}());
+
 function sendReferralToFirstPromoter() {
   var urlString = decodeURI(window.location.href);
   var url = new URL(urlString);

@@ -110,6 +110,7 @@
     // FirstPromoter tracking ID: fpr.js exposes it on window.FPROM; otherwise read the cookie
     // (_fprom_tid on current accounts, _fprom_track on accounts created before April 2021).
     function getFirstPromoterTid() {
+        if (window.oneTakeFirstPromoter) return window.oneTakeFirstPromoter.tid() || null;
         if (window.FPROM && window.FPROM.data && window.FPROM.data.tid) {
             return window.FPROM.data.tid;
         }
@@ -156,10 +157,17 @@
             }
         }
 
-        // FirstPromoter matches Paddle webhooks to referrals by fp_tid, then by email
+        // FirstPromoter: our webhook handler sends tid and ref_id to the sale API (tid first,
+        // ref_id when the cookie is missing, else email). fp_tid is kept for FirstPromoter's
+        // native Paddle integration.
         var fpTid = getFirstPromoterTid();
         if (fpTid) {
+            data.tid = fpTid;
             data.fp_tid = fpTid;
+        }
+        var fpRefId = window.oneTakeFirstPromoter ? window.oneTakeFirstPromoter.refId() : '';
+        if (fpRefId) {
+            data.ref_id = fpRefId;
         }
         if (state.formData.email) {
             data.email = state.formData.email;

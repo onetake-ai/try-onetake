@@ -241,6 +241,16 @@ function cleanAttribution(value: unknown): Record<string, string> {
   return out;
 }
 
+// FirstPromoter visitor tracking ID (tid) and promoter referral ID (ref_id), when the page has them
+function cleanFirstPromoter(fields: Record<string, unknown>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const key of ['tid', 'ref_id']) {
+    const v = cleanText(fields[key], 100);
+    if (/^[A-Za-z0-9._~@+-]+$/.test(v)) out[key] = v;
+  }
+  return out;
+}
+
 // null when the plan can be sold now, else the error response
 function checkWindow(plan: Plan): Response | null {
   const now = Date.now();
@@ -346,10 +356,13 @@ function airwallexConfigured(): boolean {
     && process.env.AIRWALLEX_LEGAL_ENTITY_ID && process.env.AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID);
 }
 
-// Full metadata, else without the attribution (the part Airwallex may refuse); never throws
-async function attachMetadata(path: string, metadata: Record<string, string>, fallback: Record<string, string>) {
+// Tries each metadata set in turn until Airwallex accepts one (full, then without the utm
+// attribution, then without FirstPromoter); never throws
+async function attachMetadata(path: string, attempts: Record<string, string>[]) {
   const update = (m: Record<string, string>) => airwallex('POST', path, { request_id: crypto.randomUUID(), metadata: m });
-  await update(metadata).catch(() => update(fallback)).catch(() => {});
+  for (const metadata of attempts) {
+    try { await update(metadata); return; } catch { /* next, smaller set */ }
+  }
 }
 
 // ── Handlers ─────────────────────────────────────────────────────────────────
@@ -367,6 +380,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   const telephone   = cleanPhone(fields.telephone);
   const page        = cleanSlug(fields.page);
   const attribution = cleanAttribution(fields.attribution);
+  const firstPromoter = cleanFirstPromoter(fields);
 
   if (!airwallexConfigured()) return fail('NOT_CONFIGURED', 500);
 
@@ -384,7 +398,10 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   if (page)      baseMetadata.page = page;
   if (firstName) baseMetadata.first_name = firstName;
   if (telephone) baseMetadata.telephone = telephone;   // Repeated on the Purchase event
-  const metadata: Record<string, string> = { ...baseMetadata, ...attribution };
+  // tid and ref_id: read by the webhook handler for the FirstPromoter sale API, so they come
+  // before the rest of the attribution in the fallbacks
+  const salesMetadata: Record<string, string> = { ...baseMetadata, ...firstPromoter };
+  const metadata: Record<string, string> = { ...salesMetadata, ...attribution };
 
   try {
     const customer = await airwallex('POST', '/api/v1/billing/billing_customers/create', {
@@ -411,8 +428,8 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
 
     // Links the customer and checkout to the page and campaign; a failure here must not block the sale
     await Promise.all([
-      attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, metadata, baseMetadata),
-      attachMetadata(`/api/v1/billing/billing_checkouts/${checkout.id}/update`, metadata, baseMetadata),
+      attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, [metadata, salesMetadata, baseMetadata]),
+      attachMetadata(`/api/v1/billing/billing_checkouts/${checkout.id}/update`, [metadata, salesMetadata, baseMetadata]),
     ]);
 
     return json({ url: checkout.url, checkout_id: checkout.id });
@@ -460,7 +477,9 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
     }
     await notifyOwner('challenge', firstName, telephone);
 
-    return json({ completed: true, plan: planKey, value: plan.value, currency: plan.currency, email, first_name: firstName });
+    // customer_id: the page registers it as the FirstPromoter lead uid
+    return json({ completed: true, plan: planKey, value: plan.value, currency: plan.currency, email, first_name: firstName,
+      customer_id: cleanText(checkout.billing_customer_id, 100) });
   } catch (e) {
     return airwallexFailure(e);
   }
