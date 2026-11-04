@@ -1,10 +1,13 @@
 /**
  * Owner SMS notifications: BunnyCDN Edge Script
  *
- * Sends Sébastien an SMS through the Free Mobile API (it can only text the account owner's own
- * phone) when someone buys or registers. The SMS holds only a WhatsApp link (wa.me) to the
- * buyer or lead, with Sébastien's message already typed: one tap, then Send. No SMS when the
- * person gave no WhatsApp number.
+ * Sends Sébastien two SMS through the Free Mobile API (it can only text the account owner's own
+ * phone) when someone buys or registers. No SMS when the person gave no WhatsApp number.
+ *
+ *   1. Who and why, then a bare WhatsApp link (wa.me) to the person, to send a voice note first:
+ *        Marie (marie@exemple.fr) : achat Challenge
+ *        https://wa.me/33612345678
+ *   2. The WhatsApp link with Sébastien's message already typed: one tap, then Send.
  *
  * ENDPOINTS (POST):
  *
@@ -14,7 +17,7 @@
  *             Always answers 200 once the signature is valid, so Paddle doesn't retry.
  *
  *   /notify   Called by our other edge scripts, with "Authorization: Bearer OWNER_NOTIFY_SECRET".
- *             JSON body { kind, first_name, telephone }, kind one of:
+ *             JSON body { kind, first_name, email, telephone }, kind one of:
  *               challenge    Challenge purchase (edge-scripts/airwallex-checkout.ts, /purchase)
  *               masterclass  French masterclass registration (edge-scripts/userlist-proxy.ts)
  *             200 { sent: true|false }.
@@ -37,17 +40,26 @@ import process from "node:process";
 
 const FREE_MOBILE_URL   = 'https://smsapi.free-mobile.fr/sendmsg';
 const SIGNATURE_MAX_AGE = 5 * 60;   // seconds: older Paddle signatures are refused (replays)
+const SMS_GAP_MS        = 1500;     // pause between the two SMS, so they arrive in order
 
 // ── Messages ─────────────────────────────────────────────────────────────────
 
 // " NAME" (or nothing when the first name is unknown)
 const spaced = (name: string) => (name ? ' ' + name : '');
 
+// Reason shown in the first SMS, after the name and email
+const REASONS: Record<string, string> = {
+  challenge:   'achat Challenge',
+  masterclass: 'inscription masterclass',
+  trial:       'essai gratuit OneTake',
+  purchase:    'achat OneTake',
+};
+
 const MESSAGES: Record<string, (name: string) => string> = {
   challenge: (name) =>
     `Ici Sébastien, bienvenue dans le Challenge${spaced(name)}! Rejoins le groupe privé sur Telegram: https://www.onetake.ai/challenge/telegram`,
-  masterclass: () =>
-    "Hello ici Sébastien de OneTake!\nRDV jeudi à 20h heure de Paris pour la masterclass. Note-le bien stp !\nQuelle est ton activité stp? Quelle est ta clientèle?",
+  masterclass: (name) =>
+    `Hello${spaced(name)}, ici Sébastien de OneTake!\nRDV jeudi à 20h heure de Paris pour la masterclass. Note-le bien stp !\nQuelle est ton activité stp? Quelle est ta clientèle?`,
 };
 
 // Paddle purchases (paid and trial), in the buyer's language; English when unknown
@@ -84,14 +96,17 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-// The SMS: only the WhatsApp link to the person, with the message already typed
-async function sendOwnerSms(digits: string, message: string, label: string): Promise<boolean> {
+// "Marie (marie@exemple.fr) : achat Challenge"
+function header(name: string, email: string, reason: string): string {
+  return `${name || 'Sans prénom'}${email ? ` (${email})` : ''} : ${reason}`;
+}
+
+async function sendFreeMobile(msg: string, label: string): Promise<boolean> {
   const user = process.env.FREE_MOBILE_USER;
   const pass = process.env.FREE_MOBILE_PASS;
   if (!user || !pass) { console.error(`Owner SMS (${label}) not sent: FREE_MOBILE_USER or FREE_MOBILE_PASS missing`); return false; }
 
-  const link = `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
-  const query = new URLSearchParams({ user, pass, msg: link });
+  const query = new URLSearchParams({ user, pass, msg });
   try {
     const res = await fetch(`${FREE_MOBILE_URL}?${query}`, { signal: AbortSignal.timeout(8000) });
     if (!res.ok) console.error(`Owner SMS (${label}) refused by Free Mobile: ${res.status}`);
@@ -100,6 +115,15 @@ async function sendOwnerSms(digits: string, message: string, label: string): Pro
     console.error(`Owner SMS (${label}) failed:`, e instanceof Error ? e.message : e);
     return false;
   }
+}
+
+// The two SMS: who and why with a bare WhatsApp link, then the link with the message typed.
+// The second is sent even when the first fails. true when both were sent.
+async function sendOwnerSms(digits: string, head: string, message: string, label: string): Promise<boolean> {
+  const first = await sendFreeMobile(`${head}\nhttps://wa.me/${digits}`, `${label} 1/2`);
+  await new Promise((resolve) => setTimeout(resolve, SMS_GAP_MS));
+  const second = await sendFreeMobile(`https://wa.me/${digits}?text=${encodeURIComponent(message)}`, `${label} 2/2`);
+  return first && second;
 }
 
 // ── Paddle ───────────────────────────────────────────────────────────────────
@@ -142,8 +166,13 @@ async function handlePaddle(req: Request): Promise<Response> {
   if (!digits) return json({ ok: true, sent: false });
 
   const lang = cleanText(custom.language, 5).toLowerCase().split('-')[0];
-  const message = (PADDLE_WELCOME[lang] || PADDLE_WELCOME.en)(cleanText(custom.first_name));
-  const sent = await sendOwnerSms(digits, message, 'paddle');
+  const name = cleanText(custom.first_name);
+  const message = (PADDLE_WELCOME[lang] || PADDLE_WELCOME.en)(name);
+  // Free trial: nothing charged today (has_trial is set by checkout-core.js)
+  const total = data.details?.totals?.total;
+  const trial = custom.has_trial === 'true' || total === '0';
+  const head = header(name, cleanText(custom.email, 254).toLowerCase(), REASONS[trial ? 'trial' : 'purchase']);
+  const sent = await sendOwnerSms(digits, head, message, 'paddle');
   return json({ ok: true, sent });
 }
 
@@ -164,7 +193,9 @@ async function handleNotify(req: Request): Promise<Response> {
   const digits = waDigits(fields.telephone);
   if (!digits) return json({ sent: false });
 
-  const sent = await sendOwnerSms(digits, template(cleanText(fields.first_name)), kind);
+  const name = cleanText(fields.first_name);
+  const head = header(name, cleanText(fields.email, 254).toLowerCase(), REASONS[kind]);
+  const sent = await sendOwnerSms(digits, head, template(name), kind);
   return json({ sent });
 }
 
