@@ -8,10 +8,6 @@
  *     Click: popup asking prénom + email, then AddToCart (AnyTrack, Plausible; Userlist from the
  *     edge script), then redirect to the Airwallex checkout created on the spot (valid 1 hour).
  *
- *   <a href="#" data-airwallex-wire="challenge-yearly">Je préfère payer par virement</a>
- *     Click: popup with prénom, nom, email, entreprise. On submit, InitiateCheckout (AnyTrack,
- *     Plausible; Userlist with pledged_wire_payment_on), then the bank details and reference.
- *
  *   window.oneTakeAirwallex.confirmPurchase()  (success page)
  *     Asks the edge script whether the checkout started in this browser is paid, then fires
  *     Purchase (AnyTrack, Plausible) once. Resolves with the purchase, or null.
@@ -35,7 +31,6 @@
     utm_campaign: 'utm_campaign', utm_content: 'utm_content', utm_term: 'utm_term', utm_channel: 'utm_channel' };
   var TOO_LATE_URL = 'https://try.onetake.ai/oto/too-late/';
   var ERROR_TEXT = 'Oups, la page de paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant ou écris-nous à ' + config.supportEmail + '.';
-  var WIRE_ERROR_TEXT = 'Oups, ton formulaire n\'a pas pu être envoyé. Réessaie dans un instant ou écris-nous à ' + config.supportEmail + '.';
 
   // Error message followed by the code, so a visitor's screenshot tells us the cause
   function errorText(text, err) {
@@ -63,9 +58,7 @@
     var lead = read('localStorage', LEAD_KEY) || {};
     return {
       first_name: urlValue('first_name') || lead.first_name || '',
-      last_name:  lead.last_name || '',
       email:      urlValue('email') || lead.email || '',
-      company:    lead.company || '',
       telephone:  (window.oneTakePhoneField && window.oneTakePhoneField.fromUrl()) || lead.telephone || ''
     };
   }
@@ -108,7 +101,7 @@
     Object.keys(extra || {}).forEach(function (k) { data[k] = extra[k]; });
     if (typeof window.AnyTrack === 'function') window.AnyTrack('trigger', eventName, data);
     if (typeof window.plausible === 'function') {
-      var options = { props: { plan: data.planKey || '', payment_method: data.paymentMethod || 'card' } };
+      var options = { props: { plan: data.planKey || '', payment_method: 'card' } };
       if (eventName === 'Purchase') options.revenue = { amount: plan.value, currency: plan.currency };
       window.plausible(eventName, options);
     }
@@ -279,123 +272,6 @@
     attachPhone(form);
   }
 
-  // ── Wire transfer ────────────────────────────────────────────────────────────
-
-  function copyButton(value, label) {
-    var button = el('button', { type: 'button', 'class': 'awx-copy', 'aria-label': 'Copier ' + label, text: 'Copier' });
-    button.addEventListener('click', function () {
-      var done = function () {
-        button.textContent = 'Copié';
-        setTimeout(function () { button.textContent = 'Copier'; }, 2000);
-      };
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(value).then(done, function () { fallbackCopy(value); done(); });
-      } else {
-        fallbackCopy(value);
-        done();
-      }
-    });
-    return button;
-  }
-
-  function fallbackCopy(value) {
-    var area = el('textarea', { readonly: '', 'class': 'awx-offscreen' });
-    area.value = value;
-    document.body.appendChild(area);
-    area.select();
-    try { document.execCommand('copy'); } catch (e) { /* nothing more to try */ }
-    area.remove();
-  }
-
-  function bankRow(label, value, copyValue) {
-    var children = [el('dt', { text: label }), el('dd', {}, [el('strong', { text: value })])];
-    if (copyValue) children[1].appendChild(copyButton(copyValue, label));
-    return children;
-  }
-
-  function showBankDetails(container, plan, values) {
-    var bank = config.bank;
-    var reference = plan.wire.referencePrefix + ' ' + values.last_name.toUpperCase() + ' ' + values.first_name;
-    var list = el('dl', { 'class': 'awx-bank' });
-    [].concat(
-      bankRow('Titulaire', bank.holder, bank.holder),
-      bankRow('IBAN', bank.iban, bank.iban.replace(/\s+/g, '')),
-      bankRow('BIC', bank.bic, bank.bic),
-      bankRow('Banque', bank.address),
-      bankRow('Référence à indiquer', reference, reference)
-    ).forEach(function (node) { list.appendChild(node); });
-
-    container.innerHTML = '';
-    container.appendChild(el('h2', { id: 'awx-title', text: 'Merci\u00a0! Voici les coordonnées pour ton virement de ' + plan.wire.amountLabel + '\u00a0:' }));
-    container.appendChild(list);
-    container.appendChild(el('p', { 'class': 'awx-intro', text: 'Indique bien cette référence pour qu\'on puisse identifier ton paiement. Dès réception, on active ton accès et tu reçois un email de confirmation.' }));
-    var heading = container.querySelector('h2');
-    heading.setAttribute('tabindex', '-1');
-    heading.focus();
-  }
-
-  function openWire(planKey) {
-    var plan = config.plans[planKey];
-    if (!plan || !plan.wire) { console.error('airwallex-checkout.js: no wire transfer for', planKey); return; }
-    var lead = savedLead();
-
-    var error = el('p', { 'class': 'awx-error', role: 'alert' });
-    var submit = el('button', { type: 'submit', 'class': 'awx-submit', text: 'Afficher les coordonnées bancaires' });
-    var form = el('form', { 'class': 'awx-form', novalidate: '' }, [
-      el('p', { 'class': 'awx-eyebrow', text: 'Paiement par virement' }),
-      el('h2', { id: 'awx-title', text: 'Tu préfères payer l\'abonnement annuel par virement\u00a0?' }),
-      el('p', { 'class': 'awx-intro', text: plan.wire.intro || 'Indique-nous tes coordonnées pour afficher les informations bancaires.' }),
-      el('div', { 'class': 'awx-row' }, [
-        field('first_name', 'Prénom', 'text', lead.first_name, true, 'given-name'),
-        field('last_name', 'Nom', 'text', lead.last_name, true, 'family-name')
-      ]),
-      field('email', 'Email', 'email', lead.email, true, 'email'),
-      field('telephone', PHONE_LABEL, 'tel', lead.telephone, false, 'tel'),
-      field('company', 'Entreprise (facultatif)', 'text', lead.company, false, 'organization'),
-      error,
-      submit
-    ]);
-    var container = el('div', { 'class': 'awx-form' }, [form]);
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var values = {
-        first_name: form.first_name.value.trim(),
-        last_name:  form.last_name.value.trim(),
-        email:      form.email.value.trim(),
-        company:    form.company.value.trim(),
-        telephone:  ''
-      };
-      error.textContent = '';
-      if (!values.first_name) { error.textContent = 'Indique ton prénom.'; form.first_name.focus(); return; }
-      if (!values.last_name) { error.textContent = 'Indique ton nom.'; form.last_name.focus(); return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) { error.textContent = 'Indique une adresse email valide.'; form.email.focus(); return; }
-      var phone = readPhone(form);
-      if (!phone.valid) { error.textContent = PHONE_ERROR; form.telephone.focus(); return; }
-      values.telephone = phone.value;
-
-      saveLead(values);
-      setLoading(submit, true, 'Envoi…');
-      post('/wire', {
-        plan: planKey, page: pageSlug(), first_name: values.first_name, last_name: values.last_name,
-        email: values.email, company: values.company, telephone: values.telephone, attribution: attribution()
-      })
-        .then(function () {
-          track('InitiateCheckout', plan, { planKey: planKey, paymentMethod: 'wire', email: values.email, firstName: values.first_name });
-          showBankDetails(container, plan, values);
-        })
-        .catch(function (err) {
-          if (handleClosed(err)) return;
-          console.error('Wire transfer form failed', err);
-          setLoading(submit, false, 'Afficher les coordonnées bancaires');
-          error.textContent = errorText(WIRE_ERROR_TEXT, err);
-        });
-    });
-
-    openModal(container, 'awx-title');
-    attachPhone(form);
-  }
-
   // ── Success page ─────────────────────────────────────────────────────────────
 
   // The checkout may still be processing when the visitor lands: a few tries, 2 s apart
@@ -428,11 +304,10 @@
   // ── Bindings ─────────────────────────────────────────────────────────────────
 
   document.addEventListener('click', function (e) {
-    var trigger = e.target.closest && e.target.closest('[data-airwallex-plan], [data-airwallex-wire]');
+    var trigger = e.target.closest && e.target.closest('[data-airwallex-plan]');
     if (!trigger) return;
     e.preventDefault();
-    if (trigger.hasAttribute('data-airwallex-wire')) openWire(trigger.getAttribute('data-airwallex-wire'));
-    else openCheckout(trigger.getAttribute('data-airwallex-plan'), trigger);
+    openCheckout(trigger.getAttribute('data-airwallex-plan'), trigger);
   });
 
   // Back from Airwallex with the browser button: the page may come from the bfcache
@@ -443,7 +318,6 @@
 
   window.oneTakeAirwallex = {
     openCheckout: openCheckout,
-    openWire: openWire,
     confirmPurchase: confirmPurchase,
     attribution: attribution
   };
