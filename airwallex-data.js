@@ -55,6 +55,21 @@ window.AIRWALLEX_CONFIG = {
             currency: 'EUR',
             priceLabel: '299\u00a0€ HT / trimestre',
             checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.'
+        },
+        // New members: never customers, or tried OneTake without staying (/4dcm/rejoindre-challenge/).
+        // Same offer; the deadline is per link (?sent_on=, see /4dcm/rejoindre-challenge/deadline.js)
+        'challenge-join-yearly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an'
+        },
+        // Shown on /4dcm/rejoindre-challenge/ only with ?plan=quarterly
+        'challenge-join-quarterly': {
+            name: 'Le Challenge des Experts à Haute Valeur',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre'
         }
     }
 };

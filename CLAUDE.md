@@ -148,6 +148,17 @@ For customers who cancelled OneTake in the past. Sent by link (`noindex`), no co
 - **Accounts:** old accounts and their content are kept; signing up with the same email reactivates the account at the Scale level.
 - **Shared files:** same as acces-challenge; page-specific styles are in its own `<style>`.
 
+## Rejoindre le Challenge (`/4dcm/rejoindre-challenge/`)
+
+For people who were never OneTake customers, or who tried OneTake without staying. Sent by link (`noindex`).
+
+- **Plans:** `challenge-join-yearly` and, with `?plan=quarterly` (same mechanism as acces-challenge), `challenge-join-quarterly`; same prices and bonuses as the acces plans, standard popup text, success page `/4dcm/rejoindre-challenge/merci/`. No sales window in the edge script: the deadline is per link.
+- **Deadline:** `?sent_on=2026-11-21` (the day the email is sent; also `21/11/2026` or a date and time). The page closes after 3 full days, at midnight Paris time (sent Nov 21: closes at the end of Nov 24), then redirects to `/oto/too-late/`. `deadline.js` (in `<head>`) stores the date in `localStorage` (a newer link replaces it; without any, the first visit counts), injects the countdown bar and fills `[data-join-deadline]` with the closing day. `?unlockfor=1` disables the redirect and the bar.
+- **Accounts:** the team creates them from the Userlist `Purchase` event; the buyer gets an email.
+- **Shared files:** same as acces-challenge.
+
+**Thank-you pages:** every Challenge `merci/` page (`noindex`) shows the same three steps: welcome survey (`https://onfire.onetake.ai/challenge/bienvenue`), Telegram group (`https://www.onetake.ai/challenge/telegram`) and the Temps Réel calendar (`https://www.onetake.ai/calendrier-sessions-live`). Keep them in sync.
+
 ## Embeddable checkout snippet
 
 **Files:** `/assets/checkout/checkout-embed.js`, `/assets/checkout/checkout-embed.css`, `/assets/checkout/checkout-core.js`

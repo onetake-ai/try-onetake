@@ -31,6 +31,18 @@
   }
   .welcome .next h2 { font-size: 26px; margin-bottom: 12px; }
   .welcome .next p { margin: 0; color: var(--ink-soft); }
+  .welcome .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  .welcome .steps li { counter-increment: step; padding: 20px 0 0 44px; position: relative; }
+  .welcome .steps li + li { margin-top: 20px; border-top: 1px solid var(--line); }
+  .welcome .steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 20px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-family: var(--mono); font-size: 14px; line-height: 28px; text-align: center;
+  }
+  .welcome .steps h3 { font-size: 21px; margin: 0 0 6px; }
+  .welcome .steps p { margin: 0 0 14px; }
   @media (max-width: 600px) {
     .welcome .card { padding: 40px 20px; }
     .welcome .next { padding: 24px 20px; }
@@ -60,6 +72,28 @@
       <div class="next">
         <h2>Rendez-vous le mardi 3 novembre</h2>
         <p>On se retrouve en direct pour la Cérémonie de Bienvenue&nbsp;: on fait le point sur ton projet, l'offre que tu vas prévendre et ta préparation pour le 1er décembre.</p>
+      </div>
+
+      <!-- Same three steps on every Challenge thank-you page (le-challenge, acces-, comeagain-, rejoindre-challenge) -->
+      <div class="next">
+        <h2>Tes trois prochaines étapes</h2>
+        <ol class="steps">
+          <li>
+            <h3>Réponds au questionnaire de bienvenue</h3>
+            <p>Il m'aide à mieux connaître ton activité et ton projet avant le 1er décembre.</p>
+            <a class="btn btn-primary" href="https://onfire.onetake.ai/challenge/bienvenue" target="_blank" rel="noopener"><span>Je réponds au questionnaire</span><span class="arrow">→</span></a>
+          </li>
+          <li>
+            <h3>Rejoins le groupe Telegram du Challenge</h3>
+            <p>C'est là que tout se passe&nbsp;: les missions de chaque jour, l'enregistrement de la Cérémonie de Bienvenue et les autres experts qui font le Challenge avec toi.</p>
+            <a class="btn btn-primary" href="https://www.onetake.ai/challenge/telegram" target="_blank" rel="noopener"><span>Je rejoins le groupe</span><span class="arrow">→</span></a>
+          </li>
+          <li>
+            <h3>Ajoute les sessions Temps Réel à ton calendrier</h3>
+            <p>Les dates des sessions en direct Temps Réel, pour ne pas en manquer une.</p>
+            <a class="btn btn-primary" href="https://www.onetake.ai/calendrier-sessions-live" target="_blank" rel="noopener"><span>J'ajoute les dates</span><span class="arrow">→</span></a>
+          </li>
+        </ol>
       </div>
 
       <p class="small">Une question&nbsp;? Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai">contact@goodvibes.onetake.ai</a>.</p>

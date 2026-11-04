@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Version of /4dcm/le-challenge/ for people who never were OneTake customers, or who tried OneTake without staying: sent by link, never indexed -->
+<meta name="robots" content="noindex, nofollow" />
+<title>Le Challenge des Experts à Haute Valeur · Rejoins le Challenge</title>
+<meta name="description" content="Pendant 20 jours, on construit ton offre et on la vend, en vidéo, à tes futurs clients. OneTake s'occupe du montage et de la publication." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Le Challenge des Experts à Haute Valeur · Rejoins le Challenge" />
+<meta property="og:description" content="Pendant 20 jours, on construit ton offre et on la vend, en vidéo, à tes futurs clients. OneTake s'occupe du montage et de la publication." />
+<meta property="og:image" content="https://try.onetake.ai/bootcamps/ehv/le-cercle/photos/thumbnail-fr-email.jpg" />
+<link rel="canonical" href="https://try.onetake.ai/4dcm/rejoindre-challenge/" />
+
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link href="https://fonts.bunny.net/css?family=instrument-serif:400,400i&family=geist:300,400,500,600,700&family=geist-mono:400,500&display=swap" rel="stylesheet" />
+<!-- Same design as /4dcm/le-challenge/: its stylesheet is shared, keep both pages in mind when editing it -->
+<link rel="stylesheet" href="/4dcm/le-challenge/style.css" />
+<link rel="stylesheet" href="/assets/info-bubbles/info-bubbles.css" />
+<link rel="stylesheet" href="/assets/airwallex/airwallex-checkout.css" />
+<style>
+  /* Page-only styles (style.css is shared with the other Challenge pages) */
+  .features-intro { max-width: 820px; margin-left: 0; }
+  .features .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+  /* "Ce que fait OneTake" and "Le vrai problème" share the same background: a line between them */
+  .features + section { border-top: 1px solid var(--line); }
+  .features .ateliers { margin-top: 40px; }
+  .features h3 { font-size: 26px; margin: 56px 0 0; max-width: 820px; }
+  .done-list { margin-top: 40px; max-width: 980px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 40px; }
+  .simple { margin-top: 40px; max-width: 820px; }
+  @media (max-width: 800px) { .done-list { grid-template-columns: 1fr; } }
+</style>
+<script>window.__disable_weglot = true;</script>
+<script>
+  // ?plan=quarterly also shows the quarterly plan (default: annual only). Remembered for the
+  // browser session, so it survives the "back" link of the Airwallex checkout (no parameter).
+  // Set in <head> so the plans don't flicker; the CSS lives in /4dcm/le-challenge/style.css.
+  (function () {
+    var KEY = 'oneTakeRejoindreChallengePlan';
+    var quarterly = new URLSearchParams(window.location.search).get('plan') === 'quarterly';
+    try {
+      if (quarterly) sessionStorage.setItem(KEY, 'quarterly');
+      else quarterly = sessionStorage.getItem(KEY) === 'quarterly';
+    } catch (e) {}
+    if (quarterly) document.documentElement.setAttribute('data-offer-state', 'quarterly');
+  })();
+</script>
+<!-- Per-link deadline from ?sent_on= (3 days after the sending day) and countdown bar -->
+<script src="/4dcm/rejoindre-challenge/deadline.js"></script>
+</head>
+<body>
+
+<!-- ==================== 1. HERO ==================== -->
+<section class="hero" data-screen-label="01 Accroche">
+  <div class="wrap hero-grid">
+    <h1>
+      Et si, cette fois, tes vidéos te <span class="em">rapportaient des clients</span>&nbsp;?
+    </h1>
+    <div class="video-shell">
+      <div class="video-aspect">
+        <iframe
+          src="https://my.onetake.ai/b9502ad6/e49ea9ae/?hide_controls=true"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+          allowfullscreen="true"
+          title="Le Challenge des Experts à Haute Valeur"
+        ></iframe>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-large" href="#prix"><span>Je rejoins le Challenge</span><span class="arrow">→</span></a>
+    </div>
+    <p class="sub">
+      Le Challenge des Experts à Haute Valeur, du 1er au 20 décembre&nbsp;: 20 jours pour construire ton offre, la présenter en vidéo et faire tes premières préventes. Chaque matin, je te dis quoi faire. Toi, tu fais le travail qui compte vraiment&nbsp;: construire ton offre, parler à tes futurs clients et leur proposer de te rejoindre. OneTake, notre agent IA de montage vidéo, s'occupe du montage et de la publication. Il est inclus pendant toute la durée de ton abonnement.
+    </p>
+  </div>
+</section>
+
+<!-- ==================== 2. OÙ EN ES-TU ==================== -->
+<section class="warm" data-screen-label="02 Où en es-tu">
+  <div class="wrap">
+    <div class="copy" style="max-width: 820px;">
+      <div class="eyebrow">Où en es-tu&nbsp;?</div>
+      <h2 class="mt-4">Je parle chaque semaine avec des experts qui veulent vendre grâce à la vidéo. <span class="italic" style="color: var(--accent-2);">Deux situations reviennent sans arrêt.</span></h2>
+    </div>
+
+    <div class="opps">
+      <div class="opp">
+        <div class="ico">i.</div>
+        <h3>Tu n'as jamais essayé OneTake, et la vidéo te paraît encore une montagne.</h3>
+        <p>Tu sais que tu devrais publier des vidéos. Mais entre le matériel, le montage, les sous-titres et les formats de chaque réseau, tu ne sais pas par où commencer. Alors tu repousses, ou tu publies de temps en temps une vidéo qui t'a pris ta soirée entière. Et quand tu te poses enfin devant la caméra, une autre question te bloque&nbsp;: «&nbsp;Qu'est-ce que je raconte&nbsp;? Et qu'est-ce que je vends à la fin&nbsp;?&nbsp;»</p>
+      </div>
+      <div class="opp">
+        <div class="ico">ii.</div>
+        <h3>Tu as essayé OneTake, mais tu n'es pas resté.</h3>
+        <p>Tu as envoyé une vidéo ou deux pendant ton essai, et le montage t'a plu. Puis la vie a repris le dessus. Tu ne savais pas vraiment quoi filmer ensuite, ni comment ces vidéos allaient t'apporter des clients. L'essai s'est terminé, et tu t'es dit que tu reviendrais quand tu serais prêt. C'était peut-être la semaine dernière, peut-être il y a un an.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 2c. CE QUE FAIT ONETAKE ==================== -->
+<section class="features" id="onetake" data-screen-label="02c Ce que fait OneTake">
+  <div class="wrap">
+    <div class="copy features-intro">
+      <div class="eyebrow">OneTake</div>
+      <h2 class="mt-4">Tu te filmes en une seule prise. <span class="italic" style="color: var(--accent-2);">OneTake fait tout le reste.</span></h2>
+      <p class="lead mt-4">OneTake est un agent IA de montage vidéo. Tu lui envoies ton enregistrement brut, avec tes hésitations et tes silences, et il te rend une vidéo professionnelle, prête à publier. Voici ce qu'il fait, tout seul, dès que tu envoies ta vidéo&nbsp;:</p>
+    </div>
+
+    <ul class="bullets done-list">
+      <li><span>Tout ce que tu as dit, transcrit</span></li>
+      <li><span>Un son de studio, sans bruit de fond</span></li>
+      <li><span>Les silences gênants coupés</span></li>
+      <li><span>Les hésitations, les «&nbsp;euh&nbsp;» et les reprises supprimés</span></li>
+      <li><span>Des sous-titres ajoutés, pour te suivre même sans le son</span></li>
+      <li><span>Les fautes corrigées dans tes sous-titres</span></li>
+      <li><span>Tes noms de marque et le vocabulaire de ton métier bien orthographiés</span></li>
+      <li><span>Les points clés affichés à l'écran</span></li>
+      <li><span>La vidéo découpée en chapitres et en scènes, avec des transitions fluides</span></li>
+      <li><span>Des plans de coupe ajoutés pour illustrer tes propos</span></li>
+      <li><span>Une musique libre de droits, composée pour ta vidéo</span></li>
+      <li><span>Ton logo et les couleurs de ta marque sur chaque vidéo</span></li>
+    </ul>
+
+    <h3>Et pour aller plus loin</h3>
+    <div class="ateliers">
+      <div class="atelier">
+        <span class="tag">Il suffit de demander</span>
+        <h4>Tu parles à OneTake comme à un vidéaste</h4>
+        <p>Envie d'un changement&nbsp;? Tu le demandes à OneTake, avec tes mots, par écrit ou à voix haute avec le mode vocal. «&nbsp;Ajoute de la musique&nbsp;», «&nbsp;enlève ce passage&nbsp;», «&nbsp;mets plus de plans de coupe&nbsp;»&nbsp;: OneTake se met au travail et te rend une nouvelle version. Il peut aussi te préparer un script, un résumé, un quiz ou un plan de leçon à partir de ton enregistrement.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Regard et décor</span>
+        <h4>Les yeux dans la caméra, un décor impeccable</h4>
+        <p>Avec la correction du regard, tes yeux fixent la caméra du début à la fin, même quand tu lisais tes notes hors champ. Et OneTake transforme un bureau encombré en espace propre, ou le remplace par un fond neutre.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Traduction</span>
+        <h4>Tu parles la langue de tes spectateurs</h4>
+        <p>OneTake traduit ta vidéo dans la langue de tes spectateurs. Une seule prise te suffit pour toucher des clients bien au-delà de ton pays.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Shorts et formats</span>
+        <h4>Une vidéo, du contenu pour chaque plateforme</h4>
+        <p>OneTake repère les meilleurs moments de chaque vidéo de plus de 30 secondes et en tire des Shorts pour Reels, TikTok et YouTube Shorts, avec tes propres consignes et le recadrage de ton choix. Tu choisis le format de ta vidéo, même inhabituel, et tout le montage s'y adapte.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Styles pour les réseaux</span>
+        <h4>Des styles qui arrêtent le défilement</h4>
+        <p>Influencer, Punchline, Minimalist et Impact&nbsp;: quatre styles de vidéo conçus pour les réseaux sociaux, percutants dès la première seconde. Chacun suit le format que tu choisis, pour que ta vidéo soit à sa place sur chaque plateforme.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Publication</span>
+        <h4>Tu publies partout, sans quitter OneTake</h4>
+        <p>OneTake publie et programme tes vidéos sur YouTube, Instagram, Facebook, TikTok et LinkedIn. Un calendrier te montre tout ce qui est publié ou prévu, et tu reprogrammes un post en un clic.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Mobile et prompteur</span>
+        <h4>Ton téléphone suffit</h4>
+        <p>Pas besoin de matériel coûteux&nbsp;: tu te filmes et tu montes tes vidéos depuis ton téléphone ou ton ordinateur. Le prompteur fait défiler ton texte pendant que tu regardes la caméra.</p>
+      </div>
+      <div class="atelier">
+        <span class="tag">Hébergement</span>
+        <h4>Ta vidéo prête à intégrer</h4>
+        <p>Chaque vidéo a sa propre page hébergée et un lecteur à intégrer à ta plateforme de formation ou à ta page de vente. Une notification t'avertit dès que ta vidéo est prête.</p>
+      </div>
+    </div>
+
+    <div class="simple">
+      <h3 style="margin-top: 0;">Pas besoin d'être technique</h3>
+      <ul class="bullets">
+        <li><span>Aucun prompt à écrire, aucun travail manuel&nbsp;: OneTake monte ta vidéo dès que tu l'envoies</span></li>
+        <li><span>Rien à installer&nbsp;: tout fonctionne depuis ton téléphone ou ton ordinateur</span></li>
+        <li><span>Pas de timeline, pas de logiciel de montage, pas de freelance à relancer</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="02b Le vrai problème">
+  <div class="wrap">
+    <div class="long-copy">
+      <p class="turn">Avec OneTake, le montage n'est plus un obstacle. Mais lis bien ce qui suit. <span class="italic" style="color: var(--accent-2);">Le vrai problème ne vient pas de la vidéo.</span></p>
+
+      <p>OneTake te rend une vidéo professionnelle, prête à publier partout. Mais il ne peut pas décider à ta place de ce que tu vends, à qui tu le vends, ni de ce que tu dois dire pour qu'une personne qui te regarde ait envie de te rejoindre.</p>
+
+      <p>Ce travail-là se fait avant la caméra. Et c'est exactement celui qu'on ne t'a jamais vraiment appris.</p>
+
+      <p>Si tu repousses tes vidéos, c'est souvent parce que tu ne sais pas encore ce que tu vends&nbsp;: tant que ton offre n'est pas claire, tu ne sais pas quoi dire. Et si tu publies déjà sans résultat, c'est souvent pour la même raison, vue de l'autre côté&nbsp;: tes vidéos ne mènent nulle part. Pas d'offre claire, pas d'invitation, pas de prochaine étape pour la personne intéressée.</p>
+
+      <p>Je reçois chaque semaine des messages d'experts comme toi. Une phrase revient sans arrêt&nbsp;:</p>
+      <blockquote class="pullquote">«&nbsp;J'ai tout ce qu'il me faut&nbsp;: la vision, les outils, la volonté, l'envie, le produit… mais je n'arrive pas à décoller.&nbsp;»</blockquote>
+      <p>Une autre aussi&nbsp;:</p>
+      <blockquote class="pullquote">«&nbsp;Je communique beaucoup sur les réseaux sans convertir.&nbsp;»</blockquote>
+
+      <p>Il te manque deux choses&nbsp;: une offre que tes clients ont envie d'acheter, et quelqu'un qui te guide, jour après jour, pour la présenter et la vendre. Dans le bon ordre&nbsp;: on vend d'abord, on crée ensuite.</p>
+
+      <p class="key">C'est exactement ce que je te propose pendant 20 jours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 3. POURQUOI MAINTENANT ==================== -->
+<section class="warm" data-screen-label="03 Pourquoi maintenant">
+  <div class="wrap">
+    <div class="copy" style="max-width: 820px;">
+      <div class="eyebrow">Pourquoi maintenant</div>
+      <h2 class="mt-4">En cette fin 2026, deux opportunités se présentent en même temps. <span class="italic" style="color: var(--accent-2);">Et en 2027, il sera trop tard pour les saisir.</span></h2>
+    </div>
+
+    <div class="opps">
+      <div class="opp">
+        <div class="ico">i.</div>
+        <h3>L'opportunité de fin d'année.</h3>
+        <p>En décembre, tes futurs clients font le bilan de leur année. Ils décident ce qu'ils vont changer en janvier, et ils ont rarement été aussi prêts à s'engager. Une formation ou un programme qui démarre en janvier, c'est exactement ce qu'ils cherchent. Si tu te présentes à eux en décembre, tu arrives au bon moment. Si tu attends février, ils auront déjà choisi quelqu'un d'autre.</p>
+      </div>
+      <div class="opp">
+        <div class="ico">ii.</div>
+        <h3>L'opportunité de l'IA.</h3>
+        <p>L'IA est en train de redistribuer les cartes dans le monde de l'expertise. Les experts qui vendent de l'information générique se font remplacer par ChatGPT. Les vrais experts de terrain, avec 10 ou 20 ans de résultats, n'ont jamais eu autant de place pour devenir la référence de leur domaine, à condition de se rendre visibles maintenant. Aujourd'hui, un expert qui sait utiliser l'IA pour écrire, filmer et vendre a une longueur d'avance énorme. Dans un an ou deux, ce sera la norme.</p>
+      </div>
+    </div>
+
+    <div class="lever">
+      <div>
+        <div class="eyebrow">Le levier</div>
+        <h3>Le levier pour les saisir&nbsp;: la vidéo.</h3>
+      </div>
+      <p>Tes prospects sont noyés sous le contenu écrit généré par l'IA. Une vidéo où ils voient ton visage et entendent ta voix, c'est ce qui crée la confiance assez vite pour déclencher un achat. Et avec OneTake, tu n'as plus besoin de savoir monter une vidéo&nbsp;: tu filmes, OneTake s'occupe du reste. Il reste à donner à tes vidéos une offre à vendre et un plan pour la vendre.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4. L'OPPORTUNITÉ ==================== -->
+<section data-screen-label="04 L'opportunité">
+  <div class="wrap">
+    <div class="copy center" style="margin-bottom: 64px;">
+      <div class="eyebrow" style="justify-content: center;">L'opportunité</div>
+      <h2 class="mt-4">Imagine ton dimanche 20 décembre <span class="italic">au soir.</span></h2>
+    </div>
+
+    <div class="morning">
+      <div class="photo">
+        <img src="/bootcamps/ehv/le-cercle/photos/02-pexels-valeria-ushakova-3094230%20Large.jpeg" alt="Carnet et café sur une table, en fin de journée" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+
+      <div class="timeline">
+        <div class="moment">
+          <div class="t">18h00</div>
+          <p>Tu ouvres ton espace de vente. Les inscriptions à ton programme de janvier sont arrivées au fil des jours. Tu repenses au 1er décembre&nbsp;: tu n'avais qu'une idée, et pas encore d'offre. Aujourd'hui, c'est un programme que des gens ont payé.</p>
+        </div>
+        <div class="moment">
+          <div class="t">18h30</div>
+          <p>Tu relis tes échanges des trois dernières semaines&nbsp;: les questions posées par tes contacts, les conversations que tu as osé lancer, les «&nbsp;oui&nbsp;» qui sont arrivés. Tes vidéos ont fait leur part, mais ce sont ces conversations qui ont tout changé.</p>
+        </div>
+        <div class="moment">
+          <div class="t">20h00</div>
+          <p>À table, quelqu'un te demande&nbsp;: «&nbsp;Alors, ça avance ton truc&nbsp;?&nbsp;» Cette fois, tu souris. Tu as une date de démarrage, des inscrits, et un plan pour livrer.</p>
+        </div>
+        <div class="moment">
+          <div class="t">Lundi 4 janvier, 9h00</div>
+          <p>Tu ouvres la première session de ton programme. Tu le crées au fur et à mesure, avec tes clients, en sachant exactement ce qu'ils attendent, parce qu'ils te l'ont dit avant d'acheter.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="morning-close">
+      <p>C'est pour vivre ce mois de décembre avec toi, et pour que tes vidéos te rapportent enfin des clients, que j'ai créé <span class="italic" style="color: var(--accent-2);">le Challenge des Experts à Haute Valeur.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 5. QUI JE SUIS ==================== -->
+<section class="warm" data-screen-label="05 Qui je suis">
+  <div class="wrap">
+    <div class="split reverse">
+      <div>
+        <div class="eyebrow">Qui je suis</div>
+        <h2 class="mt-4">Je m'appelle Sébastien Night.</h2>
+        <p class="lead mt-4">Depuis 2010, j'accompagne des entrepreneurs, des coachs et des formateurs&nbsp;: plus de 300&nbsp;000 dans 41 pays.</p>
+        <p>J'ai eu la chance de travailler avec beaucoup d'experts quand personne ne les connaissait encore. Olivier Roland vivotait dans un petit appartement à Lille&nbsp;; il est devenu l'auteur d'un des livres business les plus vendus en France. Aurélien Amacker, qui a fondé ensuite Systeme.io, était aussi dans la salle. Maryse Lehoux était terrifiée à l'idée de se lancer&nbsp;; elle s'est retrouvée à partager sa passion du yoga avec 30&nbsp;000 personnes.</p>
+        <p>Ils avaient tous les mêmes doutes que toi. La différence, c'est qu'ils ont suivi un plan, dans le bon ordre, au lieu de bricoler seuls.</p>
+        <p>Aujourd'hui, je dirige OneTake AI, l'entreprise qui a créé OneTake. J'ai créé OneTake pour que le montage ne soit plus jamais ce qui t'empêche de publier. Mais je ne l'ai pas créé pour que tu aies de jolies vidéos&nbsp;: je l'ai créé pour que tes vidéos t'aident à développer ton activité. Le Challenge, c'est la pièce qui manquait&nbsp;: la méthode que j'enseigne depuis plus de 15 ans, pour savoir quoi vendre, quoi dire et à qui.</p>
+      </div>
+      <div class="photo">
+        <img src="/bootcamps/ehv/le-cercle/photos/03-Sebastien-31-sd%20Large.jpeg" alt="Sébastien Night" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 6. CE QUE TU REÇOIS ==================== -->
+<section data-screen-label="06 Ce que tu reçois">
+  <div class="wrap">
+    <div class="copy" style="max-width: 820px; margin: 0 0 32px;">
+      <div class="eyebrow">L'offre complète</div>
+      <h2 class="mt-4">Ce que tu reçois</h2>
+    </div>
+
+    <!-- Le Challenge -->
+    <div class="component">
+      <div class="num">01</div>
+      <div>
+        <h3>Le Challenge des Experts à Haute Valeur&nbsp;: 20 jours pour construire ton offre et la prévendre</h3>
+        <p class="lead">Du 1er au 20 décembre, chaque matin, je publie dans le groupe privé une vidéo avec la mission du jour et les ressources qui vont avec. Certains jours, tu travailles ton offre. D'autres, tu écris à tes contacts, tu prépares une vidéo ou tu présentes ton programme. Tu sais toujours quoi faire, pourquoi, et comment cela te rapproche d'une vente.</p>
+        <p>Tu apprends à prévendre&nbsp;: présenter ton programme, recueillir des inscriptions et encaisser avant d'avoir tout créé. Plus besoin de passer des mois sur une formation que personne n'attend. Tu crées pour des clients qui ont déjà dit oui.</p>
+        <ul class="bullets">
+          <li><span>Comment trouver l'offre que tes clients ont vraiment envie d'acheter, même si tu hésites encore entre plusieurs idées</span></li>
+          <li><span>Comment présenter un programme qui n'existe pas encore sans perdre en crédibilité (et pourquoi tes clients vont adorer participer à sa création)</span></li>
+          <li><span>Quoi dire dans tes vidéos pour qu'elles mènent à une conversation, puis à une vente, au lieu de récolter des «&nbsp;likes&nbsp;» polis</span></li>
+          <li><span>Comment proposer ton offre à tes contacts sans avoir l'impression de faire du forcing, ni de passer pour «&nbsp;un commercial affamé&nbsp;»</span></li>
+          <li><span>Pourquoi décembre est le meilleur mois de l'année pour vendre un programme qui commence en janvier, et comment en profiter même avec une petite audience</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- La Préparation + skills -->
+    <div class="component">
+      <div class="num">02</div>
+      <div>
+        <h3>La Préparation&nbsp;: tes assistants IA, prêts avant le 1er décembre</h3>
+        <p class="lead">Dès ton inscription, tu reçois mes formations de préparation et ma Boîte à Skills de l'Expert à Haute Valeur&nbsp;: 31 skills que tu importes dans Claude, ChatGPT ou ton assistant IA préféré. Une fois installées, ton IA travaille comme un copywriter avancé formé à ma méthode. Tu lui demandes ton avatar client, ta promesse, ton offre, tes emails, ton script vidéo ou ta page de vente, et elle suit les mêmes étapes que moi.</p>
+        <p>Ton IA te fait gagner un temps précieux sur l'écriture. Les décisions restent les tiennes&nbsp;: ce que tu vends, à qui, à quel prix. Tu n'as aucun prompt à écrire&nbsp;: tu importes les skills une fois, puis tu parles à ton IA normalement.</p>
+        <p class="skills-hint">Les 31 skills sont regroupées en 5 familles. Touche ou survole l'icône ⓘ à côté de chaque skill pour voir ce qu'elle fait pour toi.</p>
+        <div id="skills" class="skills"></div>
+      </div>
+    </div>
+
+    <!-- Les Ateliers -->
+    <div class="component">
+      <div class="num">03</div>
+      <div>
+        <h3>Les Ateliers du Cercle des Experts à Haute Valeur, avec leurs Feuilles de Route</h3>
+        <p class="lead">Le Cercle des Experts à Haute Valeur est mon programme d'accompagnement à 4&nbsp;995&nbsp;€. Il est aujourd'hui fermé aux nouveaux membres. Avec le Challenge, tu reçois les enregistrements de tous les Ateliers déjà donnés, et pour chacun, sa Feuille de Route&nbsp;: la liste précise des actions à mettre en place, avec les ressources IA pour t'aider à les réaliser.</p>
+
+        <div class="ateliers">
+          <div class="atelier">
+            <span class="tag">Atelier Positionnement</span>
+            <h4>Ton positionnement d'Expert à Haute Valeur</h4>
+            <p>Tu deviens la réponse évidente à un problème précis, et tu sais exactement pourquoi tes clients te choisiront toi plutôt que ChatGPT. Tu repars avec ton client idéal, ton positionnement et ton mécanisme unique, validés directement auprès de ton marché grâce à l'Étude de Marché Express.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Offre &amp; Prix</span>
+            <h4>Ton offre irrésistible</h4>
+            <p>Tu transformes ton expertise en une offre que tes clients ont envie d'acheter, à son juste prix. Tu sais construire tes bonus, nommer ton offre et y ajouter des outils IA qui font disparaître l'objection du prix.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Contenu &amp; Vidéo</span>
+            <h4>Capter l'attention dans un monde de distraction</h4>
+            <p>Tu sais quelles vidéos faire, à quel rythme et sur quelles plateformes pour attirer des acheteurs plutôt que des curieux. Tu repars avec ton calendrier de contenu sur 90 jours et ta première vidéo publiée avec OneTake.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Email &amp; Liste</span>
+            <h4>Transformer tes vues en abonnés email</h4>
+            <p>Tu transformes les personnes qui regardent tes vidéos en abonnés qui t'appartiennent, grâce à un aimant à prospects et une séquence de bienvenue qui les prépare à acheter. Tu ne dépends plus de l'algorithme pour joindre tes clients.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Tunnel de Vente</span>
+            <h4>La Machine à Vendre</h4>
+            <p>Tu assembles toutes les pièces (trafic, page d'inscription, emails, vente, upsell) en un tunnel qui transforme des inconnus en clients. Tu le construis une fois, puis il continue à vendre pendant que tu t'occupes de tes clients.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Page de Vente &amp; VSL</span>
+            <h4>Vendre sans appel de vente</h4>
+            <p>Tu écris une page de vente qui convertit et tu enregistres ta vidéo de vente avec OneTake. Tes prospects achètent après avoir lu ou regardé, sans appel de vente, et sans que tu aies l'impression de jouer au commercial.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Formation &amp; Coaching</span>
+            <h4>Créer un programme rentable à l'ère de l'IA</h4>
+            <p>Tu structures, enregistres et lances ta formation ou ton programme de coaching, avec le bon prix et un plan de lancement vidéo en 7 jours. Tu sais aussi protéger ton contenu pour que l'IA ne te le vole pas, et pourquoi tes clients te choisiront toi plutôt qu'une IA.</p>
+          </div>
+          <div class="atelier">
+            <span class="tag">Atelier Outils IA pour tes clients</span>
+            <h4>Rendre ton offre unique</h4>
+            <p>Tu crées des outils IA qui aident tes clients à obtenir leurs résultats plus vite et à passer à l'action. Ton offre ne ressemble plus à «&nbsp;une formation de plus&nbsp;», et ces outils peuvent même devenir une nouvelle source de revenus récurrents.</p>
+          </div>
+        </div>
+
+        <p>Pendant le Challenge, tu avances vite. Avec les Ateliers, tu sais aussi pourquoi chaque étape fonctionne et comment aller plus loin.</p>
+      </div>
+    </div>
+
+    <!-- OneTake Scale -->
+    <div class="component">
+      <div class="num">04</div>
+      <div>
+        <h3>OneTake Scale&nbsp;: tes vidéos montées et publiées sans effort, au niveau le plus complet</h3>
+        <p>Le Challenge repose sur la vidéo. Tu as donc accès à OneTake au niveau Scale (2&nbsp;990&nbsp;€/an), avec tout ce que tu as vu plus haut. Tu te filmes en une seule prise, avec tes hésitations et tes silences. OneTake supprime les blancs et les bruits de fond, ajoute les sous-titres et les mots-clés à l'écran, crée les transitions, compose une musique originale, peut traduire ta vidéo, puis découpe tes Shorts et publie tes vidéos sur tes réseaux.</p>
+        <p>Le temps que tu ne passes plus au montage, tu le passes là où il compte&nbsp;: sur ton offre et avec tes futurs clients.</p>
+      </div>
+    </div>
+
+    <!-- Telegram + Cérémonie -->
+    <div class="component">
+      <div class="num">05</div>
+      <div>
+        <h3>Le groupe Telegram privé et la Cérémonie de Bienvenue</h3>
+        <p>Le Challenge se vit dans un groupe Telegram privé. Chaque jour, j'y partage les missions, mes conseils et mes retours. Tu peux y publier ton offre, ton script ou ta vidéo et demander un avis avant de les diffuser, et voir avancer les autres experts qui font le Challenge avec toi.</p>
+        <p>La <strong>Cérémonie de Bienvenue</strong> a eu lieu en direct le mardi 3 novembre&nbsp;: on y a fait le point sur le projet de chacun, l'offre à prévendre et la préparation pour le 1er décembre. Son enregistrement t'attend dans le groupe.</p>
+      </div>
+    </div>
+
+    <!-- Programme de A à Z -->
+    <div class="component">
+      <div class="num">06</div>
+      <div>
+        <h3>Ton programme de A à Z&nbsp;: le plan d'action pour livrer le coaching ou la formation que tu auras vendu, avec des outils d'IA spécialisés pour aider tes clients à réussir plus vite</h3>
+        <p>C'est le «&nbsp;problème&nbsp;» que je te souhaite&nbsp;: des clients ont payé, et tu dois maintenant créer ton programme. Tout est déjà dans ton accès. L'Atelier Formation &amp; Coaching te montre comment le structurer et le livrer, et la skill Architecte de formation construit avec toi tes modules à partir des promesses que tu as faites. L'Atelier Outils IA et la skill Prestaproduit t'aident à créer des outils IA spécialisés pour tes clients, pour qu'ils obtiennent leurs résultats plus vite. Et OneTake te permet d'enregistrer tes leçons sans perdre de temps au montage. Tu ne vends pas dans le vide&nbsp;: tu sais déjà comment tu vas livrer.</p>
+      </div>
+    </div>
+
+    <!-- Bonus surprise -->
+    <div class="component">
+      <div class="num">07</div>
+      <div>
+        <h3>Bonus surprise</h3>
+        <p>Un dernier bonus t'attend. Je ne le dévoile pas ici&nbsp;: tu le découvriras pendant le Challenge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 7. CE QUE TU VAS FAIRE ==================== -->
+<section class="dark" data-screen-label="07 Ce que tu vas faire">
+  <div class="wrap">
+    <div class="eyebrow">Pendant le Challenge</div>
+    <h2 class="mt-4">Ce que tu vas vraiment faire pendant 20 jours</h2>
+    <div class="day">
+      <div class="day-step">
+        <span class="t">Ton offre</span>
+        <p>Tu choisis ce que tu vas vendre, à qui et à quel prix. Ton IA t'aide à formuler ta promesse et ton offre, mais c'est toi qui tranches, et c'est là que tout se joue.</p>
+      </div>
+      <div class="day-step">
+        <span class="t">Tes contacts</span>
+        <p>Tu reprends contact avec les personnes qui te connaissent déjà&nbsp;: anciens clients, abonnés, réseau. Je te donne les messages et la façon de les aborder, sans forcer.</p>
+      </div>
+      <div class="day-step">
+        <span class="t">Tes vidéos</span>
+        <p>Tu sais enfin quoi dire. Tu te filmes en une prise, OneTake monte la vidéo, et chacune mène quelque part&nbsp;: vers une conversation, une inscription, une vente.</p>
+      </div>
+      <div class="day-step">
+        <span class="t">Tes ventes</span>
+        <p>Tu présentes ton programme et tu recueilles tes premières inscriptions. À chaque étape, tu peux poster ton travail dans le groupe et recevoir un retour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 8. PILE DE VALEUR ==================== -->
+<section data-screen-label="08 La pile de valeur">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">La pile de valeur</div>
+    </div>
+
+    <div class="stack-table" style="margin-top: 32px;">
+      <div class="stack-row value-row">
+        <h4>Le Challenge des Experts à Haute Valeur (20 jours guidés + groupe Telegram + Cérémonie de Bienvenue)</h4>
+        <div class="val">1&nbsp;997&nbsp;€</div>
+      </div>
+      <div class="stack-row value-row">
+        <h4>Les Ateliers du Cercle et leurs Feuilles de Route</h4>
+        <div class="val">4&nbsp;995&nbsp;€</div>
+      </div>
+      <div class="stack-row value-row">
+        <h4>La Préparation&nbsp;: la Boîte à Skills de l'Expert à Haute Valeur (31 skills) et les formations</h4>
+        <div class="val">1&nbsp;995&nbsp;€</div>
+      </div>
+      <div class="stack-row value-row">
+        <h4>OneTake Scale pendant 1 an</h4>
+        <div class="val">2&nbsp;990&nbsp;€</div>
+      </div>
+      <div class="stack-row value-row">
+        <h4>Ton programme de A à Z</h4>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-row value-row">
+        <h4>Bonus surprise</h4>
+        <div class="val">Surprise</div>
+      </div>
+      <div class="stack-row value-row total">
+        <h4>Valeur totale</h4>
+        <div class="val">11&nbsp;977&nbsp;€</div>
+      </div>
+    </div>
+
+    <p class="stack-note">Tu gardes l'accès à tout tant que ton abonnement est actif. Il se renouvelle au même prix, avec OneTake Scale toujours inclus.</p>
+    <div class="center mt-4">
+      <a class="btn btn-primary btn-large" href="#prix"><span>Je rejoins le Challenge</span><span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 9. GARANTIE ==================== -->
+<section class="warm" data-screen-label="09 Garantie">
+  <div class="wrap">
+    <div class="guarantee">
+      <div class="seal">
+        <div class="seal-inner">
+          <div class="big">14</div>
+          <div class="lbl">jours · sans condition</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Garantie</div>
+        <h3 class="mt-2">Garantie inconditionnelle de 14 jours</h3>
+        <p class="mt-2">Inscris-toi, installe tes skills, regarde les Ateliers, teste OneTake Scale et regarde la Cérémonie de Bienvenue. Tu as 14 jours à partir de ton inscription pour tout essayer.</p>
+        <p>Si pour n'importe quelle raison ce n'est pas pour toi, envoie-nous un simple email dans les 14 jours et on te rembourse intégralement. Tu n'as pas à te justifier.</p>
+        <p>Je prends tout le risque parce que je sais ce que ces ressources peuvent faire pour une experte ou un expert prêt à passer à l'action.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 10. PRIX ==================== -->
+<section class="pricing-section" id="prix" data-screen-label="10 Ton investissement">
+  <div class="wrap">
+
+    <div class="pricing-head">
+      <div class="eyebrow" style="justify-content: center;">L'investissement</div>
+      <h2 class="mt-4">Ton investissement</h2>
+      <p class="lead mt-4">Tout ce que tu viens de voir représente plus de 11&nbsp;000&nbsp;€ de valeur. OneTake Scale à lui seul coûte 2&nbsp;990&nbsp;€ par an.</p>
+    </div>
+
+    <div class="pricing">
+      <!-- ANNUAL PLAN (always). Plan key declared in /airwallex-data.js and PLANS in edge-scripts/airwallex-checkout.ts (no closing date: the deadline is per link, see deadline.js) -->
+      <div class="plan featured">
+        <div class="ribbon">Recommandé</div>
+        <div class="plan-name">Abonnement annuel</div>
+        <div class="price">
+          <span class="amount">999&nbsp;€</span>
+          <span class="per">HT / an</span>
+        </div>
+        <div class="save">Soit moins de 84&nbsp;€&nbsp;HT par mois</div>
+        <ul class="feats">
+          <li>Accès immédiat à la Préparation, aux Ateliers et à OneTake Scale</li>
+          <li><span>Ton compte OneTake créé pour toi au niveau Scale (<a href="#ton-compte">comment ça marche</a>)</span></li>
+          <li>Garantie inconditionnelle de 14 jours</li>
+        </ul>
+        <div class="cta-area">
+          <button type="button" class="btn btn-primary btn-block btn-large" data-airwallex-plan="challenge-join-yearly">
+            <span>Je rejoins le Challenge</span><span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- QUARTERLY PLAN: only with ?plan=quarterly (see the script in <head>) -->
+      <div class="plan" data-show-state="quarterly">
+        <div class="plan-name">Abonnement trimestriel</div>
+        <div class="price">
+          <span class="amount">299&nbsp;€</span>
+          <span class="per">HT / trimestre</span>
+        </div>
+        <p class="tagline">Le même accès complet, payé tous les trois mois</p>
+        <ul class="feats">
+          <li><span>Ton compte OneTake créé pour toi au niveau Scale (<a href="#ton-compte">comment ça marche</a>)</span></li>
+          <li>Garantie inconditionnelle de 14 jours</li>
+        </ul>
+        <div class="cta-area">
+          <button type="button" class="btn btn-ghost btn-block btn-large" data-airwallex-plan="challenge-join-quarterly">
+            <span>Je choisis le paiement trimestriel</span><span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-urgency">
+      <!-- The closing day is filled in by deadline.js -->
+      <p>Cette offre t'est réservée jusqu'au <strong><span data-join-deadline>dernier jour indiqué</span> à minuit</strong> (heure de Paris). Le Challenge démarre le <strong>mardi 1er décembre</strong>, pour tout le monde au même moment&nbsp;: inscris-toi dès maintenant pour avoir le temps d'installer tes skills, de regarder la Cérémonie de Bienvenue et de préparer ton offre avant le premier jour.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== 11. TON COMPTE ==================== -->
+<section id="ton-compte" data-screen-label="11 Ton compte">
+  <div class="wrap">
+    <div class="clients-box">
+      <div class="eyebrow">Ton compte OneTake</div>
+      <h2 class="mt-2">On s'occupe de tout</h2>
+      <p>Tu n'as rien à installer ni à configurer. Après ton inscription, notre équipe crée ton compte OneTake au niveau Scale, et tu reçois un email dès qu'il est prêt, dans la journée (jour ouvré).</p>
+      <p>Tu as déjà fait un essai de OneTake, récemment ou il y a longtemps&nbsp;? Tu peux rejoindre le Challenge comme tout le monde. Une question sur ton compte&nbsp;? Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai">contact@goodvibes.onetake.ai</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 12. FAQ ==================== -->
+<section class="warm" data-screen-label="12 Questions fréquentes">
+  <div class="wrap">
+    <div class="copy center">
+      <div class="eyebrow" style="justify-content: center;">FAQ</div>
+      <h2 class="mt-4">Questions fréquentes</h2>
+    </div>
+
+    <div class="faq">
+      <details>
+        <summary>Je n'ai jamais utilisé OneTake. Est-ce que je vais m'en sortir&nbsp;?</summary>
+        <p>Oui. OneTake est conçu pour les experts qui ne veulent pas apprendre le montage&nbsp;: tu te filmes, avec ton téléphone ou ton ordinateur, et tu envoies ta vidéo. OneTake la monte tout seul. Si tu veux un changement, tu le lui demandes avec tes mots, comme à un vidéaste. Il n'y a rien à installer ni de prompt à écrire. Et si tu bloques, tu poses ta question dans le groupe.</p>
+      </details>
+      <details>
+        <summary>J'ai déjà fait un essai de OneTake, sans continuer. Est-ce pour moi&nbsp;?</summary>
+        <p>Oui, c'est même pour ça que j'ai créé cette version du Challenge. Le plus souvent, on n'arrête pas OneTake à cause du montage, mais parce qu'on ne sait pas encore quoi filmer ni quoi vendre. Pendant le Challenge, on commence par ton offre, avant la caméra. Quand tu sais ce que tu vends et à qui, tu sais quoi dire, et chaque vidéo a un rôle dans ta vente.</p>
+      </details>
+      <details>
+        <summary>Je n'ai pas encore créé ma formation. Est-ce que c'est grave&nbsp;?</summary>
+        <p>Non, c'est même le cas idéal. Le Challenge t'apprend à prévendre&nbsp;: tu présentes ton programme, tu recueilles des inscriptions, puis tu le crées pour des clients qui ont déjà payé.</p>
+      </details>
+      <details>
+        <summary>Combien de temps faut-il prévoir chaque jour&nbsp;?</summary>
+        <p>Ça dépend des jours. Le montage de tes vidéos ne te prend presque rien, puisque OneTake s'en occupe. En revanche, construire ton offre, écrire à tes contacts et leur présenter ton programme demande un vrai temps de réflexion et d'action. Bloque un créneau chaque jour pendant le Challenge&nbsp;: c'est ce travail-là qui produit des ventes.</p>
+      </details>
+      <details>
+        <summary>Je ne suis pas technique. Est-ce que je vais m'en sortir avec l'IA&nbsp;?</summary>
+        <p>Oui. Tu n'as aucun prompt à écrire&nbsp;: tu importes tes skills une fois, puis tu parles à ton IA normalement. Pour la vidéo, tu te filmes et OneTake fait le montage. Et si tu bloques, tu poses ta question dans le groupe.</p>
+      </details>
+      <details>
+        <summary>Ai-je besoin de matériel pour filmer&nbsp;?</summary>
+        <p>Non. Ton téléphone ou la webcam de ton ordinateur suffisent. OneTake nettoie le son, corrige ton regard et peut remplacer le décor derrière toi&nbsp;: tu n'as besoin ni de micro coûteux, ni de studio.</p>
+      </details>
+      <details>
+        <summary>Et si je rate un jour&nbsp;?</summary>
+        <p>Toutes les vidéos et ressources restent disponibles dans le groupe. Tu rattrapes à ton rythme.</p>
+      </details>
+      <details>
+        <summary>Quelle IA dois-je utiliser&nbsp;?</summary>
+        <p>Les skills s'importent dans les assistants IA compatibles, comme Claude ou ChatGPT. Les formations de préparation te montrent comment les installer.</p>
+      </details>
+      <details>
+        <summary>J'ai une petite audience. Est-ce que ça peut marcher&nbsp;?</summary>
+        <p>Le Challenge est conçu pour tirer le meilleur de l'audience que tu as déjà&nbsp;: tes contacts, tes abonnés, ta liste email même modeste. Tu n'as pas besoin de milliers d'abonnés pour faire tes premières préventes.</p>
+      </details>
+      <details>
+        <summary>Où se passe le Challenge&nbsp;?</summary>
+        <p>Dans un groupe Telegram privé. La Cérémonie de Bienvenue a eu lieu en direct le mardi 3 novembre, et son enregistrement est disponible dans le groupe.</p>
+      </details>
+      <details>
+        <summary>Comment est créé mon compte OneTake&nbsp;?</summary>
+        <p>Notre équipe le crée pour toi au niveau Scale après ton inscription, et tu reçois un email dès qu'il est prêt, dans la journée (jour ouvré). Tu n'as rien à faire de ton côté.</p>
+      </details>
+      <details>
+        <summary>Je préfère payer par virement. Est-ce possible&nbsp;?</summary>
+        <p>Oui. Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai?subject=Paiement%20par%20virement%20%3A%20Challenge%20des%20Experts%20%C3%A0%20Haute%20Valeur&amp;body=Bonjour%2C%0A%0AJe%20souhaite%20rejoindre%20le%20Challenge%20des%20Experts%20%C3%A0%20Haute%20Valeur%20et%20payer%20mon%20abonnement%20par%20virement.%20Pouvez-vous%20m%27envoyer%20les%20informations%20n%C3%A9cessaires%20%3F%0A%0AMerci%20%21%0A">contact@goodvibes.onetake.ai</a>&nbsp;: on t'envoie les informations pour régler ton abonnement par virement.</p>
+      </details>
+      <details>
+        <summary>Le prix est indiqué hors taxes. Comment fonctionne la TVA&nbsp;?</summary>
+        <p>La TVA applicable est calculée automatiquement sur la page de paiement, selon ta situation. Si tu as un numéro de TVA intracommunautaire, tu pourras le renseigner au moment du paiement.</p>
+      </details>
+      <details>
+        <summary>Que se passe-t-il après la première année&nbsp;?</summary>
+        <p>Ton abonnement se renouvelle au même prix, et tu gardes l'accès à tout, OneTake Scale compris, tant qu'il est actif. Tu peux l'arrêter quand tu veux avant le renouvellement.</p>
+      </details>
+      <details>
+        <summary>Comment fonctionne la garantie&nbsp;?</summary>
+        <p>Tu as 14 jours à partir de ton inscription. Si ce n'est pas pour toi, tu envoies un email et on te rembourse intégralement, sans condition.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 13. P.S. ==================== -->
+<section class="ps" data-screen-label="13 P.S.">
+  <div class="wrap">
+    <div class="ps-card">
+      <span class="ps-tag">P.S. Un dernier mot.</span>
+      <p>Dans quelques semaines, l'année sera terminée. Soit tu démarres le mois de janvier avec ton idée de formation encore dans un carnet, et des vidéos qui n'ont jamais été tournées (ou qui ne mènent nulle part), soit tu finis 2026 avec des clients qui t'ont payé rubis sur l'ongle. Ce qui sépare ces deux scénarios, ce n'est ni ton talent ni ton matériel&nbsp;: c'est une offre claire, 20 jours d'action, et quelqu'un qui te dit quoi faire.</p>
+      <p>OneTake s'occupe de tes vidéos, et le Challenge t'apporte le reste&nbsp;: quoi vendre, quoi dire et à qui. Je veux que tes vidéos t'aident enfin à faire grandir ton activité et à toucher plus de clients.</p>
+      <p>C'est ton tour.</p>
+      <div class="ps-cta">
+        <a class="btn btn-primary btn-large" href="#prix"><span>Je rejoins le Challenge</span><span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="footer-inner">
+    <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+    <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
+    <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
+    <p><strong>Qui a eu cette idée&nbsp;?</strong></p>
+    <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui a aidé depuis 2010 plus de 300&nbsp;000 entrepreneurs dans 41 pays à développer leur activité. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un agent IA à la fois incroyablement puissant et d'une simplicité d'utilisation absolue&nbsp;: OneTake.</strong></p>
+    <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    <p class="footer-disclaimer">Ce site ne fait pas partie des sites Facebook, Instagram ou Google, et n'est en aucun cas approuvé par Meta Platforms, Inc. ou Alphabet Inc. Facebook et Instagram sont des marques de Meta Platforms, Inc. Google et YouTube sont des marques de Google LLC.</p>
+  </div>
+</footer>
+
+<!-- mobile sticky CTA -->
+<div class="mobile-cta">
+  <a class="btn btn-primary" href="#prix">Je rejoins le Challenge</a>
+</div>
+
+<script src="/airwallex-data.js"></script>
+<script src="/assets/phone-field/phone-field.js"></script>
+<script src="/assets/airwallex/airwallex-checkout.js"></script>
+<script src="/assets/info-bubbles/info-bubbles.js"></script>
+<script src="/4dcm/challenge-skills.js"></script>
+<script src="/tools.js"></script>
+</body>
+</html>
