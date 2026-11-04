@@ -25,18 +25,13 @@
  *              the checkout page), then a Billing Checkout in SUBSCRIPTION mode.
  *              200 { url, checkout_id }: redirect the visitor to url (valid 1 hour).
  *
- *   /wire      { plan, page, email, first_name, last_name, company, attribution }
- *              Bank transfer pledge, for plans with wire: true. Sends the Userlist event
- *              InitiateCheckout and sets the user property pledged_wire_payment_on (now, UTC).
- *              200 { ok: true }: the page then shows the bank details.
- *
  *   /purchase  { checkout_id }
  *              Called by the success page. Retrieves the Billing Checkout and, only when its
  *              status is COMPLETED, sends the Userlist event Purchase (once per browser: the page
  *              keeps a flag). 200 { completed, plan, value, currency, email, first_name }.
  *
  * ERRORS: { error, code } with code one of
- *   UNKNOWN_PLAN (400), INVALID_EMAIL (400), INVALID_NAME (400), NOT_OPEN_YET (403),
+ *   UNKNOWN_PLAN (400), INVALID_EMAIL (400), NOT_OPEN_YET (403),
  *   OFFER_CLOSED (410: the page redirects to /oto/too-late/), NOT_CONFIGURED (500),
  *   AIRWALLEX_ERROR (502, with step, status, airwallex_code, airwallex_message: the failed call), USERLIST_ERROR (502), FORBIDDEN_ORIGIN (403), NOT_FOUND (404).
  */
@@ -60,7 +55,6 @@ type Plan = {
   closesAt?:   string;   // ISO 8601 UTC; checkouts refused from this instant (omit: always open)
   successPath: string;   // Root-relative
   backPath:    string;   // Root-relative, anchored at the pricing section
-  wire?:       boolean;  // Bank transfer allowed
 };
 
 // Le Challenge des Experts à Haute Valeur: dates in Europe/Paris (CET, UTC+1 after Oct 25).
@@ -83,7 +77,6 @@ const PLANS: Record<string, Plan> = {
     closesAt:    CHALLENGE_CLOSES_AT,
     successPath: '/4dcm/le-challenge/merci/',
     backPath:    '/4dcm/le-challenge/#prix',
-    wire:        true,
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
@@ -115,9 +108,8 @@ const PLANS: Record<string, Plan> = {
     duration:    { period: 1, period_unit: 'YEAR' },
     successPath: '/4dcm/acces-challenge/merci/',
     backPath:    '/4dcm/acces-challenge/#prix',
-    wire:        true,
   },
-  // Shown on /4dcm/acces-challenge/ only with ?plan=quarterly: no sales window, card only
+  // Shown on /4dcm/acces-challenge/ only with ?plan=quarterly: no sales window
   'challenge-access-quarterly': {
     priceId:     'pri_sgpd7k7qvhnkhehpgad',
     bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
@@ -131,6 +123,36 @@ const PLANS: Record<string, Plan> = {
     duration:    { period: 90, period_unit: 'DAY' },
     successPath: '/4dcm/acces-challenge/merci/',
     backPath:    '/4dcm/acces-challenge/#prix',
+  },
+  // Customers who cancelled OneTake in the past (/4dcm/comeagain-challenge/): same offer, no sales window
+  'challenge-comeback-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (retour, annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    successPath: '/4dcm/comeagain-challenge/merci/',
+    backPath:    '/4dcm/comeagain-challenge/#prix',
+  },
+  // Shown on /4dcm/comeagain-challenge/ only with ?plan=quarterly
+  'challenge-comeback-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (retour, trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    successPath: '/4dcm/comeagain-challenge/merci/',
+    backPath:    '/4dcm/comeagain-challenge/#prix',
   },
 };
 
@@ -376,39 +398,6 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   }
 }
 
-async function handleWire(fields: Record<string, unknown>): Promise<Response> {
-  const planKey = cleanText(fields.plan, 64);
-  const plan = PLANS[planKey];
-  if (!plan || !plan.wire) return fail('UNKNOWN_PLAN', 400);
-  const closed = checkWindow(plan);
-  if (closed) return closed;
-
-  const email = cleanText(fields.email, 254).toLowerCase();
-  if (!isValidEmail(email)) return fail('INVALID_EMAIL', 400);
-  const firstName = cleanText(fields.first_name, 100);
-  const lastName  = cleanText(fields.last_name, 100);
-  if (!firstName || !lastName) return fail('INVALID_NAME', 400);
-  const company     = cleanText(fields.company, 200);
-  const telephone   = cleanPhone(fields.telephone);
-  const page        = cleanSlug(fields.page);
-  const attribution = cleanAttribution(fields.attribution);
-
-  const userProperties: Record<string, string> = {
-    ...attribution,
-    first_name: firstName,
-    last_name:  lastName,
-    // Set here (not by the browser) so a wrong visitor clock can't skew it
-    pledged_wire_payment_on: new Date().toISOString(),
-  };
-  if (company) userProperties.company = company;
-  if (telephone) userProperties.telephone = telephone;
-
-  const accepted = await pushUserlist('InitiateCheckout', email, userProperties, {
-    plan: planKey, value: plan.value, currency: plan.currency, page, payment_method: 'wire', ...attribution,
-  });
-  return accepted ? json({ ok: true }) : fail('USERLIST_ERROR', 502);
-}
-
 async function handlePurchase(fields: Record<string, unknown>): Promise<Response> {
   const checkoutId = cleanText(fields.checkout_id, 100);
   if (!/^[A-Za-z0-9_-]+$/.test(checkoutId)) return fail('NOT_FOUND', 404);
@@ -486,7 +475,6 @@ BunnySDK.net.http.serve(async (req: Request) => {
 
   let res: Response;
   if (path === '/checkout')      res = await handleCheckout(fields);
-  else if (path === '/wire')     res = await handleWire(fields);
   else if (path === '/purchase') res = await handlePurchase(fields);
   else return refuse('NOT_FOUND', 404);
 

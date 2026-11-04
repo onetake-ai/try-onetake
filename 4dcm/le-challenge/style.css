@@ -1106,22 +1106,6 @@ html[data-offer-state="quarterly"] .pricing { grid-template-columns: 1.05fr 1fr;
 }
 .plan .price .amount { font-size: 64px; }
 .plan .price .per { font-size: 17px; }
-.plan .wire-link {
-  display: block;
-  margin-top: 18px;
-  padding: 6px;
-  width: 100%;
-  background: none;
-  border: 0;
-  font: inherit;
-  font-size: 15px;
-  text-align: center;
-  color: var(--gold);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-.plan .wire-link:hover { color: #FBF7EE; }
 .pricing-urgency {
   max-width: 760px;
   margin: 56px auto 0;

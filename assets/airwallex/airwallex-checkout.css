@@ -66,9 +66,6 @@ html.awx-open { overflow: hidden; }
 .awx-intro { font-size: 15px; line-height: 1.55; color: var(--ink-soft, #4A453E); margin: 0 0 20px; }
 .awx-note { font-size: 13px; line-height: 1.5; color: var(--ink-mute, #8A8377); margin: 16px 0 0; text-align: center; }
 
-.awx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 420px) { .awx-row { grid-template-columns: 1fr; gap: 0; } }
-
 .awx-field { margin-bottom: 14px; }
 /* Leaves room under the email field for the useBouncer validation message (about 44px),
    so it never covers the next field or the button */
@@ -112,41 +109,4 @@ html.awx-open { overflow: hidden; }
 /* Trigger buttons while the checkout is being created */
 [data-airwallex-plan].is-loading { opacity: 0.7; pointer-events: none; cursor: progress; }
 
-.awx-bank {
-  margin: 20px 0;
-  padding: 0;
-  border-top: 1px solid var(--line, #E5DFD2);
-}
-.awx-bank dt {
-  font-size: 12px;
-  font-family: var(--mono, ui-monospace, monospace);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-mute, #8A8377);
-  padding-top: 14px;
-}
-.awx-bank dd {
-  margin: 4px 0 0;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--line, #E5DFD2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 16px;
-  overflow-wrap: anywhere;
-}
-.awx-copy {
-  flex-shrink: 0;
-  padding: 8px 14px;
-  font: inherit;
-  font-size: 13px;
-  color: var(--accent-2, #9a4a2a);
-  background: var(--accent-tint, #f6ebe4);
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-}
-.awx-copy:hover { background: var(--accent, #b5603a); color: #fff; }
 
-.awx-offscreen { position: fixed; top: -1000px; left: -1000px; opacity: 0; }
