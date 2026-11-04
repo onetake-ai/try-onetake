@@ -109,28 +109,19 @@ French-only sales page (Weglot disabled), styled like `/bootcamps/ehv/le-cercle/
 
 ## Accès Challenge for OneTake customers (`/4dcm/acces-challenge/`)
 
-Version of the Challenge page for current and former OneTake customers, sent by link (`noindex`). Copy rewritten for two cases: customers whose videos don't sell enough, and customers who never made their videos because they didn't know what to present or sell. Keeps the 2026 dates (Welcome Ceremony on Nov 3, then its replay; Challenge from Dec 1 to Dec 20) but has no countdown and never closes.
+For subscriptions that are active, delayed or delinquent. Sent by link (`noindex`), no countdown, never closes.
 
-- **Plans:** annual by default, Airwallex plan key `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, no `closesAt`). `?plan=quarterly` also shows the quarterly plan `challenge-access-quarterly` (same price and bonuses as `challenge-quarterly`, no window), through `data-offer-state="quarterly"` on `<html>` set by the inline script in `<head>`; it is remembered in `sessionStorage` for the browser session, so the checkout's back link (no parameter) keeps it. Both plans redirect to `/4dcm/acces-challenge/merci/`.
-- **Customers:** active subscribers get access to everything at signup; the time left on their current subscription is added to their first year (or quarter), so only their next payment date moves. Same yearly amount, e.g. last paid Jan 1, 2026, joined Nov 1, 2026, next payment Jan 1, 2028. Other amounts (monthly, other tier): the value left is turned into extra time at the Challenge price (100 € HT left pushes the next payment back about 5 weeks). The worked example sits in the "Ton compte OneTake" box (`#ton-compte`). Former customers get OneTake reactivated at the Scale level. The team does all of it by hand from the Userlist `Purchase` event.
+- **Plans:** `challenge-access-yearly` (same price and bonuses as `challenge-yearly`, no `closesAt`). `?plan=quarterly` also shows `challenge-access-quarterly` (same as `challenge-quarterly`, no window), through `data-offer-state="quarterly"` on `<html>` set by the inline script in `<head>`; it is remembered in `sessionStorage` for the browser session, so the checkout's back link (no parameter) keeps it. Both plans redirect to `/4dcm/acces-challenge/merci/`.
+- **Accounts:** the team applies the remaining time of the current subscription (and reactivates former customers) by hand, from the Userlist `Purchase` event.
 - **Shared files:** `/4dcm/le-challenge/style.css` and `/4dcm/challenge-skills.js`. It does not load `le-challenge/app.js` (offer dates).
 
 ## Comeback Challenge (`/4dcm/comeagain-challenge/`)
 
-Version of `/4dcm/acces-challenge/` for customers who cancelled OneTake in the past (acces-challenge is for active, delayed and delinquent subscriptions), sent by link (`noindex`). Same offer, same 2026 dates, no countdown. Opens with the two reasons they left (OneTake didn't do enough back then; they didn't know what to film or sell), then "Depuis ton départ" (`#nouveautes`): the new features since they left, then the Challenge.
+For customers who cancelled OneTake in the past. Sent by link (`noindex`), no countdown, never closes.
 
-- **Plans:** `challenge-comeback-yearly` and, with `?plan=quarterly` (remembered for the browser session), `challenge-comeback-quarterly`; same prices and bonuses as the acces plans, no sales window, success page `/4dcm/comeagain-challenge/merci/`. Their `checkoutIntro` asks for the same email as the old account.
-- **Accounts:** their content was kept. Signing up with the same email reactivates the old account at the Scale level, with their videos and projects (box `#ton-compte`).
-- **Shared files:** same as acces-challenge; the page-specific styles are in its own `<style>`.
-
-## Didacs mockups (`/masterclass/didacs/`)
-
-Three redesign mockups of the Didacs Center masterclass page (a client example, French, `noindex, nofollow`), each copying one layout: `/masterclass/didacs/` (layout of `/masterclass/trafic/`), `/didacs/1/` (`/trafic/1/`), `/didacs/2/` (`/trafic/2/`). No tracking and no real form: `didacs.js` checks the fields, then shows "Maquette : ce formulaire n'envoie rien.". Each folder has a `changements.md`: the step-by-step list of changes from the original page, in marketing terms and in animation order.
-
-- **Styles:** `masterclass.css` (and `variants.css` on `/1/` and `/2/`), then `didacs/didacs.css`, which swaps the color tokens for the Didacs palette. Changes to the shared masterclass files also change these mockups.
-- **Images** stay remote (Steve's photo on `cdn.pikzels.com`, the rest on the Didacs LeadConnector servers, testimonials in `TESTIMONIALS` in `didacs.js`): never copy them into the repo. Testimonials hold a lot of text: keep them large (one scrolling row of wide cards, a two-column wall on `/1/`) and never wider than their own width.
-- **Date:** every Saturday at 11:00 Paris time, computed with `session-date.js` (`[data-dd-session]`, `[data-dd-session-day]`).
-- **Form:** parent first name, parent email, required mobile number (phone field), consent as small print. `/1/` and `/2/` reuse `variants.js` for the popup, the scroll button and the exit intent.
+- **Plans:** `challenge-comeback-yearly` and, with `?plan=quarterly` (same mechanism as acces-challenge), `challenge-comeback-quarterly`; same prices and bonuses as the acces plans, no sales window, success page `/4dcm/comeagain-challenge/merci/`. Their `checkoutIntro` asks for the same email as the old account.
+- **Accounts:** old accounts and their content are kept; signing up with the same email reactivates the account at the Scale level.
+- **Shared files:** same as acces-challenge; page-specific styles are in its own `<style>`.
 
 ## Embeddable checkout snippet
 
