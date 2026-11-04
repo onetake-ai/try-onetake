@@ -87,9 +87,9 @@ Sales are sent to FirstPromoter (`POST /api/v2/track/sale`) by our webhook handl
 
 **Files:** `/edge-scripts/owner-notify.ts`, `.github/workflows/deploy-owner-notify.yml` (Bunny script 100963)
 
-Texts Sébastien through the Free Mobile API (it only texts the account owner) a WhatsApp link to the buyer or lead, with his message already typed. Only when the person gave a phone number. The messages live in `MESSAGES` and `PADDLE_WELCOME` (8 languages).
+Texts Sébastien through the Free Mobile API (it only texts the account owner), only when the buyer or lead gave a phone number. Two SMS each time: first the first name, email and reason (`REASONS`: `achat Challenge`, `inscription masterclass`, `essai gratuit OneTake`, `achat OneTake`) with a bare WhatsApp link, so he can send a voice note first; then the WhatsApp link with his message already typed (`MESSAGES`, and `PADDLE_WELCOME` in 8 languages). The masterclass message greets the lead by first name.
 
-- **Triggers:** Paddle notification destination `transaction.completed` on `/paddle` (signature checked; `origin: web` only, so first purchases, paid or trial, never renewals; name, language and phone from `custom_data`). `/notify` with `Authorization: Bearer OWNER_NOTIFY_SECRET`, called by `airwallex-checkout.ts` (`/purchase`, kind `challenge`) and `userlist-proxy.ts` (French `CompleteRegistration`, kind `masterclass`) through their `notifyOwner()`.
+- **Triggers:** Paddle notification destination `transaction.completed` on `/paddle` (signature checked; `origin: web` only, so first purchases, paid or trial, never renewals; name, language and phone from `custom_data`). `/notify` with `Authorization: Bearer OWNER_NOTIFY_SECRET` (JSON `kind`, `first_name`, `email`, `telephone`), called by `airwallex-checkout.ts` (`/purchase`, kind `challenge`) and `userlist-proxy.ts` (French `CompleteRegistration`, kind `masterclass`) through their `notifyOwner()`.
 - **Secrets** (Bunny dashboard): `FREE_MOBILE_USER`, `FREE_MOBILE_PASS`, `PADDLE_WEBHOOK_SECRET`, `OWNER_NOTIFY_SECRET` on this script; `OWNER_NOTIFY_URL` and `OWNER_NOTIFY_SECRET` on the two callers (without them, they skip the SMS). Failures are logged, never retried, and never block a sale or a registration.
 
 ## Calendar page (`/tools/calendar/`)

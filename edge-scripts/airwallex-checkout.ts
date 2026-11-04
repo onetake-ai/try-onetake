@@ -292,10 +292,10 @@ function checkWindow(plan: Plan): Response | null {
 
 // ── Userlist ─────────────────────────────────────────────────────────────────
 
-// SMS to Sébastien through edge-scripts/owner-notify.ts (WhatsApp link to the person). Only with
+// SMS to Sébastien through edge-scripts/owner-notify.ts (who, why and WhatsApp links). Only with
 // a phone number; skipped when OWNER_NOTIFY_URL or OWNER_NOTIFY_SECRET is missing. Never fails the
 // request.
-async function notifyOwner(kind: string, firstName: string, telephone: string): Promise<void> {
+async function notifyOwner(kind: string, firstName: string, email: string, telephone: string): Promise<void> {
   const url = process.env.OWNER_NOTIFY_URL;
   const secret = process.env.OWNER_NOTIFY_SECRET;
   if (!url || !secret || !telephone) return;
@@ -303,7 +303,7 @@ async function notifyOwner(kind: string, firstName: string, telephone: string): 
     await fetch(url.replace(/\/+$/, '') + '/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
-      body: JSON.stringify({ kind, first_name: firstName, telephone }),
+      body: JSON.stringify({ kind, first_name: firstName, email, telephone }),
       signal: AbortSignal.timeout(5000),
     });
   } catch (e) {
@@ -506,7 +506,7 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
         subscription_id: cleanText(checkout.subscription_id, 100),
       });
     }
-    await notifyOwner('challenge', firstName, telephone);
+    await notifyOwner('challenge', firstName, email, telephone);
 
     // customer_id: the page registers it as the FirstPromoter lead uid
     return json({ completed: true, plan: planKey, value: plan.value, currency: plan.currency, email, first_name: firstName,
