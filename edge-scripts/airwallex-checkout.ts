@@ -157,6 +157,37 @@ const PLANS: Record<string, Plan> = {
     successPath: '/4dcm/comeagain-challenge/merci/',
     backPath:    '/4dcm/comeagain-challenge/#prix',
   },
+  // New members: never customers, or tried OneTake without staying (/4dcm/rejoindre-challenge/).
+  // Same offer, no sales window: each email link has its own deadline, shown by the page only
+  'challenge-join-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (nouveaux membres, annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    successPath: '/4dcm/rejoindre-challenge/merci/',
+    backPath:    '/4dcm/rejoindre-challenge/#prix',
+  },
+  // Shown on /4dcm/rejoindre-challenge/ only with ?plan=quarterly
+  'challenge-join-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+    ],
+    label:       'Le Challenge des Experts à Haute Valeur (nouveaux membres, trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    successPath: '/4dcm/rejoindre-challenge/merci/',
+    backPath:    '/4dcm/rejoindre-challenge/#prix',
+  },
 };
 
 // ── Responses ────────────────────────────────────────────────────────────────
