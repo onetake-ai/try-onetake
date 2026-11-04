@@ -78,7 +78,7 @@ Sales are sent to FirstPromoter (`POST /api/v2/track/sale`) by our webhook handl
 | `email` | Buyer email | Buyer email (also on the billing customer) |
 | `plan` | Plan key from `pricing-data.js` (`plan_id` holds the Paddle price ID) | Plan key from `airwallex-data.js` |
 
-- **Source:** `window.oneTakeFirstPromoter` in `tools.js` (`tid()`, `refId()`). It saves `?ref=` on every page (last touch, 30 days), so it works whatever page the affiliate link pointed to. `checkout-core.js` also keeps `fp_tid` for FirstPromoter's native Paddle integration.
+- **Source:** `window.oneTakeFirstPromoter` in `tools.js` (`tid()`, `refId()`). It saves `?ref=` on every page (last touch, 30 days), so it works whatever page the affiliate link pointed to.
 - **Lead registration (`uid`):** after a purchase, the page calls `fpr('referral', { email, uid })` with the Paddle customer ID (`checkout-core.js`) or the Airwallex billing customer ID (`confirmPurchase()`, returned by `/purchase` as `customer_id`). Renewals can then be matched by `uid` or `email`.
 - **Airwallex metadata order:** if Airwallex refuses the metadata, the edge script retries without the utm attribution, then without `tid`/`ref_id`, so FirstPromoter values survive a refused utm value and never block a sale.
 - **Handler side (not in this repo):** amount in cents excl. VAT, `event_id` = transaction or invoice ID, `currency` when not the FirstPromoter default; send `tid` and `ref_id` only with the first sale (they create the lead), `email` or `uid` for renewals.

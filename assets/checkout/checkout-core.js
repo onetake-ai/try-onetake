@@ -158,12 +158,10 @@
         }
 
         // FirstPromoter: our webhook handler sends tid and ref_id to the sale API (tid first,
-        // ref_id when the cookie is missing, else email). fp_tid is kept for FirstPromoter's
-        // native Paddle integration.
+        // ref_id when the cookie is missing, else email).
         var fpTid = getFirstPromoterTid();
         if (fpTid) {
             data.tid = fpTid;
-            data.fp_tid = fpTid;
         }
         var fpRefId = window.oneTakeFirstPromoter ? window.oneTakeFirstPromoter.refId() : '';
         if (fpRefId) {
