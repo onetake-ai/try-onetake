@@ -67,6 +67,15 @@ Card payments through Airwallex Hosted Billing Checkout (subscriptions), used in
 - **Edge script** (Bunny script 99045 at `https://directpayments.onetake.ai`, our own domain because filters block `*.bunny.run` more often; deployed by `.github/workflows/deploy-airwallex-checkout.yml`): endpoints `/checkout`, `/purchase`; CORS limited to `https://try.onetake.ai`; refuses checkouts outside the plan's window with `NOT_OPEN_YET` or `OFFER_CLOSED` (the page then redirects to `/oto/too-late/`). Every refused request is logged (`Refused POST /checkout: CODE (status)` with origin, plan and email) in the Bunny logs. The popups show the error code after the error message, e.g. `(code : NOT_OPEN_YET)`; `NETWORK` means the request never got an answer the browser could read (offline, blocked by a filter, or refused by CORS), so nothing is logged and Userlist gets no `AddToCart`. Secrets, set in the Bunny dashboard: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY` (scoped key: Billing customers and Billing checkouts, write), `AIRWALLEX_LEGAL_ENTITY_ID`, `AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID`, `AIRWALLEX_LOGIN_AS` (optional, only for a key linked to several accounts), `USERLIST_PUSH_KEY`.
 - **Attribution:** `?ref=` and `utm_*` (last visit with any, kept 30 days) and the AnyTrack click ID go to Userlist and to the metadata of the Airwallex customer and checkout. The metadata is attached by update calls after creation, never at creation, and is retried without the attribution if Airwallex refuses it: metadata must never block a sale.
 
+## Owner SMS notifications
+
+**Files:** `/edge-scripts/owner-notify.ts`, `.github/workflows/deploy-owner-notify.yml` (Bunny script 100963)
+
+Texts Sébastien through the Free Mobile API (it only texts the account owner) a WhatsApp link to the buyer or lead, with his message already typed. Only when the person gave a phone number. The messages live in `MESSAGES` and `PADDLE_WELCOME` (8 languages).
+
+- **Triggers:** Paddle notification destination `transaction.completed` on `/paddle` (signature checked; `origin: web` only, so first purchases, paid or trial, never renewals; name, language and phone from `custom_data`). `/notify` with `Authorization: Bearer OWNER_NOTIFY_SECRET`, called by `airwallex-checkout.ts` (`/purchase`, kind `challenge`) and `userlist-proxy.ts` (French `CompleteRegistration`, kind `masterclass`) through their `notifyOwner()`.
+- **Secrets** (Bunny dashboard): `FREE_MOBILE_USER`, `FREE_MOBILE_PASS`, `PADDLE_WEBHOOK_SECRET`, `OWNER_NOTIFY_SECRET` on this script; `OWNER_NOTIFY_URL` and `OWNER_NOTIFY_SECRET` on the two callers (without them, they skip the SMS). Failures are logged, never retried, and never block a sale or a registration.
+
 ## Calendar page (`/tools/calendar/`)
 
 **Files:** `/tools/calendar/index.html`, `app.js`, `link.js`, `style.css`, `create/` (link generator), `/edge-scripts/calendar-proxy.ts`

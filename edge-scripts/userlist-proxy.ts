@@ -6,6 +6,9 @@
  *   2. Paste this entire file into the editor
  *   3. Add environment variable:
  *        USERLIST_PUSH_KEY = <your Userlist Push API key>
+ *      Optional (SMS to Sébastien on each French masterclass registration with a phone number):
+ *        OWNER_NOTIFY_URL    = URL of edge-scripts/owner-notify.ts
+ *        OWNER_NOTIFY_SECRET = same value as in owner-notify.ts
  *   4. Deploy and note the script URL
  *
  * ENDPOINT: POST /track
@@ -105,6 +108,25 @@ function cleanPhone(value: unknown): string {
   let phone = value.replace(/[\s.\-()\/]/g, '');
   if (phone.startsWith('00')) phone = '+' + phone.slice(2);
   return /^\+[1-9]\d{6,14}$/.test(phone) ? phone : '';
+}
+
+// SMS to Sébastien through edge-scripts/owner-notify.ts (WhatsApp link to the person). Only with
+// a phone number; skipped when OWNER_NOTIFY_URL or OWNER_NOTIFY_SECRET is missing. Never fails the
+// request.
+async function notifyOwner(kind: string, firstName: string, telephone: string): Promise<void> {
+  const url = process.env.OWNER_NOTIFY_URL;
+  const secret = process.env.OWNER_NOTIFY_SECRET;
+  if (!url || !secret || !telephone) return;
+  try {
+    await fetch(url.replace(/\/+$/, '') + '/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
+      body: JSON.stringify({ kind, first_name: firstName, telephone }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch (e) {
+    console.error('Owner SMS request failed:', e instanceof Error ? e.message : e);
+  }
 }
 
 function isValidIsoDate(value: string): boolean {
@@ -215,6 +237,11 @@ BunnySDK.net.http.serve(async (req: Request) => {
     accepted = res.ok;
   } catch {
     // swallow: HTML forms always redirect regardless of Userlist outcome
+  }
+
+  // French masterclass registrations only (they carry the live session date)
+  if (accepted && event === 'CompleteRegistration' && attendsOn) {
+    await notifyOwner('masterclass', first_name, telephone);
   }
 
   if (wantsJson) {
