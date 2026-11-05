@@ -83,7 +83,13 @@ window.oneTakeFirstPromoter = (function () {
     try { localStorage.setItem(REF_KEY, JSON.stringify({ value: ref.slice(0, 100), savedAt: Date.now() })); } catch (e) { /* storage unavailable */ }
   }
 
-  return { tid: tid, refId: refId };
+  // Fake (sandbox) purchases reach FirstPromoter only with ?fp_test=1
+  function allowedInSandbox() {
+    var query = new URLSearchParams(window.location.search);
+    return query.get('environment') !== 'sandbox' || query.get('fp_test') === '1';
+  }
+
+  return { tid: tid, refId: refId, allowedInSandbox: allowedInSandbox };
 }());
 
 function sendReferralToFirstPromoter() {

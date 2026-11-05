@@ -3,9 +3,13 @@ name: Deploy Airwallex Checkout Edge Script (sandbox)
 # Same file as the live script, run with ENVIRONMENT=SANDBOX and the Airwallex sandbox credentials
 # set in the Bunny dashboard for the sandbox script (beta.directpayments.onetake.ai).
 
-# Manual until the placeholder is replaced; then switch the trigger to the same push rule as the live workflow.
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'edge-scripts/airwallex-checkout.ts'
 
 permissions:
   id-token: write

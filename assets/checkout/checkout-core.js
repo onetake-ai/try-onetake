@@ -401,8 +401,7 @@
         // FirstPromoter referral with the Paddle customer ID, so webhooks match the lead
         var customer = (paddleData.data && paddleData.data.customer) || {};
         // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
-        var sendToFirstPromoter = !isSandbox || new URLSearchParams(window.location.search).get('fp_test') === '1';
-        if (sendToFirstPromoter && window.fpr && customer.id) {
+        if (window.oneTakeFirstPromoter.allowedInSandbox() && window.fpr && customer.id) {
             window.fpr('referral', { email: customer.email || state.formData.email, uid: customer.id });
             console.log('FirstPromoter referral sent with Paddle customer ID:', customer.id);
         }

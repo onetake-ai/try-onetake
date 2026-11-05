@@ -75,7 +75,8 @@ window.AIRWALLEX_CONFIG = {
 };
 
 // ?environment=sandbox: the page talks to the sandbox deployment of the edge script (same file with
-// ENVIRONMENT=SANDBOX, Airwallex sandbox account).
-if (new URLSearchParams(window.location.search).get('environment') === 'sandbox') {
+// ENVIRONMENT=SANDBOX, Airwallex sandbox account). airwallex-checkout.js reads AIRWALLEX_CONFIG.sandbox.
+window.AIRWALLEX_CONFIG.sandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+if (window.AIRWALLEX_CONFIG.sandbox) {
     window.AIRWALLEX_CONFIG.endpoint = 'https://beta.directpayments.onetake.ai';
 }

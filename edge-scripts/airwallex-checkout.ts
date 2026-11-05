@@ -206,19 +206,24 @@ const SANDBOX_CYCLES: Record<string, { priceId: string; duration: Plan['duration
   quarterly: { priceId: 'pri_sgpvlwl2chnvlfilmou', duration: { period: 1, period_unit: 'MONTH' } },
 };
 
-// The query keeps the success and back pages in sandbox mode
-const inSandbox = (path: string) => path.replace(/(#.*)?$/, '?environment=sandbox$1');
-
 const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
   Object.entries(LIVE_PLANS)
     .filter(([key]) => SANDBOX_CYCLES[key.split('-').pop() as string])
     .map(([key, { bonusPriceIds, opensAt, closesAt, ...plan }]) => [key, {
       ...plan,
       ...SANDBOX_CYCLES[key.split('-').pop() as string],
-      successPath: inSandbox(plan.successPath),
-      backPath:    inSandbox(plan.backPath),
     }]),
 );
+
+// Keeps the success and back pages in sandbox mode, with the test flags the sales page was opened with
+// (fp_test for the FirstPromoter test, unlockfor to bypass the countdown redirect)
+function sandboxUrl(path: string, fields: Record<string, unknown>): string {
+  const query = new URLSearchParams({ environment: 'sandbox' });
+  if (cleanText(fields.fp_test, 8) === '1') query.set('fp_test', '1');
+  const unlockfor = cleanText(fields.unlockfor, 32);
+  if (unlockfor) query.set('unlockfor', unlockfor);
+  return path.replace(/(#.*)?$/, `?${query}$1`);
+}
 
 const PLANS: Record<string, Plan> = SANDBOX ? SANDBOX_PLANS : LIVE_PLANS;
 
@@ -482,8 +487,8 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       legal_entity_id:           process.env.AIRWALLEX_LEGAL_ENTITY_ID,
       linked_payment_account_id: process.env.AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID,
       billing_customer_id:       customer.id,
-      success_url:               SITE_ORIGIN + plan.successPath,
-      back_url:                  SITE_ORIGIN + plan.backPath,
+      success_url:               SITE_ORIGIN + (SANDBOX ? sandboxUrl(plan.successPath, fields) : plan.successPath),
+      back_url:                  SITE_ORIGIN + (SANDBOX ? sandboxUrl(plan.backPath, fields) : plan.backPath),
       line_items:                [plan.priceId, ...(plan.bonusPriceIds || [])].map((id) => ({ price_id: id, quantity: 1 })),
       subscription_data:         { duration: plan.duration },   // Required in SUBSCRIPTION mode
     });
