@@ -14,7 +14,7 @@
  * otherwise injects the countdown bar (/oto/countdown/countdown.js). ?unlockfor=1 disables both.
  * [data-join-deadline] elements get the closing day as text ("mardi 24 novembre").
  *
- * Display only: the edge script (PLANS in edge-scripts/airwallex-checkout.ts) has no sales window
+ * Display only: the edge script (LIVE_PLANS in edge-scripts/airwallex-checkout.ts) has no sales window
  * for the challenge-join-* plans, since each link has its own deadline.
  */
 (function () {
