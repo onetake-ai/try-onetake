@@ -19,6 +19,10 @@
  *                                          on each Challenge purchase with a phone number)
  *     OWNER_NOTIFY_SECRET                  Optional: same value as in owner-notify.ts
  *
+ * SANDBOX: a second Bunny script runs this same file with AIRWALLEX_SANDBOX=1 and the credentials of
+ * the Airwallex demo account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
+ * with ?environment=sandbox (see airwallex-data.js). Leave the owner SMS and Userlist variables unset there.
+ *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
  *
  * ENDPOINTS (POST, JSON body, JSON response):
@@ -43,7 +47,10 @@ import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
 import process from "node:process";
 
 const SITE_ORIGIN         = 'https://try.onetake.ai';
-const AIRWALLEX_API       = 'https://api.airwallex.com';
+// Demo deployment (second Bunny script, same file): set AIRWALLEX_SANDBOX=1 and the demo credentials;
+// it then calls the Airwallex demo API and offers only SANDBOX_PLANS
+const SANDBOX             = process.env.AIRWALLEX_SANDBOX === '1';
+const AIRWALLEX_API       = SANDBOX ? 'https://api-demo.airwallex.com' : 'https://api.airwallex.com';
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const ATTRIBUTION_FIELDS  = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_channel', 'click_id'];
 
@@ -65,7 +72,7 @@ type Plan = {
 // Keep in sync with CONFIG in /4dcm/le-challenge/app.js and data-deadline in its index.html.
 const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 
-const PLANS: Record<string, Plan> = {
+const LIVE_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
     bonusPriceIds: [   // Yearly 0 € prices, in the order shown on the checkout
@@ -189,6 +196,31 @@ const PLANS: Record<string, Plan> = {
     backPath:    '/4dcm/rejoindre-challenge/#prix',
   },
 };
+
+// Plans of the demo deployment (AIRWALLEX_SANDBOX=1), same keys as the pages' sandbox presets in
+// /airwallex-data.js. Replace the placeholder price IDs with prices created in the Airwallex demo account.
+const SANDBOX_PLANS: Record<string, Plan> = {
+  'challenge-yearly': {
+    priceId:     'pri_DEMO_YEARLY_PRICE_ID',
+    label:       'Sandbox test (annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    successPath: '/4dcm/le-challenge/merci/?environment=sandbox',   // The query keeps the pages in sandbox mode
+    backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
+  },
+  'challenge-quarterly': {
+    priceId:     'pri_DEMO_QUARTERLY_PRICE_ID',
+    label:       'Sandbox test (trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    successPath: '/4dcm/le-challenge/merci/?environment=sandbox',
+    backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
+  },
+};
+
+const PLANS: Record<string, Plan> = SANDBOX ? SANDBOX_PLANS : LIVE_PLANS;
 
 // ── Responses ────────────────────────────────────────────────────────────────
 
@@ -400,7 +432,8 @@ async function attachMetadata(path: string, attempts: Record<string, string>[]) 
 
 async function handleCheckout(fields: Record<string, unknown>): Promise<Response> {
   const planKey = cleanText(fields.plan, 64);
-  const plan = PLANS[planKey];
+  // The sandbox has one yearly and one quarterly plan, whichever page the visitor tests on
+  const plan = PLANS[planKey] || (SANDBOX && planKey.startsWith('challenge-') ? PLANS[planKey.endsWith('yearly') ? 'challenge-yearly' : 'challenge-quarterly'] : undefined);
   if (!plan) return fail('UNKNOWN_PLAN', 400);
   const closed = checkWindow(plan);
   if (closed) return closed;

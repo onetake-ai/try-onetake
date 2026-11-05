@@ -98,7 +98,15 @@
 
   // ── Tracking ─────────────────────────────────────────────────────────────────
 
+  var query = new URLSearchParams(window.location.search);
+  var isSandbox = query.get('environment') === 'sandbox';
+
+  function sendToFirstPromoter() {
+    return !isSandbox || query.get('fp_test') === '1';
+  }
+
   function track(eventName, plan, extra) {
+    if (isSandbox) return;   // Fake purchases stay out of AnyTrack and Plausible
     var data = { value: plan.value, currency: plan.currency };
     Object.keys(extra || {}).forEach(function (k) { data[k] = extra[k]; });
     if (typeof window.AnyTrack === 'function') window.AnyTrack('trigger', eventName, data);
@@ -297,8 +305,9 @@
       if (!data) return null;
       var plan = config.plans[data.plan] || { value: data.value, currency: data.currency };
       track('Purchase', plan, { planKey: data.plan, transactionId: started.id, email: data.email, firstName: data.first_name });
-      // FirstPromoter lead with the Airwallex customer ID as uid, so the webhook handler can match sales by uid
-      if (typeof window.fpr === 'function' && data.email && data.customer_id) {
+      // FirstPromoter lead with the Airwallex customer ID as uid, so the webhook handler can match sales by uid.
+      // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
+      if (sendToFirstPromoter() && typeof window.fpr === 'function' && data.email && data.customer_id) {
         window.fpr('referral', { email: data.email, uid: data.customer_id });
       }
       write('localStorage', firedKey, data);
