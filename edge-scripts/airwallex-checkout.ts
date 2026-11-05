@@ -439,7 +439,7 @@ async function attachMetadata(path: string, attempts: Record<string, string>[]) 
 // Reuses the newest billing customer of this email, currency and legal entity, so a repeat buyer
 // keeps one customer; any lookup failure falls back to creating a new one
 async function findOrCreateCustomer(email: string, firstName: string, currency: string) {
-  try {
+  if (process.env.AIRWALLEX_LEGAL_ENTITY_ID) try {
     const found = await airwallex('GET', `/api/v1/billing/billing_customers?email=${encodeURIComponent(email)}&page_size=100`);
     const items = (Array.isArray(found.items) ? found.items : []) as Record<string, unknown>[];
     const match = items
