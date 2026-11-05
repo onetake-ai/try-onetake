@@ -21,8 +21,8 @@
  *
  * SANDBOX: a second Bunny script runs this same file with ENVIRONMENT=SANDBOX and the credentials of
  * the Airwallex sandbox account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
- * with ?environment=sandbox (see tools.js). The script skips the owner SMS and Userlist in sandbox, and
- * refuses every request on the beta host when ENVIRONMENT=SANDBOX is missing.
+ * with ?environment=sandbox (see tools.js). The script skips the owner SMS and Userlist in sandbox. It
+ * refuses requests on the beta host without ENVIRONMENT=SANDBOX, and on any other host with it.
  *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
  *
@@ -577,10 +577,12 @@ BunnySDK.net.http.serve(async (req: Request) => {
   const origin = req.headers.get('origin');
   if (origin !== SITE_ORIGIN) return refuse('FORBIDDEN_ORIGIN', 403);
 
-  // Fail closed: the beta host without ENVIRONMENT=SANDBOX would run the live plans against the live API
-  if (!SANDBOX && new URL(req.url).hostname.startsWith('beta.')) return refuse('NOT_CONFIGURED', 500);
-
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
+
+  // Fail closed, after the preflight so the page reads the error: the beta host must run in sandbox
+  // (else live plans against the live API) and every other host live (else fake checkouts on live links)
+  if (SANDBOX !== new URL(req.url).hostname.startsWith('beta.')) return refuse('NOT_CONFIGURED', 500);
+
   if (req.method !== 'POST') return refuse('METHOD_NOT_ALLOWED', 405);
 
   let fields: Record<string, unknown>;
