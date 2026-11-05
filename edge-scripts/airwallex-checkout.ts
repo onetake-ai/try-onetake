@@ -197,28 +197,28 @@ const LIVE_PLANS: Record<string, Plan> = {
   },
 };
 
-// Plans of the sandbox deployment (ENVIRONMENT=SANDBOX), same keys as the pages' sandbox presets in
-// /airwallex-data.js. The prices live in the Airwallex sandbox account; the quarterly key uses a monthly price.
-const SANDBOX_PLANS: Record<string, Plan> = {
-  'challenge-yearly': {
-    priceId:     'pri_sgpvlwl2chnvktri22h',
-    label:       'OneTake Scale (annuel, sandbox)',
-    value:       999,
-    currency:    'EUR',
-    duration:    { period: 1, period_unit: 'YEAR' },
-    successPath: '/4dcm/le-challenge/merci/?environment=sandbox',   // The query keeps the pages in sandbox mode
-    backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
-  },
-  'challenge-quarterly': {
-    priceId:     'pri_sgpvlwl2chnvlfilmou',
-    label:       'OneTake Scale (mensuel, sandbox)',
-    value:       299,
-    currency:    'EUR',
-    duration:    { period: 1, period_unit: 'MONTH' },
-    successPath: '/4dcm/le-challenge/merci/?environment=sandbox',
-    backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
-  },
+// Sandbox deployment (ENVIRONMENT=SANDBOX): the same plans as LIVE_PLANS (same keys, labels, values and
+// pages), only the price comes from the Airwallex sandbox account, per billing cycle (the last word of the
+// plan key). Sales windows and bonus prices are not copied. To add a cycle, add it here and in LIVE_PLANS.
+const SANDBOX_CYCLES: Record<string, { priceId: string; duration: Plan['duration'] }> = {
+  yearly:    { priceId: 'pri_sgpvlwl2chnvktri22h', duration: { period: 1, period_unit: 'YEAR' } },
+  // Monthly sandbox price for now; swap in a quarterly sandbox price and { period: 90, period_unit: 'DAY' }
+  quarterly: { priceId: 'pri_sgpvlwl2chnvlfilmou', duration: { period: 1, period_unit: 'MONTH' } },
 };
+
+// The query keeps the success and back pages in sandbox mode
+const inSandbox = (path: string) => path.replace(/(#.*)?$/, '?environment=sandbox$1');
+
+const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
+  Object.entries(LIVE_PLANS)
+    .filter(([key]) => SANDBOX_CYCLES[key.split('-').pop() as string])
+    .map(([key, { bonusPriceIds, opensAt, closesAt, ...plan }]) => [key, {
+      ...plan,
+      ...SANDBOX_CYCLES[key.split('-').pop() as string],
+      successPath: inSandbox(plan.successPath),
+      backPath:    inSandbox(plan.backPath),
+    }]),
+);
 
 const PLANS: Record<string, Plan> = SANDBOX ? SANDBOX_PLANS : LIVE_PLANS;
 
@@ -432,8 +432,7 @@ async function attachMetadata(path: string, attempts: Record<string, string>[]) 
 
 async function handleCheckout(fields: Record<string, unknown>): Promise<Response> {
   const planKey = cleanText(fields.plan, 64);
-  // The sandbox has one yearly and one quarterly plan, whichever page the visitor tests on
-  const plan = PLANS[planKey] || (SANDBOX && planKey.startsWith('challenge-') ? PLANS[planKey.endsWith('yearly') ? 'challenge-yearly' : 'challenge-quarterly'] : undefined);
+  const plan = PLANS[planKey];
   if (!plan) return fail('UNKNOWN_PLAN', 400);
   const closed = checkWindow(plan);
   if (closed) return closed;
