@@ -210,7 +210,7 @@ const SANDBOX_PLANS: Record<string, Plan> = {
     backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
   },
   'challenge-quarterly': {
-    priceId:     'pri_sgpvjhrj5hntjrslgt0',
+    priceId:     'pri_sgpvlwl2chnvlfilmou',
     label:       'OneTake Scale (mensuel, sandbox)',
     value:       299,
     currency:    'EUR',
