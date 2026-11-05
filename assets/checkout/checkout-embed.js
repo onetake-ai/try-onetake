@@ -70,7 +70,7 @@
         checkoutCompleted: false
     };
 
-    var isSandbox = window.oneTakeSandbox;
+    var isSandbox = false;          // Read from tools.js in init(): host pages may not load it
     var activePlanPresets = null;   // Set to planPresets or sandboxPlanPresets after deps load
     var core = null;                // Reference to window.oneTakeCheckout
     var container = null;           // Mount-point DOM element
@@ -1106,6 +1106,7 @@
             }
 
             // Select live or sandbox plan presets
+            isSandbox = !!window.oneTakeSandbox;
             activePlanPresets = isSandbox ? (typeof sandboxPlanPresets !== 'undefined' ? sandboxPlanPresets : {}) : (typeof planPresets !== 'undefined' ? planPresets : {});
 
             // Detect browser language
