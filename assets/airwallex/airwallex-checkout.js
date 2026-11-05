@@ -99,10 +99,15 @@
   // ── Tracking ─────────────────────────────────────────────────────────────────
 
   var query = new URLSearchParams(window.location.search);
-  var isSandbox = !!config.sandbox;
+  var SANDBOX_ENDPOINT = 'https://beta.directpayments.onetake.ai';
+
+  // tools.js loads after this script on the Airwallex pages, so the flag is read when it is needed.
+  function isSandbox() {
+    return !!window.oneTakeSandbox;
+  }
 
   function track(eventName, plan, extra) {
-    if (isSandbox) return;   // Fake purchases stay out of AnyTrack and Plausible
+    if (isSandbox()) return;   // Fake purchases stay out of AnyTrack and Plausible
     var data = { value: plan.value, currency: plan.currency };
     Object.keys(extra || {}).forEach(function (k) { data[k] = extra[k]; });
     if (typeof window.AnyTrack === 'function') window.AnyTrack('trigger', eventName, data);
@@ -116,7 +121,8 @@
   // ── Edge script calls ────────────────────────────────────────────────────────
 
   function post(path, body) {
-    return fetch(config.endpoint.replace(/\/+$/, '') + path, {
+    var endpoint = isSandbox() ? SANDBOX_ENDPOINT : config.endpoint;
+    return fetch(endpoint.replace(/\/+$/, '') + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(body)
@@ -305,7 +311,7 @@
       // FirstPromoter lead with the Airwallex customer ID as uid, so the webhook handler can match sales by uid.
       // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
       var fp = window.oneTakeFirstPromoter;
-      if (fp && fp.allowedInSandbox() && typeof window.fpr === 'function' && data.email && data.customer_id) {
+      if (fp && fp.canSendReferral() && typeof window.fpr === 'function' && data.email && data.customer_id) {
         window.fpr('referral', { email: data.email, uid: data.customer_id });
       }
       write('localStorage', firedKey, data);

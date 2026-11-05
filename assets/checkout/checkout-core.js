@@ -402,7 +402,7 @@
         var customer = (paddleData.data && paddleData.data.customer) || {};
         // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
         var fp = window.oneTakeFirstPromoter;
-        if (fp && fp.allowedInSandbox() && window.fpr && customer.id) {
+        if (fp && fp.canSendReferral() && window.fpr && customer.id) {
             window.fpr('referral', { email: customer.email || state.formData.email, uid: customer.id });
             console.log('FirstPromoter referral sent with Paddle customer ID:', customer.id);
         }

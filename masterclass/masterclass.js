@@ -133,7 +133,7 @@
     function maybeGo() { if (plausibleSent && minWaitOver) go(); }
     setTimeout(go, 1000);
     setTimeout(function () { minWaitOver = true; maybeGo(); }, 400);
-    if (typeof window.fpr === 'function') window.fpr('referral', { email: email });
+    if (typeof window.fpr === 'function' && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
     if (typeof window.AnyTrack === 'function') {
       window.AnyTrack('trigger', config.registrationEvent, {
         email: email,

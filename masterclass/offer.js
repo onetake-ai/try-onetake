@@ -136,7 +136,7 @@
 
   // ── Checkout (Paddle, through checkout-core.js like /instagram/) ────
 
-  var isSandbox = params.get('environment') === 'sandbox';
+  var isSandbox = window.oneTakeSandbox;
   var state = null;
 
   function message(key) {
@@ -265,7 +265,7 @@
       clearError();
 
       if (window.masterclass && window.masterclass.saveLead) window.masterclass.saveLead(buyer);
-      if (window.fpr) window.fpr('referral', { email: buyer.email });
+      if (window.fpr && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: buyer.email });
       closePopup();
       openCheckout(popupButton, buyer);
     });

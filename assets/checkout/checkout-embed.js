@@ -70,7 +70,7 @@
         checkoutCompleted: false
     };
 
-    var isSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+    var isSandbox = window.oneTakeSandbox;
     var activePlanPresets = null;   // Set to planPresets or sandboxPlanPresets after deps load
     var core = null;                // Reference to window.oneTakeCheckout
     var container = null;           // Mount-point DOM element

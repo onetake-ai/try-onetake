@@ -42,6 +42,11 @@ if (!window.__disable_weglot) {
   }());
 }
 
+// ── Environment ────────────────────────────────────────────────────────────
+// ?environment=sandbox sends checkouts to the Paddle and Airwallex sandboxes. Every page script reads
+// this one flag (the Airwallex pages load tools.js after their own scripts, so they read it when they run).
+window.oneTakeSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+
 // ── FirstPromoter ──────────────────────────────────────────────────────────
 (function(w){w.fpr=w.fpr||function(){w.fpr.q=w.fpr.q||[];w.fpr.q[arguments[0]==='set'?'unshift':'push'](arguments);};})(window);
 fpr("init", {cid:"qmdronva"});
@@ -83,13 +88,13 @@ window.oneTakeFirstPromoter = (function () {
     try { localStorage.setItem(REF_KEY, JSON.stringify({ value: ref.slice(0, 100), savedAt: Date.now() })); } catch (e) { /* storage unavailable */ }
   }
 
-  // Fake (sandbox) purchases reach FirstPromoter only with ?fp_test=1
-  function allowedInSandbox() {
-    var query = new URLSearchParams(window.location.search);
-    return query.get('environment') !== 'sandbox' || query.get('fp_test') === '1';
+  // True outside sandbox; in sandbox only with ?fp_test=1, so fake purchases reach FirstPromoter
+  // only on purpose
+  function canSendReferral() {
+    return !window.oneTakeSandbox || new URLSearchParams(window.location.search).get('fp_test') === '1';
   }
 
-  return { tid: tid, refId: refId, allowedInSandbox: allowedInSandbox };
+  return { tid: tid, refId: refId, canSendReferral: canSendReferral };
 }());
 
 function sendReferralToFirstPromoter() {
@@ -97,8 +102,8 @@ function sendReferralToFirstPromoter() {
   var url = new URL(urlString);
   if (url.searchParams.has("wj_lead_email")) {
     var emailFromUrl = url.searchParams.get("wj_lead_email");
-    if (emailFromUrl) {
-      if (window.fpr) window.fpr("referral", { email: emailFromUrl });
+    if (emailFromUrl && window.fpr && window.oneTakeFirstPromoter.canSendReferral()) {
+      window.fpr("referral", { email: emailFromUrl });
     }
   }
 }

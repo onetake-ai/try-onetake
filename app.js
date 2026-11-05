@@ -10,7 +10,7 @@
     // ==========================================
     // ENVIRONMENT
     // ==========================================
-    const isSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+    const isSandbox = window.oneTakeSandbox;
     const activePlanPresets = isSandbox ? sandboxPlanPresets : planPresets;
 
     // Application state
@@ -630,7 +630,7 @@
             trackUserListEvent('formSubmit');
 
             // FirstPromoter referral tracking
-            if (window.fpr) window.fpr("referral", { email: state.formData.email });
+            if (window.fpr && window.oneTakeFirstPromoter.canSendReferral()) window.fpr("referral", { email: state.formData.email });
 
             await core.sleep(500);
 
