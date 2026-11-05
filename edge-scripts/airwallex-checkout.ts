@@ -198,10 +198,10 @@ const LIVE_PLANS: Record<string, Plan> = {
 };
 
 // Plans of the sandbox deployment (AIRWALLEX_SANDBOX=1), same keys as the pages' sandbox presets in
-// /airwallex-data.js. Replace the placeholder price IDs with prices created in the Airwallex sandbox account.
+// /airwallex-data.js. The prices live in the Airwallex sandbox account; the quarterly key uses a monthly price.
 const SANDBOX_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
-    priceId:     'pri_SANDBOX_YEARLY_PRICE_ID',
+    priceId:     'pri_sgpvlwl2chnvktri22h',
     label:       'Sandbox test (annuel)',
     value:       999,
     currency:    'EUR',
@@ -210,11 +210,11 @@ const SANDBOX_PLANS: Record<string, Plan> = {
     backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
   },
   'challenge-quarterly': {
-    priceId:     'pri_SANDBOX_QUARTERLY_PRICE_ID',
-    label:       'Sandbox test (trimestriel)',
+    priceId:     'pri_sgpvjhrj5hntjrslgt0',
+    label:       'Sandbox test (mensuel)',
     value:       299,
     currency:    'EUR',
-    duration:    { period: 90, period_unit: 'DAY' },
+    duration:    { period: 1, period_unit: 'MONTH' },
     successPath: '/4dcm/le-challenge/merci/?environment=sandbox',
     backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
   },
