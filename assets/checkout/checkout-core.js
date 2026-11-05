@@ -311,8 +311,8 @@
             console.log('Plausible formSubmit event fired');
         }
 
-        // Fire AnyTrack event
-        if (typeof AnyTrack !== 'undefined') {
+        // Fire AnyTrack event (skip in sandbox)
+        if (!isSandbox && typeof AnyTrack !== 'undefined') {
             AnyTrack('trigger', 'FormSubmit', {
                 use_cases: useCases.join(','),
                 estimated_volume: state.formData.estimatedVolume
@@ -351,8 +351,8 @@
             console.log('Trial purchase detected. Expected value:', expectedValue, DEFAULT_CURRENCY);
         }
 
-        // AnyTrack Purchase event (value = expectedValue for trials)
-        if (typeof AnyTrack !== 'undefined') {
+        // AnyTrack Purchase event (value = expectedValue for trials; skipped in sandbox)
+        if (!isSandbox && typeof AnyTrack !== 'undefined') {
             AnyTrack('trigger', 'Purchase', {
                 value: purchaseData.value,
                 taxPrice: purchaseData.taxPrice,
@@ -401,7 +401,8 @@
         // FirstPromoter referral with the Paddle customer ID, so webhooks match the lead
         var customer = (paddleData.data && paddleData.data.customer) || {};
         // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
-        if (window.oneTakeFirstPromoter.allowedInSandbox() && window.fpr && customer.id) {
+        var fp = window.oneTakeFirstPromoter;
+        if (fp && fp.allowedInSandbox() && window.fpr && customer.id) {
             window.fpr('referral', { email: customer.email || state.formData.email, uid: customer.id });
             console.log('FirstPromoter referral sent with Paddle customer ID:', customer.id);
         }
@@ -438,7 +439,7 @@
         if (!isSandbox && typeof plausible !== 'undefined') {
             plausible('DownsellAccepted', { props: { downsell_plan: state.downsellPlanKey } });
         }
-        if (typeof AnyTrack !== 'undefined') {
+        if (!isSandbox && typeof AnyTrack !== 'undefined') {
             AnyTrack('trigger', 'DownsellAccepted', { downsell_plan: state.downsellPlanKey });
         }
         console.log('Downsell accepted:', state.downsellPlanKey);

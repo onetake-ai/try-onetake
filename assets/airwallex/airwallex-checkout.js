@@ -304,7 +304,8 @@
       track('Purchase', plan, { planKey: data.plan, transactionId: started.id, email: data.email, firstName: data.first_name });
       // FirstPromoter lead with the Airwallex customer ID as uid, so the webhook handler can match sales by uid.
       // In sandbox it is sent only with ?fp_test=1, to test affiliate tracking with a fake purchase
-      if (window.oneTakeFirstPromoter.allowedInSandbox() && typeof window.fpr === 'function' && data.email && data.customer_id) {
+      var fp = window.oneTakeFirstPromoter;
+      if (fp && fp.allowedInSandbox() && typeof window.fpr === 'function' && data.email && data.customer_id) {
         window.fpr('referral', { email: data.email, uid: data.customer_id });
       }
       write('localStorage', firedKey, data);
