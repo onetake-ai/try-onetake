@@ -466,7 +466,7 @@ async function hasBillingSubscription(customerId: string): Promise<boolean> {
   try {
     const found = await airwallex('GET', `/api/v1/billing/subscriptions?billing_customer_id=${encodeURIComponent(customerId)}&page_size=100`);
     const items = (Array.isArray(found.items) ? found.items : []) as Record<string, unknown>[];
-    return items.some((s) => ['ACTIVE', 'IN_TRIAL', 'UNPAID'].includes(String(s.status)));
+    return items.some((s) => String(s.status) !== 'CANCELLED');
   } catch {
     return true;
   }
