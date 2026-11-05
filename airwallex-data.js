@@ -75,7 +75,7 @@ window.AIRWALLEX_CONFIG = {
 };
 
 // ?environment=sandbox: the page talks to the sandbox deployment of the edge script (same file with
-// AIRWALLEX_SANDBOX=1, Airwallex sandbox account).
+// ENVIRONMENT=SANDBOX, Airwallex sandbox account).
 if (new URLSearchParams(window.location.search).get('environment') === 'sandbox') {
     window.AIRWALLEX_CONFIG.endpoint = 'https://beta.directpayments.onetake.ai';
     // The sandbox sells OneTake Scale: yearly under the *-yearly keys, monthly under the *-quarterly keys

@@ -19,7 +19,7 @@
  *                                          on each Challenge purchase with a phone number)
  *     OWNER_NOTIFY_SECRET                  Optional: same value as in owner-notify.ts
  *
- * SANDBOX: a second Bunny script runs this same file with AIRWALLEX_SANDBOX=1 and the credentials of
+ * SANDBOX: a second Bunny script runs this same file with ENVIRONMENT=SANDBOX and the credentials of
  * the Airwallex sandbox account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
  * with ?environment=sandbox (see airwallex-data.js). Leave the owner SMS and Userlist variables unset there.
  *
@@ -47,9 +47,9 @@ import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
 import process from "node:process";
 
 const SITE_ORIGIN         = 'https://try.onetake.ai';
-// Sandbox deployment (second Bunny script, same file): set AIRWALLEX_SANDBOX=1 and the sandbox credentials;
+// Sandbox deployment (second Bunny script, same file): set ENVIRONMENT=SANDBOX and the sandbox credentials;
 // it then calls the Airwallex sandbox API and offers only SANDBOX_PLANS
-const SANDBOX             = process.env.AIRWALLEX_SANDBOX === '1';
+const SANDBOX             = process.env.ENVIRONMENT === 'SANDBOX';
 const AIRWALLEX_API       = SANDBOX ? 'https://api-demo.airwallex.com' : 'https://api.airwallex.com';
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const ATTRIBUTION_FIELDS  = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_channel', 'click_id'];
@@ -197,7 +197,7 @@ const LIVE_PLANS: Record<string, Plan> = {
   },
 };
 
-// Plans of the sandbox deployment (AIRWALLEX_SANDBOX=1), same keys as the pages' sandbox presets in
+// Plans of the sandbox deployment (ENVIRONMENT=SANDBOX), same keys as the pages' sandbox presets in
 // /airwallex-data.js. The prices live in the Airwallex sandbox account; the quarterly key uses a monthly price.
 const SANDBOX_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
