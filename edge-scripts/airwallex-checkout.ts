@@ -20,7 +20,7 @@
  *     OWNER_NOTIFY_SECRET                  Optional: same value as in owner-notify.ts
  *
  * SANDBOX: a second Bunny script runs this same file with AIRWALLEX_SANDBOX=1 and the credentials of
- * the Airwallex demo account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
+ * the Airwallex sandbox account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
  * with ?environment=sandbox (see airwallex-data.js). Leave the owner SMS and Userlist variables unset there.
  *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
@@ -47,8 +47,8 @@ import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
 import process from "node:process";
 
 const SITE_ORIGIN         = 'https://try.onetake.ai';
-// Demo deployment (second Bunny script, same file): set AIRWALLEX_SANDBOX=1 and the demo credentials;
-// it then calls the Airwallex demo API and offers only SANDBOX_PLANS
+// Sandbox deployment (second Bunny script, same file): set AIRWALLEX_SANDBOX=1 and the sandbox credentials;
+// it then calls the Airwallex sandbox API and offers only SANDBOX_PLANS
 const SANDBOX             = process.env.AIRWALLEX_SANDBOX === '1';
 const AIRWALLEX_API       = SANDBOX ? 'https://api-demo.airwallex.com' : 'https://api.airwallex.com';
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
@@ -197,11 +197,11 @@ const LIVE_PLANS: Record<string, Plan> = {
   },
 };
 
-// Plans of the demo deployment (AIRWALLEX_SANDBOX=1), same keys as the pages' sandbox presets in
-// /airwallex-data.js. Replace the placeholder price IDs with prices created in the Airwallex demo account.
+// Plans of the sandbox deployment (AIRWALLEX_SANDBOX=1), same keys as the pages' sandbox presets in
+// /airwallex-data.js. Replace the placeholder price IDs with prices created in the Airwallex sandbox account.
 const SANDBOX_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
-    priceId:     'pri_DEMO_YEARLY_PRICE_ID',
+    priceId:     'pri_SANDBOX_YEARLY_PRICE_ID',
     label:       'Sandbox test (annuel)',
     value:       999,
     currency:    'EUR',
@@ -210,7 +210,7 @@ const SANDBOX_PLANS: Record<string, Plan> = {
     backPath:    '/4dcm/le-challenge/?environment=sandbox#prix',
   },
   'challenge-quarterly': {
-    priceId:     'pri_DEMO_QUARTERLY_PRICE_ID',
+    priceId:     'pri_SANDBOX_QUARTERLY_PRICE_ID',
     label:       'Sandbox test (trimestriel)',
     value:       299,
     currency:    'EUR',

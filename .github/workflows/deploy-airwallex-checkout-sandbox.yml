@@ -1,7 +1,7 @@
-name: Deploy Airwallex Checkout Edge Script (demo)
+name: Deploy Airwallex Checkout Edge Script (sandbox)
 
-# Same file as the live script, run with AIRWALLEX_SANDBOX=1 and the Airwallex demo credentials
-# set in the Bunny dashboard for the demo script. Replace script_id with the demo script's ID.
+# Same file as the live script, run with AIRWALLEX_SANDBOX=1 and the Airwallex sandbox credentials
+# set in the Bunny dashboard for the sandbox script (beta.directpayments.onetake.ai).
 
 # Manual until the placeholder is replaced; then switch the trigger to the same push rule as the live workflow.
 on:
@@ -35,5 +35,5 @@ jobs:
       - name: Publish the script to Bunny
         uses: "BunnyWay/actions/deploy-script@main"
         with:
-          script_id: 0   # PLACEHOLDER: ID of the demo Bunny script
+          script_id: 101151   # Sandbox Bunny script
           file: "edge-scripts/airwallex-checkout.ts"

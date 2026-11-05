@@ -74,8 +74,8 @@ window.AIRWALLEX_CONFIG = {
     }
 };
 
-// ?environment=sandbox: the page talks to the demo deployment of the edge script (same file with
-// AIRWALLEX_SANDBOX=1, Airwallex demo account). Replace the placeholder with its public URL.
+// ?environment=sandbox: the page talks to the sandbox deployment of the edge script (same file with
+// AIRWALLEX_SANDBOX=1, Airwallex sandbox account).
 if (new URLSearchParams(window.location.search).get('environment') === 'sandbox') {
-    window.AIRWALLEX_CONFIG.endpoint = 'https://DEMO-DIRECTPAYMENTS-PLACEHOLDER.onetake.ai';
+    window.AIRWALLEX_CONFIG.endpoint = 'https://beta.directpayments.onetake.ai';
 }
