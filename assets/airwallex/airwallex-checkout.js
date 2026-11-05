@@ -99,7 +99,6 @@
   // ── Tracking ─────────────────────────────────────────────────────────────────
 
   var query = new URLSearchParams(window.location.search);
-  var SANDBOX_ENDPOINT = 'https://beta.directpayments.onetake.ai';
 
   // tools.js loads after this script on the Airwallex pages, so the flag is read when it is needed.
   function isSandbox() {
@@ -121,7 +120,7 @@
   // ── Edge script calls ────────────────────────────────────────────────────────
 
   function post(path, body) {
-    var endpoint = isSandbox() ? SANDBOX_ENDPOINT : config.endpoint;
+    var endpoint = isSandbox() ? config.sandboxEndpoint : config.endpoint;
     return fetch(endpoint.replace(/\/+$/, '') + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -265,10 +264,12 @@
       setLoading(submit, true, 'Ouverture du paiement…');
       if (trigger) trigger.classList.add('is-loading');
 
+      // Sandbox sales carry tid and ref_id only with fp_test=1
       var fp = window.oneTakeFirstPromoter;
+      var fpSale = !!(fp && fp.canSendReferral());
       post('/checkout', { plan: planKey, page: pageSlug(), email: email, first_name: firstName, telephone: phone.value, attribution: attribution(),
         fp_test: query.get('fp_test') || '', unlockfor: query.get('unlockfor') || '',
-        tid: fp ? fp.tid() : '', ref_id: fp ? fp.refId() : '' })
+        tid: fpSale ? fp.tid() : '', ref_id: fpSale ? fp.refId() : '' })
         .then(function (data) {
           write('sessionStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey });
           write('localStorage', CHECKOUT_KEY, { id: data.checkout_id, plan: planKey, at: Date.now() });

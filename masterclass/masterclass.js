@@ -124,8 +124,10 @@
   //   name improve Facebook's match quality
   // - CrazyEgg conversion goal (config.crazyEggGoal), queued in CE_API until CrazyEgg has loaded
   // Leaves the page once Plausible confirms and the others had a moment to send (at most 1 s).
+  // In sandbox, AnyTrack and Plausible are skipped.
   function trackRegistration(lead, next) {
     var email = lead.email;
+    var sandbox = !!window.oneTakeSandbox;
     var done = false;
     var plausibleSent = false;
     var minWaitOver = false;
@@ -133,8 +135,8 @@
     function maybeGo() { if (plausibleSent && minWaitOver) go(); }
     setTimeout(go, 1000);
     setTimeout(function () { minWaitOver = true; maybeGo(); }, 400);
-    if (typeof window.fpr === 'function' && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
-    if (typeof window.AnyTrack === 'function') {
+    if (typeof window.fpr === 'function' && window.oneTakeFirstPromoter && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
+    if (!sandbox && typeof window.AnyTrack === 'function') {
       window.AnyTrack('trigger', config.registrationEvent, {
         email: email,
         firstName: lead.first_name,
@@ -147,7 +149,7 @@
         window.CE2.converted(config.crazyEggGoal);
       });
     }
-    if (typeof window.plausible === 'function') {
+    if (!sandbox && typeof window.plausible === 'function') {
       window.plausible(config.registrationEvent, {
         props: { language: config.language, masterclass_slug: config.slug },
         callback: function () { plausibleSent = true; maybeGo(); }
@@ -353,7 +355,7 @@
       fetch(config.proxyUrl, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body })
         .catch(function () { /* answers are optional: never block the visitor */ })
         .then(function () {
-          if (typeof window.plausible !== 'function') return finish();
+          if (window.oneTakeSandbox || typeof window.plausible !== 'function') return finish();
           setTimeout(finish, 1000);
           // Same Plausible goal as the signup form (checkout-core.js), with its estimated_volume prop
           var props = { language: config.language, masterclass_slug: config.slug };

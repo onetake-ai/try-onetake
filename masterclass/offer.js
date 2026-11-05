@@ -265,7 +265,7 @@
       clearError();
 
       if (window.masterclass && window.masterclass.saveLead) window.masterclass.saveLead(buyer);
-      if (window.fpr && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: buyer.email });
+      if (window.fpr && window.oneTakeFirstPromoter && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: buyer.email });
       closePopup();
       openCheckout(popupButton, buyer);
     });
@@ -320,6 +320,7 @@
       state.checkoutCompleted = true;
       window.oneTakeCheckout.trackPurchase(state, data, isSandbox);
     }
+    if (isSandbox) return;   // Fake purchases stay out of AnyTrack
     if (data.name === 'checkout.customer.updated' && typeof AnyTrack !== 'undefined') {
       AnyTrack('trigger', 'InitiateCheckout', {});
     }

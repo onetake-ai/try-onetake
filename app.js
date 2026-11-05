@@ -630,7 +630,7 @@
             trackUserListEvent('formSubmit');
 
             // FirstPromoter referral tracking
-            if (window.fpr && window.oneTakeFirstPromoter.canSendReferral()) window.fpr("referral", { email: state.formData.email });
+            if (window.fpr && window.oneTakeFirstPromoter && window.oneTakeFirstPromoter.canSendReferral()) window.fpr("referral", { email: state.formData.email });
 
             await core.sleep(500);
 

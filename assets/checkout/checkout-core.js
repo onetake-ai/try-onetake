@@ -158,14 +158,17 @@
         }
 
         // FirstPromoter: our webhook handler sends tid and ref_id to the sale API (tid first,
-        // ref_id when the cookie is missing, else email).
-        var fpTid = getFirstPromoterTid();
-        if (fpTid) {
-            data.tid = fpTid;
-        }
-        var fpRefId = window.oneTakeFirstPromoter ? window.oneTakeFirstPromoter.refId() : '';
-        if (fpRefId) {
-            data.ref_id = fpRefId;
+        // ref_id when the cookie is missing, else email). Left out of sandbox sales unless fp_test=1.
+        var fp = window.oneTakeFirstPromoter;
+        if (fp && fp.canSendReferral()) {
+            var fpTid = getFirstPromoterTid();
+            if (fpTid) {
+                data.tid = fpTid;
+            }
+            var fpRefId = fp.refId();
+            if (fpRefId) {
+                data.ref_id = fpRefId;
+            }
         }
         if (state.formData.email) {
             data.email = state.formData.email;

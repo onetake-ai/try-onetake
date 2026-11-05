@@ -110,7 +110,7 @@
 
         // Same tracking as the main signup page (app.js)
         core.trackFormSubmit(state, isSandbox);
-        if (window.fpr && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
+        if (window.fpr && window.oneTakeFirstPromoter && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
 
         core.sleep(500).then(openCheckout);
     }
