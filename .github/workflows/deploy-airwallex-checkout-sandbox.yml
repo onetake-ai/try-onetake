@@ -1,0 +1,43 @@
+name: Deploy Airwallex Checkout Edge Script (sandbox)
+
+# Same file as the live script, run with ENVIRONMENT=SANDBOX and the Airwallex sandbox credentials
+# set in the Bunny dashboard for the sandbox script (beta.directpayments.onetake.ai).
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'edge-scripts/airwallex-checkout.ts'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  update-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Install
+        run: ""
+
+      - name: Build
+        run: ""
+
+      - name: Publish the script to Bunny
+        uses: "BunnyWay/actions/deploy-script@main"
+        with:
+          script_id: 101151   # Sandbox Bunny script
+          file: "edge-scripts/airwallex-checkout.ts"

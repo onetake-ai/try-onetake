@@ -35,7 +35,7 @@
     var PLAN_KEY = 'launch-monthly-trial';
 
     var core = window.oneTakeCheckout;
-    var isSandbox = new URLSearchParams(window.location.search).get('environment') === 'sandbox';
+    var isSandbox = window.oneTakeSandbox;
     var activePlanPresets = isSandbox ? sandboxPlanPresets : planPresets;
     // Sandbox presets don't list every plan; fall back to the live preset
     var plan = activePlanPresets[PLAN_KEY] || planPresets[PLAN_KEY];
@@ -147,7 +147,7 @@
 
         // Same tracking as the main signup page (app.js)
         core.trackFormSubmit(state, isSandbox);
-        if (window.fpr) window.fpr('referral', { email: email });
+        if (window.fpr && window.oneTakeFirstPromoter && window.oneTakeFirstPromoter.canSendReferral()) window.fpr('referral', { email: email });
 
         core.sleep(500).then(openCheckout);
     }

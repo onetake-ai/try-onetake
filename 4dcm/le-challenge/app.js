@@ -5,7 +5,7 @@
  *   launch     until Fri Oct 30 23:59:59      annual plan only
  *   quarterly  Sat Oct 31 00:00 to Nov 2       annual + quarterly
  *   closed     from Tue Nov 3 00:00           the countdown bar in <head> redirects to /oto/too-late/
- * The edge script (edge-scripts/airwallex-checkout.ts, PLANS) enforces the same dates server side.
+ * The edge script (edge-scripts/airwallex-checkout.ts, LIVE_PLANS) enforces the same dates server side.
  *
  * ?preview_state=launch|quarterly forces a display state (display only: checkouts still follow
  * the server dates). Combine with ?unlockfor=1 to look at the page after the deadline.

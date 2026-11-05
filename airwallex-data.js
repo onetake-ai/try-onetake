@@ -9,6 +9,8 @@ window.AIRWALLEX_CONFIG = {
     // Public URL of Bunny Edge Script 99045 (edge-scripts/airwallex-checkout.ts), on our own
     // domain: filters block *.bunny.run more often
     endpoint: 'https://directpayments.onetake.ai',
+    // Sandbox deployment of the same file (Bunny Edge Script 101151), used with ?environment=sandbox
+    sandboxEndpoint: 'https://beta.directpayments.onetake.ai',
 
     supportEmail: 'contact@goodvibes.onetake.ai',
 

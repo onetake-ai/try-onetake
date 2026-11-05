@@ -19,6 +19,11 @@
  *                                          on each Challenge purchase with a phone number)
  *     OWNER_NOTIFY_SECRET                  Optional: same value as in owner-notify.ts
  *
+ * SANDBOX: a second Bunny script runs this same file with ENVIRONMENT=SANDBOX and the credentials of
+ * the Airwallex sandbox account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
+ * with ?environment=sandbox (see tools.js). The script skips the owner SMS and Userlist in sandbox. It
+ * refuses requests on the beta host without ENVIRONMENT=SANDBOX, and on any other host with it.
+ *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
  *
  * ENDPOINTS (POST, JSON body, JSON response):
@@ -43,7 +48,10 @@ import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.11.2";
 import process from "node:process";
 
 const SITE_ORIGIN         = 'https://try.onetake.ai';
-const AIRWALLEX_API       = 'https://api.airwallex.com';
+// Sandbox deployment (second Bunny script, same file): set ENVIRONMENT=SANDBOX and the sandbox credentials;
+// it then calls the Airwallex sandbox API and offers only SANDBOX_PLANS
+const SANDBOX             = process.env.ENVIRONMENT === 'SANDBOX';
+const AIRWALLEX_API       = SANDBOX ? 'https://api-demo.airwallex.com' : 'https://api.airwallex.com';
 const USERLIST_EVENTS_URL = 'https://push.userlist.com/events';
 const ATTRIBUTION_FIELDS  = ['referred_by', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_channel', 'click_id'];
 
@@ -65,7 +73,7 @@ type Plan = {
 // Keep in sync with CONFIG in /4dcm/le-challenge/app.js and data-deadline in its index.html.
 const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 
-const PLANS: Record<string, Plan> = {
+const LIVE_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
     bonusPriceIds: [   // Yearly 0 € prices, in the order shown on the checkout
@@ -190,6 +198,36 @@ const PLANS: Record<string, Plan> = {
   },
 };
 
+// Sandbox deployment (ENVIRONMENT=SANDBOX): the same plans as LIVE_PLANS (same keys, labels, values and
+// pages), only the price comes from the Airwallex sandbox account, per billing cycle (the last word of the
+// plan key). Sales windows and bonus prices are not copied. To add a cycle, add it here and in LIVE_PLANS.
+const SANDBOX_CYCLES: Record<string, { priceId: string; duration: Plan['duration'] }> = {
+  yearly:    { priceId: 'pri_sgpvlwl2chnvktri22h', duration: { period: 1, period_unit: 'YEAR' } },
+  quarterly: { priceId: 'pri_sgpvjhrj5hnvosz9frg', duration: { period: 90, period_unit: 'DAY' } },
+};
+
+const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
+  Object.entries(LIVE_PLANS)
+    .filter(([key]) => SANDBOX_CYCLES[key.split('-').pop() as string])
+    .map(([key, { bonusPriceIds, opensAt, closesAt, ...plan }]) => [key, {
+      ...plan,
+      ...SANDBOX_CYCLES[key.split('-').pop() as string],
+    }]),
+);
+
+// Keeps the success and back pages in sandbox mode, with the test flags the sales page was opened with
+// (fp_test for the FirstPromoter test, unlockfor to bypass the countdown redirect)
+function sandboxUrl(path: string, fields: Record<string, unknown>): string {
+  const url = new URL(path, SITE_ORIGIN);
+  url.searchParams.set('environment', 'sandbox');
+  if (cleanText(fields.fp_test, 8) === '1') url.searchParams.set('fp_test', '1');
+  const unlockfor = cleanText(fields.unlockfor, 32);
+  if (unlockfor) url.searchParams.set('unlockfor', unlockfor);
+  return url.pathname + url.search + url.hash;
+}
+
+const PLANS: Record<string, Plan> = SANDBOX ? SANDBOX_PLANS : LIVE_PLANS;
+
 // ── Responses ────────────────────────────────────────────────────────────────
 
 const corsHeaders = (): Record<string, string> => ({
@@ -298,7 +336,7 @@ function checkWindow(plan: Plan): Response | null {
 async function notifyOwner(kind: string, firstName: string, email: string, telephone: string): Promise<void> {
   const url = process.env.OWNER_NOTIFY_URL;
   const secret = process.env.OWNER_NOTIFY_SECRET;
-  if (!url || !secret || !telephone) return;
+  if (SANDBOX || !url || !secret || !telephone) return;
   try {
     await fetch(url.replace(/\/+$/, '') + '/notify', {
       method: 'POST',
@@ -319,7 +357,7 @@ async function pushUserlist(
   eventProperties: Record<string, string | number>,
 ): Promise<boolean> {
   const pushKey = process.env.USERLIST_PUSH_KEY;
-  if (!pushKey) return false;
+  if (SANDBOX || !pushKey) return false;
   try {
     const res = await fetch(USERLIST_EVENTS_URL, {
       method: 'POST',
@@ -450,8 +488,8 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
       legal_entity_id:           process.env.AIRWALLEX_LEGAL_ENTITY_ID,
       linked_payment_account_id: process.env.AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID,
       billing_customer_id:       customer.id,
-      success_url:               SITE_ORIGIN + plan.successPath,
-      back_url:                  SITE_ORIGIN + plan.backPath,
+      success_url:               SITE_ORIGIN + (SANDBOX ? sandboxUrl(plan.successPath, fields) : plan.successPath),
+      back_url:                  SITE_ORIGIN + (SANDBOX ? sandboxUrl(plan.backPath, fields) : plan.backPath),
       line_items:                [plan.priceId, ...(plan.bonusPriceIds || [])].map((id) => ({ price_id: id, quantity: 1 })),
       subscription_data:         { duration: plan.duration },   // Required in SUBSCRIPTION mode
     });
@@ -478,10 +516,13 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
     const checkout = await airwallex('GET', `/api/v1/billing/billing_checkouts/${checkoutId}`);
     if (checkout.status !== 'COMPLETED') return json({ completed: false });
 
-    // Plan from the line item, else from the metadata written at creation
+    // Plans of one cycle share a price ID: prefer the plan written in the metadata at creation when its
+    // price ID is on a line item, else the first plan with a matching line item
     const items = Array.isArray(checkout.line_items) ? checkout.line_items as Record<string, unknown>[] : [];
     const metadata = (checkout.metadata || {}) as Record<string, string>;
-    const planKey = Object.keys(PLANS).find((k) => items.some((i) => i.price_id === PLANS[k].priceId))
+    const onItems = (k: string) => items.some((i) => i.price_id === PLANS[k].priceId);
+    const planKey = (PLANS[metadata.plan] && onItems(metadata.plan) ? metadata.plan : '')
+      || Object.keys(PLANS).find(onItems)
       || (PLANS[metadata.plan] ? metadata.plan : '');
     const plan = PLANS[planKey];
     if (!plan) return json({ completed: false });
@@ -537,6 +578,11 @@ BunnySDK.net.http.serve(async (req: Request) => {
   if (origin !== SITE_ORIGIN) return refuse('FORBIDDEN_ORIGIN', 403);
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
+
+  // Fail closed, after the preflight so the page reads the error: the beta host must run in sandbox
+  // (else live plans against the live API) and every other host live (else fake checkouts on live links)
+  if (SANDBOX !== new URL(req.url).hostname.startsWith('beta.')) return refuse('NOT_CONFIGURED', 500);
+
   if (req.method !== 'POST') return refuse('METHOD_NOT_ALLOWED', 405);
 
   let fields: Record<string, unknown>;

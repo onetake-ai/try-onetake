@@ -503,7 +503,7 @@
         plan:     urlParams.get('plan') || ''
       };
 
-      var isSandbox = urlParams.get('environment') === 'sandbox';
+      var isSandbox = window.oneTakeSandbox;
 
       // ─────────────────────────────────────────────
       // HELPER — build the post-OTO redirect URL
