@@ -9,7 +9,8 @@
  *   Deployed by .github/workflows/deploy-airwallex-checkout.yml on every push to main that
  *   changes this file. Environment variables (Bunny dashboard → Edge Scripts → 99045 → Env):
  *     AIRWALLEX_CLIENT_ID                  Client ID of the scoped API key
- *     AIRWALLEX_API_KEY                    Scoped API key (Billing customers + Billing checkouts, write)
+ *     AIRWALLEX_API_KEY                    Scoped API key (Billing customers + Billing checkouts, read
+ *                                          and write; Billing subscriptions, read)
  *     AIRWALLEX_LEGAL_ENTITY_ID            le_... billing entity
  *     AIRWALLEX_LINKED_PAYMENT_ACCOUNT_ID  acct_... account that receives the payments
  *     AIRWALLEX_LOGIN_AS                   Optional: account ID for x-login-as, only when the key
@@ -29,8 +30,9 @@
  * ENDPOINTS (POST, JSON body, JSON response):
  *
  *   /checkout  { plan, page, email, first_name, attribution }
- *              Sends the Userlist event AddToCart, creates a Billing Customer (email prefilled on
- *              the checkout page), then a Billing Checkout in SUBSCRIPTION mode.
+ *              Sends the Userlist event AddToCart, reuses or creates the Billing Customer for the
+ *              email and plan currency (email prefilled on the checkout page), then creates a
+ *              Billing Checkout in SUBSCRIPTION mode.
  *              200 { url, checkout_id }: redirect the visitor to url (valid 1 hour).
  *
  *   /purchase  { checkout_id }
@@ -434,6 +436,42 @@ async function attachMetadata(path: string, attempts: Record<string, string>[]) 
   }
 }
 
+// Reuses the newest billing customer of this email, currency and legal entity, so a repeat buyer
+// keeps one customer; any lookup failure falls back to creating a new one
+async function findOrCreateCustomer(email: string, firstName: string, currency: string) {
+  try {
+    const found = await airwallex('GET', `/api/v1/billing/billing_customers?email=${encodeURIComponent(email)}&page_size=100`);
+    const items = (Array.isArray(found.items) ? found.items : []) as Record<string, unknown>[];
+    const match = items
+      .filter((c) => String(c.email || '').toLowerCase() === email && c.default_billing_currency === currency
+        && c.default_legal_entity_id === process.env.AIRWALLEX_LEGAL_ENTITY_ID && typeof c.id === 'string')
+      .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))[0];
+    if (match) return { customer: match, reused: true };
+  } catch { /* create below */ }
+
+  const customer = await airwallex('POST', '/api/v1/billing/billing_customers/create', {
+    request_id:               crypto.randomUUID(),
+    email,
+    name:                     firstName || email,
+    type:                     'INDIVIDUAL',
+    default_billing_currency: currency,
+    default_legal_entity_id:  process.env.AIRWALLEX_LEGAL_ENTITY_ID,
+  });
+  return { customer, reused: false };
+}
+
+// Renewals are credited from the customer metadata, so a customer whose subscription still bills
+// keeps it. Unknown counts as billing: a failed lookup must not move commission
+async function hasBillingSubscription(customerId: string): Promise<boolean> {
+  try {
+    const found = await airwallex('GET', `/api/v1/billing/subscriptions?billing_customer_id=${encodeURIComponent(customerId)}&page_size=100`);
+    const items = (Array.isArray(found.items) ? found.items : []) as Record<string, unknown>[];
+    return items.some((s) => ['ACTIVE', 'IN_TRIAL', 'UNPAID'].includes(String(s.status)));
+  } catch {
+    return true;
+  }
+}
+
 // ── Handlers ─────────────────────────────────────────────────────────────────
 
 async function handleCheckout(fields: Record<string, unknown>): Promise<Response> {
@@ -473,14 +511,8 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
   const metadata: Record<string, string> = { ...salesMetadata, ...attribution };
 
   try {
-    const customer = await airwallex('POST', '/api/v1/billing/billing_customers/create', {
-      request_id:               crypto.randomUUID(),
-      email,
-      name:                     firstName || email,
-      type:                     'INDIVIDUAL',
-      default_billing_currency: plan.currency,
-      default_legal_entity_id:  process.env.AIRWALLEX_LEGAL_ENTITY_ID,
-    });
+    const { customer, reused } = await findOrCreateCustomer(email, firstName, plan.currency);
+    const keepCustomerMetadata = reused && await hasBillingSubscription(String(customer.id));
 
     const checkout = await airwallex('POST', '/api/v1/billing/billing_checkouts/create', {
       request_id:                crypto.randomUUID(),
@@ -497,7 +529,7 @@ async function handleCheckout(fields: Record<string, unknown>): Promise<Response
 
     // Links the customer and checkout to the page and campaign; a failure here must not block the sale
     await Promise.all([
-      attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, [metadata, salesMetadata, baseMetadata]),
+      !keepCustomerMetadata && attachMetadata(`/api/v1/billing/billing_customers/${customer.id}/update`, [metadata, salesMetadata, baseMetadata]),
       attachMetadata(`/api/v1/billing/billing_checkouts/${checkout.id}/update`, [metadata, salesMetadata, baseMetadata]),
     ]);
 
