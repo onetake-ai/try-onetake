@@ -21,7 +21,8 @@
  *
  * SANDBOX: a second Bunny script runs this same file with ENVIRONMENT=SANDBOX and the credentials of
  * the Airwallex sandbox account (api-demo.airwallex.com); it offers only SANDBOX_PLANS. Pages reach it
- * with ?environment=sandbox (see airwallex-data.js). Leave the owner SMS and Userlist variables unset there.
+ * with ?environment=sandbox (see tools.js). The script skips the owner SMS and Userlist in sandbox, and
+ * refuses every request on the beta host when ENVIRONMENT=SANDBOX is missing.
  *
  * CORS: only https://try.onetake.ai. Requests from any other Origin get 403.
  *
@@ -217,11 +218,12 @@ const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
 // Keeps the success and back pages in sandbox mode, with the test flags the sales page was opened with
 // (fp_test for the FirstPromoter test, unlockfor to bypass the countdown redirect)
 function sandboxUrl(path: string, fields: Record<string, unknown>): string {
-  const query = new URLSearchParams({ environment: 'sandbox' });
-  if (cleanText(fields.fp_test, 8) === '1') query.set('fp_test', '1');
+  const url = new URL(path, SITE_ORIGIN);
+  url.searchParams.set('environment', 'sandbox');
+  if (cleanText(fields.fp_test, 8) === '1') url.searchParams.set('fp_test', '1');
   const unlockfor = cleanText(fields.unlockfor, 32);
-  if (unlockfor) query.set('unlockfor', unlockfor);
-  return path.replace(/(#.*)?$/, `?${query}$1`);
+  if (unlockfor) url.searchParams.set('unlockfor', unlockfor);
+  return url.pathname + url.search + url.hash;
 }
 
 const PLANS: Record<string, Plan> = SANDBOX ? SANDBOX_PLANS : LIVE_PLANS;
@@ -334,7 +336,7 @@ function checkWindow(plan: Plan): Response | null {
 async function notifyOwner(kind: string, firstName: string, email: string, telephone: string): Promise<void> {
   const url = process.env.OWNER_NOTIFY_URL;
   const secret = process.env.OWNER_NOTIFY_SECRET;
-  if (!url || !secret || !telephone) return;
+  if (SANDBOX || !url || !secret || !telephone) return;
   try {
     await fetch(url.replace(/\/+$/, '') + '/notify', {
       method: 'POST',
@@ -355,7 +357,7 @@ async function pushUserlist(
   eventProperties: Record<string, string | number>,
 ): Promise<boolean> {
   const pushKey = process.env.USERLIST_PUSH_KEY;
-  if (!pushKey) return false;
+  if (SANDBOX || !pushKey) return false;
   try {
     const res = await fetch(USERLIST_EVENTS_URL, {
       method: 'POST',
@@ -514,10 +516,13 @@ async function handlePurchase(fields: Record<string, unknown>): Promise<Response
     const checkout = await airwallex('GET', `/api/v1/billing/billing_checkouts/${checkoutId}`);
     if (checkout.status !== 'COMPLETED') return json({ completed: false });
 
-    // Plan from the line item, else from the metadata written at creation
+    // Plans of one cycle share a price ID: prefer the plan written in the metadata at creation when its
+    // price ID is on a line item, else the first plan with a matching line item
     const items = Array.isArray(checkout.line_items) ? checkout.line_items as Record<string, unknown>[] : [];
     const metadata = (checkout.metadata || {}) as Record<string, string>;
-    const planKey = Object.keys(PLANS).find((k) => items.some((i) => i.price_id === PLANS[k].priceId))
+    const onItems = (k: string) => items.some((i) => i.price_id === PLANS[k].priceId);
+    const planKey = (PLANS[metadata.plan] && onItems(metadata.plan) ? metadata.plan : '')
+      || Object.keys(PLANS).find(onItems)
       || (PLANS[metadata.plan] ? metadata.plan : '');
     const plan = PLANS[planKey];
     if (!plan) return json({ completed: false });
@@ -571,6 +576,9 @@ BunnySDK.net.http.serve(async (req: Request) => {
 
   const origin = req.headers.get('origin');
   if (origin !== SITE_ORIGIN) return refuse('FORBIDDEN_ORIGIN', 403);
+
+  // Fail closed: the beta host without ENVIRONMENT=SANDBOX would run the live plans against the live API
+  if (!SANDBOX && new URL(req.url).hostname.startsWith('beta.')) return refuse('NOT_CONFIGURED', 500);
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders() });
   if (req.method !== 'POST') return refuse('METHOD_NOT_ALLOWED', 405);
