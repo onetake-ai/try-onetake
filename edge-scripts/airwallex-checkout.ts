@@ -202,8 +202,7 @@ const LIVE_PLANS: Record<string, Plan> = {
 // plan key). Sales windows and bonus prices are not copied. To add a cycle, add it here and in LIVE_PLANS.
 const SANDBOX_CYCLES: Record<string, { priceId: string; duration: Plan['duration'] }> = {
   yearly:    { priceId: 'pri_sgpvlwl2chnvktri22h', duration: { period: 1, period_unit: 'YEAR' } },
-  // Monthly sandbox price for now; swap in a quarterly sandbox price and { period: 90, period_unit: 'DAY' }
-  quarterly: { priceId: 'pri_sgpvlwl2chnvlfilmou', duration: { period: 1, period_unit: 'MONTH' } },
+  quarterly: { priceId: 'pri_sgpvjhrj5hnvosz9frg', duration: { period: 90, period_unit: 'DAY' } },
 };
 
 const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
