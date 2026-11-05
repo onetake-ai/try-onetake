@@ -78,4 +78,12 @@ window.AIRWALLEX_CONFIG = {
 // AIRWALLEX_SANDBOX=1, Airwallex sandbox account).
 if (new URLSearchParams(window.location.search).get('environment') === 'sandbox') {
     window.AIRWALLEX_CONFIG.endpoint = 'https://beta.directpayments.onetake.ai';
+    // The sandbox sells OneTake Scale: yearly under the *-yearly keys, monthly under the *-quarterly keys
+    Object.keys(window.AIRWALLEX_CONFIG.plans).forEach(function (key) {
+        var plan = window.AIRWALLEX_CONFIG.plans[key];
+        var yearly = key.slice(-6) === 'yearly';
+        plan.name = 'OneTake Scale (sandbox)';
+        plan.value = yearly ? 999 : 299;
+        plan.priceLabel = yearly ? '999 € HT / an' : '299 € HT / mois';
+    });
 }

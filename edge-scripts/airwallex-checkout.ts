@@ -202,7 +202,7 @@ const LIVE_PLANS: Record<string, Plan> = {
 const SANDBOX_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpvlwl2chnvktri22h',
-    label:       'Sandbox test (annuel)',
+    label:       'OneTake Scale (annuel, sandbox)',
     value:       999,
     currency:    'EUR',
     duration:    { period: 1, period_unit: 'YEAR' },
@@ -211,7 +211,7 @@ const SANDBOX_PLANS: Record<string, Plan> = {
   },
   'challenge-quarterly': {
     priceId:     'pri_sgpvjhrj5hntjrslgt0',
-    label:       'Sandbox test (mensuel)',
+    label:       'OneTake Scale (mensuel, sandbox)',
     value:       299,
     currency:    'EUR',
     duration:    { period: 1, period_unit: 'MONTH' },
