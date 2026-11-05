@@ -491,5 +491,21 @@ const sandboxPlanPresets = {
         product: 'pri_01k7mz9cvwea4ghz0p2t7ygmcz',
         firstExpectedPayment: 390,
         freeToPaidConversionRate: 0.30
+    },
+    'scale-monthly': {
+        tier: 'Scale',
+        recurrence: 'monthly',
+        trial: null,
+        product: 'pri_01ks4yhbssdfbfge45ghdyv7fg',
+        firstExpectedPayment: 299,
+        freeToPaidConversionRate: 1
+    },
+    'scale-yearly': {
+        tier: 'Scale',
+        recurrence: 'yearly',
+        trial: null,
+        product: 'pri_01kspx793d480wa5x83a54pypc',
+        firstExpectedPayment: 2990,
+        freeToPaidConversionRate: 1
     }
 };
