@@ -159,7 +159,18 @@ For people who were never OneTake customers, or who tried OneTake without stayin
 - **Accounts:** the team creates them from the Userlist `Purchase` event; the buyer gets an email.
 - **Shared files:** same as acces-challenge.
 
-**Thank-you pages:** every Challenge `merci/` page (`noindex`) shows the same three steps: welcome survey (`https://onfire.onetake.ai/challenge/bienvenue`), Telegram group (`https://www.onetake.ai/challenge/telegram`) and the Temps Réel calendar (`https://www.onetake.ai/calendrier-sessions-live`). Keep them in sync.
+## Coaching Black Friday (`/4dcm/black-friday-coaching/`)
+
+"Coachs et Formateurs : comment faire des ventes record pendant Black Friday": 90-minute recorded workshop, live group coaching on Wed Nov 18 (with replay), 3 Black Friday AI skills, plus everything in the Challenge. Same prices and Airwallex price IDs as the Challenge. French only (Weglot disabled), styled with `/4dcm/le-challenge/style.css` plus the folder's `style.css`.
+
+- **Pages:** `offre/` (general audience, indexed), `clients/` (current customers, `noindex`, prorata box), `retour/` (former customers, `noindex`, "Depuis ton départ" section and the same-email popup text). Each has its own `merci/`. The folder's `index.html` redirects to `offre/`.
+- **Plans:** `bf-coaching-yearly`/`-quarterly`, `bf-coaching-access-*` (clients), `bf-coaching-comeback-*` (retour). The checkout reuses the 3 Challenge bonus lines; the 0 € prices "Atelier Black Friday" and "Coaching live" go in `bonusPriceIds` (TODO in `LIVE_PLANS`).
+- **Dates:** sales open Fri Nov 13; quarterly plans from Mon Nov 16 (last 2 days); every page closes after Tue Nov 17 23:59:59 Paris (countdown redirect to `/oto/too-late/`). `?unlockfor=1` keeps a page open: the edge script enforces the opening dates (`opensAt`) but has no `closesAt`, so a late buyer with that link can still pay. Keep in sync: `CONFIG` in `app.js`, `data-deadline` in the three pages, `BF_COACHING_*` in `edge-scripts/airwallex-checkout.ts`.
+- **Preview:** `?preview_state=launch|quarterly` (display only).
+- **Sales video:** none yet; the player markup is commented out in each hero. When adding it, also remove `hero-grid--novideo`.
+- **Thank-you pages:** links to the workshop and the coaching session are sent by email; the pages say so and show the same three steps as the Challenge.
+
+**Thank-you pages:** every Challenge `merci/` page (`noindex`, including `/4dcm/black-friday-coaching/*/merci/`) shows the same three steps: welcome survey (`https://onfire.onetake.ai/challenge/bienvenue`), Telegram group (`https://www.onetake.ai/challenge/telegram`) and the Temps Réel calendar (`https://www.onetake.ai/calendrier-sessions-live`). Keep them in sync.
 
 ## Embeddable checkout snippet
 

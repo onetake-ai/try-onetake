@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Bienvenue dans le coaching Black Friday · Sébastien Night</title>
+
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link href="https://fonts.bunny.net/css?family=instrument-serif:400,400i&family=geist:300,400,500,600,700&family=geist-mono:400,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/4dcm/le-challenge/style.css" />
+<style>
+  .welcome { min-height: 70vh; display: flex; align-items: center; }
+  .welcome .card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 56px 48px;
+    text-align: center;
+  }
+  .welcome h1 { font-size: clamp(40px, 6vw, 64px); margin: 24px 0; }
+  .welcome .lead { margin-bottom: 32px; }
+  .welcome .next {
+    text-align: left;
+    background: var(--bg-warm);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 0 0 24px;
+  }
+  .welcome .next h2 { font-size: 26px; margin-bottom: 12px; }
+  .welcome .next p { margin: 0; color: var(--ink-soft); }
+  .welcome .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  .welcome .steps li { counter-increment: step; padding: 20px 0 0 44px; position: relative; }
+  .welcome .steps li + li { margin-top: 20px; border-top: 1px solid var(--line); }
+  .welcome .steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 20px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-family: var(--mono); font-size: 14px; line-height: 28px; text-align: center;
+  }
+  .welcome .steps h3 { font-size: 21px; margin: 0 0 6px; }
+  .welcome .steps p { margin: 0 0 14px; }
+  @media (max-width: 600px) {
+    .welcome .card { padding: 40px 20px; }
+    .welcome .next { padding: 24px 20px; }
+  }
+</style>
+<script>window.__disable_weglot = true;</script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="mark">S</div>
+      <span>Sébastien Night</span>
+    </div>
+    <div class="meta">Coaching Black Friday</div>
+  </div>
+</header>
+
+<section class="welcome">
+  <div class="wrap">
+    <div class="card">
+      <div class="eyebrow" style="justify-content: center;">Bienvenue</div>
+      <h1>Merci&nbsp;! <span class="italic" style="color: var(--accent-2);">Ton paiement est confirmé.</span></h1>
+      <p class="lead">Ton compte OneTake va être réactivé au niveau Scale, avec toutes tes vidéos et tes projets&nbsp;: tu recevras un email de confirmation dans la journée (jour ouvré). Connecte-toi ensuite avec la même adresse email que d'habitude.</p>
+      <p class="small">Tu as utilisé une autre adresse email que celle de ton ancien compte&nbsp;? Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai">contact@goodvibes.onetake.ai</a>&nbsp;: on s'en occupe.</p>
+
+      <div class="next">
+        <h2>Rendez-vous le mercredi 18 novembre</h2>
+        <p>Tu reçois par email le lien de l'atelier «&nbsp;Black Friday pour les Experts&nbsp;» et celui de la session de coaching en direct. Regarde l'atelier et prépare ton offre avant le 18&nbsp;: c'est elle que nous allons revoir ensemble. Le replay de la session t'attend si tu ne peux pas être là.</p>
+      </div>
+
+      <!-- Same three steps on every Challenge thank-you page (le-challenge, acces-, comeagain-, rejoindre-challenge, black-friday-coaching/*) -->
+      <div class="next">
+        <h2>Tes trois prochaines étapes</h2>
+        <ol class="steps">
+          <li>
+            <h3>Réponds au questionnaire de bienvenue</h3>
+            <p>Il m'aide à mieux connaître ton activité et ton projet avant le 1er décembre.</p>
+            <a class="btn btn-primary" href="https://onfire.onetake.ai/challenge/bienvenue" target="_blank" rel="noopener"><span>Je réponds au questionnaire</span><span class="arrow">→</span></a>
+          </li>
+          <li>
+            <h3>Rejoins le groupe Telegram du Challenge</h3>
+            <p>C'est là que tout se passe&nbsp;: les missions de chaque jour, l'enregistrement de la Cérémonie de Bienvenue et les autres experts qui font le Challenge avec toi.</p>
+            <a class="btn btn-primary" href="https://www.onetake.ai/challenge/telegram" target="_blank" rel="noopener"><span>Je rejoins le groupe</span><span class="arrow">→</span></a>
+          </li>
+          <li>
+            <h3>Ajoute les sessions Temps Réel à ton calendrier</h3>
+            <p>Les dates des sessions en direct Temps Réel, pour ne pas en manquer une.</p>
+            <a class="btn btn-primary" href="https://www.onetake.ai/calendrier-sessions-live" target="_blank" rel="noopener"><span>J'ajoute les dates</span><span class="arrow">→</span></a>
+          </li>
+        </ol>
+      </div>
+
+      <p class="small">Une question&nbsp;? Écris-nous à <a href="mailto:contact@goodvibes.onetake.ai">contact@goodvibes.onetake.ai</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>En m'inscrivant, j'accepte les <a href="https://www.onetake.ai/terms-of-service" target="_blank">Conditions d'utilisation et la Politique de remboursement</a> ainsi que la <a href="https://www.onetake.ai/privacy-policy" target="_blank">Politique de confidentialité</a>.</p>
+    <p><strong>Qu'est-ce que OneTake&nbsp;?</strong></p>
+    <p><strong>OneTake AI transforme des vidéos brutes en présentations professionnelles.</strong> Pour aider les experts, les formateurs, les coachs et les auteurs à créer et à publier leur contenu vidéo, nous avons développé <a href="https://www.onetake.ai" target="_blank">OneTake, le premier agent IA de montage vidéo</a>.</p>
+    <p><strong>Qui a eu cette idée&nbsp;?</strong></p>
+    <p>Sébastien Night, notre PDG, est le fondateur du Mouvement des Entrepreneurs Libres, une organisation qui a aidé depuis 2010 plus de 300&nbsp;000 entrepreneurs dans 41 pays à développer leur activité. <strong>Après avoir lui-même produit et monté des milliers de vidéos pendant plus de 15 ans, Sébastien a décidé de créer un agent IA à la fois incroyablement puissant et d'une simplicité d'utilisation absolue&nbsp;: OneTake.</strong></p>
+    <p>Pour contacter Sébastien et son équipe, <a href="https://www.onetake.ai/contact" target="_blank">il suffit de cliquer ici</a>.</p>
+    <p class="footer-disclaimer">Ce site ne fait pas partie des sites Facebook, Instagram ou Google, et n'est en aucun cas approuvé par Meta Platforms, Inc. ou Alphabet Inc. Facebook et Instagram sont des marques de Meta Platforms, Inc. Google et YouTube sont des marques de Google LLC.</p>
+  </div>
+</footer>
+
+<script src="/airwallex-data.js"></script>
+<script src="/assets/airwallex/airwallex-checkout.js"></script>
+<script src="/tools.js"></script>
+<script>
+  // Purchase (AnyTrack, Plausible, Userlist): only once Airwallex confirms the checkout started
+  // in this browser is paid, and only once per checkout
+  if (window.oneTakeAirwallex) window.oneTakeAirwallex.confirmPurchase();
+</script>
+</body>
+</html>

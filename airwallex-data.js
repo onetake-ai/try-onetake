@@ -72,6 +72,49 @@ window.AIRWALLEX_CONFIG = {
             value: 299,
             currency: 'EUR',
             priceLabel: '299\u00a0€ HT / trimestre'
+        },
+        // Coachs et Formateurs : ventes record pendant Black Friday (/4dcm/black-friday-coaching/offre/).
+        // Same price as the Challenge, which is included. Quarterly plans: last 2 days only (see
+        // /4dcm/black-friday-coaching/app.js). The same applies to the -access- and -comeback- plans
+        'bf-coaching-yearly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an'
+        },
+        'bf-coaching-quarterly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre'
+        },
+        // Current OneTake customers (/4dcm/black-friday-coaching/clients/)
+        'bf-coaching-access-yearly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an'
+        },
+        'bf-coaching-access-quarterly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre'
+        },
+        // Customers who cancelled OneTake (/4dcm/black-friday-coaching/retour/): same email reactivates the old account
+        'bf-coaching-comeback-yearly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / an',
+            checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.'
+        },
+        'bf-coaching-comeback-quarterly': {
+            name: 'Coachs et Formateurs\u00a0: ventes record pendant Black Friday',
+            value: 299,
+            currency: 'EUR',
+            priceLabel: '299\u00a0€ HT / trimestre',
+            checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.'
         }
     }
 };
