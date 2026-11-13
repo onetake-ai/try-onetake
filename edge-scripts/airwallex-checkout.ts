@@ -75,6 +75,12 @@ type Plan = {
 // Keep in sync with CONFIG in /4dcm/le-challenge/app.js and data-deadline in its index.html.
 const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 
+// Coaching Black Friday: dates in Europe/Paris (UTC+1). Sales open Fri Nov 13 00:00 Paris; quarterly
+// plans in the last 2 days, from Mon Nov 16 00:00 Paris. The pages close after Tue Nov 17 23:59:59 Paris.
+// Keep in sync with CONFIG in /4dcm/black-friday-coaching/app.js and data-deadline in its pages.
+const BF_COACHING_OPENS_AT           = '2026-11-12T23:00:00Z';
+const BF_COACHING_QUARTERLY_OPENS_AT = '2026-11-15T23:00:00Z';
+
 const LIVE_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
@@ -197,6 +203,107 @@ const LIVE_PLANS: Record<string, Plan> = {
     duration:    { period: 90, period_unit: 'DAY' },
     successPath: '/4dcm/rejoindre-challenge/merci/',
     backPath:    '/4dcm/rejoindre-challenge/#prix',
+  },
+  // Coachs et Formateurs : ventes record pendant Black Friday (/4dcm/black-friday-coaching/), dates above.
+  // Same prices as the Challenge, which is included. No closesAt on purpose: the pages close on
+  // Tue Nov 17 (countdown redirect), but a link with ?unlockfor=1 must still let a late buyer pay.
+  'bf-coaching-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+      // TODO: add the yearly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    opensAt:     BF_COACHING_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/offre/merci/',
+    backPath:    '/4dcm/black-friday-coaching/offre/#prix',
+  },
+  'bf-coaching-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+      // TODO: add the quarterly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    opensAt:     BF_COACHING_QUARTERLY_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/offre/merci/',
+    backPath:    '/4dcm/black-friday-coaching/offre/#prix',
+  },
+  // Current OneTake customers
+  'bf-coaching-access-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+      // TODO: add the yearly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (clients, annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    opensAt:     BF_COACHING_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/clients/merci/',
+    backPath:    '/4dcm/black-friday-coaching/clients/#prix',
+  },
+  'bf-coaching-access-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+      // TODO: add the quarterly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (clients, trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    opensAt:     BF_COACHING_QUARTERLY_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/clients/merci/',
+    backPath:    '/4dcm/black-friday-coaching/clients/#prix',
+  },
+  // Customers who cancelled OneTake in the past
+  'bf-coaching-comeback-yearly': {
+    priceId:     'pri_sgpd7k7qvhnkhdrg33w',
+    bonusPriceIds: [   // Same yearly 0 € prices as challenge-yearly
+      'pri_sgpdd4ck6hnl1q5hn8e',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdlsksvhnl1euoxcj',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpdd4ck6hnl1ni1dzc',   // Groupe privé VIP
+      // TODO: add the yearly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (retour, annuel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    opensAt:     BF_COACHING_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/retour/merci/',
+    backPath:    '/4dcm/black-friday-coaching/retour/#prix',
+  },
+  'bf-coaching-comeback-quarterly': {
+    priceId:     'pri_sgpd7k7qvhnkhehpgad',
+    bonusPriceIds: [   // Same quarterly 0 € prices as challenge-quarterly
+      'pri_sgpdd4ck6hnl1qv8bkn',   // Le Challenge des Experts à Haute Valeur
+      'pri_sgpdd4ck6hnl1ffdwsk',   // Les Skills IA de l'Expert à Haute Valeur
+      'pri_sgpd7k7qvhnl1ob13hn',   // Groupe privé VIP
+      // TODO: add the quarterly 0 € prices "Atelier Black Friday" and "Coaching live" once created
+    ],
+    label:       'Coaching Black Friday (retour, trimestriel)',
+    value:       299,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    opensAt:     BF_COACHING_QUARTERLY_OPENS_AT,
+    successPath: '/4dcm/black-friday-coaching/retour/merci/',
+    backPath:    '/4dcm/black-friday-coaching/retour/#prix',
   },
 };
 
