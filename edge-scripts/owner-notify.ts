@@ -169,10 +169,26 @@ function cleanText(value: unknown, max = 100): string {
   return typeof value === 'string' ? value.replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max) : '';
 }
 
-// E.164 (+33612345678) → digits for wa.me (33612345678), or '' when malformed
+// French overseas numbers written with +33 (0690..., 0696..., 0692...): +33690123456 -> +590690123456.
+// Same table as OVERSEAS in /assets/phone-field/phone-field.js: keep them in sync.
+const OVERSEAS_PHONES: [RegExp, string][] = [
+  [/^69[01]\d{6}$/, '590'], [/^590\d{6}$/, '590'],   // Guadeloupe
+  [/^69[67]\d{6}$/, '596'], [/^596\d{6}$/, '596'],   // Martinique
+  [/^69[23]\d{6}$/, '262'], [/^262\d{6}$/, '262'],   // La Réunion
+  [/^694\d{6}$/,    '594'], [/^594\d{6}$/, '594'],   // Guyane
+  [/^639\d{6}$/,    '262'], [/^269\d{6}$/, '262'],   // Mayotte
+];
+function fixOverseasPhone(e164: string): string {
+  const m = /^\+33(\d{9})$/.exec(e164);
+  const rule = m && OVERSEAS_PHONES.find(([re]) => re.test(m[1]));
+  return m && rule ? `+${rule[1]}${m[1]}` : e164;
+}
+
+// E.164 (+33612345678) → digits for wa.me (33612345678), or '' when malformed. A French overseas number
+// saved with +33 gets its real country code (+33690123456 → 590690123456).
 function waDigits(value: unknown): string {
   const phone = typeof value === 'string' ? value.replace(/[\s.()-]/g, '') : '';
-  return /^\+[1-9]\d{6,14}$/.test(phone) ? phone.slice(1) : '';
+  return /^\+[1-9]\d{6,14}$/.test(phone) ? fixOverseasPhone(phone).slice(1) : '';
 }
 
 function timingSafeEqual(a: string, b: string): boolean {

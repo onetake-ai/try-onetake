@@ -102,12 +102,27 @@ function cleanChoice(value: unknown, allowed: string[], multiple: boolean): stri
   return [...new Set(multiple ? picked : picked.slice(0, 1))].join(',');
 }
 
+// French overseas numbers written with +33 (0690..., 0696..., 0692...): +33690123456 -> +590690123456.
+// Same table as OVERSEAS in /assets/phone-field/phone-field.js: keep them in sync.
+const OVERSEAS_PHONES: [RegExp, string][] = [
+  [/^69[01]\d{6}$/, '590'], [/^590\d{6}$/, '590'],   // Guadeloupe
+  [/^69[67]\d{6}$/, '596'], [/^596\d{6}$/, '596'],   // Martinique
+  [/^69[23]\d{6}$/, '262'], [/^262\d{6}$/, '262'],   // La Réunion
+  [/^694\d{6}$/,    '594'], [/^594\d{6}$/, '594'],   // Guyane
+  [/^639\d{6}$/,    '262'], [/^269\d{6}$/, '262'],   // Mayotte
+];
+function fixOverseasPhone(e164: string): string {
+  const m = /^\+33(\d{9})$/.exec(e164);
+  const rule = m && OVERSEAS_PHONES.find(([re]) => re.test(m[1]));
+  return m && rule ? `+${rule[1]}${m[1]}` : e164;
+}
+
 // WhatsApp number (optional) in E.164, e.g. +33612345678; '' when absent or malformed
 function cleanPhone(value: unknown): string {
   if (typeof value !== 'string') return '';
   let phone = value.replace(/[\s.\-()\/]/g, '');
   if (phone.startsWith('00')) phone = '+' + phone.slice(2);
-  return /^\+[1-9]\d{6,14}$/.test(phone) ? phone : '';
+  return /^\+[1-9]\d{6,14}$/.test(phone) ? fixOverseasPhone(phone) : '';
 }
 
 // SMS to Sébastien through edge-scripts/owner-notify.ts (who, why and WhatsApp links). Only with
