@@ -9,6 +9,11 @@
  *   oneTakePhoneField.read(input)                     -> { value: '+33612345678' or '', valid: true|false }
  *   oneTakePhoneField.setValue(input, '+33612345678') -> prefill
  *   oneTakePhoneField.fromUrl()                       -> ?telephone= from the URL, or ''
+ *
+ * French overseas numbers: many leads leave the default country "France" but type a number from
+ * Guadeloupe (0690, 0691), Martinique, La Réunion, Guyane or Mayotte. The field switches to the right
+ * country as soon as the number is complete (OVERSEAS below), so the stored number has the right country
+ * code (+590690123456, not +33690123456). The edge scripts apply the same rules (cleanPhone, waDigits).
  */
 (function () {
     'use strict';
@@ -20,6 +25,32 @@
     var VENDOR = new URL('../vendor/intl-tel-input/', scriptSrc).href;
 
     var E164 = /^\+[1-9]\d{6,14}$/;
+
+    // French overseas numbers written with the +33 / 0 prefix: national number (9 digits, without the
+    // leading 0) -> country code and country. Same table in the edge scripts (owner-notify.ts,
+    // userlist-proxy.ts, airwallex-checkout.ts): keep them in sync.
+    var OVERSEAS = [
+        { re: /^69[01]\d{6}$/, code: '590', iso: 'gp' },   // Guadeloupe mobile (also Saint-Martin, Saint-Barthélemy)
+        { re: /^590\d{6}$/,    code: '590', iso: 'gp' },   // Guadeloupe landline
+        { re: /^69[67]\d{6}$/, code: '596', iso: 'mq' },   // Martinique mobile
+        { re: /^596\d{6}$/,    code: '596', iso: 'mq' },
+        { re: /^69[23]\d{6}$/, code: '262', iso: 're' },   // La Réunion mobile
+        { re: /^262\d{6}$/,    code: '262', iso: 're' },
+        { re: /^694\d{6}$/,    code: '594', iso: 'gf' },   // Guyane mobile
+        { re: /^594\d{6}$/,    code: '594', iso: 'gf' },
+        { re: /^639\d{6}$/,    code: '262', iso: 'yt' },   // Mayotte mobile
+        { re: /^269\d{6}$/,    code: '262', iso: 'yt' }
+    ];
+
+    // +33690123456 -> +590690123456 (E.164 in, E.164 out; anything else is returned unchanged)
+    function fixOverseas(e164) {
+        var m = /^\+33(\d{9})$/.exec(e164 || '');
+        if (!m) return e164;
+        for (var i = 0; i < OVERSEAS.length; i++) {
+            if (OVERSEAS[i].re.test(m[1])) return '+' + OVERSEAS[i].code + m[1];
+        }
+        return e164;
+    }
 
     // Default country when the browser locale has no region, by page language.
     var COUNTRY_BY_LANG = { en: 'us', fr: 'fr', es: 'es', pt: 'br', it: 'it', ja: 'jp', ru: 'ru', de: 'de' };
@@ -180,9 +211,24 @@
             });
             instances.set(input, iti);
             // A number pasted or prefilled before the library loaded is reformatted.
-            if (input.value) iti.setNumber(input.value);
+            if (input.value) { iti.setNumber(input.value); fixCountry(input, iti); }
+            // Overseas number typed or pasted while "France" is selected: switch to its country
+            input.addEventListener('input', function () { fixCountry(input, iti); });
             return iti;
         });
+    }
+
+    // "France" selected and a complete overseas number typed (0690 12 34 56): select the right country
+    function fixCountry(input, iti) {
+        var country = iti.getSelectedCountry();
+        if (!country || country.iso2 !== 'fr') return;
+        var national = String(input.value || '').replace(/\D/g, '').replace(/^0/, '');
+        for (var i = 0; i < OVERSEAS.length; i++) {
+            if (OVERSEAS[i].re.test(national)) {
+                iti.setNumber('+' + OVERSEAS[i].code + national);
+                return;
+            }
+        }
     }
 
     function normalize(raw) {
@@ -196,18 +242,19 @@
         if (!input || !String(input.value || '').trim()) return { value: '', valid: true };
         var iti = instances.get(input);
         if (iti) {
+            fixCountry(input, iti);
             var valid = iti.isValidNumber() === true;
-            return { value: valid ? iti.getNumber() : '', valid: valid };
+            return { value: valid ? fixOverseas(iti.getNumber()) : '', valid: valid };
         }
         // Library missing or still loading: keep a well-formed international number, never block.
         var cleaned = normalize(input.value);
-        return { value: E164.test(cleaned) ? cleaned : '', valid: true };
+        return { value: E164.test(cleaned) ? fixOverseas(cleaned) : '', valid: true };
     }
 
     function setValue(input, value) {
         if (!input || !value) return;
         var iti = instances.get(input);
-        if (iti) iti.setNumber(value);
+        if (iti) { iti.setNumber(value); fixCountry(input, iti); }
         else input.value = value;
     }
 
@@ -228,7 +275,7 @@
         fromUrl: fromUrl,
         normalize: function (raw) {
             var cleaned = normalize(raw);
-            return E164.test(cleaned) ? cleaned : '';
+            return E164.test(cleaned) ? fixOverseas(cleaned) : '';
         }
     };
 })();
