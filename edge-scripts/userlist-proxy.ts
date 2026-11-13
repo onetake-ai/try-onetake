@@ -113,7 +113,7 @@ function cleanPhone(value: unknown): string {
 // SMS to Sébastien through edge-scripts/owner-notify.ts (who, why and WhatsApp links). Only with
 // a phone number; skipped when OWNER_NOTIFY_URL or OWNER_NOTIFY_SECRET is missing. Never fails the
 // request.
-async function notifyOwner(kind: string, firstName: string, email: string, telephone: string): Promise<void> {
+async function notifyOwner(kind: string, firstName: string, email: string, telephone: string, attendsOn = ''): Promise<void> {
   const url = process.env.OWNER_NOTIFY_URL;
   const secret = process.env.OWNER_NOTIFY_SECRET;
   if (!url || !secret || !telephone) return;
@@ -121,7 +121,7 @@ async function notifyOwner(kind: string, firstName: string, email: string, telep
     await fetch(url.replace(/\/+$/, '') + '/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
-      body: JSON.stringify({ kind, first_name: firstName, email, telephone }),
+      body: JSON.stringify({ kind, first_name: firstName, email, telephone, attends_masterclass_on: attendsOn }),
       signal: AbortSignal.timeout(5000),
     });
   } catch (e) {
@@ -241,7 +241,7 @@ BunnySDK.net.http.serve(async (req: Request) => {
 
   // French masterclass registrations only (they carry the live session date)
   if (accepted && event === 'CompleteRegistration' && attendsOn) {
-    await notifyOwner('masterclass', first_name, email, telephone);
+    await notifyOwner('masterclass', first_name, email, telephone, attendsOn);
   }
 
   if (wantsJson) {
