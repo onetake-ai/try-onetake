@@ -81,6 +81,12 @@ const CHALLENGE_CLOSES_AT = '2026-11-02T23:00:00Z';
 const BF_COACHING_OPENS_AT           = '2026-11-12T23:00:00Z';
 const BF_COACHING_QUARTERLY_OPENS_AT = '2026-11-15T23:00:00Z';
 
+// Black Friday 2026 (/4dcm/black-friday/): sales open Fri Nov 27 00:00 Paris (UTC+1), all three cycles at once.
+// The page closes after Mon Nov 30 23:59:59 Paris (countdown redirect). No closesAt on purpose, like the
+// Coaching Black Friday plans: a late buyer with ?unlockfor=1 can still pay.
+// Keep in sync with data-deadline and the dates written in /4dcm/black-friday/index.html.
+const BF_2026_OPENS_AT = '2026-11-26T23:00:00Z';
+
 const LIVE_PLANS: Record<string, Plan> = {
   'challenge-yearly': {
     priceId:     'pri_sgpd7k7qvhnkhdrg33w',
@@ -304,6 +310,43 @@ const LIVE_PLANS: Record<string, Plan> = {
     opensAt:     BF_COACHING_QUARTERLY_OPENS_AT,
     successPath: '/4dcm/black-friday-coaching/retour/merci/',
     backPath:    '/4dcm/black-friday-coaching/retour/#prix',
+  },  // Black Friday 2026 (/4dcm/black-friday/), dates above. One page for everyone except current Cercle members
+  // (excluded from the campaign). Challenge buyers get what they paid in the last 3 months credited, by hand.
+  'bf-cercle-quarterly': {
+    priceId:     'TODO_QUARTER_PRICE_ID',   // TODO: Airwallex price, 999 € HT per quarter
+    bonusPriceIds: [   // TODO (optional): quarter 0 € prices listed under the plan on the checkout
+    ],
+    label:       'Offre Black Friday 2026 (trimestriel)',
+    value:       999,
+    currency:    'EUR',
+    duration:    { period: 90, period_unit: 'DAY' },
+    opensAt:     BF_2026_OPENS_AT,
+    successPath: '/4dcm/black-friday/merci/',
+    backPath:    '/4dcm/black-friday/#prix',
+  },
+  'bf-cercle-monthly': {
+    priceId:     'TODO_MONTH_PRICE_ID',   // TODO: Airwallex price, 399 € HT per month
+    bonusPriceIds: [   // TODO (optional): month 0 € prices listed under the plan on the checkout
+    ],
+    label:       'Offre Black Friday 2026 (mensuel)',
+    value:       399,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'MONTH' },
+    opensAt:     BF_2026_OPENS_AT,
+    successPath: '/4dcm/black-friday/merci/',
+    backPath:    '/4dcm/black-friday/#prix',
+  },
+  'bf-cercle-yearly': {
+    priceId:     'TODO_YEAR_PRICE_ID',   // TODO: Airwallex price, 3499 € HT per year
+    bonusPriceIds: [   // TODO (optional): year 0 € prices listed under the plan on the checkout
+    ],
+    label:       'Offre Black Friday 2026 (annuel)',
+    value:       3499,
+    currency:    'EUR',
+    duration:    { period: 1, period_unit: 'YEAR' },
+    opensAt:     BF_2026_OPENS_AT,
+    successPath: '/4dcm/black-friday/merci/',
+    backPath:    '/4dcm/black-friday/#prix',
   },
 };
 
@@ -313,6 +356,7 @@ const LIVE_PLANS: Record<string, Plan> = {
 const SANDBOX_CYCLES: Record<string, { priceId: string; duration: Plan['duration'] }> = {
   yearly:    { priceId: 'pri_sgpvlwl2chnvktri22h', duration: { period: 1, period_unit: 'YEAR' } },
   quarterly: { priceId: 'pri_sgpvjhrj5hnvosz9frg', duration: { period: 90, period_unit: 'DAY' } },
+  monthly:   { priceId: 'TODO_SANDBOX_MONTHLY_PRICE_ID', duration: { period: 1, period_unit: 'MONTH' } },   // TODO: monthly price in the Airwallex sandbox account
 };
 
 const SANDBOX_PLANS: Record<string, Plan> = Object.fromEntries(
