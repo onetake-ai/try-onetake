@@ -25,7 +25,9 @@ window.MASTERCLASS_CONFIG = {
     weekday: 4,                 // 0 = Sunday ... 4 = Thursday
     time: '20:00',
     cutoff: '21:00',            // from this time on the session day, visitors register for the following week
-    timeZone: 'Europe/Paris'
+    timeZone: 'Europe/Paris',
+    // Thursdays with no live (YYYY-MM-DD, Paris date): visitors are registered for the next Thursday instead
+    skip: ['2026-12-03', '2026-12-24', '2026-12-31']
   },
   liveUrl: 'https://nuro.video/fr-live',
   joinButtonMinutesBefore: 15,  // page 3 shows a "Rejoindre le direct" button this many minutes before the start
