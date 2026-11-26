@@ -1,0 +1,87 @@
+/* Black Friday 2026 (/4dcm/black-friday/): additions to /4dcm/le-challenge/style.css, loaded after it. */
+
+/* Hero: eyebrow above the title. While there is no sales video, the hero is a single column:
+   remove .hero-grid--novideo when the video player is added back (same as /4dcm/black-friday-coaching/) */
+.hero-grid > .eyebrow { grid-area: eyebrow; justify-content: flex-start; }
+.hero-grid { grid-template-areas: "eyebrow" "title" "video" "cta" "sub"; }
+@media (min-width: 960px) {
+  .hero-grid { grid-template-areas: "eyebrow video" "title video" "sub video" "cta video"; grid-template-rows: auto auto auto 1fr; }
+}
+.hero-grid.hero-grid--novideo { grid-template-columns: minmax(0, 1fr); grid-template-areas: "eyebrow" "title" "sub" "cta"; grid-template-rows: none; max-width: 900px; }
+.hero-grid--novideo > h1 { font-size: clamp(40px, 6vw, 72px); }
+.hero-grid--novideo > .sub { margin-top: 0; }
+.hero-grid--novideo > .cta-row { margin-top: 32px; }
+
+/* Separator between the main components and the Challenge ones */
+.included {
+  margin: 56px 0 8px;
+  padding: 28px 32px;
+  background: var(--bg-warm);
+  border-radius: 6px;
+}
+.included p { margin: 12px 0 0; color: var(--ink-soft); }
+@media (max-width: 600px) {
+  .included { padding: 22px 20px; }
+}
+
+/* The course library: one row per course, name and value */
+.courses {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 40px;
+}
+.courses li {
+  break-inside: avoid;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+.courses .v {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.courses-total {
+  margin-top: 24px;
+  font-size: 19px;
+}
+@media (max-width: 760px) {
+  .courses { columns: 1; }
+}
+
+/* Two plans side by side from the start (the Challenge stylesheet shows one until data-offer-state="quarterly") */
+.pricing.pricing--two { grid-template-columns: 1.05fr 1fr; justify-content: stretch; }
+@media (max-width: 900px) {
+  .pricing.pricing--two { grid-template-columns: 1fr; }
+}
+
+/* Yearly plan: a link under the two plans, always visible */
+.yearly-link {
+  max-width: 760px;
+  margin: 32px auto 0;
+  text-align: center;
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+.yearly-link button {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.yearly-link button:hover,
+.yearly-link button:focus-visible { color: var(--ink); }
+.yearly-link button.is-loading { opacity: 0.6; cursor: progress; }

@@ -115,6 +115,26 @@ window.AIRWALLEX_CONFIG = {
             currency: 'EUR',
             priceLabel: '299\u00a0€ HT / trimestre',
             checkoutIntro: 'Indique ton prénom et la même adresse email que ton ancien compte OneTake\u00a0: c\'est elle qui te permet de retrouver tes vidéos.'
+        },
+        // Black Friday 2026 (/4dcm/black-friday/): the Cercle, La Sellette, all courses, OneTake Scale and the
+        // Challenge. Three billing cycles, all shown from the opening (Fri Nov 27) to Mon Nov 30
+        'bf-cercle-quarterly': {
+            name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
+            value: 999,
+            currency: 'EUR',
+            priceLabel: '999\u00a0€ HT / trimestre'
+        },
+        'bf-cercle-monthly': {
+            name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
+            value: 399,
+            currency: 'EUR',
+            priceLabel: '399\u00a0€ HT / mois'
+        },
+        'bf-cercle-yearly': {
+            name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
+            value: 3499,
+            currency: 'EUR',
+            priceLabel: '3\u00a0499\u00a0€ HT / an'
         }
     }
 };
