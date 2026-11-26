@@ -58,6 +58,20 @@
       results.push({ name: 'formatFr: ' + c[0], pass: actual === c[1], expected: c[1], actual: actual });
     });
 
+    // Skipped dates
+    var SKIP = { skip: ['2026-12-03', '2026-12-24', '2026-12-31'] };
+    [
+      ['skip: Thursday 26 Nov 21:00, Dec 3 skipped: Dec 10', '2026-11-26T20:00:00Z', '2026-12-10T19:00:00Z'],
+      ['skip: Monday 30 Nov: Dec 10',                        '2026-11-30T08:00:00Z', '2026-12-10T19:00:00Z'],
+      ['skip: Thursday 3 Dec morning: Dec 10',               '2026-12-03T08:00:00Z', '2026-12-10T19:00:00Z'],
+      ['skip: Thursday 26 Nov morning: same evening',        '2026-11-26T08:00:00Z', '2026-11-26T19:00:00Z'],
+      ['skip: Dec 24 and 31 in a row: Jan 7',                '2026-12-17T20:00:00Z', '2027-01-07T19:00:00Z'],
+      ['skip: Christmas Eve itself: Jan 7',                  '2026-12-24T10:00:00Z', '2027-01-07T19:00:00Z']
+    ].forEach(function (c) {
+      var actual = api.next(new Date(c[1]), SKIP).toISOString().replace('.000Z', 'Z');
+      results.push({ name: 'next: ' + c[0], pass: actual === c[2], expected: c[2], actual: actual });
+    });
+
     // A different cutoff from the config
     var custom = api.next(new Date('2026-10-08T18:30:00Z'), { cutoff: '20:15' }).toISOString().replace('.000Z', 'Z');
     results.push({ name: 'next: custom cutoff 20:15, Thursday 20:30', pass: custom === '2026-10-15T18:00:00Z', expected: '2026-10-15T18:00:00Z', actual: custom });

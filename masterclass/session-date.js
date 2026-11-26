@@ -17,13 +17,15 @@
  *   time      session start, "HH:MM"
  *   cutoff    "HH:MM" on the session day; from this time on, the next session is the following week
  *   timeZone  IANA time zone
+ *   skip      dates with no session, "YYYY-MM-DD" in the session time zone (e.g. ['2026-12-24']);
+ *             visitors are registered for the next session that is not skipped
  *
  * Tests: open /masterclass/tests/session-date.test.html in a browser.
  */
 (function (root) {
   'use strict';
 
-  var DEFAULTS = { weekday: 4, time: '20:00', cutoff: '21:00', timeZone: 'Europe/Paris' };
+  var DEFAULTS = { weekday: 4, time: '20:00', cutoff: '21:00', timeZone: 'Europe/Paris', skip: [] };
   var WEEKDAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   var formatters = {};
 
@@ -80,6 +82,11 @@
 
     // Calendar arithmetic on the wall-clock date (Date.UTC handles month and year rollover)
     var target = new Date(Date.UTC(w.year, w.month - 1, w.day + daysAhead));
+    // Skipped dates: move on one week at a time (bounded, so a bad list can never loop forever)
+    var skip = Array.isArray(s.skip) ? s.skip : [];
+    for (var i = 0; i < 52 && skip.indexOf(target.toISOString().slice(0, 10)) !== -1; i++) {
+      target = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), target.getUTCDate() + 7));
+    }
     var start = toMinutes(s.time);
     return new Date(fromWallClock(
       target.getUTCFullYear(), target.getUTCMonth() + 1, target.getUTCDate(),
