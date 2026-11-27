@@ -175,10 +175,10 @@ For people who were never OneTake customers, or who tried OneTake without stayin
 
 "Mon offre INCROYABLE pour que ce Black Friday soit le plus rentable de ta vie": the 12 recorded Cercle Ateliers, La Sellette (monthly live group coaching with replay), the 28 courses (opened one at a time, the buyer's choice), OneTake Scale and everything in the Challenge. One page for everyone (current OneTake customers included; current Cercle members are left out of the campaign). French only (Weglot disabled), styled with `/4dcm/le-challenge/style.css` plus the folder's `style.css`. Success page `/4dcm/black-friday/merci/`.
 
-- **Plans:** `bf-cercle-quarterly` (999 € HT / 90 days, featured), `bf-cercle-monthly` (399 € HT / month) and `bf-cercle-yearly` (3 499 € HT / year, a link under the two cards), all shown from the opening. Price locked while the subscription is active, no commitment. The Airwallex price IDs (and the sandbox `monthly` cycle in `SANDBOX_CYCLES`) are TODO in `edge-scripts/airwallex-checkout.ts`: checkouts fail until they are set.
+- **Plans:** `bf-cercle-quarterly` (999 € HT every 12 weeks, featured), `bf-cercle-monthly` (399 € HT every 4 weeks) and `bf-cercle-yearly` (3 495 € HT / year, a link under the two cards), all shown from the opening. Price locked while the subscription is active, no commitment; buyers can switch to a longer cycle at the offer price by writing to support. The sandbox `monthly` cycle in `SANDBOX_CYCLES` is still TODO (sandbox tests of that plan fail until it is set).
 - **Dates:** opens Fri Nov 27 00:00 Paris (`BF_2026_OPENS_AT`), closes after Mon Nov 30 23:59:59 Paris (countdown redirect to `/oto/too-late/`; no `closesAt`, so `?unlockfor=1` still lets a late buyer pay). Keep in sync: `BF_2026_OPENS_AT`, `data-deadline` and the dates written in the page.
 - **Headline:** split-tested with CrazyEgg; the `<h1>` holds the control version.
-- **Credits (by hand, from the Userlist `Purchase` event):** Challenge buyers get what they paid in the last 3 months credited; OneTake customers get the remaining days of their subscription added, prorata.
+- **Credits (by hand, from the Userlist `Purchase` event):** Challenge buyers and OneTake customers get everything they paid in the last 3 months credited towards this purchase.
 - **Values:** the course list total (29 708 €) and the value stack total (47 649 €) are written in the page: keep them equal to the sum of their rows.
 - **Sales video:** none yet; the player markup is commented out in the hero. When adding it, also remove `hero-grid--novideo`.
 
