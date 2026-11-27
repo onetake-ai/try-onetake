@@ -122,19 +122,19 @@ window.AIRWALLEX_CONFIG = {
             name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
             value: 999,
             currency: 'EUR',
-            priceLabel: '999\u00a0€ HT / trimestre'
+            priceLabel: '999\u00a0€ HT / 12 semaines'
         },
         'bf-cercle-monthly': {
             name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
             value: 399,
             currency: 'EUR',
-            priceLabel: '399\u00a0€ HT / mois'
+            priceLabel: '399\u00a0€ HT / 4 semaines'
         },
         'bf-cercle-yearly': {
             name: 'Offre Black Friday\u00a0: le Cercle des Experts à Haute Valeur',
-            value: 3499,
+            value: 3495,
             currency: 'EUR',
-            priceLabel: '3\u00a0499\u00a0€ HT / an'
+            priceLabel: '3\u00a0495\u00a0€ HT / an'
         }
     }
 };
