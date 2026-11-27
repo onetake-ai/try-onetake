@@ -52,11 +52,9 @@
       </div>
     </div>
     -->
-    <div class="cta-row">
-      <a class="btn btn-primary btn-large" href="#prix"><span>Je profite de l'offre Black Friday</span><span class="arrow">→</span></a>
-    </div>
+    <!-- No button to #prix here: without a sales video, visitors must read the offer before they see the price -->
     <p class="sub">
-      Le Cercle des Experts à Haute Valeur, lancé cette année à 4&nbsp;995&nbsp;€. La Sellette, une session de coaching en direct avec moi chaque mois. Toutes mes formations, pour près de 30&nbsp;000&nbsp;€ de valeur. Et OneTake Scale pour monter tes vidéos. Tout ça réuni pour la première fois, jusqu'au <strong>lundi 30 novembre à 23h59</strong>.
+      Devenir Expert à Haute Valeur, c'est vivre enfin de ton expertise en attirant des clients qui achètent tes formations et programmes de coaching en automatique, 7 jours sur 7. Avoir la liberté de travailler d'où tu veux dans le monde et pouvoir consacrer ton temps à ta famille. Ne plus regarder les prix sur le menu au restaurant. Créer une vie et une liberté incroyables pour tes proches. Pour t'y amener, j'ai réuni pour la première fois tout ce que j'ai construit en 15 ans&nbsp;: ma méthode complète, toutes mes formations, des assistants IA formés à ma façon de travailler, et chaque mois, mon regard d'expert sur ton travail, en direct.
     </p>
   </div>
 </section>
@@ -138,7 +136,7 @@
 </section>
 
 <!-- ==================== 4. CE QUE TU REÇOIS ==================== -->
-<section data-screen-label="04 Ce que tu reçois">
+<section id="offre" data-screen-label="04 Ce que tu reçois">
   <div class="wrap">
     <div class="copy" style="max-width: 820px; margin: 0 0 32px;">
       <div class="eyebrow">L'offre complète</div>
@@ -225,6 +223,7 @@
       <div>
         <h3>La Sellette&nbsp;: chaque mois, je revois ton travail en direct, comme pour mes clients à 25&nbsp;000&nbsp;€ la journée</h3>
         <p class="lead">Une fois par mois, c'est toi qui passes sur la sellette. Une session de coaching en groupe, en direct avec moi, où je revois ce que tu as produit en appliquant l'Atelier du mois et tes skills IA&nbsp;: ton positionnement, ton offre, ta page de vente, tes emails, tes scripts vidéo, tes publicités.</p>
+        <p>À l'heure où tout le monde te propose du «&nbsp;coaching par IA&nbsp;», ou te confie à des coachs juniors qui récitent une méthode, je te propose une chance devenue rare&nbsp;: être accompagné(e) par un véritable expert, en direct. Ce n'est pas un assistant qui te répond, ni un membre de mon équipe&nbsp;: c'est moi, qui regarde ton travail et te parle.</p>
         <p>Je te dis ce qui fonctionne, ce qui crée de la confusion et ce qu'il faut changer pour que ça se vende mieux. Ce sont exactement les conseils que je donne à mes clients en consulting, qui me paient 25&nbsp;000&nbsp;€ la journée. Une formation te donne la méthode&nbsp;; La Sellette te donne un regard extérieur sur ton travail à toi, et c'est souvent ce qui fait la différence entre une offre qui vivote et une offre qui cartonne.</p>
         <p>Être là en direct, c'est pouvoir me montrer ton travail, poser tes questions et repartir avec tes corrections le jour même. Tu apprends aussi énormément des retours que je fais aux autres membres&nbsp;: la plupart s'appliqueront à toi. Si tu ne peux pas venir, le replay t'attend. Tu reçois le calendrier des sessions par email après ton inscription.</p>
       </div>
@@ -621,7 +620,7 @@
   </div>
 </footer>
 
-<!-- mobile sticky CTA -->
+<!-- mobile sticky CTA: shown only once the visitor has scrolled past the offer (#offre), see the script below -->
 <div class="mobile-cta">
   <a class="btn btn-primary" href="#prix">Je profite de l'offre</a>
 </div>
@@ -632,5 +631,20 @@
 <script src="/assets/info-bubbles/info-bubbles.js"></script>
 <script src="/4dcm/challenge-skills.js"></script>
 <script src="/tools.js"></script>
+<script>
+  // Mobile sticky CTA: hidden until the bottom of the offer section (#offre) is on screen or above,
+  // so visitors read what is in the offer before they jump to the price
+  (function () {
+    var cta = document.querySelector('.mobile-cta');
+    var offer = document.getElementById('offre');
+    if (!cta || !offer) return;
+    function update() {
+      cta.classList.toggle('is-visible', offer.getBoundingClientRect().bottom < window.innerHeight);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
 </body>
 </html>
